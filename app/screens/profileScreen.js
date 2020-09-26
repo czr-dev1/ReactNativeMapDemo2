@@ -9,14 +9,13 @@ import { StyleSheet,
   Dimensions,
   TouchableOpacity
 } from 'react-native';
-import MapView, { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 import colors from '../config/colors';
 
-function MapScreen(props) {
+function ProfileScreen(props) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
   useEffect(() => {
     loadData();
@@ -46,11 +45,11 @@ function MapScreen(props) {
       {isLoading ?
         <ActivityIndicator /> : (
           <MapView style={styles.mapStyle}
-            provider={null}
-            mapType={MAP_TYPES.NONE}>
-          <UrlTile
-            urlTemplate={urlTemplate}
-            maximumZ={19}/>
+            provider={PROVIDER_GOOGLE}>
+            <Marker
+              coordinate={{latitude: 33.9929408, longitude: -118.2277925}}
+              title="test"
+              description="test"/>
             {data.map((item, i) => {
               return (
                 <Marker
@@ -62,12 +61,9 @@ function MapScreen(props) {
             })}
           </MapView>
         )}
+        <TouchableOpacity>
 
-        <View style={styles.navStyle}>
-          <TouchableOpacity>
-            <Text>Hello World</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -82,14 +78,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '90%'
-  },
-  navStyle: {
-    flexDirection: 'row',
-    backgroundColor: 'dodgerblue',
-    width: Dimensions.get('window').width,
-    height: '10%'
+    height: '100%'
   }
 })
 
-export default MapScreen;
+export default ProfileScreen;
