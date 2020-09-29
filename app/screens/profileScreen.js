@@ -42,28 +42,7 @@ function ProfileScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {isLoading ?
-        <ActivityIndicator /> : (
-          <MapView style={styles.mapStyle}
-            provider={PROVIDER_GOOGLE}>
-            <Marker
-              coordinate={{latitude: 33.9929408, longitude: -118.2277925}}
-              title="test"
-              description="test"/>
-            {data.map((item, i) => {
-              return (
-                <Marker
-                  key={i}
-                  coordinate={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude)}}
-                  title={item.title}
-                  icon={require('../assets/personal_128x128.png')}
-                  />)
-            })}
-          </MapView>
-        )}
-        <TouchableOpacity>
-
-        </TouchableOpacity>
+      <Text>Hello World</Text>
     </SafeAreaView>
   );
 }
