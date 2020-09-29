@@ -1,4 +1,5 @@
 # ReactNativeMapDemo
+All of the important code is inside the `app` directory
 
 ## Install Expo CLI
 `npm install --global expo-cli`
