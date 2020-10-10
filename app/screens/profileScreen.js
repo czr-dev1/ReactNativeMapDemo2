@@ -7,9 +7,14 @@ import { StyleSheet,
   SafeAreaView,
   StatusBar,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  Alert,
+  TouchableWithoutFeedback
 } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { Card, ListItem, Button, Icon } from 'react-native-elements';
 
 import colors from '../config/colors';
 
@@ -40,9 +45,51 @@ function ProfileScreen(props) {
     }
   };
 
+  const renderItem = ({ item }) => {
+    <View>
+      <Text>{item.title}</Text>
+    </View>
+  }
+  const createThreeButtonAlert = () =>
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed")
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Hello World</Text>
+      {isLoading ?
+        <ActivityIndicator /> :
+        <ScrollView>
+        {data.map((item, i) => {
+          return(
+            <TouchableWithoutFeedback key={i} onPress={createThreeButtonAlert}>
+              <Card>
+                <Card.Title>{item.title}</Card.Title>
+                <Card.Divider/>
+                  <View>
+                    <Text>{item.description}</Text>
+                  </View>
+              </Card>
+            </TouchableWithoutFeedback>
+          )
+        })}
+        </ScrollView>
+      }
     </SafeAreaView>
   );
 }
