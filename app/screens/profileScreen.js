@@ -77,13 +77,13 @@ function ProfileScreen(props) {
         <ScrollView>
         {data.map((item, i) => {
           return(
-            <TouchableWithoutFeedback key={i} onPress={createThreeButtonAlert}>
+            <TouchableWithoutFeedback key={i} onPress={() => {
+              props.navigation.navigate('Story', {
+                title: item.title,
+                description: item.description
+              });}}>
               <Card>
                 <Card.Title>{item.title}</Card.Title>
-                <Card.Divider/>
-                  <View>
-                    <Text>{item.description}</Text>
-                  </View>
               </Card>
             </TouchableWithoutFeedback>
           )

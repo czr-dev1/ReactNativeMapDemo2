@@ -8,7 +8,8 @@ import { StyleSheet,
   StatusBar,
   Dimensions,
   TouchableHighlight,
-  PixelRatio
+  PixelRatio,
+  Alert
 } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
@@ -54,6 +55,25 @@ function MapScreen(props) {
     }
   };
 
+  const createThreeButtonAlert = () =>
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed")
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
   return (
     <SafeAreaView style={styles.container}>
       {isLoading ?
@@ -97,6 +117,11 @@ function MapScreen(props) {
                   coordinate={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude)}}
                   title={item.title}
                   image={pinType}
+                  onPress={() => {
+                    props.navigation.navigate('Story', {
+                      title: item.title,
+                      description: item.description
+                    });}}
                   />)
             })}
           </MapView>
