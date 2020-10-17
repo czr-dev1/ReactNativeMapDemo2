@@ -1,87 +1,116 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  Platform,
-  ActivityIndicator,
-  SafeAreaView,
-  StatusBar,
-  Dimensions,
-  TouchableHighlight,
-  PixelRatio,
-  View,
-  Button,
-  TextInput
-} from 'react-native';
+import { StyleSheet, Text, Platform, ActivityIndicator, SafeAreaView, StatusBar,
+  Dimensions, TouchableHighlight, PixelRatio, View, Button, TextInput,
+  TouchableWithoutFeedback, Keyboard } from 'react-native';
 import * as Location from 'expo-location';
-import { Formik } from 'formik';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import colors from '../config/colors';
 
 function StoryPostScreen(props) {
+  const [gotLocation, setGotLocation] = useState(false);
+  const [location, setLocation] = useState({});
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [address, setAddress] = useState('');
+  const [locality, setLocality] = useState('');
+  const [country, setCountry] = useState('');
+  const [postCode, setPostCode] = useState('');
+  const [region, setRegion] = useState('');
+  const [category, setCategory] = useState(0);
+  const [startDate, setStartDate] = useState({});
+  const [endDate, setEndDate] = useState({});
+
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if( status !== 'granted' ) {
+      //handle error here
+    }
+    const loc = await Location.getCurrentPositionAsync({});
+    setLocation({
+      latitude: loc.coords.latitude,
+      longitude: loc.coords.longitude
+    });
+    setGotLocation(true);
+    if(gotLocation) {
+      console.log(location);
+    }
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mapStyle}>
-        <Formik style={styles.mapStyle}
-          initialValues={
-            { title: '',
-            description: '',
-            latitude: '',
-            longitude: '',
-            category: '',
-            address: '',
-            locality: '',
-            region: '',
-            country: '',
-            postCode: '',
-            startDate: '',
-            endDate: '',
-          }}
-          onSubmit={(values, actions) => {
-            actions.resetForm();
-            console.log(values);
-          }}>
+      <TouchableWithoutFeedback>
+      <View style={styles.container}>
+        <Text>Address</Text>
+        <TextInput
+          name="address"
+          style={styles.input}
+          onChangeText={val => {setAddress(val)}}
+        />
+        <Text>Locality</Text>
+        <TextInput
+          name="locality"
+          style={styles.input}
+          onChangeText={val => {setLocality(val)}}
+        />
+        <Text>Region</Text>
+        <TextInput
+          name="region"
+          style={styles.input}
+          onChangeText={val => {setRegion(val)}}
+        />
+        <Text>Country</Text>
+        <TextInput
+          name="country"
+          style={styles.input}
+          onChangeText={val => {setCountry(val)}}
+        />
+        <Text>Postal Code</Text>
+        <TextInput
+          name="postcode"
+          style={styles.input}
+          onChangeText={val => {setPostCode(val)}}
+        />
+        <Text>Title</Text>
+        {title === '' ?
+          <Text style={styles.requiredText}>* Please enter a story title </Text>
+          :
+          null
+        }
+        <TextInput
+          name="title"
+          style={styles.input}
+          onChangeText={val => {setTitle(val)}}
+        />
+        <Text>Category</Text>
+        <TextInput
+          name=""
+          style={styles.input}
+          onChangeText={val => {setCategory(val)}}
+        />
+        <Text>Description</Text>
+        {description === '' ?
+          <Text style={styles.requiredText}>* Please enter a story description </Text>
+          :
+          null
+        }
+        <TextInput
+          multiline
+          name=""
+          style={styles.input}
+          onChangeText={val => {setDescription(val)}}
+        />
 
-          {(form) => (
-            <View>
-              <Text>Title</Text>
-              <TextInput style={styles.input}
-                placeholder="Review Details"
-                onChangeText={form.handleChange('title')}
-                value={form.values.title} />
-              <Text>Description</Text>
-              <TextInput style={styles.input}
-                placeholder="Description"
-                multiline
-                onChangeText={form.handleChange('description')}
-                value={form.values.description} />
-              <Text>Category</Text>
-              <TextInput style={styles.input}
-                placeholder="Review Details"
-                onChangeText={form.handleChange('title')}
-                value={form.values.title} />
-              <Button color='dodgerblue' title="Submit" onPress={form.handleSubmit} />
-            </View>
-          )}
-
-        </Formik>
+        <Button disabled={gotLocation ? false : true} title="Submit"/>
       </View>
-
-
-      <View style={styles.navStyle}>
-        <TouchableHighlight style={styles.navButton}>
-          <Text style={{textAlign: 'center'}}>MapView</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.navButton} onPress={() => {
-          props.navigation.navigate('Profile');}}>
-          <Text style={{textAlign: 'center'}}>Post</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.navButton} onPress={() => {
-          props.navigation.navigate('Profile');}}>
-          <Text style={{textAlign: 'center'}}>Stories</Text>
-        </TouchableHighlight>
-      </View>
-  </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   )
 }
 
@@ -114,7 +143,11 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 6,
     padding: 10,
-    fontSize: 10
+    fontSize: 10,
+    width: '80%'
+  },
+  requiredText: {
+    color: 'red'
   }
 })
 
