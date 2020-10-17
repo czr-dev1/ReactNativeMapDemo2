@@ -13,6 +13,7 @@ import { StyleSheet,
 } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 import colors from '../config/colors';
 
@@ -21,6 +22,13 @@ const HISTORICAL_PIN = require('../assets/historical_128x128.png');
 const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
 function MapScreen(props) {
+  const [gotLocation, setGotLocation] = useState(false);
+  const [location, setLocation] = useState({
+    latitude: 52.5,
+    longitude: 19.2,
+    latitudeDelta: 8.5,
+    longitudeDelta: 8.5,
+  });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
@@ -34,7 +42,27 @@ function MapScreen(props) {
 
   useEffect(() => {
     loadData();
+    getLocation();
   },[])
+
+  const getLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if( status !== 'granted' ) {
+      //handle error here
+    }
+
+    let loc = await Location.getCurrentPositionAsync({});
+    const { latitudeDelta, longitudeDelta } = location;
+    setLocation({
+      latitude: loc.coords.latitude,
+      longitude: loc.coords.longitude,
+      latitudeDelta: latitudeDelta,
+      longitudeDelta: longitudeDelta
+    });
+    setGotLocation(true);
+    console.log(location);
+
+  };
 
   const loadData = async () => {
     try {
@@ -46,7 +74,7 @@ function MapScreen(props) {
         }
       });
       let json = await response.json();
-      console.log(json);
+      //console.log(json);
       setData(json);
       setLoading(false);
       return;
@@ -76,12 +104,12 @@ function MapScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {isLoading ?
+      { ( isLoading && !gotLocation ) ?
         <ActivityIndicator style={styles.mapStyle} /> : (
           <MapView style={styles.mapStyle}
             provider={PROVIDER_DEFAULT}
             mapType={MAP_TYPES.NONE}
-            initialRegion={INITIAL_REGION}
+            initialRegion={location}
             rotateEnabled={false}
             clusterColor={'#FFA500'}
             clusterTextColor={'#000000'}
@@ -133,7 +161,11 @@ function MapScreen(props) {
           </TouchableHighlight>
           <TouchableHighlight style={styles.navButton} onPress={() => {
             props.navigation.navigate('Profile');}}>
-            <Text style={{textAlign: 'center'}}>Profile</Text>
+            <Text style={{textAlign: 'center'}}>Post</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={styles.navButton} onPress={() => {
+            props.navigation.navigate('Profile');}}>
+            <Text style={{textAlign: 'center'}}>Stories</Text>
           </TouchableHighlight>
         </View>
     </SafeAreaView>
