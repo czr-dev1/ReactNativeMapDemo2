@@ -36,8 +36,8 @@ function MapScreen(props) {
   const INITIAL_REGION = {
     latitude: 52.5,
     longitude: 19.2,
-    latitudeDelta: 8.5,
-    longitudeDelta: 8.5,
+    latitudeDelta: .5,
+    longitudeDelta: .5,
   };
 
   useEffect(() => {
@@ -160,7 +160,7 @@ function MapScreen(props) {
             <Text style={{textAlign: 'center'}}>MapView</Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.navButton} onPress={() => {
-            props.navigation.navigate('Profile');}}>
+            props.navigation.navigate('Post');}}>
             <Text style={{textAlign: 'center'}}>Post</Text>
           </TouchableHighlight>
           <TouchableHighlight style={styles.navButton} onPress={() => {
