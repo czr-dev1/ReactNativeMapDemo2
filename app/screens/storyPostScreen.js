@@ -23,22 +23,39 @@ function StoryPostScreen(props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.mapStyle}>
         <Formik style={styles.mapStyle}
-          initialValues={{ title: '', body: '', rating: '' }}
-          onSubmit={(values) => {
+          initialValues={
+            { title: '',
+            description: '',
+            latitude: '',
+            longitude: '',
+            category: '',
+            address: '',
+            locality: '',
+            region: '',
+            country: '',
+            postCode: '',
+            startDate: '',
+            endDate: '',
+          }}
+          onSubmit={(values, actions) => {
+            actions.resetForm();
             console.log(values);
           }}>
 
           {(form) => (
             <View>
+              <Text>Title</Text>
               <TextInput style={styles.input}
                 placeholder="Review Details"
                 onChangeText={form.handleChange('title')}
                 value={form.values.title} />
+              <Text>Description</Text>
               <TextInput style={styles.input}
-                placeholder="Body Details"
+                placeholder="Description"
                 multiline
-                onChangeText={form.handleChange('body')}
-                value={form.values.body} />
+                onChangeText={form.handleChange('description')}
+                value={form.values.description} />
+              <Text>Category</Text>
               <TextInput style={styles.input}
                 placeholder="Review Details"
                 onChangeText={form.handleChange('title')}
@@ -46,7 +63,7 @@ function StoryPostScreen(props) {
               <Button color='dodgerblue' title="Submit" onPress={form.handleSubmit} />
             </View>
           )}
-          
+
         </Formik>
       </View>
 
