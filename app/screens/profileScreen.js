@@ -36,7 +36,7 @@ function ProfileScreen(props) {
         }
       });
       let json = await response.json();
-      console.log(json);
+      //console.log(json);
       setData(json);
       setLoading(false);
       return;
