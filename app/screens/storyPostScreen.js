@@ -9,9 +9,12 @@ import {
   Dimensions,
   TouchableHighlight,
   PixelRatio,
-  View
+  View,
+  Button,
+  TextInput
 } from 'react-native';
 import * as Location from 'expo-location';
+import { Formik } from 'formik';
 
 import colors from '../config/colors';
 
@@ -19,18 +22,34 @@ function StoryPostScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mapStyle}>
-        <Text> Address </Text>
-        <Text> Locality </Text>
-        <Text> Region </Text>
-        <Text> Country </Text>
-        <Text> Postal Code </Text>
-        <Text> Title </Text>
-        <Text> Category </Text>
-        <Text> Description </Text>
-        <Text> Start Date </Text>
-        <Text> End Date </Text>
+        <Formik style={styles.mapStyle}
+          initialValues={{ title: '', body: '', rating: '' }}
+          onSubmit={(values) => {
+            console.log(values);
+          }}>
 
+          {(form) => (
+            <View>
+              <TextInput style={styles.input}
+                placeholder="Review Details"
+                onChangeText={form.handleChange('title')}
+                value={form.values.title} />
+              <TextInput style={styles.input}
+                placeholder="Body Details"
+                multiline
+                onChangeText={form.handleChange('body')}
+                value={form.values.body} />
+              <TextInput style={styles.input}
+                placeholder="Review Details"
+                onChangeText={form.handleChange('title')}
+                value={form.values.title} />
+              <Button color='dodgerblue' title="Submit" onPress={form.handleSubmit} />
+            </View>
+          )}
+          
+        </Formik>
       </View>
+
 
       <View style={styles.navStyle}>
         <TouchableHighlight style={styles.navButton}>
@@ -72,6 +91,13 @@ const styles = StyleSheet.create({
   navButton: {
     flexGrow: 1,
     textAlign: 'center'
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    padding: 10,
+    fontSize: 10
   }
 })
 
