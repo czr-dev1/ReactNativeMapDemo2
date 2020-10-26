@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import MapScreen from './app/screens/mapScreen';
-import ProfileScreen from './app/screens/profileScreen';
+import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
 import StoryPostScreen from './app/screens/storyPostScreen';
 
@@ -16,7 +16,7 @@ const StoriesStack = createStackNavigator();
 function StoriesStackScreen() {
   return (
     <StoriesStack.Navigator screenOptions={{headerShown: false}}>
-      <StoriesStack.Screen name="Profile" component={ ProfileScreen } />
+      <StoriesStack.Screen name="StoryList" component={ StoryListScreen } />
       <StoriesStack.Screen name ="Story" component={ StoryScreen } />
     </StoriesStack.Navigator>
   );
@@ -41,8 +41,8 @@ export default function App() {
             let iconName;
             if (route.name === 'Map') {
               iconName = 'map';
-            } else if (route.name === 'Profile') {
-              iconName = 'user';
+            } else if (route.name === 'Stories') {
+              iconName = 'list';
             } else if (route.name === 'Post') {
               iconName = 'plus-square';
             }
@@ -51,7 +51,7 @@ export default function App() {
         })}>
         <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
         <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
-        <Tab.Screen name="Profile" component={StoriesStackScreen} />
+        <Tab.Screen name="Stories" component={StoriesStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

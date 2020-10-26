@@ -18,7 +18,7 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements';
 
 import colors from '../config/colors';
 
-function ProfileScreen(props) {
+function StoryListScreen(props) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ProfileScreen;
+export default StoryListScreen;
