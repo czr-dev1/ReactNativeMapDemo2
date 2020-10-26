@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
   },
   mapStyle: {
     width: Dimensions.get('window').width,
