@@ -154,20 +154,6 @@ function MapScreen(props) {
             })}
           </MapView>
         )}
-
-        <View style={styles.navStyle}>
-          <TouchableHighlight style={styles.navButton}>
-            <Text style={{textAlign: 'center'}}>MapView</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.navButton} onPress={() => {
-            props.navigation.navigate('Post');}}>
-            <Text style={{textAlign: 'center'}}>Post</Text>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.navButton} onPress={() => {
-            props.navigation.navigate('Profile');}}>
-            <Text style={{textAlign: 'center'}}>Stories</Text>
-          </TouchableHighlight>
-        </View>
     </SafeAreaView>
   );
 }
@@ -182,7 +168,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '95%'
+    height: '100%'
   },
   navStyle: {
     flexDirection: 'row',
