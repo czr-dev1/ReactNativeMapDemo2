@@ -31,8 +31,8 @@ function MapScreen(props) {
   });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-  const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
+  const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
+  //const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
     latitude: 52.5,
     longitude: 19.2,
