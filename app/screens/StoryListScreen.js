@@ -4,7 +4,6 @@ import { StyleSheet,
   View,
   Platform,
   ActivityIndicator,
-  SafeAreaView,
   StatusBar,
   Dimensions,
   TouchableOpacity,
@@ -13,6 +12,7 @@ import { StyleSheet,
   Alert,
   TouchableWithoutFeedback
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -30,7 +30,7 @@ function StoryListScreen(props) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
       {props.isLoading ?
         <ActivityIndicator /> :
         <ScrollView>

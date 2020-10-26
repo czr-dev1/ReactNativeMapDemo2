@@ -4,13 +4,13 @@ import { StyleSheet,
   View,
   Platform,
   ActivityIndicator,
-  SafeAreaView,
   StatusBar,
   Dimensions,
   TouchableHighlight,
   PixelRatio,
   Alert
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -65,7 +65,7 @@ function MapScreen(props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
       { ( props.isLoading ) ?
         <ActivityIndicator style={styles.mapStyle}/> : (
           <MapView style={styles.mapStyle}

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Platform, ActivityIndicator, SafeAreaView, StatusBar,
+import { StyleSheet, Text, Platform, ActivityIndicator, StatusBar,
   Dimensions, TouchableHighlight, PixelRatio, View, Button, TextInput,
   TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
+
 
 import colors from '../config/colors';
 
@@ -111,9 +113,8 @@ function StoryPostScreen(props) {
 
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback>
-      <View style={styles.container}>
+    <TouchableWithoutFeedback>
+    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
         <Text>Address</Text>
         <TextInput
           name="address"
@@ -178,9 +179,9 @@ function StoryPostScreen(props) {
           disabled={gotLocation ? false : true}
           title="Submit"
           onPress={(e) => {submitNewStory();}}/>
-      </View>
-      </TouchableWithoutFeedback>
+
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   )
 }
 
