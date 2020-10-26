@@ -66,8 +66,8 @@ function MapScreen(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      { ( props.isLoading && !gotLocation ) ?
-        <ActivityIndicator style={styles.mapStyle} /> : (
+      { ( props.isLoading ) ?
+        <ActivityIndicator style={styles.mapStyle}/> : (
           <MapView style={styles.mapStyle}
             provider={PROVIDER_DEFAULT}
             mapType={MAP_TYPES.NONE}
