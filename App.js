@@ -10,7 +10,13 @@ import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
 import StoryPostScreen from './app/screens/storyPostScreen';
 
-const Tab = createBottomTabNavigator();
+//redux
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './app/redux/reducers/rootReducer';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const StoriesStack = createStackNavigator();
 function StoriesStackScreen() {
@@ -32,27 +38,31 @@ function MapStackScreen() {
   );
 }
 
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="Map"
-        screenOptions={( { route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            if (route.name === 'Map') {
-              iconName = 'map';
-            } else if (route.name === 'Stories') {
-              iconName = 'list';
-            } else if (route.name === 'Post') {
-              iconName = 'plus-square';
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator initialRouteName="Map"
+          screenOptions={( { route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === 'Map') {
+                iconName = 'map';
+              } else if (route.name === 'Stories') {
+                iconName = 'list';
+              } else if (route.name === 'Post') {
+                iconName = 'plus-square';
+              }
+              return <FontAwesome5 name={iconName} size={size} color={color} />
             }
-            return <FontAwesome5 name={iconName} size={size} color={color} />
-          }
-        })}>
-        <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
-        <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
-        <Tab.Screen name="Stories" component={StoriesStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+          })}>
+          <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
+          <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
+          <Tab.Screen name="Stories" component={StoriesStackScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

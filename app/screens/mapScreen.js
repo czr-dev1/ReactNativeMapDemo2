@@ -14,8 +14,10 @@ import { StyleSheet,
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { connect } from 'react-redux';
 
 import colors from '../config/colors';
+import { loadStories } from '../redux/actions/storyActions';
 
 const PERSONAL_PIN = require('../assets/personal_128x128.png');
 const HISTORICAL_PIN = require('../assets/historical_128x128.png');
@@ -30,7 +32,6 @@ function MapScreen(props) {
     longitudeDelta: 8.5,
   });
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
   const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   //const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
@@ -41,7 +42,7 @@ function MapScreen(props) {
   };
 
   useEffect(() => {
-    loadData();
+    props.loadStories();
     getLocation();
   },[])
 
@@ -60,51 +61,12 @@ function MapScreen(props) {
       longitudeDelta: longitudeDelta
     });
     setGotLocation(true);
-    console.log(location);
 
   };
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      let response = await fetch('http://www.globaltraqsdev.com/api/pins', {
-        method: 'GET',
-        headers: {
-          'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'
-        }
-      });
-      let json = await response.json();
-      //console.log(json);
-      setData(json);
-      setLoading(false);
-      return;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const createThreeButtonAlert = () =>
-    Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
-      [
-        {
-          text: "Ask me later",
-          onPress: () => console.log("Ask me later pressed")
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
 
   return (
     <SafeAreaView style={styles.container}>
-      { ( isLoading && !gotLocation ) ?
+      { ( props.isLoading && !gotLocation ) ?
         <ActivityIndicator style={styles.mapStyle} /> : (
           <MapView style={styles.mapStyle}
             provider={PROVIDER_DEFAULT}
@@ -127,7 +89,7 @@ function MapScreen(props) {
             maxZoomLevel={19}
             minZoomLevel={0}
             zIndex={1}/>
-            {data.map((item, i) => {
+            {props.stories.map((item, i) => {
               let pinType = '';
               switch (item.category) {
                 case 1:
@@ -184,4 +146,20 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MapScreen;
+const mapStateToProps =  (state) => {
+  console.log(state);
+  return {
+    isLoading: state.storyReducer.isLoading,
+    stories: state.storyReducer.storyList,
+    error: state.storyReducer.error
+
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadStories: () => dispatch(loadStories())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
