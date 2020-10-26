@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 const StoriesStack = createStackNavigator();
 function StoriesStackScreen() {
   return (
-    <StoriesStack.Navigator>
+    <StoriesStack.Navigator screenOptions={{headerShown: false}}>
       <StoriesStack.Screen name="Profile" component={ ProfileScreen } />
       <StoriesStack.Screen name ="Story" component={ StoryScreen } />
     </StoriesStack.Navigator>
@@ -25,7 +25,7 @@ function StoriesStackScreen() {
 const MapStack = createStackNavigator();
 function MapStackScreen() {
   return (
-    <MapStack.Navigator>
+    <MapStack.Navigator screenOptions={{headerShown: false}}>
       <MapStack.Screen name="Map" component={ MapScreen } />
       <MapStack.Screen name="Story" component={ StoryScreen } />
     </MapStack.Navigator>
