@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '95%'
+    height: '100%'
   },
   navStyle: {
     flexDirection: 'row',
