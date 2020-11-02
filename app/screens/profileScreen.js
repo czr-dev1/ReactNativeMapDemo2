@@ -12,7 +12,9 @@ import colors from '../config/colors';
 //profile picture
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
+//story component
 import StoryListScreen from './StoryListScreen';
+import StoryList from '../components/storyList';
 
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
@@ -60,7 +62,7 @@ function ProfileScreen(props) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.storyList}>
-        <StoryListScreen />
+        <StoryList stories={props.stories} />
       </View>
     </SafeAreaView>
   );
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'dodgerblue',
+    backgroundColor: '#eae6e5',
     width: Dimensions.get('window').width,
     height: '70%'
   },
