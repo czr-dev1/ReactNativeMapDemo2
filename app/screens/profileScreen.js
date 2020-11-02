@@ -39,9 +39,6 @@ function ProfileScreen(props) {
   return(
     <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
       <View style={styles.profileBar}>
-        <View style={styles.nicknameContainer}>
-          <Text style={styles.nicknameText}>nickname</Text>
-        </View>
         <View style={styles.profileImageContainer}>
           <Image style={styles.profileImage} source={PROFILE_PIC}/>
           <FontAwesome5 style={{marginLeft: '-7%'}} name="pencil-alt" size={24} color="black" />
@@ -87,13 +84,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
   },
   profileBar: {
     width: Dimensions.get('window').width,
     paddingLeft: '10%',
     paddingRight: '10%',
-    height: '25%'
+    height: '20%'
   },
   nicknameContainer: {
     alignItems: 'center',
@@ -144,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#eae6e5',
     width: Dimensions.get('window').width,
-    height: '70%'
+    height: '80%'
   },
   navButton: {
     flexGrow: 1,
