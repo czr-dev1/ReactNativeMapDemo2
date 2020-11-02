@@ -40,6 +40,16 @@ function MapStackScreen() {
   );
 }
 
+const ProfileStack = createStackNavigator();
+function ProfileStackScreen() {
+  return (
+    <MapStack.Navigator screenOptions={{headerShown: false}}>
+      <MapStack.Screen name="Profile" component={ ProfileScreen } />
+      <MapStack.Screen name="Story" component={ StoryScreen } />
+    </MapStack.Navigator>
+  )
+}
+
 const Tab = createBottomTabNavigator();
 export default function App() {
   return (
@@ -62,7 +72,7 @@ export default function App() {
             })}>
             <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
             <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
-            <Tab.Screen name="Profile" component={ ProfileScreen } />
+            <Tab.Screen name="Profile" component={ ProfileStackScreen } />
           </Tab.Navigator>
         </NavigationContainer>
     </Provider>
