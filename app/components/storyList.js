@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View,
-  FlatList, ScrollView} from 'react-native';
+  FlatList, ScrollView, Dimensions } from 'react-native';
 import { Card, ListenItem, Button, Icon } from 'react-native-elements';
 
 import colors from '../config/colors';
@@ -8,7 +8,7 @@ import colors from '../config/colors';
 
 const Item = ({ item, style }) => {
   return (
-    <TouchableWithoutFeedback key={item.id}  style={style}>
+    <TouchableWithoutFeedback key={item.id}>
       <Card>
         <Card.Title>{item.title}</Card.Title>
       </Card>
@@ -26,11 +26,18 @@ function StoryList(props) {
   return(
     <View>
       <FlatList
+        style={styles.cardContainer}
         data={props.stories}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id} />
+        keyExtractor={(item) => ""+item.id} />
     </View>
   );
 }
 
 export default StoryList;
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    width: Dimensions.get('window').width
+  }
+})

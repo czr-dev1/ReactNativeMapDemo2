@@ -16,8 +16,21 @@ const PROFILE_PIC = require('../assets/profile_blank.png');
 import StoryListScreen from './StoryListScreen';
 import StoryList from '../components/storyList';
 
+
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
+  const renderStoriesByType = () => {
+    switch (selectedButton){
+      case 1:
+        return <StoryList stories={props.stories.slice(1, 3)} />
+      case 2:
+        return <StoryList stories={props.stories.slice(3, 5)} />
+      case 3:
+        return <StoryList stories={props.stories.slice(0, 10)} />
+      default:
+        return <StoryList stories={props.stories.slice(10, 20)} />
+      }
+  }
 
   useEffect(() => {
 
@@ -62,7 +75,7 @@ function ProfileScreen(props) {
         </TouchableWithoutFeedback>
       </View>
       <View style={styles.storyList}>
-        <StoryList stories={props.stories} />
+        {renderStoriesByType()}
       </View>
     </SafeAreaView>
   );
