@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps =  (state) => {
-  console.log(state);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
