@@ -24,11 +24,11 @@ function ProfileScreen(props) {
       case 1:
         return <StoryList stories={props.stories.slice(1, 3)} />
       case 2:
-        return <StoryList stories={props.stories.slice(3, 5)} />
+        return <StoryList stories={props.stories.slice(3, 6)} />
       case 3:
         return <StoryList stories={props.stories.slice(0, 10)} />
       default:
-        return <StoryList stories={props.stories.slice(10, 20)} />
+        return <StoryList stories={props.stories.slice(10, 30)} />
       }
   }
 
@@ -41,7 +41,7 @@ function ProfileScreen(props) {
       <View style={styles.profileBar}>
         <View style={styles.profileImageContainer}>
           <Image style={styles.profileImage} source={PROFILE_PIC}/>
-          <FontAwesome5 style={{marginLeft: '-7%'}} name="pencil-alt" size={24} color="black" />
+          <FontAwesome5 style={{marginLeft: '-8%'}} name="pencil-alt" size={24} color="black" />
         </View>
         <View style={styles.bioContainter}>
           <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
