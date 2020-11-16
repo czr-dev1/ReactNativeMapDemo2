@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -13,6 +14,8 @@ import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
 import StoryPostScreen from './app/screens/storyPostScreen';
 import ProfileScreen from './app/screens/profileScreen';
+import BookmarkedPostsScreen from './app/screens/bookmarkedPostsScreen';
+import BookmarkedUsersScreen from './app/screens/bookmarkedUsersScreen';
 
 //redux
 import { Provider } from 'react-redux';
@@ -41,6 +44,17 @@ function MapStackScreen() {
     </MapStack.Navigator>
   );
 }
+
+const BookmarkedTopTab = createMaterialTopTabNavigator();
+function BookmarkedTopTabScreen() {
+  return (
+    <BookmarkedTopTab.Navigator style={styles.container}>
+      <Tab.Screen name="stories" component={ BookmarkedPostsScreen } />
+      <Tab.Screen name="users" component={ BookmarkedUsersScreen } />
+    </BookmarkedTopTab.Navigator>
+  );
+}
+
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({navigation}) {
@@ -84,11 +98,14 @@ export default function App() {
                   iconName = 'user';
                 } else if (route.name === 'Post') {
                   iconName = 'plus-square';
+                } else if (route.name === 'Bookmarked') {
+                  iconName = 'bookmark';
                 }
                 return <FontAwesome5 name={iconName} size={size} color={color} />
               }
             })}>
             <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
+            <Tab.Screen name="Bookmarked" component={ BookmarkedTopTabScreen } />
             <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
             <Tab.Screen name="Profile" options={{header: () => null}}component={ ProfileDrawerScreen } />
           </Tab.Navigator>
@@ -97,3 +114,9 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+  }
+})
