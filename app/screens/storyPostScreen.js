@@ -1,19 +1,26 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, Platform, ActivityIndicator, StatusBar,
-  Dimensions, TouchableHighlight, PixelRatio, View, Button, TextInput,
-  TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  Button,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import axios from 'axios';
-
+import { connect } from 'react-redux';
+import { loadStories } from '../redux/actions/storyActions';
 
 import colors from '../config/colors';
 
 function StoryPostScreen(props) {
   // These are here so you know what to include in your post request
   const [address, setAddress] = useState('');
-  const [anonradius, setAnonRadius] = useState(1)
+  const [anonradius, setAnonRadius] = useState(1);
   const [category, setCategory] = useState(1);
   const [country, setCountry] = useState('');
   const [description, setDescription] = useState('');
@@ -32,24 +39,22 @@ function StoryPostScreen(props) {
 
   const [gotLocation, setGotLocation] = useState(false);
 
-
-
   useEffect(() => {
     getLocation();
   }, []);
 
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
-    if( status !== 'granted' ) {
+    if (status !== 'granted') {
       //handle error here
     }
     const loc = await Location.getCurrentPositionAsync({});
     setLocation({
       latitude: loc.coords.latitude,
-      longitude: loc.coords.longitude
+      longitude: loc.coords.longitude,
     });
     setGotLocation(true);
-    if(gotLocation) {
+    if (gotLocation) {
       console.log(location);
     }
   };
@@ -57,8 +62,8 @@ function StoryPostScreen(props) {
   const submitNewStory = async () => {
     const latSplit = location.latitude.toString().split('.');
     const lonSplit = location.longitude.toString().split('.');
-    const latitude = latSplit[0] + '.' + latSplit[1].substring(0,6);
-    const longitude = lonSplit[0] + '.' + lonSplit[1].substring(0,6);
+    const latitude = latSplit[0] + '.' + latSplit[1].substring(0, 6);
+    const longitude = lonSplit[0] + '.' + lonSplit[1].substring(0, 6);
 
     const pin = {
       address: address,
@@ -78,111 +83,114 @@ function StoryPostScreen(props) {
       postDate: new Date(),
       region: region,
       startDate: new Date(),
-      title: title
-    }
+      title: title,
+    };
     console.log(pin);
 
     const config = {
       headers: {
-        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+        'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
       },
     };
 
-    axios.post('http://www.globaltraqsdev.com/api/pins/', pin, config)
-    .then((res) => {
-      console.log(res.data);
-    }).catch((err) => {
-      console.log(err);
-    });
-
-    try{
-      let response = await fetch('http://www.globaltraqsdev.com/api/pins', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pin)
+    axios
+      .post('http://www.globaltraqsdev.com/api/pins/', pin, config)
+      .then((res) => {
+        console.log(res.data);
+        props.loadStories();
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      let json = await response.json();
-      console.log(json);
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
-
+  };
 
   return (
     <TouchableWithoutFeedback>
-    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
         <Text>Address</Text>
         <TextInput
-          name="address"
+          name='address'
           style={styles.input}
-          onChangeText={val => {setAddress(val)}}
+          onChangeText={(val) => {
+            setAddress(val);
+          }}
         />
         <Text>Locality</Text>
         <TextInput
-          name="locality"
+          name='locality'
           style={styles.input}
-          onChangeText={val => {setLocality(val)}}
+          onChangeText={(val) => {
+            setLocality(val);
+          }}
         />
         <Text>Region</Text>
         <TextInput
-          name="region"
+          name='region'
           style={styles.input}
-          onChangeText={val => {setRegion(val)}}
+          onChangeText={(val) => {
+            setRegion(val);
+          }}
         />
         <Text>Country</Text>
         <TextInput
-          name="country"
+          name='country'
           style={styles.input}
-          onChangeText={val => {setCountry(val)}}
+          onChangeText={(val) => {
+            setCountry(val);
+          }}
         />
         <Text>Postal Code</Text>
         <TextInput
-          name="postcode"
+          name='postcode'
           style={styles.input}
-          onChangeText={val => {setPostCode(val)}}
+          onChangeText={(val) => {
+            setPostCode(val);
+          }}
         />
         <Text>Title</Text>
-        {title === '' ?
+        {title === '' ? (
           <Text style={styles.requiredText}>* Please enter a story title </Text>
-          :
-          null
-        }
+        ) : null}
         <TextInput
-          name="title"
+          name='title'
           style={styles.input}
-          onChangeText={val => {setTitle(val)}}
+          onChangeText={(val) => {
+            setTitle(val);
+          }}
         />
         <Text>Category</Text>
         <TextInput
-          name=""
+          name=''
           style={styles.input}
-          onChangeText={val => {setCategory(val)}}
+          onChangeText={(val) => {
+            setCategory(val);
+          }}
         />
         <Text>Description</Text>
-        {description === '' ?
-          <Text style={styles.requiredText}>* Please enter a story description </Text>
-          :
-          null
-        }
+        {description === '' ? (
+          <Text style={styles.requiredText}>
+            * Please enter a story description{' '}
+          </Text>
+        ) : null}
         <TextInput
           multiline
-          name=""
+          name=''
           style={styles.input}
-          onChangeText={val => {setDescription(val)}}
+          onChangeText={(val) => {
+            setDescription(val);
+          }}
         />
 
         <Button
           disabled={gotLocation ? false : true}
-          title="Submit"
-          onPress={(e) => {submitNewStory();}}/>
-
-    </SafeAreaView>
+          title='Submit'
+          onPress={(e) => {
+            submitNewStory();
+          }}
+        />
+      </SafeAreaView>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -190,11 +198,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.white,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '95%'
+    height: '100%',
   },
   navStyle: {
     flexDirection: 'row',
@@ -202,11 +210,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'dodgerblue',
     width: Dimensions.get('window').width,
-    height: '5%'
+    height: '5%',
   },
   navButton: {
     flexGrow: 1,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   input: {
     borderWidth: 1,
@@ -214,11 +222,21 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 10,
     fontSize: 10,
-    width: '80%'
+    width: '80%',
   },
   requiredText: {
-    color: 'red'
+    color: 'red',
+  },
+  userBtn: {
+    marginTop: 15,
+    fontSize: 18
   }
-})
+});
 
-export default StoryPostScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadStories: () => dispatch(loadStories()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(StoryPostScreen);
