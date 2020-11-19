@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const loadStories = () => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
+    dispatch({ type: 'LOAD_STORIES_START' });
     const config = {
       headers: {
         "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
