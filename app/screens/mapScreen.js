@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '100%'
+    height: '125%'
   },
   navStyle: {
     flexDirection: 'row',
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps =  (state) => {
-  console.log(state);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,

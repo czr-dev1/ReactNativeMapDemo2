@@ -3,13 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import MapScreen from './app/screens/mapScreen';
 import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
 import StoryPostScreen from './app/screens/storyPostScreen';
+import ProfileScreen from './app/screens/profileScreen';
 
 //redux
 import { Provider } from 'react-redux';
@@ -39,8 +42,33 @@ function MapStackScreen() {
   );
 }
 
-const Tab = createBottomTabNavigator();
+const ProfileStack = createStackNavigator();
+function ProfileStackScreen({navigation}) {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen name="Profile" options={{
+        title: 'nickname',
+        headerRight: () => (
+            <MaterialIcons name="menu" size={24} color="black" onPress={() => navigation.openDrawer()}/>
+        )
+        }} component={ ProfileScreen } />
+      <ProfileStack.Screen name="Story" component={ StoryScreen } />
+    </ProfileStack.Navigator>
+  )
+}
 
+const ProfileDrawer = createDrawerNavigator();
+function ProfileDrawerScreen() {
+  return (
+    <ProfileDrawer.Navigator
+      drawerPosition="right"
+      drawerType="slide">
+      <ProfileDrawer.Screen name="Home" component={ ProfileStackScreen } />
+    </ProfileDrawer.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <SafeAreaProvider>
@@ -52,8 +80,8 @@ export default function App() {
                 let iconName;
                 if (route.name === 'Map') {
                   iconName = 'map';
-                } else if (route.name === 'Stories') {
-                  iconName = 'list';
+                } else if (route.name === 'Profile') {
+                  iconName = 'user';
                 } else if (route.name === 'Post') {
                   iconName = 'plus-square';
                 }
@@ -62,7 +90,7 @@ export default function App() {
             })}>
             <Tab.Screen name="Map" options={{header: () => null}} component={ MapStackScreen } />
             <Tab.Screen name="Post" options={{header: () => null}} component={ StoryPostScreen } />
-            <Tab.Screen name="Stories" component={StoriesStackScreen} />
+            <Tab.Screen name="Profile" options={{header: () => null}}component={ ProfileDrawerScreen } />
           </Tab.Navigator>
         </NavigationContainer>
     </Provider>

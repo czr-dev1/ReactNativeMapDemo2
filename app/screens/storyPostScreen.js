@@ -6,7 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
-
+import { connect } from 'react-redux';
+import { loadStories } from '../redux/actions/storyActions';
 
 import colors from '../config/colors';
 
@@ -91,96 +92,82 @@ function StoryPostScreen(props) {
     axios.post('http://www.globaltraqsdev.com/api/pins/', pin, config)
     .then((res) => {
       console.log(res.data);
+      props.loadStories();
     }).catch((err) => {
       console.log(err);
     });
-
-    try{
-      let response = await fetch('http://www.globaltraqsdev.com/api/pins', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pin)
-      });
-      let json = await response.json();
-      console.log(json);
-    } catch (error) {
-      console.log(error);
-    }
-
   }
 
 
   return (
     <TouchableWithoutFeedback>
-    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
-        <Text>Address</Text>
-        <TextInput
-          name="address"
-          style={styles.input}
-          onChangeText={val => {setAddress(val)}}
-        />
-        <Text>Locality</Text>
-        <TextInput
-          name="locality"
-          style={styles.input}
-          onChangeText={val => {setLocality(val)}}
-        />
-        <Text>Region</Text>
-        <TextInput
-          name="region"
-          style={styles.input}
-          onChangeText={val => {setRegion(val)}}
-        />
-        <Text>Country</Text>
-        <TextInput
-          name="country"
-          style={styles.input}
-          onChangeText={val => {setCountry(val)}}
-        />
-        <Text>Postal Code</Text>
-        <TextInput
-          name="postcode"
-          style={styles.input}
-          onChangeText={val => {setPostCode(val)}}
-        />
-        <Text>Title</Text>
-        {title === '' ?
-          <Text style={styles.requiredText}>* Please enter a story title </Text>
-          :
-          null
-        }
-        <TextInput
-          name="title"
-          style={styles.input}
-          onChangeText={val => {setTitle(val)}}
-        />
-        <Text>Category</Text>
-        <TextInput
-          name=""
-          style={styles.input}
-          onChangeText={val => {setCategory(val)}}
-        />
-        <Text>Description</Text>
-        {description === '' ?
-          <Text style={styles.requiredText}>* Please enter a story description </Text>
-          :
-          null
-        }
-        <TextInput
-          multiline
-          name=""
-          style={styles.input}
-          onChangeText={val => {setDescription(val)}}
-        />
+      <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
+          <Text>Address</Text>
+          <TextInput
+            name="address"
+            style={styles.input}
+            onChangeText={val => {setAddress(val)}}
+          />
+          <Text>Locality</Text>
+          <TextInput
+            name="locality"
+            style={styles.input}
+            onChangeText={val => {setLocality(val)}}
+          />
+          <Text>Region</Text>
+          <TextInput
+            name="region"
+            style={styles.input}
+            onChangeText={val => {setRegion(val)}}
+          />
+          <Text>Country</Text>
+          <TextInput
+            name="country"
+            style={styles.input}
+            onChangeText={val => {setCountry(val)}}
+          />
+          <Text>Postal Code</Text>
+          <TextInput
+            name="postcode"
+            style={styles.input}
+            onChangeText={val => {setPostCode(val)}}
+          />
+          <Text>Title</Text>
+          {title === '' ?
+            <Text style={styles.requiredText}>* Please enter a story title </Text>
+            :
+            null
+          }
+          <TextInput
+            name="title"
+            style={styles.input}
+            onChangeText={val => {setTitle(val)}}
+          />
+          <Text>Category</Text>
+          <TextInput
+            name=""
+            style={styles.input}
+            onChangeText={val => {setCategory(val)}}
+          />
+          <Text>Description</Text>
+          {description === '' ?
+            <Text style={styles.requiredText}>* Please enter a story description </Text>
+            :
+            null
+          }
+          <TextInput
+            multiline
+            name=""
+            style={styles.input}
+            onChangeText={val => {setDescription(val)}}
+          />
 
-        <Button
-          disabled={gotLocation ? false : true}
-          title="Submit"
-          onPress={(e) => {submitNewStory();}}/>
+          <Button
+            disabled={gotLocation ? false : true}
+            title="Submit"
+            onPress={(e) => {submitNewStory();}}/>
 
-    </SafeAreaView>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   )
 }
@@ -194,7 +181,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '95%'
+    height: '100%'
   },
   navStyle: {
     flexDirection: 'row',
@@ -221,4 +208,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default StoryPostScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadStories: () => dispatch(loadStories())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(StoryPostScreen);
