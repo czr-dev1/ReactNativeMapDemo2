@@ -1,5 +1,6 @@
 {
   "expo": {
+    "privacy": "unlisted",
     "name": "MapDemo",
     "slug": "MapDemo",
     "version": "1.0.0",

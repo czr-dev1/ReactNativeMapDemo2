@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MapScreen from './app/screens/mapScreen';
 import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
+
 import StoryPostScreen from './app/screens/storyPostScreen';
 import ProfileScreen from './app/screens/profileScreen';
 
@@ -41,6 +42,9 @@ function MapStackScreen() {
     </MapStack.Navigator>
   );
 }
+
+import SearchScreen from './app/screens/searchScreen'
+
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({navigation}) {
