@@ -16,6 +16,7 @@ import StoryPostScreen from './app/screens/storyPostScreen';
 import ProfileScreen from './app/screens/profileScreen';
 import BookmarkedPostsScreen from './app/screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from './app/screens/bookmarkedUsersScreen';
+import BadgeScreen from './app/screens/badgeScreen';
 
 //redux
 import { Provider } from 'react-redux';
@@ -78,6 +79,7 @@ function ProfileDrawerScreen() {
       drawerPosition="right"
       drawerType="slide">
       <ProfileDrawer.Screen name="Home" component={ ProfileStackScreen } />
+      <ProfileDrawer.Screen name="Badges" component={ BadgeScreen } />
     </ProfileDrawer.Navigator>
   );
 }

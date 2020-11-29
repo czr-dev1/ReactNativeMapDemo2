@@ -7,6 +7,7 @@ import { loadStories } from '../redux/actions/storyActions';
 //Icons
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 //profile picture
@@ -32,6 +33,10 @@ function ProfileScreen(props) {
       }
   }
 
+  const onBadgePress = () => {
+    console.log("Badge Press");
+  }
+
   useEffect(() => {
 
   }, []);
@@ -42,6 +47,9 @@ function ProfileScreen(props) {
         <View style={styles.profileImageContainer}>
           <Image style={styles.profileImage} source={PROFILE_PIC}/>
           <FontAwesome5 style={{marginLeft: '-8%'}} name="pencil-alt" size={24} color="black" />
+          <TouchableWithoutFeedback onPress={() => onBadgePress()}>
+            <Feather name="target" size={48} color="black" />
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.bioContainter}>
           <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
