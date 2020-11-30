@@ -12,7 +12,9 @@ const Item = ({ item, style, props }) => {
   //if not imported and used it will just crash
   //keep that in mind if props.navigation.navigate is not working
   return (
-    <TouchableWithoutFeedback key={item.id}>
+    <TouchableWithoutFeedback key={item.id} onPress={() => {
+      navigation.navigate('userprofile', {});
+    }}>
       <Card>
         <Card.Title>{item.title}</Card.Title>
       </Card>

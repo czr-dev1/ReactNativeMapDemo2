@@ -17,6 +17,7 @@ import ProfileScreen from './app/screens/profileScreen';
 import BookmarkedPostsScreen from './app/screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from './app/screens/bookmarkedUsersScreen';
 import BadgeScreen from './app/screens/badgeScreen';
+import FollowingProfileScreen from './app/screens/followingProfileScreen';
 
 //redux
 import { Provider } from 'react-redux';
@@ -46,12 +47,23 @@ function MapStackScreen() {
   );
 }
 
+const BookmarkedUsersStack = createStackNavigator();
+function BookmarkedUsersStackScreen() {
+  return (
+    <BookmarkedUsersStack.Navigator>
+      <BookmarkedUsersStack.Screen name="userlist" options={{header: ()=> null}} component={ BookmarkedUsersScreen } />
+      <BookmarkedUsersStack.Screen name="userprofile" options={{header: ()=> null}} component={ FollowingProfileScreen } />
+      <BookmarkedUsersStack.Screen name ="Story" options={{header: ()=> null}} component={ StoryScreen } />
+    </BookmarkedUsersStack.Navigator>
+  );
+}
+
 const BookmarkedTopTab = createMaterialTopTabNavigator();
 function BookmarkedTopTabScreen() {
   return (
     <BookmarkedTopTab.Navigator style={styles.container}>
       <Tab.Screen name="stories" component={ BookmarkedPostsScreen } />
-      <Tab.Screen name="users" component={ BookmarkedUsersScreen } />
+      <Tab.Screen name="users" component={ BookmarkedUsersStackScreen } />
     </BookmarkedTopTab.Navigator>
   );
 }

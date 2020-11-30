@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 //Icons
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -47,10 +48,16 @@ function BookmarkedUsersScreen(props) {
       <View>
         <ScrollView>
           {data.map((item, i) => {
+            const navigation = useNavigation();
+            console.log(item.username);
             return (
-              <Card key={i}>
-                <Card.Title>{item.username}</Card.Title>
-              </Card>
+              <TouchableWithoutFeedback onPress={() => {
+                navigation.navigate('userprofile', {user: item.username});
+              }}>
+                <Card key={i}>
+                  <Card.Title>{item.username}</Card.Title>
+                </Card>
+              </TouchableWithoutFeedback>
             )
           })}
         </ScrollView>

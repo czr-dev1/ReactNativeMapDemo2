@@ -6,19 +6,19 @@ import { connect } from 'react-redux';
 
 //icons
 import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
 function BadgeList(props) {
   const badges = [
-    "airline-seat-flat",
-    "adjust",
-    "airplanemode-active",
-    "airport-shuttle",
-    "all-inclusive",
-    "beach-access",
-    "airplay",
+    "radiobox-blank",
+    "radiobox-blank",
+    "radiobox-blank",
+    "radiobox-blank",
+    "radiobox-blank",
+    "radiobox-blank",
+    "radiobox-blank",
   ]
 
   const createAlert = () => {
@@ -46,7 +46,7 @@ function BadgeList(props) {
       renderItem={({ item }) => {
         return (
           <View style={styles.item}>
-            <MaterialIcons name={item} size={48} color="black" />
+            <MaterialCommunityIcons name={item} size={24} color="black" />
           </View>
         );
       }}
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
+    backgroundColor: 'white',
     width: Dimensions.get('window').width / 3,
     height: Dimensions.get('window').width / 3,
     borderBottomWidth: 1,
