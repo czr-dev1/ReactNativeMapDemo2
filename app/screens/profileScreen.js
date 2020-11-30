@@ -47,7 +47,7 @@ function ProfileScreen(props) {
         <View style={styles.profileImageContainer}>
           <Image style={styles.profileImage} source={PROFILE_PIC}/>
           <FontAwesome5 style={{marginLeft: '-8%'}} name="pencil-alt" size={24} color="black" />
-          <TouchableWithoutFeedback onPress={() => onBadgePress()}>
+          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badges')}>
             <Feather name="target" size={48} color="black" />
           </TouchableWithoutFeedback>
         </View>

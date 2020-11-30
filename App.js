@@ -68,6 +68,7 @@ function ProfileStackScreen({navigation}) {
         )
         }} component={ ProfileScreen } />
       <ProfileStack.Screen name="Story" component={ StoryScreen } />
+      <ProfileStack.Screen name="Badges" options={{header: ()=> null}} component={ BadgeScreen } />
     </ProfileStack.Navigator>
   )
 }
@@ -79,7 +80,6 @@ function ProfileDrawerScreen() {
       drawerPosition="right"
       drawerType="slide">
       <ProfileDrawer.Screen name="Home" component={ ProfileStackScreen } />
-      <ProfileDrawer.Screen name="Badges" component={ BadgeScreen } />
     </ProfileDrawer.Navigator>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button, FlatList } from 'react-native';
+  Dimensions, View, Image, StatusBar, Button, FlatList, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
@@ -20,6 +20,22 @@ function BadgeList(props) {
     "beach-access",
     "airplay",
   ]
+
+  const createAlert = () => {
+    Alert.alert(
+     "Alert Title",
+     "My Alert Msg",
+     [
+       {
+         text: "Cancel",
+         onPress: () => console.log("Cancel Pressed"),
+         style: "cancel"
+       },
+       { text: "OK", onPress: () => console.log("OK Pressed") }
+     ],
+     { cancelable: false }
+   )
+  }
 
   return (
     <FlatList
