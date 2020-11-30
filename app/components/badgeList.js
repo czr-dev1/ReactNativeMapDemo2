@@ -44,7 +44,6 @@ function BadgeList(props) {
       data={badges}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => {
-        console.log(item);
         return (
           <View style={styles.item}>
             <MaterialIcons name={item} size={48} color="black" />
