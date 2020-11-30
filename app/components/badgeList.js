@@ -30,8 +30,8 @@ function BadgeList(props) {
       renderItem={({ item }) => {
         console.log(item);
         return (
-          <View>
-            <MaterialIcons style={styles.item} name={item} size={48} color="black" />
+          <View style={styles.item}>
+            <MaterialIcons name={item} size={48} color="black" />
           </View>
         );
       }}
@@ -40,7 +40,7 @@ function BadgeList(props) {
 }
 
 const styles = StyleSheet.create({
-  conatiner: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -55,9 +55,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    paddingLeft: Dimensions.get('window').width / 9,
-    paddingRight: Dimensions.get('window').width / 9,
-    paddingBottom: Dimensions.get('window').width / 4,
+    width: Dimensions.get('window').width / 3,
+    height: Dimensions.get('window').width / 3,
     borderBottomWidth: 1,
     borderRightWidth: 1,
   },
@@ -68,9 +67,6 @@ const styles = StyleSheet.create({
   },
   grid: {
     flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 })
 

@@ -9,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 import colors from '../config/colors';
+import BadgeList from '../components/badgeList';
 
 function BadgeScreen(props) {
   useEffect(() => {
@@ -30,28 +31,13 @@ function BadgeScreen(props) {
       <View style={styles.topIcon}>
         <Feather name="target" size={48} color="black" />
       </View>
-      <View style={styles.flatWrapper}>
-        <FlatList
-          contentContainterStyle={styles.grid}
-          numColumns={3}
-          data={badges}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => {
-            console.log(item);
-            return (
-              <View>
-                <MaterialIcons style={styles.item} name={item} size={48} color="black" />
-              </View>
-            );
-          }}
-        />
-      </View>
+      <BadgeList />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  conatiner: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -62,27 +48,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 30
   },
-  item: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    paddingLeft: Dimensions.get('window').width / 9,
-    paddingRight: Dimensions.get('window').width / 9,
-    paddingBottom: Dimensions.get('window').width / 4,
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
-  },
-  flatWrapper: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    width: Dimensions.get('window').width,
-  },
-  grid: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
 })
 
 export default BadgeScreen;
