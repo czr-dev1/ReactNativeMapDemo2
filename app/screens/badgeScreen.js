@@ -21,12 +21,13 @@ function BadgeScreen(props) {
     "airplanemode-active",
     "airport-shuttle",
     "all-inclusive",
-    "beach-access"
+    "beach-access",
+    "airplay",
   ]
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.item}>
+      <View style={styles.topIcon}>
         <Feather name="target" size={48} color="black" />
       </View>
       <View style={styles.flatWrapper}>
@@ -56,24 +57,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: Dimensions.get('window').width,
   },
-  item: {
+  topIcon: {
     alignSelf: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    padding: 30,
+    padding: 30
+  },
+  item: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingLeft: Dimensions.get('window').width / 9,
+    paddingRight: Dimensions.get('window').width / 9,
+    paddingBottom: Dimensions.get('window').width / 4,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
   },
   flatWrapper: {
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '100%',
+    width: Dimensions.get('window').width,
   },
   grid: {
+    flex: 1,
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    borderWidth: 2
+    justifyContent: 'center'
   }
 })
 
