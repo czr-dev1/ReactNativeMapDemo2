@@ -48,13 +48,11 @@ function BookmarkedUsersScreen(props) {
       <View>
         <ScrollView>
           {data.map((item, i) => {
-            const navigation = useNavigation();
-            console.log(item.username);
             return (
-              <TouchableWithoutFeedback onPress={() => {
-                navigation.navigate('userprofile', {user: item.username});
+              <TouchableWithoutFeedback key={i} onPress={() => {
+                props.navigation.navigate('userprofile', {user: item.username});
               }}>
-                <Card key={i}>
+                <Card>
                   <Card.Title>{item.username}</Card.Title>
                 </Card>
               </TouchableWithoutFeedback>
