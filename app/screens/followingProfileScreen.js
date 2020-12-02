@@ -22,7 +22,6 @@ import BadgeList from '../components/badgeList';
 
 function FollowingProfileScreen(props) {
   const { user } = props.route.params;
-  console.log(user);
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
