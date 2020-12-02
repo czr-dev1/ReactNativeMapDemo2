@@ -12,12 +12,15 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import MapScreen from './app/screens/mapScreen';
 import StoryListScreen from './app/screens/StoryListScreen';
 import StoryScreen from './app/screens/storyScreen';
+
 import StoryPostScreen from './app/screens/storyPostScreen';
 import ProfileScreen from './app/screens/profileScreen';
 import BookmarkedPostsScreen from './app/screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from './app/screens/bookmarkedUsersScreen';
 import BadgeScreen from './app/screens/badgeScreen';
 import FollowingProfileScreen from './app/screens/followingProfileScreen';
+
+import SearchScreen from './app/screens/searchScreen' //Might remove later
 
 //redux
 import { Provider } from 'react-redux';
