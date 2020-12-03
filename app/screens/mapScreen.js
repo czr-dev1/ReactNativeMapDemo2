@@ -10,7 +10,8 @@ import { StyleSheet,
   PixelRatio,
   Alert,
   FlatList,
-  ScrollView
+  ScrollView,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
@@ -35,6 +36,7 @@ function MapScreen(props) {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
@@ -168,17 +170,23 @@ function MapScreen(props) {
   return (
     <SafeAreaView style={styles.container, {flex: 1}}>
     <View style={styles.containerStyle}>
-        <SearchBar
-          round
-          searchIcon={{size: 24}}
-          onChangeText={(text) => searchFilterFunction(text)}
-          onClear={(text) => searchFilterFunction('')}
-          placeholder="Type Here..."
-          value={search}
-        />
+        <TouchableWithoutFeedback onPress={ () => {
+          console.log("hello press");
+        }}>
+          <SearchBar
+            round
+            searchIcon={{size: 24}}
+            onChangeText={(text) => searchFilterFunction(text)}
+            onClear={(text) => searchFilterFunction('')}
+            placeholder="Type Here..."
+            value={search}
+          />
+        </TouchableWithoutFeedback>
+        
 
-
-        <FlatList
+        {showSearchResults ? null : 
+          (
+            <FlatList
           data={filteredDataSource}
           //data={filteredDataSource.slice(0,5)}
           keyExtractor={(item, index) => index.toString()}
@@ -187,6 +195,9 @@ function MapScreen(props) {
           //windowSize={5}
           renderItem={ItemView}
         />
+          )
+        }
+        
 
       </View>
 
