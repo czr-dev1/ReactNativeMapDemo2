@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const loadStories = () => {
-  return (dispatch, getState) => {
+  return (dispatch, getState) => { //Might have to remove getState
     dispatch({ type: 'LOAD_STORIES_START'});
     const config = {
       headers: {

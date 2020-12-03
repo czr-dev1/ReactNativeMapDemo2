@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { loadStories } from '../redux/actions/storyActions';
+
 //Icons
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 import colors from '../config/colors';
+
 //profile picture
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
 //story component
-import StoryListScreen from './StoryListScreen';
 import StoryList from '../components/storyList';
 
 
@@ -25,36 +33,32 @@ function ProfileScreen(props) {
       case 1:
         return <StoryList stories={props.stories.slice(1, 3)} />
       case 2:
-        return <StoryList stories={props.stories.slice(3, 6)} />
+        return <StoryList stories={props.stories.slice(3, 5)} />
       case 3:
         return <StoryList stories={props.stories.slice(0, 10)} />
       default:
-        return <StoryList stories={props.stories.slice(10, 30)} />
+        return <StoryList stories={props.stories.slice(10, 20)} />
       }
   }
 
-  const onBadgePress = () => {
-    console.log("Badge Press");
-  }
-
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   return(
     <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
       <View style={styles.profileBar}>
+        <View style={styles.nicknameContainer}>
+          <Text style={styles.nicknameText}>{props.user}</Text>
+        </View>
         <View style={styles.profileImageContainer}>
           <Image style={styles.profileImage} source={PROFILE_PIC}/>
-          <FontAwesome5 style={{marginLeft: '-8%'}} name="pencil-alt" size={24} color="black" />
+          <FontAwesome5 style={{marginLeft: '-7%'}} name="pencil-alt" size={24} color="black" />
           <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badges')}>
             <Feather name="target" size={48} color="black" />
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.bioContainter}>
           <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
-          <Text>labore minim nisi esse quem anim ipsum fore malis sunt nisi labore esse tempor
-          sint dolore quis fugiat enim amet</Text>
+          <Text>{props.bio}</Text>
         </View>
       </View>
       <View style={styles.profileStoryButtons}>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     paddingLeft: '10%',
     paddingRight: '10%',
-    height: '20%'
+    height: '25%'
   },
   nicknameContainer: {
     alignItems: 'center',
@@ -121,8 +125,8 @@ const styles = StyleSheet.create({
     width: '30%'
   },
   bioContainter: {
-    paddingTop: '5%',
-    paddingBottom: '5%'
+    paddingTop: '3%',
+    paddingBottom: '10%'
   },
   profileStoryButtons: {
     width: Dimensions.get('window').width,
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#eae6e5',
     width: Dimensions.get('window').width,
-    height: '80%'
+    height: '70%'
   },
   navButton: {
     flexGrow: 1,
@@ -171,7 +175,10 @@ const mapStateToProps = (state) => {
   return{
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+    user: state.authReducer.username,
+    bio: state.authReducer.bio,
+
   }
 }
 

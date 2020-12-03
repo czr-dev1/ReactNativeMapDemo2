@@ -15,7 +15,6 @@ import colors from '../config/colors';
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
 //story component
-import StoryListScreen from './StoryListScreen';
 import StoryList from '../components/storyList';
 import BadgeList from '../components/badgeList';
 
