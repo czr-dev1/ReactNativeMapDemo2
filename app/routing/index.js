@@ -112,6 +112,22 @@ function AuthTabScreen() {
   );
 }
 
+const ProfileStack = createStackNavigator();
+function ProfileStackScreen({navigation}) {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen name="Profile" options={{
+        title: 'nickname',
+        headerRight: () => (
+            <MaterialIcons name="menu" size={24} color="black" onPress={() => navigation.openDrawer()}/>
+        )
+        }} component={ ProfileScreen } />
+      <ProfileStack.Screen name="Story" component={ StoryScreen } />
+      <ProfileStack.Screen name="Badges" options={{header: ()=> null}} component={ BadgeScreen } />
+    </ProfileStack.Navigator>
+  )
+}
+
 const ProfileDrawer = createDrawerNavigator();
 function ProfileDrawerScreen() {
   return (
