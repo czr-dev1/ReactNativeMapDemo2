@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   ActivityIndicator,
   Dimensions,
   StyleSheet,
   TouchableWithoutFeedback,
-  FlatList
+  FlatList,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
@@ -22,14 +23,18 @@ const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
 function DarkMapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: 8.5,
+    longitudeDelta: 8.5
+  });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
@@ -82,7 +87,11 @@ function DarkMapScreen(props) {
   };
 
   const searchFilterFunction = (text) => {
-
+    if (text.length > 0) {
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
     if (text) {
       const newData = masterDataSource.filter(function (item) {
         const itemData = item.title
@@ -159,36 +168,39 @@ function DarkMapScreen(props) {
     setGotLocation(true);
 
   };
-
+  //<SafeAreaView style={styles.container} forceInset={{top: 'always'}}>
   return (
-    <SafeAreaView style={styles.container} forceInset={{top: 'always'}}>
-        <TouchableWithoutFeedback onPress={ () => {
-          console.log("hello press");
-        }}>
+    <SafeAreaView style={styles.container, {flex: 1}}>
+
+
+    <View style={styles.containerStyle}>
+        <TouchableWithoutFeedback>
           <SearchBar
-            round
-            searchIcon={{size: 24}}
-            onChangeText={(text) => searchFilterFunction(text)}
-            onClear={(text) => searchFilterFunction('')}
-            placeholder="Type Here..."
-            value={search}
+          round
+          searchIcon={{size: 24}}
+          onChangeText={(text) => {
+              searchFilterFunction(text);
+            }
+          }
+          onClear={(text) => searchFilterFunction('')}
+          placeholder="Type Here..."
+          value={search}
           />
         </TouchableWithoutFeedback>
-        
 
-        {showSearchResults ? null : 
-          (
-            <FlatList
-          data={filteredDataSource}
-          //data={filteredDataSource.slice(0,5)}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          maxToRenderPerBatch={15}
-          //windowSize={5}
-          renderItem={ItemView}
-        />
-          )
-        }
+        {showSearchResults ? (
+          <FlatList
+            data={filteredDataSource}
+            //data={filteredDataSource.slice(0,5)}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            maxToRenderPerBatch={15}
+            //windowSize={5}
+            renderItem={ItemView}
+          />
+        ) :  null}
+      </View>
+
       { ( props.isLoading ) ?
         <ActivityIndicator style={styles.mapStyle}/> : (
           <MapView style={styles.mapStyle}
@@ -244,6 +256,10 @@ function DarkMapScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  containerStyle: {
+    backgroundColor: 'white',
+    alignItems: 'stretch',
+  },
   container: {
     flex: 1,
     backgroundColor: colors.white,
