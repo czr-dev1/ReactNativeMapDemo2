@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -55,7 +56,7 @@ function BookmarkedUsersStackScreen() {
 const BookmarkedTopTab = createMaterialTopTabNavigator();
 function BookmarkedTopTabScreen() {
   return (
-    <BookmarkedTopTab.Navigator>
+    <BookmarkedTopTab.Navigator style={styles.container}>
       <BookmarkedTopTab.Screen name="stories" component={ BookmarkedPostsScreen } />
       <BookmarkedTopTab.Screen name="users" component={ BookmarkedUsersStackScreen } />
     </BookmarkedTopTab.Navigator>
@@ -179,6 +180,11 @@ function StackScreen() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+  }
+})
 
 
 export default StackScreen;
