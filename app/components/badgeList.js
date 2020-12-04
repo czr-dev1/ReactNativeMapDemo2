@@ -12,13 +12,13 @@ import colors from '../config/colors';
 
 function BadgeList(props) {
   const badges = [
-    "radiobox-blank",
-    "radiobox-blank",
-    "radiobox-blank",
-    "radiobox-blank",
-    "radiobox-blank",
-    "radiobox-blank",
-    "radiobox-blank",
+    "air-horn",
+    "air-purifier",
+    "airballoon",
+    "album",
+    "alien",
+    "all-inclusive",
+    "anchor",
   ]
 
   const createAlert = () => {
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
+    backgroundColor: '#eae6e5',
   },
   grid: {
     flex: 1,
