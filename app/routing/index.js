@@ -118,7 +118,7 @@ function AppTabScreen() {
         }
       })}>
       <AppTab.Screen name='Map' component={ LoggedInStackScreen } />
-      <AppTab.Screen name='Stories' component={ StoriesStackScreen } />
+      <AppTab.Screen name='Stories' component={ BookmarkStackScreen } />
       <AppTab.Screen name='Post' component={ StoryPostScreen } />
       <AppTab.Screen name='Profile' component={ ProfileScreen } />
     </AppTab.Navigator>
@@ -126,16 +126,16 @@ function AppTabScreen() {
 }
 
 const Stack = createStackNavigator();
-function StackScreen() {
+function StackScreen({ hasAuth }) {
   return (
     <NavigationContainer>
      <Stack.Navigator initialRouteName='Auth' screenOptions={{ headerShown: false }}>
-				{!hasAuth ? (
-					<Stack.Screen name='Auth' component={NeedAuthTabScreen} />
-				) : (
-					<Stack.Screen name='App' component={AppTabScreen} />
-				)}
-			</Stack.Navigator>
+	  {!hasAuth ? (
+	      	<Stack.Screen name='Auth' component={AuthTabScreen} />
+  	  ) : (
+	  	<Stack.Screen name='App' component={AppTabScreen} />
+  	  )}
+	</Stack.Navigator>
     </NavigationContainer>
   );
 }
