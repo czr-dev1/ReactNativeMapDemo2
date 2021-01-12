@@ -1,11 +1,15 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { connect } from 'react-redux';
 
 import DarkMapScreen from '../screens/darkMapScreen';
 import LightMapScreen from '../screens/lightMapScreen';
+import BookmarkPostScreen from '../screens/bookmarkPostScreen';
+import BookmarkUserScreen from '../screens/bookmarkUserScreen';
 import StoryListScreen from '../screens/storyListScreen';
 import StoryScreen from '../screens/storyScreen';
 import StoryPostScreen from '../screens/storyPostScreen';
@@ -33,6 +37,16 @@ function StoriesStackScreen() {
   );
 }
 
+const BookmarkStack = createMaterialTopTabNavigator();
+function BookmarkStackScreen() {
+  return (
+    <BookmarkStack.Navigator style={styles.container}>
+      <BookmarkStack.Screen name='Stories' component={ BookmarkPostScreen} />
+      <BookmarkStack.Screen name='Users' component={ BookmarkUserScreen } />
+    </BookmarkStack.Navigator>
+  );
+}
+
 const LoginStack = createStackNavigator();
 function LoginStackScreen() {
   return (
@@ -48,13 +62,13 @@ function LoggedInStackScreen() {
   return (
     <LoggedInStack.Navigator screenOptions={{headerShown: false}}>
       <LoggedInStack.Screen name='Map' component={ LightMapScreen } />
-      <LoggedInStack.Screen name='StoryList' component={ StoryListScreen } />
       <LoggedInStack.Screen name='Story' component={ StoryScreen } />
       <LoggedInStack.Screen name='Profile' component={ ProfileScreen } />
     </LoggedInStack.Navigator>
   );
 }
 
+// Will display if user is anonymous
 const AuthTab = createBottomTabNavigator();
 function AuthTabScreen() {
   return (
@@ -82,6 +96,7 @@ function AuthTabScreen() {
   );
 }
 
+// Will display is user has successfully logged in
 const AppTab = createBottomTabNavigator();
 function AppTabScreen() {
   return (
@@ -113,13 +128,28 @@ const Stack = createStackNavigator();
 function StackScreen() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Auth' screenOptions={{headerShown: false}}>
-        <Stack.Screen name='Auth' component={ AuthTabScreen } />
-        <Stack.Screen name='App' component={ AppTabScreen } />
-        <Stack.Screen name='Login' component={ LoginScreen } />
-      </Stack.Navigator>
+     <Stack.Navigator initialRouteName='Auth' screenOptions={{ headerShown: false }}>
+				{!hasAuth ? (
+					<Stack.Screen name='Auth' component={NeedAuthTabScreen} />
+				) : (
+					<Stack.Screen name='App' component={AppTabScreen} />
+				)}
+			</Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default StackScreen;
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    marginTop: 20
+
+  }
+})
+
+const mapStateToProps = (state) => ({
+	hasAuth: state.authReducer.isAuthenticated
+});
+
+export default connect(mapStateToProps)(StackScreen);
+
