@@ -7,7 +7,12 @@ const config = {
 };
 
 export const tokenConfig = (getState) => {
-  const token = getState().auth.token;
+  const token = getState().authReducer.token;
+  const config = {
+    headers: {
+      'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+    },
+  };
 
   if (token) {
     config.headers['Authorization'] = `Token ${token}`;
@@ -17,8 +22,6 @@ export const tokenConfig = (getState) => {
 
 export const login = ({username, password}) => {
   return (dispatch) => {
-    dispatch({ type: 'LOGIN_USER_LOADING' });
-
     const user = {
       username: username,
       password: password
@@ -27,6 +30,7 @@ export const login = ({username, password}) => {
     axios.post('https://www.globaltraqsdev.com/api/auth/login', user, config)
     .then((res) => {
       dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data });
+      dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
     })
     .catch((err) => {
       dispatch({ type: 'LOGIN_USER_FAIL', payload: err.response.data });
@@ -36,7 +40,7 @@ export const login = ({username, password}) => {
 
 export const logout = () => {
   return (dispatch, getState) => {
-    axios.post('https://www.globaltraqsdev.com/auth/logout', null, tokenConfig(getState))
+    axios.post('https://www.globaltraqsdev.com/api/auth/logout', null, tokenConfig(getState))
     .then((res) => {
       dispatch({ type: 'LOGOUT_USER_SUCCESS' });
     })
@@ -44,6 +48,27 @@ export const logout = () => {
       dispatch(returnErrors(err.response.data, err.response.status));
     });
   }
+};
+
+export const register = ({ username, email, password, confirmPassword }) => {
+	return (dispatch) => {
+		const user = {
+			username: username,
+			email: email,
+			password: password,
+			confirmPassword: confirmPassword,
+		};
+
+		axios
+			.post('https://www.globaltraqsdev.com/api/auth/register', user, config)
+			.then((res) => {
+				dispatch({ type: 'REGISTER_USER_SUCCESS', payload: res.data });
+				dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
+			})
+			.catch((err) => {
+				dispatch({ type: 'REGISTER_USER_FAIL', payload: err.res.data });
+			});
+	};
 };
 
 export const returnErrors = (msg, status) => {
