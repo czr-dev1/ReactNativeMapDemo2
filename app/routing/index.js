@@ -3,7 +3,7 @@ import { StyleSheet, StatusBar} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -21,6 +21,8 @@ import BookmarkedPostsScreen from '../screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from '../screens/bookmarkedUsersScreen';
 import BadgeScreen from '../screens/badgeScreen';
 import FollowingProfileScreen from '../screens/followingProfileScreen';
+
+import AnonToggleSwitch from '../components/anonToggleSwitch';
 
 const MapStack = createStackNavigator();
 function MapStackScreen() {
@@ -134,7 +136,15 @@ function ProfileDrawerScreen() {
   return (
     <ProfileDrawer.Navigator
       drawerPosition="right"
-      drawerType="slide">
+      drawerType="slide"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <AnonToggleSwitch {...props} />
+          </DrawerContentScrollView>
+        )
+      }}>
       <ProfileDrawer.Screen name="Home" component={ ProfileStackScreen } />
     </ProfileDrawer.Navigator>
   );
