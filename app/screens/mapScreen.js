@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet,
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
   Text,
   View,
   Platform,
@@ -10,50 +11,63 @@ import { StyleSheet,
   PixelRatio,
   Alert,
   FlatList,
-  ScrollView
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView from 'react-native-map-clustering';
-import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { connect } from 'react-redux';
-import {SearchBar} from 'react-native-elements';
+  ScrollView,
+  Button,
+  TouchableOpacity,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MapView from "react-native-map-clustering";
+import {
+  Marker,
+  MAP_TYPES,
+  PROVIDER_DEFAULT,
+  UrlTile,
+} from "react-native-maps";
+import * as Location from "expo-location";
+import { connect } from "react-redux";
+import { SearchBar } from "react-native-elements";
+import DropDownPicker from "react-native-dropdown-picker";
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from "accordion-collapse-react-native";
+import { Thumbnail } from "native-base";
 
+import colors from "../config/colors";
+import { loadStories } from "../redux/actions/storyActions";
 
-import colors from '../config/colors';
-import { loadStories } from '../redux/actions/storyActions';
-
-const PERSONAL_PIN = require('../assets/personal_128x128.png');
-const HISTORICAL_PIN = require('../assets/historical_128x128.png');
-const COMMUNITY_PIN = require('../assets/community_128x128.png');
+const PERSONAL_PIN = require("../assets/personal_128x128.png");
+const HISTORICAL_PIN = require("../assets/historical_128x128.png");
+const COMMUNITY_PIN = require("../assets/community_128x128.png");
 
 function MapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
   const [location, setLocation] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-  const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
+  const urlTemplate =
+    "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 52.5,
     longitude: 19.2,
     latitudeDelta: 8.5,
     longitudeDelta: 8.5,
   };
-  
 
   useEffect(() => {
     props.loadStories();
     getLocation();
     searchData();
-  },[])
+  }, []);
 
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
-    if( status !== 'granted' ) {
+    if (status !== "granted") {
       //handle error here
     }
 
@@ -63,19 +77,18 @@ function MapScreen(props) {
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude,
       latitudeDelta: latitudeDelta,
-      longitudeDelta: longitudeDelta
+      longitudeDelta: longitudeDelta,
     });
     setGotLocation(true);
-
   };
 
-  const  searchData = async () => {
-    fetch('http://www.globaltraqsdev.com/api/pins', {
-            method: 'GET',
-            headers: {
-              'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'
-            }
-          })    
+  const searchData = async () => {
+    fetch("http://www.globaltraqsdev.com/api/pins", {
+      method: "GET",
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    })
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
@@ -84,16 +97,19 @@ function MapScreen(props) {
       .catch((error) => {
         console.error(error);
       });
-
   };
 
   const searchFilterFunction = (text) => {
-    
+    if (text.length > 0) {
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
     if (text) {
       const newData = masterDataSource.filter(function (item) {
         const itemData = item.title
           ? item.title.toUpperCase()
-          : ''.toUpperCase();
+          : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
@@ -105,20 +121,19 @@ function MapScreen(props) {
     }
   };
 
-  const ItemView = ({item}) => {
+  const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => {
-
           //Need to send user to the searched post on the map
-          
-             // props.navigation.navigate('Story', {
-                //title: item.title,
-                //description: item.description
-              //});
-              }}>
-          {item.title.toUpperCase()}
+          // props.navigation.navigate('Story', {
+          //title: item.title,
+          //description: item.description
+          //});
+        }}
+      >
+        {item.title.toUpperCase()}
       </Text>
     );
   };
@@ -128,8 +143,8 @@ function MapScreen(props) {
       <View
         style={{
           height: 0.5,
-          width: '100%',
-          backgroundColor: 'black',
+          width: "100%",
+          backgroundColor: "black",
         }}
       />
     );
@@ -138,11 +153,11 @@ function MapScreen(props) {
   const loadData = async () => {
     try {
       setLoading(true);
-      let response = await fetch('http://www.globaltraqsdev.com/api/pins', {
-        method: 'GET',
+      let response = await fetch("http://www.globaltraqsdev.com/api/pins", {
+        method: "GET",
         headers: {
-          'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'
-        }
+          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+        },
       });
       let json = await response.json();
       console.log(json);
@@ -159,53 +174,228 @@ function MapScreen(props) {
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude,
       latitudeDelta: latitudeDelta,
-      longitudeDelta: longitudeDelta
+      longitudeDelta: longitudeDelta,
     });
     setGotLocation(true);
-
   };
 
+  const AppButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
+      <Text style={styles.appButtonText}>{title}</Text>
+    </TouchableOpacity>
+  );
+
+  this.state = {
+    radiusSize: "placeholder",
+  };
+
+  const [showSearchResults, setShowSearchResults] = useState(false);
+
+  const Separator = () => <View style={styles.separator} />;
+
   return (
-    <SafeAreaView style={styles.container, {flex: 1}}>
-    <View style={styles.containerStyle}>
+    <SafeAreaView style={(styles.container, { flex: 1 })}>
+      <View style={styles.containerStyle}>
         <SearchBar
           round
-          searchIcon={{size: 24}}
+          searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
-          onClear={(text) => searchFilterFunction('')}
+          onClear={(text) => searchFilterFunction("")}
           placeholder="Type Here..."
           value={search}
         />
-        
-        
-        <FlatList
-          data={filteredDataSource}
-          //data={filteredDataSource.slice(0,5)}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          maxToRenderPerBatch={15}
-          //windowSize={5}
-          renderItem={ItemView}
-        />
-        
+
+        <Collapse>
+          <CollapseHeader
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              padding: 10,
+              backgroundColor: "#D3D3D3",
+            }}
+          >
+            <View style={{ width: "25%", alignItems: "center" }}>
+              <Thumbnail
+                source={{
+                  uri:
+                    "https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
+                }}
+              />
+            </View>
+
+            <View style={styles.screenContainer}>
+              <AppButton title="Personal" />
+
+              <AppButton title="Historical" />
+
+              <AppButton title="Resources" />
+            </View>
+          </CollapseHeader>
+          <CollapseBody
+            //Styles the body portion
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              backgroundColor: "#EDEDED",
+            }}
+          >
+            <Separator />
+            <View style={styles.buttons}>
+              <Button
+                color="black"
+                title="any"
+                onPress={() => Alert.alert("Cannot press this one")}
+              />
+            </View>
+            <Separator />
+            <View style={styles.buttons}>
+              <Button
+                color="black"
+                title="relevance"
+                onPress={() => Alert.alert("Cannot press this one")}
+              />
+            </View>
+            <Separator />
+            <DropDownPicker
+              items={[
+                {
+                  label: "radius",
+                  value: "placeholder",
+                  //hidden: true,
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+              ]}
+              defaultValue={this.state.radiusSize}
+              containerStyle={{ width: 150, height: 70 }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{
+                justifyContent: "flex-start",
+              }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              onChangeItem={(item) =>
+                this.setState({
+                  radiusSize: item.value,
+                })
+              }
+            />
+            <Separator />
+            <DropDownPicker
+              items={[
+                {
+                  label: "continent",
+                  value: "placeholder",
+                  //hidden: true,
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+              ]}
+              defaultValue={this.state.radiusSize}
+              containerStyle={{ width: 150, height: 70 }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{
+                justifyContent: "flex-start",
+              }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              onChangeItem={(item) =>
+                this.setState({
+                  radiusSize: item.value,
+                })
+              }
+            />
+            <Separator />
+            <DropDownPicker
+              items={[
+                {
+                  label: "date",
+                  value: "placeholder",
+                  //hidden: true,
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+                {
+                  label: "placeholder",
+                  value: "placeholder",
+                },
+              ]}
+              defaultValue={this.state.radiusSize}
+              containerStyle={{ width: 150, height: 70 }}
+              style={{ backgroundColor: "#fafafa" }}
+              itemStyle={{
+                justifyContent: "flex-start",
+              }}
+              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              onChangeItem={(item) =>
+                this.setState({
+                  radiusSize: item.value,
+                })
+              }
+            />
+            <Separator />
+            <View style={styles.fixToText}>
+              <Button
+                color="black"
+                title="Left button"
+                //onPress={() => Alert.alert("Left button pressed")}
+              />
+
+              <Separator />
+
+              <Button
+                color="black"
+                title="Right button"
+                //onPress={() => Alert.alert("Right button pressed")}
+              />
+            </View>
+          </CollapseBody>
+        </Collapse>
+
+        {showSearchResults ? (
+          <FlatList
+            data={filteredDataSource}
+            //data={filteredDataSource.slice(0,5)}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            maxToRenderPerBatch={15}
+            //windowSize={5}
+            renderItem={ItemView}
+          />
+        ) : null}
       </View>
 
-      {props.isLoading ?
-        <ActivityIndicator style={styles.mapStyle} /> : (
-          <MapView style={styles.mapStyle}
-            provider={PROVIDER_DEFAULT}
-            mapType={MAP_TYPES.NONE}
-            initialRegion={INITIAL_REGION}
-            rotateEnabled={false}
-            clusterColor={'#FFA500'}
-            clusterTextColor={'#000000'}
-            maxZoomLevel={19}
-            minZoomLevel={1}
-            minZoom={0}
-            maxZoom={17}
-            minPoints={5}
-            flex={1}
-            >
+      {props.isLoading ? (
+        <ActivityIndicator style={styles.mapStyle} />
+      ) : (
+        <MapView
+          style={styles.mapStyle}
+          provider={PROVIDER_DEFAULT}
+          mapType={MAP_TYPES.NONE}
+          initialRegion={INITIAL_REGION}
+          rotateEnabled={false}
+          clusterColor={"#FFA500"}
+          clusterTextColor={"#000000"}
+          maxZoomLevel={19}
+          minZoomLevel={1}
+          minZoom={0}
+          maxZoom={17}
+          minPoints={5}
+          flex={1}
+        >
           <UrlTile
             urlTemplate={urlTemplate}
             shouldReplaceMapContent={true}
@@ -213,42 +403,48 @@ function MapScreen(props) {
             minimumZ={0}
             maxZoomLevel={19}
             minZoomLevel={0}
-            zIndex={1}/>
-            {props.stories.map((item, i) => {
-              let pinType = '';
-              switch (item.category) {
-                case 1:
-                  pinType = PERSONAL_PIN;
-                  break;
-                case 2:
-                  pinType = COMMUNITY_PIN;
-                  break;
-                default:
-                  pinType = HISTORICAL_PIN;
-              }
-              return (
-                <Marker
-                  key={i}
-                  coordinate={{latitude: parseFloat(item.latitude), longitude: parseFloat(item.longitude)}}
-                  title={item.title}
-                  image={pinType}
-                  onPress={() => {
-                    props.navigation.navigate('Story', {
-                      title: item.title,
-                      description: item.description
-                    });}}
-                  />)
-            })}
-          </MapView>
-        )}
+            zIndex={1}
+          />
+          {props.stories.map((item, i) => {
+            let pinType = "";
+            switch (item.category) {
+              case 1:
+                pinType = PERSONAL_PIN;
+                break;
+              case 2:
+                pinType = COMMUNITY_PIN;
+                break;
+              default:
+                pinType = HISTORICAL_PIN;
+            }
+            return (
+              <Marker
+                key={i}
+                coordinate={{
+                  latitude: parseFloat(item.latitude),
+                  longitude: parseFloat(item.longitude),
+                }}
+                title={item.title}
+                image={pinType}
+                onPress={() => {
+                  props.navigation.navigate("Story", {
+                    title: item.title,
+                    description: item.description,
+                  });
+                }}
+              />
+            );
+          })}
+        </MapView>
+      )}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   containerStyle: {
-    backgroundColor: 'white',
-    alignItems: 'stretch',
+    backgroundColor: "white",
+    alignItems: "stretch",
   },
   itemStyle: {
     padding: 5,
@@ -256,40 +452,64 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   mapStyle: {
-    width: Dimensions.get('window').width,
-    height: '125%'
+    width: Dimensions.get("window").width,
+    height: "125%",
   },
   navStyle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'dodgerblue',
-    width: Dimensions.get('window').width,
-    height: '5%'
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "dodgerblue",
+    width: Dimensions.get("window").width,
+    height: "5%",
   },
   navButton: {
     flexGrow: 1,
-    textAlign: 'center'
-  }
-})
+    textAlign: "center",
+  },
+  screenContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomColor: "black",
+  },
+  containerPicker: {
+    flex: 1,
+    //backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  appButtonText: {
+    fontSize: 12,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+  },
+});
 
-const mapStateToProps =  (state) => {
+const mapStateToProps = (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
-
+    error: state.storyReducer.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadStories: () => dispatch(loadStories())
-  }
-}
+    loadStories: () => dispatch(loadStories()),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
