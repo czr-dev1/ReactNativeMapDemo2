@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
-import { logout } from '../redux/actions/auth';
+import { logout } from '../redux/actions/authActions';
 
 // icons
 import { FontAwesome5 } from '@expo/vector-icons';
