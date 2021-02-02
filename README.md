@@ -5,12 +5,15 @@ All of the important code is inside the `app` directory
 `npm install --global expo-cli`
 
 ## Install Packages (Should add all the packages you need)
-`expo install`
+`expo install` or
+
 `npm install`
 
 ## Run
 Start Metro Bundler
-`expo start`
+
+`expo start` or
+
 `npm start`
 
 Start App on Android
