@@ -9,7 +9,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/actions/auth';
+import { login } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
