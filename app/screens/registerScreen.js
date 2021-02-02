@@ -294,10 +294,3 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
-
-/*
-Fixes Needed:
-1. Toggle show/hide password so that each password shows/hides individually
-2. Confirm password should show error message automatically if first password is changed 
-3. After pressing 'register', error should display if username is already taken 
-*/
