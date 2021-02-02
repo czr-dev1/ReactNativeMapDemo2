@@ -206,7 +206,6 @@ function RegisterScreen() {
 					title='register'
 					color='white'
 					onPress={() => {
-						console.log(user);
 						dispatch(register(user));
 					}}
 				/>
