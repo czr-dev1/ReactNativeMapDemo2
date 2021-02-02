@@ -14,143 +14,147 @@ import BookmarkUserScreen from '../screens/bookmarkUserScreen';
 import StoryListScreen from '../screens/storyListScreen';
 import StoryScreen from '../screens/storyScreen';
 import StoryPostScreen from '../screens/storyPostScreen';
+import LoginRegisterScreen from '../screens/loginRegisterScreen';
 import LoginScreen from '../screens/loginScreen';
 import RegisterScreen from '../screens/registerScreen';
 import ProfileScreen from '../screens/profileScreen';
 
 const MapStack = createStackNavigator();
 function MapStackScreen() {
-  return (
-    <MapStack.Navigator screenOptions={{headerShown: false}}>
-      <MapStack.Screen name='Map' component={ DarkMapScreen } />
-      <MapStack.Screen name='Story' component={ StoryScreen } />
-    </MapStack.Navigator>
-  );
+	return (
+		<MapStack.Navigator screenOptions={{ headerShown: false }}>
+			<MapStack.Screen name='Map' component={DarkMapScreen} />
+			<MapStack.Screen name='Story' component={StoryScreen} />
+		</MapStack.Navigator>
+	);
 }
 
 const StoriesStack = createStackNavigator();
 function StoriesStackScreen() {
-  return (
-    <StoriesStack.Navigator screenOptions={{headerShown: false}}>
-      <StoriesStack.Screen name='StoryList' component={ StoryListScreen } />
-      <StoriesStack.Screen name ='Story' component={ StoryScreen } />
-    </StoriesStack.Navigator>
-  );
+	return (
+		<StoriesStack.Navigator screenOptions={{ headerShown: false }}>
+			<StoriesStack.Screen name='StoryList' component={StoryListScreen} />
+			<StoriesStack.Screen name='Story' component={StoryScreen} />
+		</StoriesStack.Navigator>
+	);
 }
 
 const BookmarkStack = createMaterialTopTabNavigator();
 function BookmarkStackScreen() {
-  return (
-    <BookmarkStack.Navigator style={styles.container}>
-      <BookmarkStack.Screen name='Stories' component={ BookmarkPostScreen} />
-      <BookmarkStack.Screen name='Users' component={ BookmarkUserScreen } />
-    </BookmarkStack.Navigator>
-  );
+	return (
+		<BookmarkStack.Navigator style={styles.container}>
+			<BookmarkStack.Screen name='Stories' component={BookmarkPostScreen} />
+			<BookmarkStack.Screen name='Users' component={BookmarkUserScreen} />
+		</BookmarkStack.Navigator>
+	);
 }
 
 const LoginStack = createStackNavigator();
 function LoginStackScreen() {
-  return (
-    <LoginStack.Navigator screenOptions={{headerShown: false}}>
-      <LoginStack.Screen name='Login' component={ LoginScreen } />
-      <LoginStack.Screen name='Register' component={ RegisterScreen } />
-    </LoginStack.Navigator>
-  );
+	return (
+		<LoginStack.Navigator screenOptions={{ headerShown: false }}>
+			<LoginStack.Screen name='Initial' component={LoginRegisterScreen} />
+			<LoginStack.Screen name='Login' component={LoginScreen} />
+			<LoginStack.Screen name='Register' component={RegisterScreen} />
+		</LoginStack.Navigator>
+	);
 }
 
-const LoggedInStack = createStackNavigator();
-function LoggedInStackScreen() {
-  return (
-    <LoggedInStack.Navigator screenOptions={{headerShown: false}}>
-      <LoggedInStack.Screen name='Map' component={ LightMapScreen } />
-      <LoggedInStack.Screen name='Story' component={ StoryScreen } />
-      <LoggedInStack.Screen name='Profile' component={ ProfileScreen } />
-    </LoggedInStack.Navigator>
-  );
+const ProfileStack = createStackNavigator();
+function ProfileStackScreen() {
+	return (
+		<ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+			<ProfileStack.Screen name='Map' component={LightMapScreen} />
+			<ProfileStack.Screen name='Story' component={StoryScreen} />
+			<ProfileStack.Screen name='Profile' component={ProfileScreen} />
+		</ProfileStack.Navigator>
+	);
 }
 
 // Will display if user is anonymous
-const AuthTab = createBottomTabNavigator();
-function AuthTabScreen() {
-  return (
-    <AuthTab.Navigator initialRouteName='Map' 
-      screenOptions={( { route }) => ({
-        tabBarIcon: ({ color, size }) => {
-        let iconName;
-        if (route.name === 'Map') {
-          iconName = 'map';
-        } else if (route.name === 'Stories') {
-          iconName = 'list';
-        } else if (route.name === 'Post') {
-          iconName = 'plus-square';
-        } else if (route.name === 'Profile') {
-          iconName = 'user';
-        }
-        return <FontAwesome5 name={iconName} size={size} color={color} />
-        }
-      })}>
-      <AuthTab.Screen name='Map' component={ MapStackScreen } />
-      <AuthTab.Screen name='Stories' component={ StoriesStackScreen } />
-      <AuthTab.Screen name='Post' component={ StoryPostScreen } />
-      <AuthTab.Screen name='Profile' component={ LoginStackScreen } />
-    </AuthTab.Navigator>
-  );
+const NeedAuthTab = createBottomTabNavigator();
+function NeedAuthTabScreen() {
+	return (
+		<NeedAuthTab.Navigator
+			initialRouteName='Map'
+			screenOptions={({ route }) => ({
+				tabBarIcon: ({ color, size }) => {
+					let iconName;
+					if (route.name === 'Map') {
+						iconName = 'map';
+					} else if (route.name === 'Stories') {
+						iconName = 'list';
+					} else if (route.name === 'Post') {
+						iconName = 'plus-square';
+					} else if (route.name === 'Profile') {
+						iconName = 'user';
+					}
+					return <FontAwesome5 name={iconName} size={size} color={color} />;
+				},
+			})}
+		>
+			<NeedAuthTab.Screen name='Map' component={MapStackScreen} />
+			<NeedAuthTab.Screen name='Stories' component={StoriesStackScreen} />
+			<NeedAuthTab.Screen name='Post' component={StoryPostScreen} />
+			<NeedAuthTab.Screen name='Profile' component={LoginStackScreen} options={{ tabBarVisible: false }} />
+		</NeedAuthTab.Navigator>
+	);
 }
 
 // Will display is user has successfully logged in
 const AppTab = createBottomTabNavigator();
 function AppTabScreen() {
-  return (
-    <AppTab.Navigator initialRouteName='Map' 
-      screenOptions={( { route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName;
-          if (route.name === 'Map') {
-            iconName = 'map';
-          } else if (route.name === 'Stories') {
-            iconName = 'list';
-          } else if (route.name === 'Post') {
-            iconName = 'plus-square';
-          } else if (route.name === 'Profile') {
-            iconName = 'user';
-          }
-          return <FontAwesome5 name={iconName} size={size} color={color} />
-        }
-      })}>
-      <AppTab.Screen name='Map' component={ LoggedInStackScreen } />
-      <AppTab.Screen name='Stories' component={ BookmarkStackScreen } />
-      <AppTab.Screen name='Post' component={ StoryPostScreen } />
-      <AppTab.Screen name='Profile' component={ ProfileScreen } />
-    </AppTab.Navigator>
-  );
+	return (
+		<AppTab.Navigator
+			initialRouteName='Map'
+			screenOptions={({ route }) => ({
+				tabBarIcon: ({ color, size }) => {
+					let iconName;
+					if (route.name === 'Map') {
+						iconName = 'map';
+					} else if (route.name === 'Bookmarks') {
+						iconName = 'list';
+					} else if (route.name === 'Post') {
+						iconName = 'plus-square';
+					} else if (route.name === 'Profile') {
+						iconName = 'user';
+					}
+					return <FontAwesome5 name={iconName} size={size} color={color} />;
+				},
+			})}
+		>
+			<AppTab.Screen name='Map' component={ProfileStackScreen} />
+			<AppTab.Screen name='Bookmarks' component={BookmarkStackScreen} />
+			<AppTab.Screen name='Post' component={StoryPostScreen} />
+			<AppTab.Screen name='Profile' component={ProfileScreen} />
+		</AppTab.Navigator>
+	);
 }
 
 const Stack = createStackNavigator();
 function StackScreen({ hasAuth }) {
-  return (
-    <NavigationContainer>
-     <Stack.Navigator initialRouteName='Auth' screenOptions={{ headerShown: false }}>
-	  {!hasAuth ? (
-	      	<Stack.Screen name='Auth' component={AuthTabScreen} />
-  	  ) : (
-	  	<Stack.Screen name='App' component={AppTabScreen} />
-  	  )}
-	</Stack.Navigator>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<Stack.Navigator initialRouteName='Auth' screenOptions={{ headerShown: false }}>
+				{!hasAuth ? (
+					<Stack.Screen name='Auth' component={NeedAuthTabScreen} />
+				) : (
+					<Stack.Screen name='App' component={AppTabScreen} />
+				)}
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    marginTop: 20
-
-  }
-})
+	container: {
+		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+		marginTop: 20,
+	},
+});
 
 const mapStateToProps = (state) => ({
-	hasAuth: state.authReducer.isAuthenticated
+	hasAuth: state.authReducer.isAuthenticated,
 });
 
 export default connect(mapStateToProps)(StackScreen);
-
