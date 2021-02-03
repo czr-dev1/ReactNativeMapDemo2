@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, StyleSheet } from 'react-native';
+import { 
+  ActivityIndicator, 
+  Dimensions, 
+  StyleSheet 
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
@@ -14,6 +18,7 @@ const HISTORICAL_PIN = require('../assets/historical_128x128.png');
 const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
 function MapScreen(props) {
+  const [isLoading, setLoading] = useState(true);
   const [gotLocation, setGotLocation] = useState(false);
   const [location, setLocation] = useState({
     latitude: 34.0522,
@@ -21,20 +26,18 @@ function MapScreen(props) {
     latitudeDelta: 8.5,
     longitudeDelta: 8.5
   });
-  const [isLoading, setLoading] = useState(true);
-  const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-  //const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
-    latitude: 34.0522,
-    longitude: -118.2437,
-    latitudeDelta: .5,
-    longitudeDelta: .5
-  };
+		latitude: 34.0522,
+		longitude: -118.2437,
+		latitudeDelta: 0.5,
+		longitudeDelta: 0.5,
+	};
+  const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
 
   useEffect(() => {
     props.loadStories();
     getLocation();
-  },[])
+  }, []);
 
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
@@ -51,7 +54,6 @@ function MapScreen(props) {
       longitudeDelta: longitudeDelta
     });
     setGotLocation(true);
-
   };
 
   return (

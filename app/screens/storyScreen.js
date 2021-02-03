@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
   Dimensions,
   Platform,
@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import MapView from 'react-native-map-clustering';
 
 import colors from '../config/colors';
 
@@ -20,7 +19,6 @@ function storyScreen(props) {
       <Text style={styles.body}>{description}</Text>
     </SafeAreaView>
   );
-
 }
 
 const styles = StyleSheet.create({

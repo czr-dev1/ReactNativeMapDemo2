@@ -17,7 +17,7 @@ const PERSONAL_PIN = require('../assets/personal_128x128.png');
 const HISTORICAL_PIN = require('../assets/historical_128x128.png');
 const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
-function DarkMapScreen(props) {
+function LightMapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
   const [location, setLocation] = useState({
     latitude: 34.0522,
@@ -155,4 +155,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DarkMapScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LightMapScreen);

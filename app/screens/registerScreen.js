@@ -3,7 +3,9 @@ import {
 	Alert,
 	Button,
 	Image,
+	RefreshControl,
 	SafeAreaView,
+	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -183,8 +185,7 @@ function RegisterScreen() {
 			{user.isValidPassword ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>
-						must be at least 8 characters long with at least one uppercase, number, and special
-						character
+						must be at least 8 characters long with at least one uppercase, number, and special character
 					</Text>
 				</Animatable.View>
 			)}

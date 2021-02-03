@@ -89,12 +89,11 @@ function ProfileScreen(props) {
 			</View>
 			<View style={styles.storyList}>{renderStoriesByType()}</View>
 
-			<TouchableWithoutFeedback onPress={() => dispatch(logout())}>
-				<View style={styles.logoutBtn}>
-					<Text>Logout</Text>
-				</View>
-			</TouchableWithoutFeedback>
-
+			<Button 
+				title='Logout'
+				style={styles.logoutBtn}
+				onPress={() => dispatch(logout())} 
+			/>
 		</SafeAreaView>
 	);
 }
