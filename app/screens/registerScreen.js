@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import { 
-	Button, 
-	Image, 
-	SafeAreaView, 
-	StyleSheet, 
-	Text, 
-	TextInput, 
-	TouchableWithoutFeedback, 
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+	Alert,
+	Button,
+	Image,
+	RefreshControl,
+	SafeAreaView,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableWithoutFeedback,
 	View,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import * as EmailValidator from 'email-validator';
@@ -22,6 +25,18 @@ import colors from '../config/colors';
 function RegisterScreen() {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
+	const auth = useSelector((state) => state.authReducer);
+	const { loginFail } = auth;
+	const [submitted, setSubmitted] = useState(false);
+	const [failed, setFailed] = useState(false);
+
+	useEffect(() => {
+		if (submitted) {
+			setFailed(loginFail);
+		} else {
+			setFailed(false);
+		}
+	}, [loginFail]);
 
 	const [user, setUser] = useState({
 		username: '',
@@ -50,7 +65,7 @@ function RegisterScreen() {
 				isValidUsername: true,
 			});
 		}
-	}
+	};
 
 	const setEmail = (val) => {
 		if (!EmailValidator.validate(user.email)) {
@@ -66,15 +81,15 @@ function RegisterScreen() {
 				isValidEmail: true,
 			});
 		}
-	}
+	};
 
 	const setPassword = (val) => {
 		let len = val.length;
 		if (
 			((len < 8 || len >= 8) && val.search(/[!@#$%^&*_+()]/) === -1) ||
 			((len < 8 || len >= 8) && val.search(/[A-Z]/) === -1) ||
-			((len < 8 || len >= 8) && val.search(/\d/) === -1)) 
-		{
+			((len < 8 || len >= 8) && val.search(/\d/) === -1)
+		) {
 			setUser({
 				...user,
 				password: val,
@@ -86,15 +101,14 @@ function RegisterScreen() {
 				password: val,
 				isValidPassword: false,
 			});
-		} 
-		else {
+		} else {
 			setUser({
 				...user,
 				password: val,
 				isValidPassword: true,
 			});
 		}
-	}
+	};
 
 	const setConfirmPassword = (val) => {
 		if (val !== user.password) {
@@ -110,15 +124,15 @@ function RegisterScreen() {
 				isValidConfirmPassword: true,
 			});
 		}
-	}
+	};
 
 	const updateSecureTextEntry = () => {
 		setUser({
 			...user,
 			secureTextEntry: !user.secureTextEntry,
 		});
-	}
-	
+	};
+
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<Image style={styles.logo} source={require('../assets/thearqive_bubbles.png')} />
@@ -157,7 +171,7 @@ function RegisterScreen() {
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='eye' color='#DCDCDC' size={20} />
+				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.password}
@@ -178,7 +192,7 @@ function RegisterScreen() {
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='eye' color='#DCDCDC' size={20} />
+				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.confirmPassword}
@@ -188,6 +202,7 @@ function RegisterScreen() {
 					secureTextEntry={user.secureTextEntry ? true : false}
 					onChangeText={(val) => setConfirmPassword(val)}
 				/>
+				{/* allows user to show/hide password */}
 				<TouchableOpacity onPress={updateSecureTextEntry}>
 					{user.secureTextEntry ? (
 						<FontAwesome5 name='eye-slash' color='#DCDCDC' size={20} />
@@ -207,9 +222,23 @@ function RegisterScreen() {
 					color='white'
 					onPress={() => {
 						dispatch(register(user));
+						setSubmitted(true);
+						setFailed(loginFail);
 					}}
 				/>
 			</View>
+
+			{submitted && failed
+				? Alert.alert('', 'username or email already taken! please use another', [
+						{
+							text: 'ok',
+							onPress: () => setFailed(false)
+						}
+					])
+				: (
+				null
+			)}
+
 			<View style={styles.links}>
 				<Text style={{ color: 'gray' }}>already have an account? log in </Text>
 				<TouchableOpacity
@@ -241,6 +270,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
+		alignContent: 'center',
 		marginBottom: 10,
 	},
 	title: {
