@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Alert,
 	Button,
 	Image,
 	SafeAreaView,
@@ -12,27 +11,17 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
 import { login } from '../redux/actions/authActions';
 import colors from '../config/colors';
 
-function LoginScreen() {
+function LoginScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
-	const auth = useSelector((state) => state.authReducer);
-	const { loginFail } = auth;
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
-
-	useEffect(() => {
-		if (submitted) {
-			setFailed(loginFail);
-		} else {
-			setFailed(false);
-		}
-	}, [loginFail]);
 
 	const [user, setUser] = useState({
 		username: '',
@@ -75,10 +64,26 @@ function LoginScreen() {
 		}
 	};
 
+	useEffect(() => {
+		if (submitted) {
+			setFailed(props.loginFail);
+		} else {
+			setFailed(false);
+		}
+	}, [props.loginFail]);
+
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<Image style={styles.logo} source={require('../assets/thearqive_bubbles.png')} />
 			<Text style={styles.title}>log in</Text>
+
+			{submitted && failed ? (
+				<View>
+					<Text style={styles.error}>incorrect username and/or password!</Text>
+					<Text style={styles.error}>please try again</Text>
+				</View>
+			) : null
+			}
 
 			<TextInput
 				style={styles.input}
@@ -131,15 +136,6 @@ function LoginScreen() {
 				/>
 			</View>
 
-			{submitted && failed ? 
-			Alert.alert('', 'invalid username and/or password! please try again', [
-						{
-							text: 'ok',
-							onPress: () => setFailed(''),
-						},
-				  ])
-				: null}
-
 			<View style={styles.links}>
 				<Text style={{ color: 'gray' }}>don't have an account? register </Text>
 				<TouchableOpacity
@@ -178,7 +174,7 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		color: '#A9A9A9',
-		marginBottom: 50,
+		marginBottom: 30,
 	},
 	body: {
 		flexDirection: 'row',
@@ -204,6 +200,11 @@ const styles = StyleSheet.create({
 		color: 'gray',
 		marginTop: 190,
 	},
+	error: {
+		textAlign: 'center',
+		fontSize: 16,
+		color: 'red',
+	},
 	errorMsg: {
 		color: 'red',
 	},
@@ -225,4 +226,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default LoginScreen;
+const mapStateToProps = (state) => {
+	return {
+		loginFail: state.authReducer.loginFail,
+	};
+};
+
+export default connect(mapStateToProps)(LoginScreen);

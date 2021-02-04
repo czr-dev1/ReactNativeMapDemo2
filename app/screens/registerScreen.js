@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-	Alert,
 	Button,
 	Image,
-	RefreshControl,
 	SafeAreaView,
-	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -14,7 +11,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import * as EmailValidator from 'email-validator';
@@ -22,21 +19,11 @@ import * as EmailValidator from 'email-validator';
 import { register } from '../redux/actions/authActions';
 import colors from '../config/colors';
 
-function RegisterScreen() {
+function RegisterScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
-	const auth = useSelector((state) => state.authReducer);
-	const { loginFail } = auth;
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
-
-	useEffect(() => {
-		if (submitted) {
-			setFailed(loginFail);
-		} else {
-			setFailed(false);
-		}
-	}, [loginFail]);
 
 	const [user, setUser] = useState({
 		username: '',
@@ -86,7 +73,7 @@ function RegisterScreen() {
 	const setPassword = (val) => {
 		let len = val.length;
 		if (
-			((len < 8 || len >= 8) && val.search(/[!@#$%^&*_+()]/) === -1) ||
+			((len < 8 || len >= 8) && val.search(/[!@#$%^&*_+()?]/) === -1) ||
 			((len < 8 || len >= 8) && val.search(/[A-Z]/) === -1) ||
 			((len < 8 || len >= 8) && val.search(/\d/) === -1)
 		) {
@@ -133,10 +120,26 @@ function RegisterScreen() {
 		});
 	};
 
+	useEffect(() => {
+		if (submitted) {
+			setFailed(props.registerFail);
+		} else {
+			setFailed(false);
+		}
+	}, [props.registerFail]);
+
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<Image style={styles.logo} source={require('../assets/thearqive_bubbles.png')} />
 			<Text style={styles.title}>register</Text>
+
+			{submitted && failed ? (
+				<View>
+					<Text style={styles.error}>username or email already taken!</Text>
+					<Text style={styles.error}>please try another</Text>
+				</View>
+			) : null}
+
 			<View style={styles.icon}>
 				<TextInput
 					style={styles.input}
@@ -180,12 +183,14 @@ function RegisterScreen() {
 					autoCorrect={false}
 					secureTextEntry={user.secureTextEntry ? true : false}
 					onChangeText={(val) => setPassword(val)}
+					onEndEditing={(val) => setConfirmPassword(val)}
 				/>
 			</View>
 			{user.isValidPassword ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>
-						must be at least 8 characters long with at least one uppercase, number, and special character
+						must be at least 8 characters long with at least one uppercase, number, and special
+						character
 					</Text>
 				</Animatable.View>
 			)}
@@ -222,21 +227,9 @@ function RegisterScreen() {
 					onPress={() => {
 						dispatch(register(user));
 						setSubmitted(true);
-						setFailed(loginFail);
 					}}
 				/>
 			</View>
-
-			{submitted && failed
-				? Alert.alert('', 'username or email already taken! please use another', [
-						{
-							text: 'ok',
-							onPress: () => setFailed(false)
-						}
-					])
-				: (
-				null
-			)}
 
 			<View style={styles.links}>
 				<Text style={{ color: 'gray' }}>already have an account? log in </Text>
@@ -270,12 +263,13 @@ const styles = StyleSheet.create({
 	},
 	logo: {
 		alignContent: 'center',
+		marginTop: 10,
 		marginBottom: 10,
 	},
 	title: {
 		fontSize: 24,
 		color: '#A9A9A9',
-		marginBottom: 50,
+		marginBottom: 30,
 	},
 	input: {
 		flex: 1,
@@ -298,6 +292,11 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: 'gray',
 		marginTop: 120,
+	},
+	error: {
+		textAlign: 'center',
+		fontSize: 16,
+		color: 'red',
 	},
 	errorMsg: {
 		textAlign: 'center',
@@ -322,4 +321,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default RegisterScreen;
+const mapStateToProps = (state) => {
+	return {
+		registerFail: state.authReducer.registerFail,
+	};
+};
+
+export default connect(mapStateToProps)(RegisterScreen);
