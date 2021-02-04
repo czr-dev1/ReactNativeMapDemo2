@@ -21,6 +21,7 @@ import BookmarkedPostsScreen from '../screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from '../screens/bookmarkedUsersScreen';
 import BadgeScreen from '../screens/badgeScreen';
 import FollowingProfileScreen from '../screens/followingProfileScreen';
+import HelpAndHotlineScreen from '../screens/helpAndHotlineScreen';
 
 const MapStack = createStackNavigator();
 function MapStackScreen() {
@@ -134,7 +135,8 @@ function ProfileDrawerScreen() {
   return (
     <ProfileDrawer.Navigator
       drawerPosition="right"
-      drawerType="slide">
+      drawerType="slide"
+      drawerStyle={{width: '80%'}}>
       <ProfileDrawer.Screen name="Home" component={ ProfileStackScreen } />
     </ProfileDrawer.Navigator>
   );
