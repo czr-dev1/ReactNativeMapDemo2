@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export const urlConfig = (getState) => {
+  if( getState.authReducer().isPrivacyMode ) {
+    return 'https://globaltraqsdev.com';
+  } else {
+    return 'http://192.81.130.223:8001';
+  }
+};
+
 export const loadProfile = () => {
   return (dispatch, getState) => {
     dispatch({ type: 'LOAD_PROFILE_START'});
@@ -10,7 +18,7 @@ export const loadProfile = () => {
     };
 
     //username can be changed if you want
-    axios.get('https://globaltraqsdev.com/api/profile/users/?username=nate', config)
+    axios.get(`${urlConfig(getState)}/api/profile/users/?username=nate`, config)
     .then((res) => {
       dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data});
     }).catch((err) => {

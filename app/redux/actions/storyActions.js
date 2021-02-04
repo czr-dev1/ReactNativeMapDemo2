@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export const urlConfig = (getState) => {
+  if( getState().authReducer.isPrivacyMode ) {
+    return 'https://globaltraqsdev.com';
+  } else {
+    return 'http://192.81.130.223:8001';
+  }
+};
+
 export const loadStories = () => {
   return (dispatch, getState) => { //Might have to remove getState
     dispatch({ type: 'LOAD_STORIES_START'});
@@ -9,7 +17,7 @@ export const loadStories = () => {
       },
     };
 
-    axios.get('http://www.globaltraqsdev.com/api/pins', config)
+    axios.get(`${urlConfig(getState)}/api/pins`, config)
     .then((res) => {
       dispatch({ type: 'LOAD_STORIES_SUCCESS', payload: res.data});
     }).catch((err) => {
