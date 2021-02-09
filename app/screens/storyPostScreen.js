@@ -153,7 +153,7 @@ function StoryPostScreen(props) {
               onDayPress={(day) => setStartDate(new Date( day.year, day.month - 1, day.day))}/>
           </Modal>
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Text style={{fontSize: 24, padding: 24}}>add a story</Text>
+            <Text style={{fontSize: 24, padding: 24, fontWeight: 'bold', color:'#787878'}}>add a story</Text>
           </View>
           <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#ddd', alignItems: 'center', paddingBottom: 9, paddingLeft: 7, paddingRight: 14, width: '100%', justifyContent: 'space-between'}}>
             <View style={{}}>

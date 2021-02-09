@@ -21,9 +21,13 @@ import BookmarkedPostsScreen from '../screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from '../screens/bookmarkedUsersScreen';
 import BadgeScreen from '../screens/badgeScreen';
 import FollowingProfileScreen from '../screens/followingProfileScreen';
-import HelpAndHotlineScreen from '../screens/helpAndHotlineScreen';
 
 import AnonToggleSwitch from '../components/anonToggleSwitch';
+import ModalOpener from '../components/modalOpener';
+
+import HelpAndHotlineModal from '../modals/helpAndHotlineModal';
+import SupportUsModal from '../modals/supportUsModal';
+import ContactUsModal from '../modals/contactUsModal';
 
 const MapStack = createStackNavigator();
 function MapStackScreen() {
@@ -142,7 +146,9 @@ function ProfileDrawerScreen() {
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props}>
-            <DrawerItemList {...props} />
+            <ModalOpener {...props} name="help & hotline" navigateTo="HelpAndHotlineModal"/>
+            <ModalOpener {...props} name="support us" navigateTo="SupportUsModal" />
+            <ModalOpener {...props} name="contact us" navigateTo="ContactUsModal" />
             <AnonToggleSwitch {...props} />
           </DrawerContentScrollView>
         )
@@ -187,6 +193,9 @@ function StackScreen() {
         <Stack.Screen name='Auth' component={ AuthTabScreen } />
         <Stack.Screen name='App' component={ AppTabScreen } />
         <Stack.Screen name='Login' component={ LoginScreen } />
+        <Stack.Screen name='HelpAndHotlineModal' component={ HelpAndHotlineModal } />
+        <Stack.Screen name='SupportUsModal' component={ SupportUsModal } />
+        <Stack.Screen name='ContactUsModal' component={ ContactUsModal } />
       </Stack.Navigator>
     </NavigationContainer>
   );

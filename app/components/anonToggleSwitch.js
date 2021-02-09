@@ -7,7 +7,7 @@ import { setPrivacyMode } from '../redux/actions/auth';
 function AnonToggleSwitch(props) {
   return (
     <View style={styles.container}>
-      <Text>Privacy Mode</Text>
+      <Text>privacy mode</Text>
       <Switch
         trackColor={{ false: '#767577', true: '#81b0ff' }}
         thumbColor={props.isPrivacyMode ? '#f5dd4b' : '#f4f3f4'}
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
+    padding: 20,
+    borderBottomWidth: 2,
+    borderColor: '#ddd'
   },
 });
 
