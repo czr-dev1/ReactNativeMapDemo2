@@ -28,6 +28,7 @@ import ModalOpener from '../components/modalOpener';
 import HelpAndHotlineModal from '../modals/helpAndHotlineModal';
 import SupportUsModal from '../modals/supportUsModal';
 import ContactUsModal from '../modals/contactUsModal';
+import EditProfileModal from '../modals/editProfileModal';
 
 const MapStack = createStackNavigator();
 function MapStackScreen() {
@@ -196,6 +197,7 @@ function StackScreen() {
         <Stack.Screen name='HelpAndHotlineModal' component={ HelpAndHotlineModal } />
         <Stack.Screen name='SupportUsModal' component={ SupportUsModal } />
         <Stack.Screen name='ContactUsModal' component={ ContactUsModal } />
+        <Stack.Screen name='EditProfileModal' component={ EditProfileModal } />
       </Stack.Navigator>
     </NavigationContainer>
   );
