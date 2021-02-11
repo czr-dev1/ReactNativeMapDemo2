@@ -17,10 +17,57 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 import colors from '../config/colors';
 
 function ContactUsModal(props) {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const onSubmit = (e) => {
+    if (email !== "") {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+        },
+      };
+      // Request Body
+      // const body = JSON.stringify({ username, email, password });
+      let data = JSON.stringify({ email: email, message: message });
+      axios
+        .post('https://globaltraqsdev.com/api/contactUs/', data, config)
+        .then((response) => {
+          setEmail("");
+          setMessage("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+       const config = {
+        headers: {
+          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+        },
+      };
+      setEmail(`Anonymous@anon.com`);
+
+      axios
+        .post('https://globaltraqsdev.com/api/contactUs/', {
+          email: email,
+          message: message,
+        }, config)
+        .then((response) => {
+          setEmail("");
+          setMessage("");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,7 +98,7 @@ function ContactUsModal(props) {
         <TouchableOpacity
           style={{alignSelf: 'flex-end', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}
           onPress={(e) => {
-            submitNewStory();
+            onSubmit(e);
           }}>
           <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>send</Text>
         </TouchableOpacity>
@@ -97,4 +144,10 @@ const styles = StyleSheet.create({
 
 });
 
-export default ContactUsModal;
+const mapStateToProps = (state) => {
+  return {
+    isPrivacyMode: state.authReducer.isPrivacyMode
+  }
+}
+
+export default connect(mapStateToProps, null)(ContactUsModal);
