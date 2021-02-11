@@ -46,7 +46,7 @@ function BadgeList(props) {
       renderItem={({ item }) => {
         return (
           <View style={styles.item}>
-            <MaterialCommunityIcons name={item} size={24} color="black" />
+            <MaterialCommunityIcons name={item} size={48} color="#919191" />
           </View>
         );
       }}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
   },
   grid: {
     flex: 1,

@@ -21,13 +21,13 @@ function BookmarkedPostsScreen(props) {
   const renderStoriesByType = () => {
     switch (selectedButton){
       case 1:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "1")} />
+        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "1")} />
       case 2:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "2")} />
+        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "2")} />
       case 3:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "3")} />
+        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "3")} />
       default:
-        return <StoryList stories={data.user_upvoted_stories} />
+        return <StoryList isBookMark={true} stories={data.user_upvoted_stories} />
       }
   }
 

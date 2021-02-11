@@ -7,8 +7,11 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Switch } from 'react-native-switch';
+import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { loadStories } from '../redux/actions/storyActions';
 
@@ -28,16 +31,26 @@ import StoryList from '../components/storyList';
 
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
+  const [tempStories, setTempStories] = useState([]);
+
   const renderStoriesByType = () => {
+    let list = {};
     switch (selectedButton){
       case 1:
-        return <StoryList stories={props.stories.slice(1, 3)} />
+        list = props.stories.filter(item => item.category === 1);
+        return <StoryList stories={props.stories.filter(item => item.category === 1)} />
+        break;
       case 2:
-        return <StoryList stories={props.stories.slice(3, 5)} />
+        list = props.stories.filter(item => item.category === 2);
+        return <StoryList stories={props.stories.filter(item => item.category === 2)} />
+        break;
       case 3:
-        return <StoryList stories={props.stories.slice(0, 10)} />
+        list = props.stories.filter(item => item.category === 3);
+        return <StoryList stories={props.stories.filter(item => item.category === 3)} />
+        break;
       default:
-        return <StoryList stories={props.stories.slice(10, 20)} />
+        list = props.stories
+        return <StoryList stories={props.stories} />
       }
   }
 
@@ -45,47 +58,54 @@ function ProfileScreen(props) {
 
   return(
     <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
-      <View style={styles.profileBar}>
-        <View style={styles.nicknameContainer}>
-          <Text style={styles.nicknameText}>{props.user}</Text>
+      <ScrollView>
+        <View style={styles.profileBar}>
+          <View style={styles.nicknameContainer}>
+            <Text style={styles.nicknameText}>{props.user}</Text>
+          </View>
+          <View style={{alignItems: 'flex-end', marginBottom: -48}} >
+            <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badges')}>
+              <Feather name="target" size={48} color="#919191" />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.profileImageContainer}>
+            <Image style={styles.profileImage} source={{uri: props.profileImage}}/>
+            <TouchableWithoutFeedback  onPress={() => props.navigation.navigate('EditProfileModal')}>
+              <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color="#919191" />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.bioContainter}>
+            <Text style={{fontWeight: 'bold', color: 'grey', fontSize: 18}}>bio</Text>
+            <Text style={{fontSize: 14}}>{props.bio}</Text>
+          </View>
         </View>
-        <View style={styles.profileImageContainer}>
-          <Image style={styles.profileImage} source={PROFILE_PIC}/>
-          <FontAwesome5 style={{marginLeft: '-7%'}} name="pencil-alt" size={24} color="black" />
-          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badges')}>
-            <Feather name="target" size={48} color="black" />
+
+        <View style={styles.profileStoryButtons}>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+            <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
+              <MaterialIcons name="format-list-bulleted" size={32} color="black" />
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
+            <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
+              <MaterialIcons name="chat-bubble-outline" size={32} color="green" />
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
+            <View style={selectedButton === 2 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
+              <MaterialIcons name="chat-bubble-outline" size={32} color="pink" />
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
+            <View style={selectedButton === 3 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
+              <MaterialIcons name="chat-bubble-outline" size={32} color="blue" />
+            </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={styles.bioContainter}>
-          <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
-          <Text>{props.bio}</Text>
+        <View style={styles.storyList}>
+          {renderStoriesByType()}
         </View>
-      </View>
-      <View style={styles.profileStoryButtons}>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-          <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="format-list-bulleted" size={32} color="black" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-          <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="green" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
-          <View style={selectedButton === 2 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="pink" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
-          <View style={selectedButton === 3 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="blue" />
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.storyList}>
-        {renderStoriesByType()}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -101,11 +121,12 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     paddingLeft: '10%',
     paddingRight: '10%',
-    height: '25%'
   },
   nicknameContainer: {
     alignItems: 'center',
-    paddingBottom: '5%',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingBottom: 5,
   },
   nicknameText: {
     fontWeight: 'bold',
@@ -113,35 +134,34 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   profileImageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    height: '40%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   profileImage: {
     borderRadius: 200,
     resizeMode: 'center',
-    height: '100%',
-    width: '30%'
+    height: 128,
+    width: 128
   },
   bioContainter: {
-    paddingTop: '3%',
-    paddingBottom: '10%'
+    paddingTop: 15,
+    paddingBottom: 15
   },
   profileStoryButtons: {
     width: Dimensions.get('window').width,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: '#eae6e5',
-    paddingTop: '2%',
+    paddingTop: 15,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
   profileStorySelectedButton: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
+    borderBottomWidth: 5,
+    borderBottomColor: '#919191',
     alignItems: 'center',
     flexGrow: 1,
-    paddingBottom: '2%'
+    paddingBottom: 15
   },
   profileStoryUnselectedButton: {
     alignItems: 'center',
@@ -150,9 +170,9 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
     width: Dimensions.get('window').width,
-    height: '70%'
+    height: '100%'
   },
   navButton: {
     flexGrow: 1,
@@ -172,12 +192,14 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+  console.log(state.authReducer);
   return{
     isLoading: state.storyReducer.isLoading,
-    stories: state.storyReducer.storyList,
+    stories: state.authReducer.userStories,
     error: state.storyReducer.error,
     user: state.authReducer.username,
     bio: state.authReducer.bio,
+    profileImage: state.authReducer.extra[0].profileurl
 
   }
 }
