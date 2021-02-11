@@ -26,9 +26,17 @@ export const login = ({username, password}) => {
 
     axios.post('https://www.globaltraqsdev.com/api/auth/login', user, config)
     .then((res) => {
-      dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data });
+      axios.get(`https://www.globaltraqsdev.com/api/profile/users/?username=${res.data.user.username}`, config)
+      .then((userInfo) => {
+        console.log(userInfo);
+        dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data, extra: userInfo.data});
+      }).catch((err) => {
+        console.log(err);
+        dispatch({ type: 'LOGIN_USER_FAIL', payload: err.response});
+      })
     })
     .catch((err) => {
+      console.log(err);
       dispatch({ type: 'LOGIN_USER_FAIL', payload: err.response.data });
     });
   }

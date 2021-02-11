@@ -25,7 +25,8 @@ export default login = (state = initialState, action) => {
               isAuthenticated: true,
               isLoading: false,
               loginFail: false,
-              guest_user: false
+              guest_user: false,
+              extra: action.extra
             });
         case 'LOGIN_USER_FAIL':
             console.log('failed to login');
