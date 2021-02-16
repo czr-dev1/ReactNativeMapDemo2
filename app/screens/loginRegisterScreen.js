@@ -1,5 +1,12 @@
 import React from 'react';
-import { Button, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { 
+	Button, 
+	Image, 
+	SafeAreaView, 
+	StyleSheet, 
+	Text, 
+	View 
+} from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
