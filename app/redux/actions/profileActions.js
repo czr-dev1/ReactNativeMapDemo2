@@ -28,6 +28,6 @@ export const loadProfile = (username) => {
     .catch((err) => {
       console.log(err);
       dispatch({ type: 'LOAD_PROFILE_FAILURE', payload: err.res.data });
-    });
+    })
   }
-};
+}
