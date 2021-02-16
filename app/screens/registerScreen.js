@@ -167,7 +167,7 @@ function RegisterScreen(props) {
 					onChangeText={(val) => setEmail(val)}
 				/>
 			</View>
-			{user.isValidEmail ? null : (
+			{user.isValidEmail || (user.email === '') ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>please enter valid email</Text>
 				</Animatable.View>
@@ -186,7 +186,7 @@ function RegisterScreen(props) {
 					onEndEditing={(val) => setConfirmPassword(val)}
 				/>
 			</View>
-			{user.isValidPassword ? null : (
+			{user.isValidPassword || (user.password === '') ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>
 						must be at least 8 characters long with at least one uppercase, number, and special
@@ -215,7 +215,7 @@ function RegisterScreen(props) {
 					)}
 				</TouchableOpacity>
 			</View>
-			{user.isValidConfirmPassword ? null : (
+			{user.isValidConfirmPassword || (user.confirmPassword === '') ? null : (
 				<Animatable.View>
 					<Text style={styles.errorMsg}>passwords don't match, please re-enter</Text>
 				</Animatable.View>
