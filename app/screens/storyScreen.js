@@ -15,7 +15,7 @@ function storyScreen(props) {
 
   return(
     <SafeAreaView style={styles.container}>
-      <Text>{title}</Text>
+      <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{title}</Text>
       <Text style={styles.body}>{description}</Text>
     </SafeAreaView>
   );
