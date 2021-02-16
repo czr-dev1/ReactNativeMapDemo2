@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+	Alert,
 	Button,
 	Dimensions,
 	Image,
@@ -11,11 +12,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect, useDispatch } from 'react-redux';
-import { logout } from '../redux/actions/authActions';
+import { useNavigation } from '@react-navigation/native';
+import { userSelfDelete } from '../redux/actions/authActions';
 
 // icons
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
@@ -27,6 +28,7 @@ import StoryList from '../components/storyList';
 
 function ProfileScreen(props) {
 	const dispatch = useDispatch();
+	const navigation = useNavigation();
 
 	const [selectedButton, setSelectedButton] = useState(0);
 	const renderStoriesByType = () => {
@@ -40,6 +42,21 @@ function ProfileScreen(props) {
 			default:
 				return <StoryList stories={props.userPost} />;
 		}
+	};
+	
+	const deleteConfirm = () => {
+		Alert.alert('', 'are you sure you want to delete your profile?',
+		[
+			{
+				text: 'cancel',
+				onPress: () => navigation.navigate('Profile'),
+				style: 'canccel'
+			},
+			{
+				text: 'yes, delete my profile',
+				onPress: () => dispatch(userSelfDelete())
+			}
+		])
 	};
 
 	return (
@@ -90,9 +107,8 @@ function ProfileScreen(props) {
 			<View style={styles.storyList}>{renderStoriesByType()}</View>
 
 			<Button 
-				title='Logout'
-				style={styles.logoutBtn}
-				onPress={() => dispatch(logout())} 
+				title='delete account'
+				onPress={() => deleteConfirm() }
 			/>
 		</SafeAreaView>
 	);
@@ -192,7 +208,6 @@ const mapStateToProps = (state) => {
 		user: state.profileReducer.profileData.user.username,
 		bio: state.profileReducer.profileData.user.bio,
     userPost: state.profileReducer.profileData.user.userStories,
-    token: state.profileReducer.profileData.token,
 	};
 };
 
