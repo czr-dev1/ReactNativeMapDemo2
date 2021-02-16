@@ -6,7 +6,9 @@ import {
   StyleSheet, 
   View 
 } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -21,6 +23,8 @@ import colors from '../config/colors';
 import StoryList from '../components/storyList';
 
 function BookmarkUserScreen(props) {
+  const navigation = useNavigation();
+  
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
@@ -37,7 +41,7 @@ function BookmarkUserScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get('https://globaltraqsdev.com/api/auth/users/', config)
+    axios.get(`https://globaltraqsdev.com/api/auth/users/`, config)
     .then((res) => {
       setData(res.data.results);
       setLoading(false);
@@ -46,7 +50,7 @@ function BookmarkUserScreen(props) {
     })
   }
 
-  if(isLoading){
+  if (isLoading) {
     return <ActivityIndicator />;
   } else {
     return (
@@ -54,10 +58,19 @@ function BookmarkUserScreen(props) {
         <ScrollView>
           {data.map((item, i) => {
             return (
-              <Card key={i}>
-                <Card.Title>{item.username}</Card.Title>
-              </Card>
-            )
+              <TouchableWithoutFeedback 
+                key={i}
+                onPress={() => {
+                  navigation.navigate('UserProfile', {
+                    user: item.username,
+                  });
+                }}
+              >
+								<Card>
+									<Card.Title>{item.username}</Card.Title>
+								</Card>
+							</TouchableWithoutFeedback>
+            );
           })}
         </ScrollView>
       </View>
@@ -118,6 +131,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
+    users: state.authReducer.users,
     stories: state.storyReducer.storyList,
     error: state.storyReducer.error
   }
