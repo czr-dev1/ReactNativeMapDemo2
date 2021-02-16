@@ -11,7 +11,7 @@ let initialState = {
 	users: [],
 };
 
-export default login = (state = initialState, action) => {
+export default auth = (state = initialState, action) => {
 	switch (action.type) {
 		case 'GET_USERS':
 			return Object.assign({}, state, {
