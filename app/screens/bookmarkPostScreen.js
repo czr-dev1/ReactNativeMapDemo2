@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback,
-  Dimensions, View, } from 'react-native';
+import { 
+  Dimensions, 
+  StyleSheet, 
+  Text, 
+  TouchableWithoutFeedback, 
+  View 
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -31,7 +36,7 @@ function BookmarkPostScreen(props) {
         return <StoryList stories={data.user_upvoted_stories} />
       }
   }
-
+  
   const loadProfile = async () => {
     const config = {
       headers: {
