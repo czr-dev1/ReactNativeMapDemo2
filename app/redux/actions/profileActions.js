@@ -15,7 +15,7 @@ export const tokenConfig = (getState) => {
 	return config;
 };
 
-// LOAD ALL INFO ABOUT USER
+// LOAD INFO ABOUT USER
 export const loadProfile = (username) => {
   return (dispatch) => {
 		dispatch({ type: 'LOAD_PROFILE_START' });
@@ -30,15 +30,4 @@ export const loadProfile = (username) => {
       dispatch({ type: 'LOAD_PROFILE_FAILURE', payload: err.res.data });
     });
   }
-};
-
-// SEARCH FOR USER BY USERNAME
-export const searchUsers = (username) => {
-	return (dispatch) => {
-		axios.get(`https://www.globaltraqsdev.com/profile/users?search=${username}`, config)
-		.then((res) => {
-			dispatch({ type: 'SEARCH_USER', payload: res.data });
-		})
-		.catch();
-	};
 };
