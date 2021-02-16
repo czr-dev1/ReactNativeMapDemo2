@@ -93,7 +93,7 @@ function LoginScreen(props) {
 				autoCorrec={false}
 				onChangeText={(val) => handleUsername(val)}
 			/>
-			{user.isValidUser ? null : (
+			{user.isValidUser || (user.username === '') ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>please enter your username</Text>
 				</Animatable.View>
@@ -108,7 +108,7 @@ function LoginScreen(props) {
 				secureTextEntry={user.secureTextEntry ? true : false}
 				onChangeText={(val) => handlePassword(val)}
 			/>
-			{user.isValidPassword ? null : (
+			{user.isValidPassword ? (user.passwrod === '') null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>password must be at least 8 characters long</Text>
 				</Animatable.View>
