@@ -29,7 +29,7 @@ function BadgeScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topIcon}>
-        <Feather name="target" size={48} color="black" />
+        <Feather name="target" size={48} color="#919191" />
       </View>
       <BadgeList />
     </SafeAreaView>
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: Dimensions.get('window').width,
+    backgroundColor: 'white'
   },
   topIcon: {
     alignSelf: 'center',
