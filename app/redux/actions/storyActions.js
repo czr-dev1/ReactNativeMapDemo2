@@ -25,3 +25,25 @@ export const loadStories = () => {
     })
   }
 }
+
+export const makeStoryPrivate = (id) => {
+  return (dispatch, getState) => { //Might have to remove getState
+    dispatch({ type: 'MAKE_STORY_PRIVATE_START'});
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+    const data = {
+      is_anonymous_pin: true
+    };
+    axios.patch(`${urlConfig(getState)}/api/pins/${id}/`, data, config)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: 'MAKE_STORY_PRIVATE_SUCCESS', payload: res.data});
+    }).catch((err) => {
+      console.log(err);
+      dispatch({ type: 'MAKE_STORY_PRIVATE_FAILURE', payload: err});
+    })
+  }
+}
