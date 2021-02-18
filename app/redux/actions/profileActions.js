@@ -8,7 +8,7 @@ export const urlConfig = (getState) => {
   }
 };
 
-export const loadProfile = () => {
+export const loadProfile = (username) => {
   return (dispatch, getState) => {
     dispatch({ type: 'LOAD_PROFILE_START'});
     const config = {
@@ -18,7 +18,7 @@ export const loadProfile = () => {
     };
 
     //username can be changed if you want
-    axios.get(`${urlConfig(getState)}/api/profile/users/?username=nate`, config)
+    axios.get(`${urlConfig(getState)}/api/profile/users/?username=${username}`, config)
     .then((res) => {
       dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data});
     }).catch((err) => {
