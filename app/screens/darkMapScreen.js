@@ -251,7 +251,8 @@ function MapScreen(props) {
                   onPress={() => {
                     props.navigation.navigate('Story', {
                       title: item.title,
-                      description: item.description
+                      description: item.description,
+                      id: item.id
                     });}}
                   />)
             })}

@@ -30,6 +30,7 @@ const Item = ({ item}, props) => {
         navigation.navigate('Story', {
           title: item.title,
           description: item.description,
+          id: item.id
         });
       }}
     >
@@ -69,6 +70,7 @@ const BookMark = ({ item }) => {
         navigation.navigate('Story', {
           title: item.title,
           description: item.description,
+          id: item.id
         });
       }}
     >
