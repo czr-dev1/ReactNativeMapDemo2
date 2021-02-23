@@ -33,6 +33,7 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import { Thumbnail } from "native-base";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -49,6 +50,11 @@ function MapScreen(props) {
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [selectedCategoryButton, setSelectedCategoryButton] = useState(0);
+  const [selectedCategoriesButtons, setSelectedCategoriesButtons] = useState(
+    options
+  );
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate =
     "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
@@ -179,17 +185,35 @@ function MapScreen(props) {
     setGotLocation(true);
   };
 
-  const AppButton = ({ onPress, title }) => (
+  /* const AppButton = ({ onPress, title }) => (
     <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
       <Text style={styles.appButtonText}>{title}</Text>
     </TouchableOpacity>
-  );
+  ); */
 
-  this.state = {
+  /* this.state = {
     radiusSize: "placeholder",
+  }; */
+
+  //Pink = personal, Green = Resources, Blue = Historical
+
+  const renderCategory = () => {
+    switch (selectedCategoryButton) {
+      case 1:
+        return; /* personal */
+      case 2:
+        return; /* resources */
+      case 3:
+        return; /* historical */
+    }
   };
 
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  const options = [
+    { value: "1", label: "Personal" },
+    { value: "2", label: "Resources" },
+    { value: "3", label: "Historical" },
+  ];
+  setSelectedCategoriesButtons(options);
 
   const Separator = () => <View style={styles.separator} />;
 
@@ -198,10 +222,12 @@ function MapScreen(props) {
       <View style={styles.containerStyle}>
         <SearchBar
           round
-          searchIcon={{ size: 24 }}
+          //searchIcon={{ size: 24 }}
+          searchIcon={false}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction("")}
-          placeholder="Type Here..."
+          lightTheme={true}
+          placeholder="search"
           value={search}
         />
 
@@ -211,24 +237,55 @@ function MapScreen(props) {
               flexDirection: "row",
               alignItems: "center",
               padding: 10,
-              backgroundColor: "#D3D3D3",
+              backgroundColor: "#FFFFFF",
             }}
           >
-            <View style={{ width: "25%", alignItems: "center" }}>
-              <Thumbnail
+            <View style={{ width: "15%", alignItems: "center" }}>
+              {/* <Thumbnail
                 source={{
                   uri:
                     "https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
                 }}
-              />
+              /> */}
+              <MaterialIcons name="sort" size={32} color="black" />
             </View>
 
             <View style={styles.screenContainer}>
-              <AppButton title="Personal" />
+              <TouchableOpacity
+                style={styles.HeaderButtonStyle}
+                activeOpacity={0.5}
+                //onPress={() => Alert.alert("Cannot press this one")}
+              >
+                <Text style={styles.TextStyle}> random </Text>
+              </TouchableOpacity>
 
-              <AppButton title="Historical" />
+              <TouchableOpacity
+                style={styles.HeaderButtonStyle}
+                activeOpacity={0.5}
+                //defaultValue={options}
+                //value={selectedCategoriesButtons}
+                onPress={() => setSelectedCategoryButton(1)}
+                //onPress={() => setSelectedCategoriesButtons()}
+                //onPress={() => options.values(1)}
+              >
+                <Text style={styles.TextStyle}> personal </Text>
+              </TouchableOpacity>
 
-              <AppButton title="Resources" />
+              <TouchableOpacity
+                style={styles.HeaderButtonStyle}
+                activeOpacity={0.5}
+                onPress={() => setSelectedButton(3)}
+              >
+                <Text style={styles.TextStyle}> historical </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.HeaderButtonStyle}
+                activeOpacity={0.5}
+                onPress={() => setSelectedButton(2)}
+              >
+                <Text style={styles.TextStyle}> resources </Text>
+              </TouchableOpacity>
             </View>
           </CollapseHeader>
           <CollapseBody
@@ -240,24 +297,32 @@ function MapScreen(props) {
               backgroundColor: "#EDEDED",
             }}
           >
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.SortTextStyle}> sort by </Text>
+            </View>
+
             <Separator />
             <View style={styles.buttons}>
-              <Button
-                color="black"
-                title="any"
-                onPress={() => Alert.alert("Cannot press this one")}
-              />
+              <TouchableOpacity
+                style={styles.OptionButtonStyle}
+                activeOpacity={0.5}
+                //onPress={() => Alert.alert("Cannot press this one")}
+              >
+                <Text style={styles.TextStyle}> any </Text>
+              </TouchableOpacity>
             </View>
             <Separator />
             <View style={styles.buttons}>
-              <Button
-                color="black"
-                title="relevance"
-                onPress={() => Alert.alert("Cannot press this one")}
-              />
+              <TouchableOpacity
+                style={styles.OptionButtonStyle}
+                activeOpacity={0.5}
+                //onPress={() => Alert.alert("Cannot press this one")}
+              >
+                <Text style={styles.TextStyle}> relevance </Text>
+              </TouchableOpacity>
             </View>
             <Separator />
-            <DropDownPicker
+            {/* <DropDownPicker
               items={[
                 {
                   label: "radius",
@@ -274,12 +339,17 @@ function MapScreen(props) {
                 },
               ]}
               defaultValue={this.state.radiusSize}
-              containerStyle={{ width: 150, height: 70 }}
-              style={{ backgroundColor: "#fafafa" }}
+              containerStyle={{
+                width: 140,
+                height: 60,
+                marginTop: 5,
+                marginBottom: 5,
+              }}
+              style={{ backgroundColor: "#FFFFFF" }}
               itemStyle={{
                 justifyContent: "flex-start",
               }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              dropDownStyle={{ backgroundColor: "#FFFFFF" }}
               onChangeItem={(item) =>
                 this.setState({
                   radiusSize: item.value,
@@ -304,12 +374,17 @@ function MapScreen(props) {
                 },
               ]}
               defaultValue={this.state.radiusSize}
-              containerStyle={{ width: 150, height: 70 }}
-              style={{ backgroundColor: "#fafafa" }}
+              containerStyle={{
+                width: 140,
+                height: 60,
+                marginTop: 5,
+                marginBottom: 5,
+              }}
+              style={{ backgroundColor: "#FFFFFF" }}
               itemStyle={{
                 justifyContent: "flex-start",
               }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              dropDownStyle={{ backgroundColor: "#FFFFFF" }}
               onChangeItem={(item) =>
                 this.setState({
                   radiusSize: item.value,
@@ -334,33 +409,40 @@ function MapScreen(props) {
                 },
               ]}
               defaultValue={this.state.radiusSize}
-              containerStyle={{ width: 150, height: 70 }}
-              style={{ backgroundColor: "#fafafa" }}
+              containerStyle={{
+                width: 140,
+                height: 60,
+                marginTop: 5,
+                marginBottom: 5,
+              }}
+              style={{ backgroundColor: "#FFFFFF" }}
               itemStyle={{
                 justifyContent: "flex-start",
               }}
-              dropDownStyle={{ backgroundColor: "#fafafa" }}
+              dropDownStyle={{ backgroundColor: "#FFFFFF" }}
               onChangeItem={(item) =>
                 this.setState({
                   radiusSize: item.value,
                 })
               }
-            />
+            /> */}
             <Separator />
             <View style={styles.fixToText}>
-              <Button
-                color="black"
-                title="Left button"
-                //onPress={() => Alert.alert("Left button pressed")}
-              />
+              <TouchableOpacity
+                style={styles.SubmitButtonStyle}
+                activeOpacity={0.5}
+                //onPress={this.ButtonClickCheckFunction}
+              >
+                <Text style={styles.TextStyle}> clear </Text>
+              </TouchableOpacity>
 
-              <Separator />
-
-              <Button
-                color="black"
-                title="Right button"
-                //onPress={() => Alert.alert("Right button pressed")}
-              />
+              <TouchableOpacity
+                style={styles.SubmitButtonStyle}
+                activeOpacity={0.5}
+                //onPress={this.ButtonClickCheckFunction}
+              >
+                <Text style={styles.TextStyle}> apply </Text>
+              </TouchableOpacity>
             </View>
           </CollapseBody>
         </Collapse>
@@ -482,12 +564,60 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  appButtonContainer: {
-    elevation: 8,
-    backgroundColor: "white",
+  fixToText: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "95%",
+  },
+  SubmitButtonStyle: {
+    marginTop: 10,
+    marginBottom: 20,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginLeft: 25,
+    marginRight: 25,
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    height: 50,
+    width: 80,
+  },
+  OptionButtonStyle: {
+    marginTop: 5,
+    marginBottom: 5,
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    height: 60,
+    width: 140,
+  },
+  HeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#D3D3D3",
+    height: 30,
+    width: 75,
+  },
+  TextStyle: {
+    color: "#000000",
+    textAlign: "center",
+  },
+  SortTextStyle: {
+    marginTop: 10,
+    marginLeft: 25,
+    fontSize: 20,
+    flex: 1,
   },
   appButtonText: {
     fontSize: 12,
