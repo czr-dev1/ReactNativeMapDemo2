@@ -18,10 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thearqive.thearqivemobile",
+      "buildNumber": "0.1.0"
     },
     "android": {
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.thearqive.thearqivemobile",
+      "versionCode": 1,
+      "permissions": ["INTERNET"]
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
