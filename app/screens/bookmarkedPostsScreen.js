@@ -43,7 +43,7 @@ function BookmarkedPostsScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get('https://globaltraqsdev.com/api/profile/users/?username=nate', config)
+    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
       setData(res.data[0])
     }).catch((err) => {
@@ -140,7 +140,8 @@ const mapStateToProps = (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+    user: state.authReducer.username,
   }
 }
 
