@@ -5,9 +5,9 @@
     "slug": "MapDemo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/color_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
