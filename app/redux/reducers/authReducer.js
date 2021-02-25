@@ -39,7 +39,21 @@ export default login = (state = initialState, action) => {
               guest_user: true
             });
         case 'SET_PRIVACY_MODE':
-            return Object.assign({}, state, {isPrivacyMode: action.isPrivacyMode})
+            return Object.assign({}, state, {isPrivacyMode: action.isPrivacyMode});
+        case 'USER_PROFILE_RELOADING':
+            return Object.assign({}, state, {
+              isLoading: true
+            });
+        case 'USER_PROFILE_RELOADED':
+            return Object.assign({}, state, {
+              extra: action.extra,
+              bio: action.extra[0].bio,
+              isLoading: false
+            });
+        case 'USER_PROFILE_RELOAD_FAIL':
+          return Object.assign({}, state, {
+            isLoading: false
+          });
         default:
             return state
     }

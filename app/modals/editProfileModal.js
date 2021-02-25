@@ -20,6 +20,7 @@ import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
+import { reloadUser } from '../redux/actions/auth';
 
 import colors from '../config/colors';
 
@@ -28,49 +29,33 @@ const PROFILE_PIC = require('../assets/profile_blank.png');
 function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
   const [bio, setBio] = useState(props.bio);
-  const [temp, setTemp] = useState(false);
+  const [privacy, setprivacy] = useState(props.is_profile_private);
 
   const onSubmit = (e) => {
-    if (email !== "") {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-        },
-      };
-      // Request Body
-      // const body = JSON.stringify({ username, email, password });
-      let data = JSON.stringify({ email: email, message: message });
-      axios
-        .post('https://globaltraqsdev.com/api/contactUs/', data, config)
-        .then((response) => {
-          setEmail("");
-          setMessage("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-       const config = {
-        headers: {
-          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-        },
-      };
-      setEmail(`Anonymous@anon.com`);
 
-      axios
-        .post('https://globaltraqsdev.com/api/contactUs/', {
-          email: email,
-          message: message,
-        }, config)
-        .then((response) => {
-          setEmail("");
-          setMessage("");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+    // Request Body
+    // const body = JSON.stringify({ username, email, password });
+    let data = {
+      bio: bio,
+      is_profile_private: privacy
+    };
+
+    axios
+      .patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
+      .then((response) => {
+        props.navigation.goBack();
+        props.reloadUser(props.username);
+      })
+      .catch((err) => {
+        console.log(err);
+      }
+    );
   };
 
   return (
@@ -82,7 +67,7 @@ function EditProfileModal(props) {
           }} style={{padding: 24,}} name="cross" size={28} color="#787878" />
           <Text style={{fontSize: 24, paddingTop: 24, color: '#787878', fontWeight: 'bold'}}>edit profile</Text>
           <Entypo onPress={() => {
-            props.navigation.goBack();
+            onSubmit();
           }} style={{padding: 24}} name="check" size={24} color="#787878" />
         </View>
         <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -96,8 +81,8 @@ function EditProfileModal(props) {
             </View>
             <View style={{}}>
               <Switch
-                value={temp}
-                onValueChange={(val) => setTemp(val)}
+                value={privacy}
+                onValueChange={(val) => setprivacy(val)}
                 activeText={'✔'}
                 inActiveText={'✖'}
                 backgroundActive={'#AAAAAA'}
@@ -171,8 +156,16 @@ const mapStateToProps = (state) => {
   return {
     username: state.authReducer.username,
     bio: state.authReducer.bio,
+    is_profile_private: state.authReducer.extra[0].is_profile_private,
+    id: state.authReducer.extra[0].id,
     profileImage: state.authReducer.extra[0].profileurl
   }
 }
 
-export default connect(mapStateToProps, null)(EditProfileModal);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    reloadUser: (username) => dispatch(reloadUser(username))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfileModal);

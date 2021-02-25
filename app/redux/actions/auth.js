@@ -42,6 +42,23 @@ export const login = ({username, password}) => {
   }
 };
 
+export const reloadUser = (username) => {
+  return (dispatch) => {
+    dispatch({type: 'USER_PROFILE_RELOADING'});
+    // NOTE: The slashes at the end of the URL play a BIG ROLE
+    // If you're going to copy the URL make sure to copy it exactly w/ w/o slashes
+    axios.get(`https://www.globaltraqsdev.com/api/profile/users/?username=${username}`, config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        dispatch({ type: 'USER_PROFILE_RELOADED', extra: res.data});
+      }).catch((err) => {
+        console.log(err);
+        dispatch({ type: 'USER_PROFILE_RELOAD_FAIL', payload: err});
+      });
+  }
+};
+
 export const logout = () => {
   return (dispatch, getState) => {
     axios.post('https://www.globaltraqsdev.com/auth/logout', null, tokenConfig(getState))
