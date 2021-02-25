@@ -49,10 +49,14 @@ function storyScreen(props) {
 
   return(
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{width: '100%', backgroundColor: (story.category === 1 ? "#e01784" : story.category == 2 ? "#00ce7d" : "#248dc1")}}>
-        <View style={{padding: '20%'}}></View>
+      <ScrollView style={{width: '100%',}}>
+        <View style={{paddingTop: '40%', backgroundColor: (story.category === 1 ? "#e01784" : story.category == 2 ? "#00ce7d" : "#248dc1")}}>
+          <View style={{backgroundColor: 'white', paddingTop: '10%', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
 
-        <View style={{width: '100%', paddingTop: '10%', paddingLeft: '10%', paddingRight: '10%', backgroundColor: 'white', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
+          </View>
+        </View>
+
+        <View style={{width: '100%', paddingLeft: '10%', paddingRight: '10%', backgroundColor: 'white'}}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <MaterialIcons style={{borderRadius: 50, padding: 5, backgroundColor: 'gray', transform: [{rotateY: '180deg'}]}} name="chat-bubble-outline" size={32} color="white" />

@@ -198,6 +198,7 @@ function StackScreen() {
         <Stack.Screen name='SupportUsModal' component={ SupportUsModal } />
         <Stack.Screen name='ContactUsModal' component={ ContactUsModal } />
         <Stack.Screen name='EditProfileModal' component={ EditProfileModal } />
+        <Stack.Screen name='userprofilemodal' component={ FollowingProfileScreen } />
       </Stack.Navigator>
     </NavigationContainer>
   );
