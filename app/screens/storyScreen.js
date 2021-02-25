@@ -19,6 +19,7 @@ import { connect } from 'react-redux';
 import { FontAwesome5, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Modal from 'react-native-modal';
+import RadioButtonRN from 'radio-buttons-react-native';
 
 import { loadStories } from '../redux/actions/storyActions';
 import colors from '../config/colors';
@@ -31,6 +32,8 @@ function storyScreen(props) {
   const [data, setData] = useState([]);
   const [userComment, setUserComment] = useState([]);
   const [showFlagModal, setShowFlagModal] = useState(false);
+  const [flagReason, setFlagReason] = useState('');
+  const [flagType, setFlagType] = useState(1);
   const [comments, setComments] = useState([{
       "commenter": 0,
       "description": "",
@@ -73,6 +76,37 @@ function storyScreen(props) {
   }
 
   const flagStory = () => {
+    let reportType = 0
+    switch (flagType.label) {
+      case 'suspicious or spam':
+        reportType = 1;
+        break;
+      case 'harassment':
+        reportType = 2;
+        break;
+      case 'other':
+        reportType = 3;
+        break;
+    }
+    let flagData = {
+      flagged: true,
+      flagger: props.userId,
+      pinId: id,
+      reason: flagReason,
+      reportType: reportType
+    };
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+    console.log(flagData);
+    axios.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
+      .then((res) => {
+        console.log(res.data);
+      }).catch((err) => {
+        console.log(err);
+      })
 
   }
 
@@ -97,6 +131,21 @@ function storyScreen(props) {
       })
   }
 
+  const modalOptions = [
+    {
+      label: 'suspicious or spam',
+      accessibilityLabel: 'suspicious or spam'
+    },
+    {
+      label: 'harassment',
+      accessibilityLabel: 'harassment'
+    },
+    {
+      label: 'other',
+      accessibilityLabel: 'other'
+    },
+  ]
+
 
   return(
     <SafeAreaView style={styles.container}>
@@ -107,14 +156,28 @@ function storyScreen(props) {
         onBackButtonPress={() => setShowFlagModal(false)}>
         <View style={{backgroundColor: 'white', borderRadius: 10, padding: 14}}>
           <View>
-            <Text>Hello World</Text>
+            <RadioButtonRN
+              data={modalOptions}
+              selectedBtn={(e) => setFlagType(e)}
+              icon={
+                <FontAwesome name="check" size={24} color="black" />
+              }
+              boxStyle={{borderWidth: 0}}
+            />
             <TextInput
               style={styles.box}
               placeholder='explain your reason'
-              multiline/>
+              multiline
+              onChangeText={(val) => {
+                setFlagReason(val);
+              }}/>
             <View style={{flexDirection: 'row-reverse'}}>
-              <TouchableOpacity style={{borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}>
-                <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>comment</Text>
+              <TouchableOpacity style={{borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}
+                onPress={() => {
+                  flagStory();
+                  setShowFlagModal(false);
+                }}>
+                <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>submit</Text>
               </TouchableOpacity>
             </View>
           </View>
