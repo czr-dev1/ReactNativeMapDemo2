@@ -1,6 +1,6 @@
 let initialState = {
 	token: '',
-	isAuthenticated: false,
+	isAuthenticated: null,
 	isLoggedIn: false,
 	isPrivacyMode: false,
 	isLoading: false,
@@ -17,6 +17,10 @@ export default auth = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				users: action.payload,
 			});
+		case 'LOGIN_USER_LOADING':
+			return Object.assign({}, state, {
+				isLoading: true
+			});
 		case 'LOGIN_USER_SUCCESS':
 			console.log('LOGIN SUCCESS!');
 			return Object.assign({}, state, {
@@ -27,8 +31,8 @@ export default auth = (state = initialState, action) => {
 			});
 		case 'LOGIN_USER_FAIL':
 			console.log('LOGIN FAILED!');
-			return Object.assign({}, state, { 
-				loginFail: true, 
+			return Object.assign({}, state, {
+				loginFail: true,
 			});
 		case 'LOGOUT_USER_SUCCESS':
 			console.log('LOGOUT SUCCESSFUL');
@@ -57,7 +61,7 @@ export default auth = (state = initialState, action) => {
 			});
 		case 'SET_PRIVACY_MODE':
 			return Object.assign({}, state, {
-				isPrivacyMode: action.isPrivacyMode
+				isPrivacyMode: action.isPrivacyMode,
 			});
 		default:
 			return state;

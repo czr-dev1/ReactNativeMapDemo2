@@ -43,18 +43,18 @@ function ProfileScreen(props) {
 				return <StoryList stories={props.userPost} />;
 		}
 	};
-	
+
 	const deleteConfirm = () => {
-		Alert.alert('', 'are you sure you want to delete your profile?',
+		Alert.alert('', 'are you sure you want to delete your profile?', 
 		[
 			{
 				text: 'cancel',
 				onPress: () => navigation.navigate('Profile'),
-				style: 'canccel'
+				style: 'cancel'
 			},
 			{
 				text: 'yes, delete my profile',
-				onPress: () => dispatch(userSelfDelete())
+				onPress: () => dispatch(userSelfDelete()),
 			}
 		])
 	};
@@ -62,12 +62,19 @@ function ProfileScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.profileBar}>
+				{/*
 				<View style={styles.nicknameContainer}>
 					<Text style={styles.nicknameText}>{props.user}</Text>
 				</View>
+				*/}
 				<View style={styles.profileImageContainer}>
 					<Image style={styles.profileImage} source={PROFILE_PIC} />
-					<FontAwesome5 style={{ marginLeft: '-7%' }} name='pencil-alt' size={24} color='black' />
+					<FontAwesome5 
+						style={{ marginLeft: '-3%' }} 
+						name='pencil-alt' 
+						size={24} 
+						color='black' 
+					/>
 				</View>
 				<View style={styles.bioContainter}>
 					<Text style={{ fontWeight: 'bold', color: 'grey' }}>bio</Text>
@@ -106,10 +113,7 @@ function ProfileScreen(props) {
 			</View>
 			<View style={styles.storyList}>{renderStoriesByType()}</View>
 
-			<Button 
-				title='delete account'
-				onPress={() => deleteConfirm() }
-			/>
+			<Button title='delete account' onPress={() => deleteConfirm()} />
 		</SafeAreaView>
 	);
 }
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
 		width: Dimensions.get('window').width,
 		paddingLeft: '10%',
 		paddingRight: '10%',
-		height: '25%',
+		height: '30%',
 	},
 	nicknameContainer: {
 		alignItems: 'center',
@@ -150,8 +154,7 @@ const styles = StyleSheet.create({
 		width: '30%',
 	},
 	bioContainter: {
-		paddingTop: '3%',
-		paddingBottom: '10%',
+		paddingTop: '5%',
 	},
 	storyButtons: {
 		width: Dimensions.get('window').width,
@@ -178,25 +181,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#eae6e5',
 		width: Dimensions.get('window').width,
 		height: '65%',
-	},
-	navButton: {
-		flexGrow: 1,
-		textAlign: 'center',
-	},
-	input: {
-		borderWidth: 1,
-		borderColor: '#ddd',
-		borderRadius: 6,
-		padding: 10,
-		fontSize: 10,
-		width: '80%',
-	},
-	requiredText: {
-		color: 'red',
-	},
-	logoutBtn: {
-		fontSize: 18,
-		paddingTop: 20
 	},
 });
 

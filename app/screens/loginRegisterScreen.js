@@ -17,7 +17,7 @@ function LoginRegisterOption() {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/thearqive_logo.png')} />
+			<Image style={styles.logo} source={require('../assets/color_splash.png')} />
 			<View style={styles.loginBtn}>
 				<Button
 					title='log in'
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		marginTop: 60,
-		color: '#A9A9A9',
+		color: '#2380B0',
 	},
 	loginBtn: {
 		fontSize: 16,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 		marginTop: 50,
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#DCDCDC',
+		backgroundColor: '#4D4185',
 	},
 	registerBtn: {
 		fontSize: 16,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		marginBottom: 250,
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#DCDCDC',
+		backgroundColor: '#4D4185',
 	},
 });
 

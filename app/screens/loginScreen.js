@@ -74,7 +74,7 @@ function LoginScreen(props) {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/thearqive_bubbles.png')} />
+			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
 			<Text style={styles.title}>log in</Text>
 
 			{submitted && failed ? (
@@ -82,8 +82,7 @@ function LoginScreen(props) {
 					<Text style={styles.error}>incorrect username and/or password!</Text>
 					<Text style={styles.error}>please try again</Text>
 				</View>
-			) : null
-			}
+			) : null}
 
 			<TextInput
 				style={styles.input}
@@ -93,7 +92,7 @@ function LoginScreen(props) {
 				autoCorrec={false}
 				onChangeText={(val) => handleUsername(val)}
 			/>
-			{user.isValidUser || (user.username === '') ? null : (
+			{user.isValidUser || user.username === '' ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>please enter your username</Text>
 				</Animatable.View>
@@ -108,7 +107,7 @@ function LoginScreen(props) {
 				secureTextEntry={user.secureTextEntry ? true : false}
 				onChangeText={(val) => handlePassword(val)}
 			/>
-			{user.isValidPassword ? (user.passwrod === '') null : (
+			{user.isValidPassword || user.password === '' ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>password must be at least 8 characters long</Text>
 				</Animatable.View>
@@ -118,14 +117,14 @@ function LoginScreen(props) {
 				<Text style={{ color: 'gray' }}>forgot your log in details? get help </Text>
 				<TouchableOpacity
 					onPress={() => {
-						navigation.navigate('');
+						navigation.navigate('ForgotPassword');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#696969' }}>signing in</Text>
+					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>signing in</Text>
 				</TouchableOpacity>
 			</View>
 
-			<View style={styles.loginBtn}>
+			<View style={styles.submitBtn}>
 				<Button
 					title='log in'
 					color='white'
@@ -143,7 +142,7 @@ function LoginScreen(props) {
 						navigation.navigate('Register');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#696969' }}>here</Text>
+					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>here</Text>
 				</TouchableOpacity>
 			</View>
 
@@ -168,7 +167,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
+		marginTop: 20,
 		marginBottom: 10,
+		height: 100,
+		width: 100,
 	},
 	title: {
 		fontSize: 24,
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 15,
 		borderWidth: 2,
 		borderRadius: 5,
-		borderColor: '#DCDCDC',
+		borderColor: '#4D4185',
 		marginTop: 10,
 		marginBottom: 10,
 	},
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: 'gray',
+		color: '#2380B0',
 		marginTop: 190,
 	},
 	error: {
@@ -208,12 +210,12 @@ const styles = StyleSheet.create({
 	errorMsg: {
 		color: 'red',
 	},
-	loginBtn: {
+	submitBtn: {
 		fontSize: 18,
 		width: '85%',
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#DCDCDC',
+		backgroundColor: '#4D4185',
 		marginTop: 50,
 		marginBottom: 60,
 	},

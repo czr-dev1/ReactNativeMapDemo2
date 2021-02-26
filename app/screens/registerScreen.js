@@ -22,6 +22,7 @@ import colors from '../config/colors';
 function RegisterScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
+	
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
 
@@ -35,7 +36,6 @@ function RegisterScreen(props) {
 		isValidPassword: true,
 		isValidConfirmPassword: true,
 		secureTextEntry: true,
-		errors: {},
 	});
 
 	const setUsername = (val) => {
@@ -130,7 +130,7 @@ function RegisterScreen(props) {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/thearqive_bubbles.png')} />
+			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
 			<Text style={styles.title}>register</Text>
 
 			{submitted && failed ? (
@@ -167,7 +167,7 @@ function RegisterScreen(props) {
 					onChangeText={(val) => setEmail(val)}
 				/>
 			</View>
-			{user.isValidEmail || (user.email === '') ? null : (
+			{user.isValidEmail || user.email === '' ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>please enter valid email</Text>
 				</Animatable.View>
@@ -186,11 +186,10 @@ function RegisterScreen(props) {
 					onEndEditing={(val) => setConfirmPassword(val)}
 				/>
 			</View>
-			{user.isValidPassword || (user.password === '') ? null : (
+			{user.isValidPassword || user.password === '' ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>
-						must be at least 8 characters long with at least one uppercase, number, and special
-						character
+						must be at least 8 characters long with at least 1 uppercase letter, 1 number, and 1 special character
 					</Text>
 				</Animatable.View>
 			)}
@@ -215,12 +214,12 @@ function RegisterScreen(props) {
 					)}
 				</TouchableOpacity>
 			</View>
-			{user.isValidConfirmPassword || (user.confirmPassword === '') ? null : (
+			{user.isValidConfirmPassword || user.confirmPassword === '' ? null : (
 				<Animatable.View>
 					<Text style={styles.errorMsg}>passwords don't match, please re-enter</Text>
 				</Animatable.View>
 			)}
-			<View style={styles.registerBtn}>
+			<View style={styles.submitBtn}>
 				<Button
 					title='register'
 					color='white'
@@ -238,7 +237,7 @@ function RegisterScreen(props) {
 						navigation.navigate('Login');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#696969' }}>here</Text>
+					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>here</Text>
 				</TouchableOpacity>
 			</View>
 			<View>
@@ -262,12 +261,14 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
-		alignContent: 'center',
-		marginTop: 10,
+		marginTop: 20,
 		marginBottom: 10,
+		height: 100,
+		width: 100,
 	},
 	title: {
 		fontSize: 24,
+		fontWeight: 'bold',
 		color: '#A9A9A9',
 		marginBottom: 30,
 	},
@@ -284,13 +285,13 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		paddingBottom: 5,
 		borderBottomWidth: 2,
-		borderColor: '#DCDCDC',
+		borderColor: '#4D4185',
 		marginTop: 10,
 		marginBottom: 20,
 	},
 	text: {
 		fontSize: 14,
-		color: 'gray',
+		color: '#2380B0',
 		marginTop: 120,
 	},
 	error: {
@@ -303,12 +304,12 @@ const styles = StyleSheet.create({
 		color: 'red',
 		padding: 5,
 	},
-	registerBtn: {
+	submitBtn: {
 		fontSize: 16,
 		width: '85%',
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#DCDCDC',
+		backgroundColor: '#4D4185',
 		marginTop: 75,
 		marginBottom: 60,
 	},

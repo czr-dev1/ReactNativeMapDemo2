@@ -2,7 +2,7 @@ let initialState = {
 	profileData: [],
 	isLoading: true,
 	error: null,
-	users: '',
+	user: '',
 };
 
 export default profile = (state = initialState, action) => {

@@ -20,6 +20,21 @@ export default stories = (state = initialState, action) => {
 				storyList: action.payload, 
 				isLoading: false 
 			});
+		case 'MAKE_STORY_PRIVATE_START':
+			console.log('start making story private');
+			return Object.assign({}, state, {
+				isLoading: true
+			});
+		case 'MAKE_STORY_PRIVATE_SUCCESS':
+			console.log('successfully made story private');
+			return Object.assign({}, state, {
+				isLoading: false
+			});
+		case 'MAKE_STORY_PRIVATE_FAILURE': 
+			console.log('failed to make story pricate');
+			return Object.assign({}, state, {
+				isLoading: false
+			});
 		default:
 			return state;
 	}

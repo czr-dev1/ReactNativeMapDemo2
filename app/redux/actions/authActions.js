@@ -21,9 +21,9 @@ export const getUsers = () => {
 	return (dispatch) => {
 		axios.get(`https://www.globaltraqsdev.com/auth/users`, config)
 		.then((res) => {
-			dispatch({ type: 'GET_USERS', payload: res.data});
+			dispatch({ type: 'GET_USERS', payload: res.data });
 		})
-		.catch ()
+		.catch()
 	}
 }
 
@@ -85,7 +85,7 @@ export const register = ({ username, email, confirmPassword }) => {
 // USER SELF DELETES ACCOUNT
 export const userSelfDelete = () => {
 	return (dispatch, getState) => {
-		axios.delete(`https://www.globaltraqsdev.com/api/auth/user`,  tokenConfig(getState))
+		axios.delete(`https://www.globaltraqsdev.com/api/auth/user`, tokenConfig(getState))
 		.then((res) => {
 			dispatch({ type: 'USER_SELF_DELETE', payload: res.data });
 		})

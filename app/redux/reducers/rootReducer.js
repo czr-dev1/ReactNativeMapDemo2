@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import stories from './storyReducer';
-import login from './authReducer';
+import auth from './authReducer';
 import profile from './profileReducer';
-import message from './messageReducer';
+import message from './messageReducers';
 
 const rootReducer = combineReducers({
   storyReducer: stories,

@@ -15,13 +15,21 @@ export const tokenConfig = (getState) => {
 	return config;
 };
 
-// LOAD INFO ABOUT USER
+export const urlConfig = (getState) => {
+	if (getState.authReducer().isPrivacyMode) {
+		return 'https://globaltraqsdev.com';
+	} else {
+		return 'http://192.81.130.223:8001';
+	}
+};
+
+// LOAD ALL INFO ABOUT USER
 export const loadProfile = (username) => {
-  return (dispatch) => {
-		dispatch({ type: 'LOAD_PROFILE_START' });
-		
+  return (dispatch, getState) => {
+    dispatch({ type: 'LOAD_PROFILE_START' });
+
     //username can be changed if you want
-    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${username}`, config)
+    axios.get(`${urlConfig(getState)}/api/profile/users/?username=${username}`, config)
     .then((res) => {
       dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
     })

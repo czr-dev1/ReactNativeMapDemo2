@@ -74,14 +74,14 @@ function DarkMapScreen(props) {
 				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
 			},
 		})
-			.then((response) => response.json())
-			.then((responseJson) => {
-				setFilteredDataSource(responseJson);
-				setMasterDataSource(responseJson);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		.then((response) => response.json())
+		.then((responseJson) => {
+			setFilteredDataSource(responseJson);
+			setMasterDataSource(responseJson);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
 	};
 
 	const searchFilterFunction = (text) => {
