@@ -37,6 +37,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
+import StoryList from "../components/storyList";
 
 const PERSONAL_PIN = require("../assets/personal_128x128.png");
 const HISTORICAL_PIN = require("../assets/historical_128x128.png");
@@ -51,10 +52,6 @@ function MapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const [selectedCategoryButton, setSelectedCategoryButton] = useState(0);
-  const [selectedCategoriesButtons, setSelectedCategoriesButtons] = useState(
-    options
-  );
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate =
     "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
@@ -195,25 +192,35 @@ function MapScreen(props) {
     radiusSize: "placeholder",
   }; */
 
-  //Pink = personal, Green = Resources, Blue = Historical
+  //Pink = personal(1), Green = Resources(2), Blue = Historical(3)
 
-  const renderCategory = () => {
-    switch (selectedCategoryButton) {
-      case 1:
-        return; /* personal */
-      case 2:
-        return; /* resources */
-      case 3:
-        return; /* historical */
-    }
+  const renderPersonal = () => {
+    return props.stories.map((item, i) => {
+      //console.log(item.category);
+      if (item.category == 1) {
+        console.log(item.title);
+      }
+    });
+    //console.log(filteredDataSource);
   };
-
-  const options = [
-    { value: "1", label: "Personal" },
-    { value: "2", label: "Resources" },
-    { value: "3", label: "Historical" },
-  ];
-  setSelectedCategoriesButtons(options);
+  const renderResources = () => {
+    return props.stories.map((item, i) => {
+      //console.log(item.category);
+      if (item.category == 2) {
+        console.log(item.title);
+      }
+    });
+    //console.log(filteredDataSource);
+  };
+  const renderHistorical = () => {
+    return props.stories.map((item, i) => {
+      //console.log(item.category);
+      if (item.category == 3) {
+        console.log(item.title);
+      }
+    });
+    //console.log(filteredDataSource);
+  };
 
   const Separator = () => <View style={styles.separator} />;
 
@@ -262,11 +269,8 @@ function MapScreen(props) {
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                //defaultValue={options}
-                //value={selectedCategoriesButtons}
-                onPress={() => setSelectedCategoryButton(1)}
-                //onPress={() => setSelectedCategoriesButtons()}
-                //onPress={() => options.values(1)}
+                //onPress={(() => setSelectedCategoryButton(1))}
+                onPress={() => renderPersonal()}
               >
                 <Text style={styles.TextStyle}> personal </Text>
               </TouchableOpacity>
@@ -274,7 +278,7 @@ function MapScreen(props) {
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                onPress={() => setSelectedButton(3)}
+                onPress={() => renderHistorical()}
               >
                 <Text style={styles.TextStyle}> historical </Text>
               </TouchableOpacity>
@@ -282,7 +286,7 @@ function MapScreen(props) {
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                onPress={() => setSelectedButton(2)}
+                onPress={() => renderResources()}
               >
                 <Text style={styles.TextStyle}> resources </Text>
               </TouchableOpacity>
