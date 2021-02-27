@@ -20,6 +20,7 @@ import { FontAwesome5, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Modal from 'react-native-modal';
 import RadioButtonRN from 'radio-buttons-react-native';
+import { WebView } from 'react-native-webview';
 
 import { loadStories } from '../redux/actions/storyActions';
 import colors from '../config/colors';
@@ -184,7 +185,9 @@ function storyScreen(props) {
         </View>
 
       </Modal>
-      <ScrollView style={{width: '100%',}} keyboardShouldPersistTaps='handled'>
+      <ScrollView style={{width: '100%',}}
+        keyboardShouldPersistTaps='handled'
+        showsVerticalScrollIndicator={false}>
 
         <View style={{paddingTop: '40%', backgroundColor: (story.category === 1 ? "#e01784" : story.category == 2 ? "#00ce7d" : "#248dc1")}}>
           <View style={{backgroundColor: 'white', paddingTop: '10%', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
