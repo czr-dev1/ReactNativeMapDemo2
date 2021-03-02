@@ -40,7 +40,6 @@ export const login = ({ username, password }) => {
 		.then((res) => {
 			dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data });
 			dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
-			console.log(res.data);
 		})
 		.catch((err) => {
 			dispatch({ type: 'LOGIN_USER_FAIL', payload: err.response.data });
