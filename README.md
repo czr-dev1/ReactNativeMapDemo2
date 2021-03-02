@@ -7,8 +7,6 @@ Requirements:
 
 `Git` 
 
-`Watchman (for macOS users)`
-
 Inside command line tool:
 
 `npm install --gloabl expo-cli`
@@ -26,7 +24,7 @@ Navigate to project directory:
 Start Metro Bundler
 First enter `npm install`
 
-Then `expo start`
+Then `expo start` or `npm start`
 
 ## Other Info
 `app` folder contains important files
