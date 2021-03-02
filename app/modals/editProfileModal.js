@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import {
 	Button,
 	Dimensions,
@@ -15,10 +14,12 @@ import {
 	TouchableWithoutFeedback,
 	View,
 } from 'react-native';
+import axios from 'axios';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
-import { Switch } from 'react-native-switch';
+import { FontAwesome5, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { Switch } from 'react-native-switch';
+import { reloadUser } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
@@ -27,53 +28,30 @@ const PROFILE_PIC = require('../assets/profile_blank.png');
 function EditProfileModal(props) {
 	const [username, setUsername] = useState(props.username);
 	const [bio, setBio] = useState(props.bio);
-	const [temp, setTemp] = useState(false);
+	const [privacy, setprivacy] = useState(props.is_profile_private);
 
 	const onSubmit = (e) => {
-		if (email !== '') {
-			const config = {
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-				},
-			};
-			// Request Body
-			// const body = JSON.stringify({ username, email, password });
-			let data = JSON.stringify({ email: email, message: message });
-			axios
-				.post('https://globaltraqsdev.com/api/contactUs/', data, config)
-				.then((response) => {
-					setEmail('');
-					setMessage('');
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		} else {
-			const config = {
-				headers: {
-					'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-				},
-			};
-			setEmail(`Anonymous@anon.com`);
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			},
+		};
+		// Request Body
+		// const body = JSON.stringify({ username, email, password });
+		let data = {
+			bio: bio,
+			is_profile_private: privacy,
+		};
 
-			axios
-				.post(
-					'https://globaltraqsdev.com/api/contactUs/',
-					{
-						email: email,
-						message: message,
-					},
-					config
-				)
-				.then((response) => {
-					setEmail('');
-					setMessage('');
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		}
+		axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
+		.then((response) => {
+			props.navigation.goBack();
+			props.reloadUser(props.username);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 	};
 
 	return (
@@ -101,7 +79,7 @@ function EditProfileModal(props) {
 					</Text>
 					<Entypo
 						onPress={() => {
-							props.navigation.goBack();
+							onSubmit();
 						}}
 						style={{ padding: 24 }}
 						name='check'
@@ -134,8 +112,8 @@ function EditProfileModal(props) {
 						</View>
 						<View style={{}}>
 							<Switch
-								value={temp}
-								onValueChange={(val) => setTemp(val)}
+								value={privacy}
+								onValueChange={(val) => setprivacy(val)}
 								activeText={'✔'}
 								inActiveText={'✖'}
 								backgroundActive={'#AAAAAA'}
@@ -221,8 +199,16 @@ const mapStateToProps = (state) => {
 	return {
 		username: state.authReducer.username,
 		bio: state.authReducer.bio,
+		is_profile_private: state.authReducer.extra[0].is_profile_private,
+		id: state.authReducer.extra[0].id,
 		profileImage: state.authReducer.extra[0].profileurl,
 	};
 };
 
-export default connect(mapStateToProps, null)(EditProfileModal);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		reloadUser: (username) => dispatch(reloadUser(username)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfileModal);

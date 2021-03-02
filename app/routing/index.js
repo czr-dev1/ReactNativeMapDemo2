@@ -6,7 +6,6 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import DarkMapScreen from '../screens/darkMapScreen';
@@ -33,6 +32,7 @@ import ContactUsModal from '../modals/contactUsModal';
 import EditProfileModal from '../modals/editProfileModal';
 import HelpAndHotlineModal from '../modals/helpAndHotlineModal';
 import SupportUsModal from '../modals/supportUsModal';
+import colors from '../config/colors';
 
 const AnonMapStack = createStackNavigator();
 function AnonMapStackScreen() {
@@ -222,11 +222,12 @@ const AppStack = createStackNavigator();
 function AppStackScreen() {
 	return (
 		<AppStack.Navigator screenOptions={{ headerShown: false }}>
-			<AppStack.Screen name='Home' component={AppTabScreen} />
-			<AppStack.Screen name='HelpAndHotlineModal' component={HelpAndHotlineModal} />
-			<AppStack.Screen name='SupportUsModal' component={SupportUsModal} />
-			<AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
-			<AppStack.Screen name='EditProfileModal' component={EditProfileModal} />
+			<AppStack.Screen name='Home' component={ AppTabScreen } />
+			<AppStack.Screen name='HelpAndHotlineModal' component={ HelpAndHotlineModal } />
+			<AppStack.Screen name='SupportUsModal' component={ SupportUsModal } />
+			<AppStack.Screen name='ContactUsModal' component={ ContactUsModal } />
+			<AppStack.Screen name='EditProfileModal' component={ EditProfileModal } />
+			<AppStack.Screen name='UserProfileModal' component={ FollowingProfileScreen } />
 		</AppStack.Navigator>
 	);
 }
@@ -248,8 +249,9 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
 	container: {
+		backgroundColor: 'black',
 		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-		marginTop: 20,
+		paddingTop: 33
 	},
 });
 

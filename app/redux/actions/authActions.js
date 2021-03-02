@@ -40,6 +40,7 @@ export const login = ({ username, password }) => {
 		.then((res) => {
 			dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data });
 			dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
+			console.log(res.data);
 		})
 		.catch((err) => {
 			dispatch({ type: 'LOGIN_USER_FAIL', payload: err.response.data });
@@ -57,6 +58,25 @@ export const logout = () => {
 		.catch((err) => {
 			dispatch({ type: 'LOGOUT_FAIL' });
 			dispatch(returnErrors(err.response.data, err.response.status));
+		})
+	}
+}
+
+// RELOAD USER'S PROFILE
+export const reloadUser = (username) => {
+	return (dispatch) => {
+		dispatch({ type: 'USER_PROFILE_RELOADING' });
+		// NOTE: The slashes at the end of the URL play a BIG ROLE
+		// If you're going to copy the URL make sure to copy it exactly w/ w/o slashes
+		axios.get(`https://www.globaltraqsdev.com/api/profile/users/?username=${username}`, config)
+		.then((res) => {
+			console.log(res);
+			console.log(res.data);
+			dispatch({ type: 'USER_PROFILE_RELOADED', extra: res.data });
+		})
+		.catch((err) => {
+			console.log(err);
+			dispatch({ type: 'USER_PROFILE_RELOAD_FAIL', payload: err });
 		})
 	}
 }
@@ -95,6 +115,7 @@ export const userSelfDelete = () => {
 	}
 }
 
+// CHANGES USER'S PRIVACY STATUS
 export const setPrivacyMode = (setting) => {
 	return (dispatch) => {
 		dispatch({ type: 'SET_PRIVACY_MODE', isPrivacyMode: setting });

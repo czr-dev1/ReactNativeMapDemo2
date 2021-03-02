@@ -256,7 +256,7 @@ function LightMapScreen(props) {
 
 const styles = StyleSheet.create({
 	containerStyle: {
-		backgroundColor: 'white',
+		backgroundColor: 'black',
 		alignItems: 'stretch',
 	},
 	itemStyle: {
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		backgroundColor: colors.black,
+		backgroundColor: 'black',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},

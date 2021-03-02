@@ -19,7 +19,7 @@ export default auth = (state = initialState, action) => {
 			});
 		case 'LOGIN_USER_LOADING':
 			return Object.assign({}, state, {
-				isLoading: true
+				isLoading: true,
 			});
 		case 'LOGIN_USER_SUCCESS':
 			console.log('LOGIN SUCCESS!');
@@ -57,7 +57,21 @@ export default auth = (state = initialState, action) => {
 		case 'USER_SELF_DELETE':
 			console.log('ACCOUNT DELETED');
 			return Object.assign({}, state, {
-				token: null
+				token: null,
+			});
+		case 'USER_PROFILE_RELOADING':
+			return Object.assign({}, state, {
+				isLoading: true,
+			});
+		case 'USER_PROFILE_RELOADED':
+			return Object.assign({}, state, {
+				extra: action.extra,
+				bio: action.extra[0].bio,
+				isLoading: false,
+			});
+		case 'USER_PROFILE_RELOAD_FAIL':
+			return Object.assign({}, state, {
+				isLoading: false,
 			});
 		case 'SET_PRIVACY_MODE':
 			return Object.assign({}, state, {

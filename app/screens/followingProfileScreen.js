@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { loadStories } from '../redux/actions/storyActions';
 import axios from 'axios';
+
 //Icons
-import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 import colors from '../config/colors';
+
 //profile picture
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
@@ -30,6 +30,7 @@ function FollowingProfileScreen(props) {
 	const [selectedButton, setSelectedButton] = useState(0);
 	const [isLoading, setLoading] = useState(true);
 	const [data, setData] = useState([]);
+
 	const renderStoriesByType = () => {
 		switch (selectedButton) {
 			case 1:
@@ -51,15 +52,14 @@ function FollowingProfileScreen(props) {
 		};
 
 		//username can be changed if you want
-		axios
-			.get(`https://globaltraqsdev.com/api/profile/users/?username=${user}`, config)
-			.then((res) => {
-				setData(res.data[0]);
-				setLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${user}`, config)
+		.then((res) => {
+			setData(res.data[0]);
+			setLoading(false);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 	};
 
 	if (isLoading) {
@@ -175,21 +175,6 @@ const styles = StyleSheet.create({
 		backgroundColor: '#eae6e5',
 		width: Dimensions.get('window').width,
 		height: '80%',
-	},
-	navButton: {
-		flexGrow: 1,
-		textAlign: 'center',
-	},
-	input: {
-		borderWidth: 1,
-		borderColor: '#ddd',
-		borderRadius: 6,
-		padding: 10,
-		fontSize: 10,
-		width: '80%',
-	},
-	requiredText: {
-		color: 'red',
 	},
 });
 
