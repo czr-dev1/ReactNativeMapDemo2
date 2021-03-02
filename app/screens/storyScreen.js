@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Platform, 
-  SafeAreaView, 
-  StatusBar, 
-  StyleSheet, 
-  Text 
+import {
+	Dimensions,
+	Platform,
+	SafeAreaView,
+	ScrollView,
+	StatusBar,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	View,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { FontAwesome5, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Modal from 'react-native-modal';
 import RadioButtonRN from 'radio-buttons-react-native';
-import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 
+import { loadStories } from '../redux/actions/storyActions';
 import colors from '../config/colors';
 
-const PROFILE_PIC = require('../assets/profile_blank.png');
-
-const config = {
-	headers: {
-		'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-	},
-};
-
-function StoryScreen(props) {
+function storyScreen(props) {
 	const { title, description, id } = props.route.params;
 	const [story, setStory] = useState({});
 	const [isLoadingProfile, setLoadingProfile] = useState(true);
@@ -57,15 +57,22 @@ function StoryScreen(props) {
 	};
 
 	const getProfile = async () => {
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			},
+		};
+
 		//username can be changed if you want
-		axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.username}`, config)
-		.then((res) => {
-			setData(res.data[0]);
-			setLoadingProfile(false);
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+		axios
+			.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.username}`, config)
+			.then((res) => {
+				setData(res.data[0]);
+				setLoadingProfile(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const flagStory = () => {
@@ -81,7 +88,6 @@ function StoryScreen(props) {
 				reportType = 3;
 				break;
 		}
-
 		let flagData = {
 			flagged: true,
 			flagger: props.userId,
@@ -89,33 +95,43 @@ function StoryScreen(props) {
 			reason: flagReason,
 			reportType: reportType,
 		};
-
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			},
+		};
 		console.log(flagData);
-		axios.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
-		.then((res) => {
-			console.log(res.data);
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+		axios
+			.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
+			.then((res) => {
+				console.log(res.data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const comment = () => {
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			},
+		};
 		let data = {
 			commenter: props.userId,
 			description: userComment,
 			is_anonymous_pin: props.isPrivacyMode,
 			pin: id,
 		};
-
-		axios.post('https://globaltraqsdev.com/api/commentStory/', data, config)
-		.then((res) => {
-			props.loadStories();
-			console.log('posted');
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+		axios
+			.post('https://globaltraqsdev.com/api/commentStory/', data, config)
+			.then((res) => {
+				props.loadStories();
+				console.log('posted');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const modalOptions = [
@@ -366,6 +382,36 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
+	box: {
+		borderWidth: 2,
+		borderColor: '#ddd',
+		borderRadius: 14,
+		paddingTop: 18,
+		paddingBottom: 18,
+		paddingRight: 32,
+		paddingLeft: 32,
+		margin: 6,
+		alignItems: 'center',
+	},
 });
 
-export default StoryScreen;
+const mapStateToProps = (state) => {
+	let userId = state.authReducer.isLoggedIn === true ? state.authReducer.extra[0].id : -1;
+	// causes issues if you're logged out, logged out users cannot set privacy settings
+	return {
+		isLoading: state.storyReducer.isLoading,
+		stories: state.storyReducer.storyList,
+		error: state.storyReducer.error,
+		isLoggedIn: state.authReducer.isLoggedIn,
+		isPrivacyMode: state.authReducer.isPrivacyMode,
+		userId: userId,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loadStories: () => dispatch(loadStories()),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(storyScreen);
