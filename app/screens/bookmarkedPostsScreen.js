@@ -18,16 +18,21 @@ function BookmarkedPostsScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
+  
   const renderStoriesByType = () => {
+    if (props.user_upvoted_stories === undefined) {
+      return <StoryList isBookMark={true} stories={props.user_upvoted_stories} />
+    }
+
     switch (selectedButton){
       case 1:
-        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "1")} />
+        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "1")} />
       case 2:
-        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "2")} />
+        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "2")} />
       case 3:
-        return <StoryList isBookMark={true} stories={data.user_upvoted_stories.filter(item => item.category === "3")} />
+        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "3")} />
       default:
-        return <StoryList isBookMark={true} stories={data.user_upvoted_stories} />
+        return <StoryList isBookMark={true} stories={props.user_upvoted_stories} />
       }
   }
 
@@ -45,6 +50,7 @@ function BookmarkedPostsScreen(props) {
     //username can be changed if you want
     axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
+      console.log(res.data);
       setData(res.data[0])
     }).catch((err) => {
       console.log(err);
@@ -137,11 +143,12 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+  console.log(state.authReducer);
   return {
     isLoading: state.storyReducer.isLoading,
-    stories: state.storyReducer.storyList,
     error: state.storyReducer.error,
     user: state.authReducer.username,
+    stories: state.authReducer.user.user_upvoted_stories
   }
 }
 
