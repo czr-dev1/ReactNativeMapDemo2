@@ -1,7 +1,12 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View,
-  FlatList, ScrollView, Dimensions } from 'react-native';
-import { Card, ListenItem, Button, Icon } from 'react-native-elements';
+import {
+	Dimensions,
+	FlatList,
+	StyleSheet,
+	TouchableWithoutFeedback,
+	View,
+} from 'react-native';
+import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 import colors from '../config/colors';

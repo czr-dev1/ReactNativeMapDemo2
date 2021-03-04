@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
   Dimensions,
+  Image,
+  Linking,
+  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
-  Picker,
-  FlatList,
-  ScrollView,
-  Image,
-  Linking
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5 } from '@expo/vector-icons';

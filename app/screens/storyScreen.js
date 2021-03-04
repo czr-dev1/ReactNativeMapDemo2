@@ -50,6 +50,7 @@ function storyScreen(props) {
   }, []);
 
   const getStory = () => {
+    console.log(id);
     let tempStory = props.stories.filter(i => i.id === id);
     console.log(tempStory[0]);
     tempStory[0].commentstory.map((item, i) => {
@@ -289,7 +290,6 @@ function storyScreen(props) {
       </ScrollView>
     </SafeAreaView>
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -345,7 +345,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  let userId = state.authReducer.isLoggedIn === true ? state.authReducer.extra[0].id : -1;
+  console.log(state.authReducer);
+  let userId = state.authReducer.isLoggedIn === true ? state.authReducer.user.id : -1;
   // causes issues if you're logged out, logged out users cannot set privacy settings
   return {
     isLoading: state. storyReducer.isLoading,

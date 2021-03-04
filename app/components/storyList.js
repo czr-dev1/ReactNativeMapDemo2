@@ -1,22 +1,22 @@
-import React, {useState}from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   FlatList,
   StyleSheet,
+  Text,
   TouchableWithoutFeedback,
   View,
-  Text,
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-switch';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { makeStoryPrivate } from '../redux/actions/storyActions';
+import { FontAwesome5 } from '@expo/vector-icons';
 
+import makeStoryPrivate from '../redux/actions/storyActions';
 import colors from '../config/colors';
 
-const Item = ({ item}, props) => {
+const Item = ({ item }, props) => {
   const navigation = useNavigation(); //There was a bug that made me have to import this
   //if not imported and used it will just crash
   //keep that in mind if props.navigation.navigate is not working
@@ -122,9 +122,18 @@ function StoryList(props) {
 }
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    width: Dimensions.get('window').width,
-  },
+	cardContainer: {
+		width: Dimensions.get('window').width,
+	},
+	switch: {
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderWidth: 1,
+		borderRadius: 14,
+		borderColor: '#ddd',
+		padding: 4,
+	},
 });
 
 const mapStateToProps = (state) => {

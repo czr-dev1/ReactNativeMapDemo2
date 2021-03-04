@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button} from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Image,
+	StyleSheet,
+	Text,
+	TouchableWithoutFeedback,
+	View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { loadStories } from '../redux/actions/storyActions';

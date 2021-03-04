@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Dimensions,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  Picker,
+	Button,
+	Dimensions,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	TouchableWithoutFeedback,
+	View,
 } from 'react-native';
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody,
-} from "accordion-collapse-react-native";
+import { Collapse, CollapseHeader, CollapseBody } from 'accordion-collapse-react-native';
 import { Switch } from 'react-native-switch';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
@@ -366,9 +361,9 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    loadStories: () => dispatch(loadStories()),
-  };
+	return {
+		loadStories: () => dispatch(loadStories()),
+	};
 };
 
 export default connect(null, mapDispatchToProps)(StoryPostScreen);

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button, FlatList, Alert } from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
