@@ -1,7 +1,7 @@
 {
   "expo": {
     "privacy": "unlisted",
-    "name": "the arqive",
+    "name": "thearqive",
     "slug": "thearqive",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,14 +19,16 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.thearqive.thearqivemobile",
-      "buildNumber": "0.1.0"
+      "bundleIdentifier": "com.thearqive",
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.thearqive.thearqivemobile",
-      "versionCode": 1,
-      "permissions": ["INTERNET"]
+      "package": "com.thearqive.mobile",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"
+        }
+      }
     },
     "web": {
       "favicon": "./app/assets/favicon.png"

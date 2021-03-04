@@ -196,7 +196,7 @@ function DarkMapScreen(props) {
 			) : (
 				<MapView
 					style={styles.mapStyle}
-					provider={PROVIDER_DEFAULT}
+					provider={null}
 					mapType={MAP_TYPES.NONE}
 					initialRegion={INITIAL_REGION}
 					rotateEnabled={false}

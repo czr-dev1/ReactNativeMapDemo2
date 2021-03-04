@@ -35,6 +35,7 @@ function storyScreen(props) {
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [flagReason, setFlagReason] = useState('');
   const [flagType, setFlagType] = useState(1);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const [comments, setComments] = useState([{
       "commenter": 0,
       "description": "",
@@ -50,12 +51,16 @@ function storyScreen(props) {
   }, []);
 
   const getStory = () => {
-    console.log(id);
     let tempStory = props.stories.filter(i => i.id === id);
     console.log(tempStory[0]);
     tempStory[0].commentstory.map((item, i) => {
       console.log(item.id);
     })
+    if (props.isLoggedIn) {
+      if(props.userBookmarks.some(story => story.pinId === id)){
+        console.log('test');
+      }
+    }
     setStory(tempStory[0]);
     setComments(tempStory[0].commentstory);
   }
@@ -191,7 +196,7 @@ function storyScreen(props) {
         showsVerticalScrollIndicator={false}>
 
         <View style={{paddingTop: '40%', backgroundColor: (story.category === 1 ? "#e01784" : story.category == 2 ? "#00ce7d" : "#248dc1")}}>
-          <View style={{backgroundColor: 'white', paddingTop: '10%', borderTopLeftRadius: 40, borderTopRightRadius: 40}}>
+          <View style={{backgroundColor: 'white', paddingTop: '20%', borderTopLeftRadius: 300, borderTopRightRadius: 300}}>
 
           </View>
         </View>
@@ -205,7 +210,7 @@ function storyScreen(props) {
                   props.navigation.navigate('userprofilemodal', {user: story.username});
                 }
               }}>
-                <Text style={{ paddingLeft: 5, color: '#787878', fontSize: 18, fontWeight: 'bold'}}>{story.is_anonymous_pin ? "anonymous" : story.username}</Text>
+                <Text style={{ paddingLeft: 5, marginBottom: 12, color: '#787878', fontSize: 18, fontWeight: 'bold'}}>{story.is_anonymous_pin ? "anonymous" : story.username}</Text>
               </TouchableWithoutFeedback>
             </View>
             {
@@ -215,16 +220,16 @@ function storyScreen(props) {
             }
           </View>
           <View style={{paddingLeft: '5%'}}>
-            <Text style={{color: '#787878', fontWeight: 'bold', fontSize: 24}}>{story.title}</Text>
+            <Text style={{color: '#787878', fontWeight: 'bold', fontSize: 24, marginBottom: 12}}>{story.title}</Text>
             {story.address === "" ? null : <Text style={{color: '#787878', fontWeight: 'bold'}}>{story.address}</Text>}
-            <View style={{flexDirection: 'row', paddingBottom: 5}}>
+            <View style={{flexDirection: 'row', paddingBottom: 5, marginBottom: 12}}>
               {story.locality === "" ? null : <Text style={{color: '#787878', fontWeight: 'bold'}}>{story.locality}, </Text>}
               {story.region === "" ? null : <Text style={{color: '#787878', fontWeight: 'bold'}}>{story.region}</Text>}
             </View>
-            <Text style={{paddingBottom: 5}}>{
+            <Text style={{paddingBottom: 5, marginBottom: 12}}>{
               story.startDate === null ? story.postDate : story.endDate === null ? story.startDate : story.startDate + " - " + story.endDate
             }</Text>
-            <Text>{story.description}</Text>
+            <Text style={{marginBottom: 12}}>{story.description}</Text>
             {
               props.isLoggedIn === true ? (
                 <View style={{flexDirection: 'row', paddingTop: 14, paddingBottom: 14}}>
@@ -268,15 +273,15 @@ function storyScreen(props) {
           {
             comments.map((comment, i) => {
               return (
-                <View key={i} style={{justifyContent: 'space-between', borderTopWidth: 2, borderColor: '#ddd', padding: 14}}>
+                <View key={i} style={{justifyContent: 'space-between', padding: 14, marginBottom: 48}}>
                   <TouchableOpacity onPress={() => props.navigation.navigate('userprofilemodal', {user: comment.username})}>
-                    <Text style={{fontWeight: 'bold'}}>{comment.username}</Text>
+                    <Text style={{fontWeight: 'bold', paddingBottom: 12}}>{comment.username}</Text>
                   </TouchableOpacity>
-                  <Text>{comment.description}</Text>
+                  <Text style= {{paddingBottom: 12}}>{comment.description}</Text>
                   {
                     props.isLoggedIn === true ? (
                       <View style={{flexDirection: 'row-reverse', alignItems: 'center'}}>
-                        <TouchableOpacity style={{padding: 14}}>
+                        <TouchableOpacity>
                           <FontAwesome name="flag" size={24} color="black" />
                         </TouchableOpacity>
                       </View>
@@ -354,7 +359,9 @@ const mapStateToProps = (state) => {
     error: state.storyReducer.error,
     isLoggedIn: state.authReducer.isLoggedIn,
     isPrivacyMode: state.authReducer.isPrivacyMode,
-    userId: userId
+    userId: userId,
+    profileImage: state.authReducer.user.profileurl,
+    userBookmarks: state.authReducer.user.user_upvoted_stories
   };
 };
 

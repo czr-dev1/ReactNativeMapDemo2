@@ -18,21 +18,23 @@ function BookmarkedPostsScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
-  
+
   const renderStoriesByType = () => {
-    if (props.user_upvoted_stories === undefined) {
-      return <StoryList isBookMark={true} stories={props.user_upvoted_stories} />
+    console.log(props.stories);
+    console.log(props);
+    if (props.stories === undefined) {
+      return <StoryList isBookMark={true} stories={props.stories} />
     }
 
     switch (selectedButton){
       case 1:
-        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "1")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "1")} />
       case 2:
-        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "2")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "2")} />
       case 3:
-        return <StoryList isBookMark={true} stories={props.user_upvoted_stories.filter(item => item.category === "3")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "3")} />
       default:
-        return <StoryList isBookMark={true} stories={props.user_upvoted_stories} />
+        return <StoryList isBookMark={true} stories={props.stories} />
       }
   }
 
@@ -106,6 +108,7 @@ const styles = StyleSheet.create({
     paddingTop: '2%',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    backgroundColor: 'white'
   },
   profileStorySelectedButton: {
     borderBottomWidth: 2,
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
     width: Dimensions.get('window').width,
     height: '100%'
   },
@@ -143,12 +146,12 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  console.log(state.authReducer);
+  console.log('tes');
   return {
     isLoading: state.storyReducer.isLoading,
     error: state.storyReducer.error,
     user: state.authReducer.username,
-    stories: state.authReducer.user.user_upvoted_stories
+    stories: state.authReducer.user.user_upvoted_stories,
   }
 }
 
@@ -158,4 +161,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default BookmarkedPostsScreen;
+export default connect(mapStateToProps)(BookmarkedPostsScreen);
