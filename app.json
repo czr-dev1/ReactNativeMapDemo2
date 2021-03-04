@@ -1,8 +1,8 @@
 {
   "expo": {
     "privacy": "unlisted",
-    "name": "MapDemo",
-    "slug": "MapDemo",
+    "name": "the arqive",
+    "slug": "thearqive",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
