@@ -160,7 +160,8 @@ function storyScreen(props) {
         backdropColor='#ddd'
         isVisible={showFlagModal}
         onBackdropPress={() => setShowFlagModal(false)}
-        onBackButtonPress={() => setShowFlagModal(false)}>
+        onBackButtonPress={() => setShowFlagModal(false)}
+        style={{justifyContent: 'flex-end', margin: 0}}>
         <View style={{backgroundColor: 'white', borderRadius: 10, padding: 14}}>
           <View>
             <RadioButtonRN
