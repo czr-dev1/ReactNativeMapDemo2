@@ -18,9 +18,9 @@ import { SearchBar } from 'react-native-elements';
 import colors from '../config/colors';
 import { loadStories } from '../redux/actions/storyActions';
 
-const PERSONAL_PIN = require('../assets/personal_128x128.png');
-const HISTORICAL_PIN = require('../assets/historical_128x128.png');
-const COMMUNITY_PIN = require('../assets/community_128x128.png');
+const PERSONAL_PIN = require('../assets/pinImages/personal_128x128.png');
+const HISTORICAL_PIN = require('../assets/pinImages/historical_128x128.png');
+const COMMUNITY_PIN = require('../assets/pinImages/community_128x128.png');
 
 function DarkMapScreen(props) {
 	const [gotLocation, setGotLocation] = useState(false);
@@ -211,14 +211,19 @@ function DarkMapScreen(props) {
 				>
 					<UrlTile
 						urlTemplate={urlTemplate}
-						shouldReplaceMapContent={true}
+						shouldReplaceMapContent={false}
 						maximumZ={19}
 						minimumZ={0}
 						maxZoomLevel={19}
 						minZoomLevel={0}
 						zIndex={1}
 					/>
+
 					{props.stories.map((item, i) => {
+						// Removing images completely including
+						// the case made it run
+						// expo moves assets to the cloud, figure out how to keep
+						// https://docs.expo.io/guides/preloading-and-caching-assets/
 						let pinType = '';
 						switch (item.category) {
 							case 1:
@@ -237,7 +242,6 @@ function DarkMapScreen(props) {
 									latitude: parseFloat(item.latitude),
 									longitude: parseFloat(item.longitude),
 								}}
-								title={item.title}
 								image={pinType}
 								onPress={() => {
 									props.navigation.navigate('Story', {

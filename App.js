@@ -14,9 +14,9 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 export default function App() {
   return (
     <SafeAreaProvider>
-    <Provider store={store}>
-      <Navigation />
-    </Provider>
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
     </SafeAreaProvider>
   )
 }

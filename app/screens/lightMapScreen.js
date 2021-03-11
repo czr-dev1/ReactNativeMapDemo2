@@ -18,9 +18,9 @@ import { SearchBar } from 'react-native-elements';
 import colors from '../config/colors';
 import { loadStories } from '../redux/actions/storyActions';
 
-const PERSONAL_PIN = require('../assets/personal_128x128.png');
-const HISTORICAL_PIN = require('../assets/historical_128x128.png');
-const COMMUNITY_PIN = require('../assets/community_128x128.png');
+const PERSONAL_PIN = require('../assets/pinImages/personal_128x128.png');
+const HISTORICAL_PIN = require('../assets/pinImages/historical_128x128.png');
+const COMMUNITY_PIN = require('../assets/pinImages/community_128x128.png');
 
 function LightMapScreen(props) {
 	const [gotLocation, setGotLocation] = useState(false);
