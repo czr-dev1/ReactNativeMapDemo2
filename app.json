@@ -16,7 +16,7 @@
     },
     "assetBundlePatterns": [
       "**/*",
-      "assets/pinImages/*"
+      "app/assets/pinImages/*"
     ],
     "ios": {
       "supportsTablet": true,

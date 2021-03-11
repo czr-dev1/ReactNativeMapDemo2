@@ -1,14 +1,15 @@
 import React from 'react';
-import { 
-  Image, 
-  SafeAreaView, 
-  StyleSheet, 
-  Text 
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text
 } from 'react-native';
 
 import colors from '../config/colors';
 
 function SplashScreen() {
+  console.log("in splash screen");
   <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 		<Image source={require('../assets/thearqive_logo.png')} />
 

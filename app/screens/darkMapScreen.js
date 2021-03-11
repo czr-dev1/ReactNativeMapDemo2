@@ -3,6 +3,7 @@ import {
 	ActivityIndicator,
 	Dimensions,
 	FlatList,
+	Image,
 	StyleSheet,
 	Text,
 	TouchableWithoutFeedback,
@@ -242,7 +243,6 @@ function DarkMapScreen(props) {
 									latitude: parseFloat(item.latitude),
 									longitude: parseFloat(item.longitude),
 								}}
-								image={pinType}
 								onPress={() => {
 									props.navigation.navigate('Story', {
 										title: item.title,
@@ -250,7 +250,9 @@ function DarkMapScreen(props) {
 										id: item.id
 									});
 								}}
-							/>
+							>
+								<Image source={pinType} style={{ height: 48, width: 48 }} />
+							</Marker>
 						);
 					})}
 				</MapView>
