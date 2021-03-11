@@ -46,6 +46,12 @@ export const logout = () => {
   }
 };
 
+export const setPrivacyMode = (setting) => {
+  return (dispatch, getState) => {
+    dispatch({ type: 'SET_PRIVACY_MODE', isPrivacyMode: setting });
+  }
+}
+
 export const returnErrors = (msg, status) => {
   return {
     type: 'GET_ERRORS',

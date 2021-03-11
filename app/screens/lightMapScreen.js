@@ -35,8 +35,8 @@ function DarkMapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-  const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
+  const urlTemplateDark = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
+  const urlTemplateLight = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
@@ -217,7 +217,7 @@ function DarkMapScreen(props) {
             minPoints={5}
             >
           <UrlTile
-            urlTemplate={urlTemplate}
+            urlTemplate={props.isPrivacyMode ? urlTemplateDark : urlTemplateLight}
             shouldReplaceMapContent={true}
             maximumZ={19}
             minimumZ={0}
@@ -289,7 +289,8 @@ const mapStateToProps =  (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+    isPrivacyMode: state.authReducer.isPrivacyMode
 
   };
 };
