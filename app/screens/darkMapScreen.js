@@ -229,12 +229,15 @@ function DarkMapScreen(props) {
 						switch (item.category) {
 							case 1:
 								pinType = PERSONAL_PIN;
+								pinType = '#6a0dad';
 								break;
 							case 2:
 								pinType = COMMUNITY_PIN;
+								pinType = '#00FF00';
 								break;
 							default:
 								pinType = HISTORICAL_PIN;
+								pinType = '#0000FF';
 						}
 						return (
 							<Marker
@@ -243,6 +246,7 @@ function DarkMapScreen(props) {
 									latitude: parseFloat(item.latitude),
 									longitude: parseFloat(item.longitude),
 								}}
+								pinColor={pinType}
 								onPress={() => {
 									props.navigation.navigate('Story', {
 										title: item.title,
@@ -251,7 +255,6 @@ function DarkMapScreen(props) {
 									});
 								}}
 							>
-								<Image source={pinType} style={{ height: 48, width: 48 }} />
 							</Marker>
 						);
 					})}

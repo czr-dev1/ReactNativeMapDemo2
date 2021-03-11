@@ -216,7 +216,7 @@ function storyScreen(props) {
             </View>
             {
               props.isLoggedIn === true ? (
-                <FontAwesome5 name="bookmark" size={24} color="black" />
+                <FontAwesome5 name="ellipsis-v" size={24} color="black" onPress={() => setShowFlagModal(true)}/>
               ) : null
             }
           </View>
@@ -231,17 +231,6 @@ function storyScreen(props) {
               story.startDate === null ? story.postDate : story.endDate === null ? story.startDate : story.startDate + " - " + story.endDate
             }</Text>
             <Text style={{marginBottom: 12}}>{story.description}</Text>
-            {
-              props.isLoggedIn === true ? (
-                <View style={{flexDirection: 'row', paddingTop: 14, paddingBottom: 14}}>
-                  <TouchableOpacity
-                    style={{borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}
-                    onPress={() => setShowFlagModal(true)}>
-                    <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>flag</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : null
-            }
           </View>
         </View>
 

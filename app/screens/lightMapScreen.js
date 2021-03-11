@@ -219,16 +219,23 @@ function LightMapScreen(props) {
 						zIndex={1}
 					/>
 					{props.stories.map((item, i) => {
+						// Removing images completely including
+						// the case made it run
+						// expo moves assets to the cloud, figure out how to keep
+						// https://docs.expo.io/guides/preloading-and-caching-assets/
 						let pinType = '';
 						switch (item.category) {
 							case 1:
 								pinType = PERSONAL_PIN;
+								pinType = '#6a0dad';
 								break;
 							case 2:
 								pinType = COMMUNITY_PIN;
+								pinType = '#00FF00';
 								break;
 							default:
 								pinType = HISTORICAL_PIN;
+								pinType = '#0000FF';
 						}
 						return (
 							<Marker
@@ -237,8 +244,7 @@ function LightMapScreen(props) {
 									latitude: parseFloat(item.latitude),
 									longitude: parseFloat(item.longitude),
 								}}
-								title={item.title}
-								image={pinType}
+								pinColor={pinType}
 								onPress={() => {
 									props.navigation.navigate('Story', {
 										title: item.title,
@@ -246,7 +252,8 @@ function LightMapScreen(props) {
 										id: item.id
 									});
 								}}
-							/>
+							>
+							</Marker>
 						);
 					})}
 				</MapView>
