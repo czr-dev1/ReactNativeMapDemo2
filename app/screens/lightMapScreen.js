@@ -1,25 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet,
-  Text,
-  View,
-  Platform,
+import {
   ActivityIndicator,
-  StatusBar,
   Dimensions,
-  TouchableHighlight,
-  PixelRatio,
-  Alert,
+  StyleSheet,
+  TouchableWithoutFeedback,
   FlatList,
-  ScrollView,
-  TouchableWithoutFeedback
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { connect } from 'react-redux';
-import {SearchBar} from 'react-native-elements';
-
+import { SearchBar } from 'react-native-elements';
 
 import colors from '../config/colors';
 import { loadStories } from '../redux/actions/storyActions';
@@ -28,9 +21,14 @@ const PERSONAL_PIN = require('../assets/personal_128x128.png');
 const HISTORICAL_PIN = require('../assets/historical_128x128.png');
 const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
-function MapScreen(props) {
+function DarkMapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: 8.5,
+    longitudeDelta: 8.5
+  });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
@@ -40,12 +38,11 @@ function MapScreen(props) {
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
-    latitude: 52.5,
-    longitude: 19.2,
-    latitudeDelta: 8.5,
-    longitudeDelta: 8.5,
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: .5,
+    longitudeDelta: .5
   };
-
 
   useEffect(() => {
     props.loadStories();
@@ -90,7 +87,11 @@ function MapScreen(props) {
   };
 
   const searchFilterFunction = (text) => {
-
+    if (text.length > 0) {
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
     if (text) {
       const newData = masterDataSource.filter(function (item) {
         const itemData = item.title
@@ -124,6 +125,7 @@ function MapScreen(props) {
       </Text>
     );
   };
+
 
   const ItemSeparatorView = () => {
     return (
@@ -166,47 +168,45 @@ function MapScreen(props) {
     setGotLocation(true);
 
   };
-
+  //<SafeAreaView style={styles.container} forceInset={{top: 'always'}}>
   return (
     <SafeAreaView style={styles.container, {flex: 1}}>
+
+
     <View style={styles.containerStyle}>
-        <TouchableWithoutFeedback onPress={ () => {
-          console.log("hello press");
-        }}>
+        <TouchableWithoutFeedback>
           <SearchBar
-            round
-            searchIcon={{size: 24}}
-            onChangeText={(text) => searchFilterFunction(text)}
-            onClear={(text) => searchFilterFunction('')}
-            placeholder="Type Here..."
-            value={search}
+          round
+          searchIcon={{size: 24}}
+          onChangeText={(text) => {
+              searchFilterFunction(text);
+            }
+          }
+          onClear={(text) => searchFilterFunction('')}
+          placeholder="Type Here..."
+          value={search}
           />
         </TouchableWithoutFeedback>
-        
 
-        {showSearchResults ? null : 
-          (
-            <FlatList
-          data={filteredDataSource}
-          //data={filteredDataSource.slice(0,5)}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          maxToRenderPerBatch={15}
-          //windowSize={5}
-          renderItem={ItemView}
-        />
-          )
-        }
-        
-
+        {showSearchResults ? (
+          <FlatList
+            data={filteredDataSource}
+            //data={filteredDataSource.slice(0,5)}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            maxToRenderPerBatch={15}
+            //windowSize={5}
+            renderItem={ItemView}
+          />
+        ) :  null}
       </View>
 
-      {props.isLoading ?
-        <ActivityIndicator style={styles.mapStyle} /> : (
+      { ( props.isLoading ) ?
+        <ActivityIndicator style={styles.mapStyle}/> : (
           <MapView style={styles.mapStyle}
             provider={PROVIDER_DEFAULT}
             mapType={MAP_TYPES.NONE}
-            initialRegion={INITIAL_REGION}
+            initialRegion={location}
             rotateEnabled={false}
             clusterColor={'#FFA500'}
             clusterTextColor={'#000000'}
@@ -215,7 +215,6 @@ function MapScreen(props) {
             minZoom={0}
             maxZoom={17}
             minPoints={5}
-            flex={1}
             >
           <UrlTile
             urlTemplate={urlTemplate}
@@ -261,9 +260,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'stretch',
   },
-  itemStyle: {
-    padding: 5,
-  },
   container: {
     flex: 1,
     backgroundColor: colors.white,
@@ -272,7 +268,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '125%'
+    height: '115%'
   },
   navStyle: {
     flexDirection: 'row',
@@ -289,6 +285,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps =  (state) => {
+  console.log(state);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
@@ -303,4 +300,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DarkMapScreen);

@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet,
-  Text,
-  View,
+import { 
+  Dimensions,
   Platform,
-  ActivityIndicator,
   SafeAreaView,
   StatusBar,
-  Dimensions,
-  TouchableHighlight,
-  PixelRatio,
-  Alert
+  StyleSheet,
+  Text,
 } from 'react-native';
 import MapView from 'react-native-map-clustering';
 
@@ -21,7 +17,7 @@ function storyScreen(props) {
   return(
     <SafeAreaView style={styles.container}>
       <Text>{title}</Text>
-      <Text>{description}</Text>
+      <Text style={styles.body}>{description}</Text>
     </SafeAreaView>
   );
 
@@ -50,6 +46,9 @@ const styles = StyleSheet.create({
   navButton: {
     flexGrow: 1,
     textAlign: 'center'
+  },
+  body: {
+    width: '85%'
   }
 })
 

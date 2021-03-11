@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet,
-  Text,
-  View,
-  Platform,
+import React, { useState } from 'react';
+import { 
   ActivityIndicator,
-  StatusBar,
   Dimensions,
-  TouchableOpacity,
-  FlatList,
   ScrollView,
-  Alert,
-  TouchableWithoutFeedback
+  StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import { Card, ListItem, Button, Icon } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import colors from '../config/colors';
@@ -22,12 +15,6 @@ import colors from '../config/colors';
 function StoryListScreen(props) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
-  const renderItem = ({ item }) => {
-    <View>
-      <Text>{item.title}</Text>
-    </View>
-  }
 
   return (
     <SafeAreaView style={styles.container} forceInset={{top: "always"}}>

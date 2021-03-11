@@ -30,20 +30,25 @@ const COMMUNITY_PIN = require('../assets/community_128x128.png');
 
 function MapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState({
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: 8.5,
+    longitudeDelta: 8.5
+  });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
-  const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
+  const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
+  //const urlTemplate = 'https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png';
   const INITIAL_REGION = {
-    latitude: 52.5,
-    longitude: 19.2,
-    latitudeDelta: 8.5,
-    longitudeDelta: 8.5,
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: .5,
+    longitudeDelta: .5
   };
 
 
@@ -90,7 +95,11 @@ function MapScreen(props) {
   };
 
   const searchFilterFunction = (text) => {
-
+    if (text.length > 0) {
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
     if (text) {
       const newData = masterDataSource.filter(function (item) {
         const itemData = item.title
@@ -170,35 +179,31 @@ function MapScreen(props) {
   return (
     <SafeAreaView style={styles.container, {flex: 1}}>
     <View style={styles.containerStyle}>
-        <TouchableWithoutFeedback onPress={ () => {
-          console.log("hello press");
-        }}>
+        <TouchableWithoutFeedback>
           <SearchBar
-            round
-            searchIcon={{size: 24}}
-            onChangeText={(text) => searchFilterFunction(text)}
-            onClear={(text) => searchFilterFunction('')}
-            placeholder="Type Here..."
-            value={search}
+          round
+          searchIcon={{size: 24}}
+          onChangeText={(text) => {
+              searchFilterFunction(text);
+            }
+          }
+          onClear={(text) => searchFilterFunction('')}
+          placeholder="Type Here..."
+          value={search}
           />
         </TouchableWithoutFeedback>
-        
 
-        {showSearchResults ? null : 
-          (
-            <FlatList
-          data={filteredDataSource}
-          //data={filteredDataSource.slice(0,5)}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          maxToRenderPerBatch={15}
-          //windowSize={5}
-          renderItem={ItemView}
-        />
-          )
-        }
-        
-
+        {showSearchResults ? (
+          <FlatList
+            data={filteredDataSource}
+            //data={filteredDataSource.slice(0,5)}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            maxToRenderPerBatch={15}
+            //windowSize={5}
+            renderItem={ItemView}
+          />
+        ) :  null}
       </View>
 
       {props.isLoading ?
@@ -210,10 +215,10 @@ function MapScreen(props) {
             rotateEnabled={false}
             clusterColor={'#FFA500'}
             clusterTextColor={'#000000'}
-            maxZoomLevel={19}
+            maxZoomLevel={21}
             minZoomLevel={1}
             minZoom={0}
-            maxZoom={17}
+            maxZoom={19}
             minPoints={5}
             flex={1}
             >
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: '125%'
+    height: '115%'
   },
   navStyle: {
     flexDirection: 'row',
