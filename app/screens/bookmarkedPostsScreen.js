@@ -12,7 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
 //Custom story component
 import StoryList from '../components/storyList';
-import { loadProfile } from '../redux/actions/profileActions';
+import { reloadUser } from '../redux/actions/auth';
 
 function BookmarkedPostsScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
@@ -39,7 +39,9 @@ function BookmarkedPostsScreen(props) {
   }
 
   useEffect(() => {
-    loadProfile();
+    console.log('-----------------------------------------------------------s');
+    console.log(props.user);
+    props.reloadUser(props.user);
   }, []);
 
   const loadProfile = async () => {
@@ -146,19 +148,18 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  console.log('tes');
   return {
     isLoading: state.storyReducer.isLoading,
     error: state.storyReducer.error,
-    user: state.authReducer.username,
+    user: state.authReducer.user.username,
     stories: state.authReducer.user.user_upvoted_stories,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadProfile: () => dispatch(loadProfile())
+    reloadUser: (username) => dispatch(reloadUser(username))
   }
 }
 
-export default connect(mapStateToProps)(BookmarkedPostsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(BookmarkedPostsScreen);

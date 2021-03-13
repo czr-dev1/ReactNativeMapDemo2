@@ -49,9 +49,8 @@ export const reloadUser = (username) => {
     // If you're going to copy the URL make sure to copy it exactly w/ w/o slashes
     axios.get(`https://www.globaltraqsdev.com/api/profile/users/?username=${username}`, config)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        dispatch({ type: 'USER_PROFILE_RELOADED', extra: res.data});
+        console.log(res.data[0]);
+        dispatch({ type: 'USER_PROFILE_RELOADED', extra: res.data[0]});
       }).catch((err) => {
         console.log(err);
         dispatch({ type: 'USER_PROFILE_RELOAD_FAIL', payload: err});

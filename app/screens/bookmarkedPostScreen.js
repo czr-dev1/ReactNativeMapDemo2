@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  Dimensions, 
-  StyleSheet, 
-  Text, 
-  TouchableWithoutFeedback, 
-  View 
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -36,7 +36,7 @@ function BookmarkPostScreen(props) {
         return <StoryList stories={data.user_upvoted_stories} />
       }
   }
-  
+
   const loadProfile = async () => {
     const config = {
       headers: {
@@ -52,7 +52,7 @@ function BookmarkPostScreen(props) {
       console.log(err);
     })
   }
-  
+
   useEffect(() => {
 		loadProfile();
 	}, []);
@@ -60,7 +60,7 @@ function BookmarkPostScreen(props) {
   return (
     <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
       {props.isLoading ? (
-        <View><Text>Loading</Text></View> 
+        <View><Text>Loading</Text></View>
       ) : (
         <View>
           <View style={styles.storyButtons}>

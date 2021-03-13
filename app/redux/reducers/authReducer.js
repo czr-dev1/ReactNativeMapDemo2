@@ -73,8 +73,9 @@ export default auth = (state = initialState, action) => {
           });
       case 'USER_PROFILE_RELOADED':
           return Object.assign({}, state, {
-            extra: action.extra,
-            bio: action.extra[0].bio,
+						user: action.extra,
+            user_upvoted_stories: action.extra.user_upvoted_stories,
+            bio: action.extra.bio,
             isLoading: false
           });
       case 'USER_PROFILE_RELOAD_FAIL':
