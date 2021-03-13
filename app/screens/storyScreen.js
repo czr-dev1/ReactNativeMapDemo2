@@ -23,7 +23,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import { WebView } from 'react-native-webview';
 
 import { loadStories } from '../redux/actions/storyActions';
-import { reloadUser } from '../redux/actions/auth';
+import { reloadUser } from '../redux/actions/authActions';
 import colors from '../config/colors';
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
@@ -60,10 +60,6 @@ function storyScreen(props) {
     };
 
     let tempStory = props.stories.filter(i => i.id === id);
-    console.log(tempStory[0]);
-    tempStory[0].commentstory.map((item, i) => {
-      console.log(item.id);
-    })
 
     // this will get over written once the axios call is completed
     // without it theres a crash
@@ -72,7 +68,6 @@ function storyScreen(props) {
 
     axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
       .then((res) => {
-        console.log(res.data);
         setStory(res.data);
         setComments(res.data.commentstory);
       }).catch((err) => {
@@ -131,7 +126,6 @@ function storyScreen(props) {
         "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
       },
     };
-    console.log(flagData);
     axios.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
       .then((res) => {
         console.log(res.data);
@@ -418,7 +412,6 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-  console.log(state.authReducer);
   let userId = state.authReducer.isLoggedIn === true ? state.authReducer.user.id : -1;
   // causes issues if you're logged out, logged out users cannot set privacy settings
   return {
@@ -430,7 +423,7 @@ const mapStateToProps = (state) => {
     userId: userId,
     profileImage: state.authReducer.user.profileurl,
     userBookmarks: state.authReducer.user.user_upvoted_stories,
-    username: state.authReducer.username
+    username: state.authReducer.user.username
   };
 };
 
