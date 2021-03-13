@@ -23,6 +23,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import { WebView } from 'react-native-webview';
 
 import { loadStories } from '../redux/actions/storyActions';
+import { reloadUser } from '../redux/actions/auth';
 import colors from '../config/colors';
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
@@ -31,8 +32,9 @@ function storyScreen(props) {
   const [story, setStory] = useState({});
   const [isLoadingProfile, setLoadingProfile] = useState(true);
   const [data, setData] = useState([]);
-  const [userComment, setUserComment] = useState([]);
+  const [userComment, setUserComment] = useState('');
   const [showFlagModal, setShowFlagModal] = useState(false);
+  const [showOptionsModal, setShowOptionsModal] = useState(false);
   const [flagReason, setFlagReason] = useState('');
   const [flagType, setFlagType] = useState(1);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -51,18 +53,40 @@ function storyScreen(props) {
   }, []);
 
   const getStory = () => {
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+
     let tempStory = props.stories.filter(i => i.id === id);
     console.log(tempStory[0]);
     tempStory[0].commentstory.map((item, i) => {
       console.log(item.id);
     })
+
+    // this will get over written once the axios call is completed
+    // without it theres a crash
+    setStory(tempStory[0]);
+    setComments(tempStory[0].commentstory);
+
+    axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+      .then((res) => {
+        console.log(res.data);
+        setStory(res.data);
+        setComments(res.data.commentstory);
+      }).catch((err) => {
+        console.log(err);
+      });
+
+    /*
     if (props.isLoggedIn) {
       if(props.userBookmarks.some(story => story.pinId === id)){
         console.log('test');
       }
     }
-    setStory(tempStory[0]);
-    setComments(tempStory[0].commentstory);
+    */
+
   }
 
   const getProfile = async () => {
@@ -131,8 +155,29 @@ function storyScreen(props) {
     }
     axios.post('https://globaltraqsdev.com/api/commentStory/', data, config)
       .then((res) => {
+        getStory();
         props.loadStories();
-        console.log('posted');
+        setUserComment('');
+      }).catch((err) => {
+        console.log(err);
+      })
+  }
+
+  const bookmark = () => {
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+    let data = {
+      upvote:true,
+      pinId: id,
+      upVoter: props.userId
+    }
+    axios.post('https://globaltraqsdev.com/api/upVoteStory/', data, config)
+      .then((res) => {
+        props.loadStories();
+        props.reloadUser(props.username)
       }).catch((err) => {
         console.log(err);
       })
@@ -157,10 +202,12 @@ function storyScreen(props) {
   return(
     <SafeAreaView style={styles.container}>
       <Modal
-        backdropColor='#ddd'
         isVisible={showFlagModal}
         onBackdropPress={() => setShowFlagModal(false)}
-        onBackButtonPress={() => setShowFlagModal(false)}
+        onBackButtonPress={() => {
+          setShowFlagModal(false);
+          setShowOptionsModal(true);
+        }}
         style={{justifyContent: 'flex-end', margin: 0}}>
         <View style={{backgroundColor: 'white', borderRadius: 10, padding: 14}}>
           <View>
@@ -190,8 +237,38 @@ function storyScreen(props) {
             </View>
           </View>
         </View>
-
       </Modal>
+
+      <Modal
+        isVisible={showOptionsModal}
+        onBackdropPress={() => setShowOptionsModal(false)}
+        onBackButtonPress={() => setShowOptionsModal(false)}
+        style={{justifyContent: 'flex-end', margin: 0}}>
+        <View style={{backgroundColor: 'white', borderRadius: 10, padding: 14}}>
+          <View>
+            <TouchableOpacity style={{flexDirection: 'row', padding: 18}}
+              onPress={() => {
+                setShowOptionsModal(false);
+                bookmark();
+              }
+            }>
+              <FontAwesome name="bookmark" size={24} color="black" style={{paddingRight: 14}}/>
+              <Text style={{fontSize: 18}}>bookmark post</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{flexDirection: 'row', padding: 18}}
+              onPress={() => {
+                setShowOptionsModal(false);
+                setShowFlagModal(true);
+              }
+            }>
+              <FontAwesome name="flag" size={24} color="black" style={{paddingRight: 14}}/>
+              <Text style={{fontSize: 18}}>flag post</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+
       <ScrollView style={{width: '100%',}}
         keyboardShouldPersistTaps='handled'
         showsVerticalScrollIndicator={false}>
@@ -216,7 +293,7 @@ function storyScreen(props) {
             </View>
             {
               props.isLoggedIn === true ? (
-                <FontAwesome5 name="ellipsis-v" size={24} color="black" onPress={() => setShowFlagModal(true)}/>
+                <FontAwesome5 name="ellipsis-v" size={24} color="black" onPress={() => setShowOptionsModal(true)}/>
               ) : null
             }
           </View>
@@ -242,6 +319,7 @@ function storyScreen(props) {
                   style={styles.box}
                   multiline
                   placeholder='enter comment'
+                  defaultValue={userComment}
                   onChangeText={(val) => {
                     setUserComment(val);
                   }}
@@ -351,13 +429,15 @@ const mapStateToProps = (state) => {
     isPrivacyMode: state.authReducer.isPrivacyMode,
     userId: userId,
     profileImage: state.authReducer.user.profileurl,
-    userBookmarks: state.authReducer.user.user_upvoted_stories
+    userBookmarks: state.authReducer.user.user_upvoted_stories,
+    username: state.authReducer.username
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadStories: () => dispatch(loadStories())
+    loadStories: () => dispatch(loadStories()),
+    reloadUser: (username) => dispatch(reloadUser(username))
   }
 }
 
