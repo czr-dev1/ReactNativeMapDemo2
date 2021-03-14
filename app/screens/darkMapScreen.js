@@ -1,20 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import {
-	ActivityIndicator,
-	Dimensions,
-	FlatList,
-	Image,
-	StyleSheet,
-	Text,
+  ActivityIndicator,
+  Alert,
+  Button,
+  Dimensions,
+  FlatList,
+  PixelRatio,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
 	TouchableWithoutFeedback,
-	View,
-} from 'react-native';
+  View,
+} from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView from 'react-native-map-clustering';
 import { Marker, MAP_TYPES, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { connect } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
+import DropDownPicker from "react-native-dropdown-picker";
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from "accordion-collapse-react-native";
+import { Thumbnail } from "native-base";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import colors from '../config/colors';
 import { loadStories } from '../redux/actions/storyActions';
@@ -86,24 +101,26 @@ function DarkMapScreen(props) {
 	};
 
 	const searchFilterFunction = (text) => {
-		if (text.length > 0) {
-			setShowSearchResults(true);
-		} else {
-			setShowSearchResults(false);
-		}
-		if (text) {
-			const newData = masterDataSource.filter(function (item) {
-				const itemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
-				const textData = text.toUpperCase();
-				return itemData.indexOf(textData) > -1;
-			});
-			setFilteredDataSource(newData);
-			setSearch(text);
-		} else {
-			setFilteredDataSource(masterDataSource);
-			setSearch(text);
-		}
-	};
+    if (text.length > 0) {
+      setShowSearchResults(true);
+    } else {
+      setShowSearchResults(false);
+    }
+    if (text) {
+      const newData = masterDataSource.filter(function (item) {
+        const itemData = item.title
+          ? item.title.toUpperCase()
+          : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(masterDataSource);
+      setSearch(text);
+    }
+  };
 
 	const ItemView = ({ item }) => {
 		return (
@@ -163,21 +180,263 @@ function DarkMapScreen(props) {
 		setGotLocation(true);
 	};
 
+	const renderPersonal = () => {
+		return props.stories.map((item, i) => {
+			//console.log(item.category);
+			if (item.category == 1) {
+				console.log(item.title);
+			}
+		});
+		//console.log(filteredDataSource);
+	};
+	const renderResources = () => {
+		return props.stories.map((item, i) => {
+			//console.log(item.category);
+			if (item.category == 2) {
+				console.log(item.title);
+			}
+		});
+		//console.log(filteredDataSource);
+	};
+	const renderHistorical = () => {
+		return props.stories.map((item, i) => {
+			//console.log(item.category);
+			if (item.category == 3) {
+				console.log(item.title);
+			}
+		});
+		//console.log(filteredDataSource);
+	};
+
+	const Separator = () => <View style={styles.separator} />;
+
 	return (
 		<SafeAreaView style={(styles.container, { flex: 1 })}>
 			<View style={styles.containerStyle}>
-				<TouchableWithoutFeedback>
-					<SearchBar
-						round
-						searchIcon={{ size: 24 }}
-						onChangeText={(text) => {
-							searchFilterFunction(text);
+
+				<SearchBar
+					round
+					//searchIcon={{ size: 24 }}
+					searchIcon={false}
+					onChangeText={(text) => searchFilterFunction(text)}
+					onClear={(text) => searchFilterFunction("")}
+					lightTheme={false}
+					placeholder="search"
+					value={search}
+				/>
+
+				<Collapse>
+					<CollapseHeader
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							padding: 10,
+							backgroundColor: "#FFFFFF",
 						}}
-						onClear={(text) => searchFilterFunction('')}
-						placeholder='Type Here...'
-						value={search}
-					/>
-				</TouchableWithoutFeedback>
+					>
+						<View style={{ width: "15%", alignItems: "center" }}>
+							{/* <Thumbnail
+								source={{
+									uri:
+										"https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
+								}}
+							/> */}
+							<MaterialIcons name="sort" size={32} color="black" />
+						</View>
+
+						<View style={styles.screenContainer}>
+							<TouchableOpacity
+								style={styles.HeaderButtonStyle}
+								activeOpacity={0.5}
+								//onPress={() => Alert.alert("Cannot press this one")}
+							>
+								<Text style={styles.TextStyle}> random </Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.HeaderButtonStyle}
+								activeOpacity={0.5}
+								//onPress={(() => setSelectedCategoryButton(1))}
+								onPress={() => renderPersonal()}
+							>
+								<Text style={styles.TextStyle}> personal </Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.HeaderButtonStyle}
+								activeOpacity={0.5}
+								onPress={() => renderHistorical()}
+							>
+								<Text style={styles.TextStyle}> historical </Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.HeaderButtonStyle}
+								activeOpacity={0.5}
+								onPress={() => renderResources()}
+							>
+								<Text style={styles.TextStyle}> resources </Text>
+							</TouchableOpacity>
+						</View>
+					</CollapseHeader>
+					<CollapseBody
+						//Styles the body portion
+						style={{
+							alignItems: "center",
+							justifyContent: "center",
+							flexDirection: "column",
+							backgroundColor: "#EDEDED",
+						}}
+					>
+						<View style={{ flexDirection: "row" }}>
+							<Text style={styles.SortTextStyle}> sort by </Text>
+						</View>
+
+						<Separator />
+						<View style={styles.buttons}>
+							<TouchableOpacity
+								style={styles.OptionButtonStyle}
+								activeOpacity={0.5}
+								//onPress={() => Alert.alert("Cannot press this one")}
+							>
+								<Text style={styles.TextStyle}> any </Text>
+							</TouchableOpacity>
+						</View>
+						<Separator />
+						<View style={styles.buttons}>
+							<TouchableOpacity
+								style={styles.OptionButtonStyle}
+								activeOpacity={0.5}
+								//onPress={() => Alert.alert("Cannot press this one")}
+							>
+								<Text style={styles.TextStyle}> relevance </Text>
+							</TouchableOpacity>
+						</View>
+						<Separator />
+						{/* <DropDownPicker
+							items={[
+								{
+									label: "radius",
+									value: "placeholder",
+									//hidden: true,
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+							]}
+							defaultValue={this.state.radiusSize}
+							containerStyle={{
+								width: 140,
+								height: 60,
+								marginTop: 5,
+								marginBottom: 5,
+							}}
+							style={{ backgroundColor: "#FFFFFF" }}
+							itemStyle={{
+								justifyContent: "flex-start",
+							}}
+							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
+							onChangeItem={(item) =>
+								this.setState({
+									radiusSize: item.value,
+								})
+							}
+						/>
+						<Separator />
+						<DropDownPicker
+							items={[
+								{
+									label: "continent",
+									value: "placeholder",
+									//hidden: true,
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+							]}
+							defaultValue={this.state.radiusSize}
+							containerStyle={{
+								width: 140,
+								height: 60,
+								marginTop: 5,
+								marginBottom: 5,
+							}}
+							style={{ backgroundColor: "#FFFFFF" }}
+							itemStyle={{
+								justifyContent: "flex-start",
+							}}
+							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
+							onChangeItem={(item) =>
+								this.setState({
+									radiusSize: item.value,
+								})
+							}
+						/>
+						<Separator />
+						<DropDownPicker
+							items={[
+								{
+									label: "date",
+									value: "placeholder",
+									//hidden: true,
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+								{
+									label: "placeholder",
+									value: "placeholder",
+								},
+							]}
+							defaultValue={this.state.radiusSize}
+							containerStyle={{
+								width: 140,
+								height: 60,
+								marginTop: 5,
+								marginBottom: 5,
+							}}
+							style={{ backgroundColor: "#FFFFFF" }}
+							itemStyle={{
+								justifyContent: "flex-start",
+							}}
+							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
+							onChangeItem={(item) =>
+								this.setState({
+									radiusSize: item.value,
+								})
+							}
+						/> */}
+						<Separator />
+						<View style={styles.fixToText}>
+							<TouchableOpacity
+								style={styles.SubmitButtonStyle}
+								activeOpacity={0.5}
+								//onPress={this.ButtonClickCheckFunction}
+							>
+								<Text style={styles.TextStyle}> clear </Text>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								style={styles.SubmitButtonStyle}
+								activeOpacity={0.5}
+								//onPress={this.ButtonClickCheckFunction}
+							>
+								<Text style={styles.TextStyle}> apply </Text>
+							</TouchableOpacity>
+						</View>
+					</CollapseBody>
+				</Collapse>
 
 				{showSearchResults ? (
 					<FlatList
@@ -294,6 +553,79 @@ const styles = StyleSheet.create({
 		flexGrow: 1,
 		textAlign: 'center',
 	},
+	screenContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottomColor: "black",
+  },
+  containerPicker: {
+    flex: 1,
+    //backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fixToText: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "95%",
+  },
+  SubmitButtonStyle: {
+    marginTop: 10,
+    marginBottom: 20,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginLeft: 25,
+    marginRight: 25,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    height: 50,
+    width: 80,
+  },
+  OptionButtonStyle: {
+    marginTop: 5,
+    marginBottom: 5,
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
+    height: 60,
+    width: 140,
+  },
+  HeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#D3D3D3",
+    height: 30,
+    width: 75,
+  },
+  TextStyle: {
+    color: "#000000",
+    textAlign: "center",
+  },
+  SortTextStyle: {
+    marginTop: 10,
+    marginLeft: 25,
+    fontSize: 20,
+    flex: 1,
+  },
+  appButtonText: {
+    fontSize: 12,
+    color: "black",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+  },
 });
 
 const mapStateToProps = (state) => {
