@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Button, 
-  Image, 
-  SafeAreaView, 
-  StyleSheet, 
-  Text, 
-  TextInput, 
-  TouchableWithoutFeedback, 
-  View, 
+import {
+  Button,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -99,6 +99,13 @@ function ResetPasswordScreen() {
 
 			<View style={styles.submitBtn}>
 				<Button title='reset password' color='white' onPress={() => sendResetLink()} />
+        <TouchableWithoutFeedback
+          onPress={() => {
+            sendResetLink()
+          }}
+        >
+          <Text style={{color: 'white', alignSelf: 'center'}}>reset password</Text>
+        </TouchableWithoutFeedback>
 			</View>
 
 			<View>

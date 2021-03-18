@@ -22,7 +22,7 @@ import colors from '../config/colors';
 function RegisterScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
-	
+
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
 
@@ -220,14 +220,14 @@ function RegisterScreen(props) {
 				</Animatable.View>
 			)}
 			<View style={styles.submitBtn}>
-				<Button
-					title='register'
-					color='white'
+				<TouchableWithoutFeedback
 					onPress={() => {
 						dispatch(register(user));
 						setSubmitted(true);
 					}}
-				/>
+				>
+					<Text style={{color: 'white', alignSelf: 'center'}}>register</Text>
+				</TouchableWithoutFeedback>
 			</View>
 
 			<View style={styles.links}>

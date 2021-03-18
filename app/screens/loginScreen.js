@@ -125,14 +125,14 @@ function LoginScreen(props) {
 			</View>
 
 			<View style={styles.submitBtn}>
-				<Button
-					title='log in'
-					color='white'
+				<TouchableWithoutFeedback
 					onPress={() => {
 						dispatch(login(user));
 						setSubmitted(true);
 					}}
-				/>
+				>
+					<Text style={{color: 'white', alignSelf: 'center'}}>log in</Text>
+				</TouchableWithoutFeedback>
 			</View>
 
 			<View style={styles.links}>

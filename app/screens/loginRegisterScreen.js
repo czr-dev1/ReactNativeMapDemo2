@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
-	Button, 
-	Image, 
-	SafeAreaView, 
-	StyleSheet, 
-	Text, 
-	View 
+import {
+	Button,
+	Image,
+	SafeAreaView,
+	StyleSheet,
+	Text,
+	View
 } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -19,22 +19,22 @@ function LoginRegisterOption() {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<Image style={styles.logo} source={require('../assets/color_splash.png')} />
 			<View style={styles.loginBtn}>
-				<Button
-					title='log in'
-					color='white'
+				<TouchableWithoutFeedback
 					onPress={() => {
 						navigation.navigate('Login');
 					}}
-				/>
+				>
+					<Text style={{color: 'white', alignSelf: 'center'}}>log in</Text>
+				</TouchableWithoutFeedback>
 			</View>
 			<View style={styles.registerBtn}>
-				<Button
-					title='register'
-					color='white'
+				<TouchableWithoutFeedback
 					onPress={() => {
 						navigation.navigate('Register');
 					}}
-				/>
+				>
+					<Text style={{color: 'white', alignSelf: 'center'}}>register</Text>
+				</TouchableWithoutFeedback>
 			</View>
 			<View>
 				<TouchableWithoutFeedback

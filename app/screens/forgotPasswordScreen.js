@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { 
-	Alert, 
-  Button, 
-  Image, 
-  SafeAreaView, 
-  StyleSheet, 
-  Text, 
-	TextInput, 
-	TouchableWithoutFeedback, 
-  View, 
+import {
+	Alert,
+  Button,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+	TextInput,
+	TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -122,11 +122,13 @@ function ForgotPasswordScreen() {
 			/>
 
 			<View style={styles.submitBtn}>
-				<Button 
-					title='forgot password' 
-					color='white' 
-					onPress={() => sendResetLink()} 
-				/>
+				<TouchableWithoutFeedback
+					onPress={() => {
+						sendResetLink()
+					}}
+				>
+					<Text style={{color: 'white', alignSelf: 'center'}}>forgot password</Text>
+				</TouchableWithoutFeedback>
 			</View>
 
 			<View>
