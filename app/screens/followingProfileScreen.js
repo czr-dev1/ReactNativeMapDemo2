@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button} from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Image,
+	StyleSheet,
+	Text,
+	TouchableWithoutFeedback,
+	View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { loadStories } from '../redux/actions/storyActions';
@@ -15,7 +22,7 @@ import colors from '../config/colors';
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
 //story component
-import StoryList from '../components/storyList';
+import PlainStoryList from '../components/plainStoryList';
 import BadgeList from '../components/badgeList';
 
 
@@ -24,12 +31,13 @@ function FollowingProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
+
   const renderStoriesByType = () => {
     switch (selectedButton){
       case 1:
         return <BadgeList />
       default:
-        return <StoryList stories={data.userStories} />
+        return <PlainStoryList stories={data.userStories} />
       }
   }
 
@@ -97,6 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
+    height: '100%'
   },
   profileBar: {
     width: Dimensions.get('window').width,

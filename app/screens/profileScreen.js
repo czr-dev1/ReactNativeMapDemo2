@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
+  Button,
   Dimensions,
   Image,
   StatusBar,
@@ -7,10 +9,16 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Switch } from 'react-native-switch';
+import { Card } from 'react-native-elements';
+import { connect, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { loadStories } from '../redux/actions/storyActions';
+import { userSelfDelete } from '../redux/actions/authActions';
 
 //Icons
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -19,93 +27,129 @@ import { Feather } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
-//profile picture
+// profile picture
 const PROFILE_PIC = require('../assets/profile_blank.png');
 
 //story component
 import StoryList from '../components/storyList';
 
-
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
+  const [tempStories, setTempStories] = useState([]);
+  const insets = useSafeAreaInsets();
+
   const renderStoriesByType = () => {
+    let list = {};
     switch (selectedButton){
       case 1:
-        return <StoryList stories={props.stories.slice(1, 3)} />
+        list = props.stories.filter(item => item.category === 1);
+        return <StoryList stories={props.stories.filter(item => item.category === 1)} />
+        break;
       case 2:
-        return <StoryList stories={props.stories.slice(3, 5)} />
+        list = props.stories.filter(item => item.category === 2);
+        return <StoryList stories={props.stories.filter(item => item.category === 2)} />
+        break;
       case 3:
-        return <StoryList stories={props.stories.slice(0, 10)} />
+        list = props.stories.filter(item => item.category === 3);
+        return <StoryList stories={props.stories.filter(item => item.category === 3)} />
+        break;
       default:
-        return <StoryList stories={props.stories.slice(10, 20)} />
+        list = props.stories
+        return <StoryList stories={props.stories} />
       }
   }
 
-  useEffect(() => {}, []);
+  const deleteConfirm = () => {
+    Alert.alert('', 'are you sure you want to delete your profile?',
+    [
+      {
+        text: 'cancel',
+        onPress: () => navigation.navigate('Profile'),
+        style: 'cancel'
+      },
+      {
+        text: 'yes, delete my profile',
+        onPress: () => dispatch(userSelfDelete()),
+      }
+    ])
+  };
 
-  return(
-    <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
-      <View style={styles.profileBar}>
-        <View style={styles.nicknameContainer}>
-          <Text style={styles.nicknameText}>{props.user}</Text>
-        </View>
-        <View style={styles.profileImageContainer}>
-          <Image style={styles.profileImage} source={PROFILE_PIC}/>
-          <FontAwesome5 style={{marginLeft: '-7%'}} name="pencil-alt" size={24} color="black" />
-          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badges')}>
-            <Feather name="target" size={48} color="black" />
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.bioContainter}>
-          <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
-          <Text>{props.bio}</Text>
-        </View>
-      </View>
-      <View style={styles.profileStoryButtons}>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-          <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="format-list-bulleted" size={32} color="black" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-          <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="green" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
-          <View style={selectedButton === 2 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="pink" />
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
-          <View style={selectedButton === 3 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-            <MaterialIcons name="chat-bubble-outline" size={32} color="blue" />
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.storyList}>
-        {renderStoriesByType()}
-      </View>
-    </SafeAreaView>
-  );
+  // Removing the paddingTop property on the outter view will cause it to shift
+  // the whole screen up, I konw its a bit hacky but without subtracting it leaves
+  // a large gap, it used to be the SafeAreaView from this library but it wasn't
+  // working correctly after a merge so I changed it to useSafeAreaInsets
+  // https://reactnavigation.org/docs/handling-safe-area/
+	return (
+		<View style={styles.container, {paddingTop: insets.top - insets.top}}>
+			<View style={styles.profileBar}>
+				<View style={styles.profileImageContainer}>
+					<Image style={styles.profileImage} source={{uri: props.profileImage}} />
+					<FontAwesome5
+						style={{ marginLeft: '-3%' }}
+						name='pencil-alt'
+						size={24}
+						color='black'
+					/>
+				</View>
+				<View style={styles.bioContainter}>
+					<Text style={{ fontWeight: 'bold', color: 'grey' }}>bio</Text>
+					<Text>{props.bio}</Text>
+				</View>
+			</View>
+			<View style={styles.storyButtons}>
+				<TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+					<View
+						style={selectedButton === 0 ? styles.storySelectedButton : styles.storyUnselectedButton}
+					>
+						<MaterialIcons name='format-list-bulleted' size={32} color='black' />
+					</View>
+				</TouchableWithoutFeedback>
+				<TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
+					<View
+						style={selectedButton === 1 ? styles.storySelectedButton : styles.storyUnselectedButton}
+					>
+						<MaterialIcons name='chat-bubble-outline' size={32} color='pink' />
+					</View>
+				</TouchableWithoutFeedback>
+				<TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
+					<View
+						style={selectedButton === 2 ? styles.storySelectedButton : styles.storyUnselectedButton}
+					>
+						<MaterialIcons name='chat-bubble-outline' size={32} color='green' />
+					</View>
+				</TouchableWithoutFeedback>
+				<TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
+					<View
+						style={selectedButton === 3 ? styles.storySelectedButton : styles.storyUnselectedButton}
+					>
+						<MaterialIcons name='chat-bubble-outline' size={32} color='blue' />
+					</View>
+				</TouchableWithoutFeedback>
+			</View>
+			<View style={styles.storyList}>{renderStoriesByType()}</View>
+      <Button title='delete account' onPress={() => deleteConfirm()} />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: 'white',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   profileBar: {
     width: Dimensions.get('window').width,
     paddingLeft: '10%',
     paddingRight: '10%',
-    height: '25%'
+    backgroundColor: 'white',
   },
   nicknameContainer: {
+    backgroundColor: 'white',
     alignItems: 'center',
-    paddingBottom: '5%',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   nicknameText: {
     fontWeight: 'bold',
@@ -113,46 +157,46 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   profileImageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    height: '40%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   profileImage: {
     borderRadius: 200,
     resizeMode: 'center',
-    height: '100%',
-    width: '30%'
+    height: 128,
+    width: 128
   },
   bioContainter: {
-    paddingTop: '3%',
-    paddingBottom: '10%'
+    paddingTop: 15,
+    paddingBottom: 15
   },
-  profileStoryButtons: {
+  storyButtons: {
     width: Dimensions.get('window').width,
-    borderTopWidth: 1,
+    backgroundColor: 'white',
+    borderTopWidth: 0,
     borderTopColor: '#eae6e5',
-    paddingTop: '2%',
+    paddingTop: 15,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  profileStorySelectedButton: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
+  storySelectedButton: {
+    borderBottomWidth: 5,
+    borderBottomColor: '#919191',
     alignItems: 'center',
     flexGrow: 1,
-    paddingBottom: '2%'
+    paddingBottom: 15
   },
-  profileStoryUnselectedButton: {
+  storyUnselectedButton: {
     alignItems: 'center',
     flexGrow: 1
   },
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
     width: Dimensions.get('window').width,
-    height: '70%'
+    height: '100%'
   },
   navButton: {
     flexGrow: 1,
@@ -174,12 +218,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return{
     isLoading: state.storyReducer.isLoading,
-    stories: state.storyReducer.storyList,
+    stories: state.authReducer.user.userStories,
     error: state.storyReducer.error,
     user: state.authReducer.username,
-    bio: state.authReducer.bio,
+    bio: state.authReducer.user.bio,
+    profileImage: state.authReducer.user.profileurl
 
   }
 }
+
 
 export default connect(mapStateToProps)(ProfileScreen);

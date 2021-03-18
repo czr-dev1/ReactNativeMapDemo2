@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button, FlatList, Alert } from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
@@ -46,7 +51,7 @@ function BadgeList(props) {
       renderItem={({ item }) => {
         return (
           <View style={styles.item}>
-            <MaterialCommunityIcons name={item} size={24} color="black" />
+            <MaterialCommunityIcons name={item} size={48} color="#919191" />
           </View>
         );
       }}
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
   },
   grid: {
     flex: 1,

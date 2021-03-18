@@ -1,18 +1,32 @@
-# ReactNativeMapDemo
-All of the important code is inside the `app` directory
+# ThearqiveAppDemo
 
 ## Install Expo CLI
-`npm install --global expo-cli`
+Requirements: 
 
-## Install Packages (Should add all the packages you need)
-`expo install`
+`Node.js` 
 
-## Run
+`Git` 
+
+Inside command line tool:
+
+`npm install --gloabl expo-cli`
+
+## Create Project
+Create new app: 
+
+`expo init app-name`
+
+Navigate to project directory: 
+
+`cd app-name`
+
+## Run Development Server: 
 Start Metro Bundler
-`expo start`
+First enter `npm install`
 
-Start App on Android
-`npm run android`
+Then `expo start` or `npm start`
 
-More Commands Here:
-https://docs.expo.io/workflow/expo-cli/
+## Other Info
+`app` folder contains important files
+
+`package.json` includes React Native dependencies needed for app

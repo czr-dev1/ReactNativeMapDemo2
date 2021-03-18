@@ -12,27 +12,36 @@ import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../config/colors';
 //Custom story component
 import StoryList from '../components/storyList';
-import { loadProfile } from '../redux/actions/profileActions';
+import { reloadUser } from '../redux/actions/auth';
 
 function BookmarkedPostsScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([])
+
   const renderStoriesByType = () => {
+    console.log(props.stories);
+    console.log(props);
+    if (props.stories === undefined) {
+      return <StoryList isBookMark={true} stories={props.stories} />
+    }
+
     switch (selectedButton){
       case 1:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "1")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "1")} />
       case 2:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "2")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "2")} />
       case 3:
-        return <StoryList stories={data.user_upvoted_stories.filter(item => item.category === "3")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "3")} />
       default:
-        return <StoryList stories={data.user_upvoted_stories} />
+        return <StoryList isBookMark={true} stories={props.stories} />
       }
   }
 
   useEffect(() => {
-    loadProfile();
+    console.log('-----------------------------------------------------------s');
+    console.log(props.user);
+    props.reloadUser(props.user);
   }, []);
 
   const loadProfile = async () => {
@@ -43,8 +52,9 @@ function BookmarkedPostsScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get('https://globaltraqsdev.com/api/profile/users/?username=nate', config)
+    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
+      console.log(res.data);
       setData(res.data[0])
     }).catch((err) => {
       console.log(err);
@@ -100,6 +110,7 @@ const styles = StyleSheet.create({
     paddingTop: '2%',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    backgroundColor: 'white'
   },
   profileStorySelectedButton: {
     borderBottomWidth: 2,
@@ -115,7 +126,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eae6e5',
+    backgroundColor: 'white',
     width: Dimensions.get('window').width,
     height: '100%'
   },
@@ -139,15 +150,16 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
-    stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+    user: state.authReducer.user.username,
+    stories: state.authReducer.user.user_upvoted_stories,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadProfile: () => dispatch(loadProfile())
+    reloadUser: (username) => dispatch(reloadUser(username))
   }
 }
 
-export default BookmarkedPostsScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(BookmarkedPostsScreen);

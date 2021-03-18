@@ -1,11 +1,15 @@
 import { combineReducers } from 'redux';
 
 import stories from './storyReducer';
-import login from './authReducer';
+import auth from './authReducer';
+import profile from './profileReducer';
+import message from './messageReducers';
 
 const rootReducer = combineReducers({
   storyReducer: stories,
-  authReducer: login,
+  authReducer: auth,
+  profileReducer: profile,
+  messageReducer: message,
 })
 
 export default rootReducer;
