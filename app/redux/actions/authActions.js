@@ -45,6 +45,15 @@ export const login = ({ username, password, expoPushToken }) => {
 			// RETRIEVING: user from 2nd backend
 			axios.get(`http://192.81.130.223:8012/api/user/get`, {params: data})
 			.then((res2) => {
+				// setting followingList and notificationsList
+				console.log("recieved data: ", res2.data);
+				dispatch({ type: 'SET_NOTIFICATIONS_FOLLOWING_LISTS', payload: {
+					notificationList: res2.data.notificationList,
+					followingList: res2.data.followingList,
+				}})
+
+				// end setting
+
 				if (res2.data.expoPushToken !== expoPushToken) {
 					data = {
 						id: res.data.user.id,
