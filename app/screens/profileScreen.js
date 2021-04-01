@@ -88,7 +88,7 @@ function ProfileScreen(props) {
           </TouchableWithoutFeedback>
         </View>
 				<View style={styles.profileImageContainer}>
-					<Image style={styles.profileImage} source={{uri: props.profileImage}} />
+					<Image style={styles.profileImage} source={ (props.profileImage !== null) ? {uri: props.profileImage} : PROFILE_PIC} />
           <TouchableWithoutFeedback  onPress={() => props.navigation.navigate('EditProfileModal')}>
               <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color="#919191" />
             </TouchableWithoutFeedback>
