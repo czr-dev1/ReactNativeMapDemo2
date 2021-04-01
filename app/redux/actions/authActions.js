@@ -201,8 +201,20 @@ export const followUser = ({id, list}) => {
 	};
 };
 
-export const unfollowUser = (id) => {
+export const unfollowUser = ({list, id, unfollowing}) => {
 	return (dispatch) => {
-		dispatch({type: 'UNFOLLOW_USER', payload: followingList});
+		const data = {
+			id: id,
+			unfollow: unfollowing
+		}
+		console.log('aa', list);
+
+		axios.patch(`http://192.81.130.223:8012/api/user/unfollow`, data)
+			.then((res) => {
+				console.log(res.data);
+				dispatch({type: 'UNFOLLOW_USER', payload: list});
+			}).catch((err) => {
+				console.log(err);
+			});
 	};
 };

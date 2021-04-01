@@ -97,14 +97,14 @@ export default auth = (state = initialState, action) => {
 				})
 				break;
 			case 'FOLLOW_USER':
-				console.log("ar: ", action.payload);
 				return Object.assign({}, state, {
 					followingList: action.payload
 				})
 				break;
 			case 'UNFOLLOW_USER':
+			console.log("ar: ", action.payload);
 				return Object.assign({}, state, {
-					followingList: action.payload.followingList
+					followingList: action.payload
 				})
 				break;
 		default:

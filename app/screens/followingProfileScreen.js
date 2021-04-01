@@ -45,6 +45,7 @@ function FollowingProfileScreen(props) {
       }
   }
 
+	// https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
   useEffect(() => {
 		let isMounted = true; // note this flag denotes mount StatusBar
 		const config = {
@@ -83,12 +84,13 @@ function FollowingProfileScreen(props) {
 
 	const unfollow = () => {
 		let list = props.followingList;
-		list.filter(item => item !== data.id);
+		list = list.filter(item => item !== data.id);
 		list = {
 			list: list,
-			id: props.userId
+			id: props.userId,
+			unfollowing: data.id
 		};
-		//props.unfollowUser(list);
+		props.unfollowUser(list);
 	};
 
   if (isLoading) {
@@ -105,7 +107,7 @@ function FollowingProfileScreen(props) {
 						<Image style={styles.profileImage} source={(data.profileurl !== null) ? {uri: data.profileurl} : PROFILE_PIC}/>
 						{
 							(props.followingList.includes(data.id)) ? (
-								<TouchableWithoutFeedback>
+								<TouchableWithoutFeedback onPress={() => unfollow()}>
 									<FontAwesome name="bookmark" size={32} color="black" />
 								</TouchableWithoutFeedback>
 							) : (
