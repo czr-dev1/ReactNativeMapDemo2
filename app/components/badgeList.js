@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: Dimensions.get('window').width,
+    backgroundColor: 'white'
   },
   topIcon: {
     alignSelf: 'center',
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
   },
   grid: {
     flex: 1,
+    backgroundColor: 'white'
   }
 })
 
