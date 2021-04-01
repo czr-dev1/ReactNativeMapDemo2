@@ -1,30 +1,45 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Text, View, Button, Platform, ScrollView } from 'react-native';
+import {
+  Button,
+  Dimensions,
+  FlatList,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { Card } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
+import { connect } from "react-redux";
+import { FontAwesome5 } from '@expo/vector-icons';
+
+const ItemCard = ({ item }) => {
+  console.log(item);
+  let d = new Date(item.time * 1);
+  return(
+    <TouchableWithoutFeedback>
+      <Card containerStyle={{borderRadius: 14}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{padding: 12 }}>
+            <FontAwesome5 name="comment-alt" size={32} color="black" />
+          </View>
+          <View style={{flexDirection: 'column', justifyContent: 'space-evenly', paddingLeft: 12}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18, color:'#787878'}}>{item.username}</Text>
+            <Text>{d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}</Text>
+          </View>
+        </View>
+      </Card>
+    </TouchableWithoutFeedback>
+  );
+};
 
 function NotificationScreen(props){
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-  }, []);
+  const renderItem = ({ item }) => {
+    const backgroundColor = 'white';
+    return <ItemCard item={item} style={{ backgroundColor }} />;
+  };
 
   return (
     <SafeAreaView
@@ -35,43 +50,26 @@ function NotificationScreen(props){
         backgroundColor: 'white',
       }}>
       <ScrollView>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%'}}>
           <Text style={{fontSize: 24, paddingTop: 24, paddingBottom: 10, color: '#787878', fontWeight: 'bold'}}>notifications</Text>
         </View>
+        <FlatList
+          style={{width: Dimensions.get('window').width}}
+          data={props.notificationList}
+          renderItem={renderItem}
+          keyExtractor={(item) => '' + item.time}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 
-  async function registerForPushNotificationsAsync() {
-    let token;
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
-    return token;
-  }
 }
 
-export default NotificationScreen;
+const mapStateToProps = (state) => {
+  console.log(state.authReducer.notificationList);
+  return {
+    notificationList: state.authReducer.notificationList,
+  }
+};
+
+export default connect(mapStateToProps)(NotificationScreen);
