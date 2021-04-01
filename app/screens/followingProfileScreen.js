@@ -65,11 +65,7 @@ function FollowingProfileScreen(props) {
 			console.log(err);
 		});
 		return () => { isMounted = false };
-  }, [])
-
-  const getUser = async () => {
-
-  }
+  })
 
 	const follow = () => {
 		let list = props.followingList;
