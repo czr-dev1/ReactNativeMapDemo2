@@ -96,6 +96,17 @@ export default auth = (state = initialState, action) => {
 					notificationList: action.payload.notificationList
 				})
 				break;
+			case 'FOLLOW_USER':
+				console.log("ar: ", action.payload);
+				return Object.assign({}, state, {
+					followingList: action.payload
+				})
+				break;
+			case 'UNFOLLOW_USER':
+				return Object.assign({}, state, {
+					followingList: action.payload.followingList
+				})
+				break;
 		default:
 			return state;
 	}

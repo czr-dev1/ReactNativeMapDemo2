@@ -179,3 +179,30 @@ export const setExpoPushToken = (token) => {
 		dispatch({type: 'SET_EXPO_PUSH_TOKEN', payload: token});
 	};
 };
+
+export const followUser = ({id, list}) => {
+	return (dispatch) => {
+		let temp = [];
+		temp.push(list[list.length - 1]);
+		const data = {
+			id: id,
+			followingList: temp
+		}
+		console.log("reducer: ", data);
+
+		axios.patch(`http://192.81.130.223:8012/api/user/follow`, data)
+			.then((res) => {
+				console.log(res);
+				dispatch({type: 'FOLLOW_USER', payload: list});
+			}).catch((err) => {
+				console.log(err);
+			});
+
+	};
+};
+
+export const unfollowUser = (id) => {
+	return (dispatch) => {
+		dispatch({type: 'UNFOLLOW_USER', payload: followingList});
+	};
+};
