@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Button,
   Dimensions,
   StyleSheet,
@@ -21,6 +22,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
 import { reloadUser } from '../redux/actions/auth';
+import { userSelfDelete } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
@@ -56,6 +58,21 @@ function EditProfileModal(props) {
         console.log(err);
       }
     );
+  };
+
+  const deleteConfirm = () => {
+    Alert.alert('', 'are you sure you want to delete your profile?',
+    [
+      {
+        text: 'cancel',
+        onPress: () => props.navigation.navigate('Profile'),
+        style: 'cancel'
+      },
+      {
+        text: 'yes, delete my profile',
+        onPress: () => dispatch(userSelfDelete()),
+      }
+    ])
   };
 
   return (
@@ -95,6 +112,7 @@ function EditProfileModal(props) {
             style={styles.input}
             placeholder='username'
             value={username}
+            editable={false}
             onChangeText={(value) => setUsername(value)}/>
           <Text style={{fontWeight: 'bold', fontSize: 18, color: '#ddd', paddingLeft: 8}} >bio</Text>
           <TextInput
@@ -104,8 +122,8 @@ function EditProfileModal(props) {
             value={bio}
             onChangeText={(value) => setBio(value)}/>
 
-          <TouchableOpacity style={{padding: 8, width: '25%'}}>
-            <Text>delete profile</Text>
+          <TouchableOpacity style={{padding: 8}} onPress={() => deleteConfirm()}>
+            <Text>delete account</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -153,12 +171,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  console.log(state.authReducer);
   return {
-    username: state.authReducer.username,
-    bio: state.authReducer.bio,
-    is_profile_private: state.authReducer.extra[0].is_profile_private,
-    id: state.authReducer.extra[0].id,
-    profileImage: state.authReducer.extra[0].profileurl
+    username: state.authReducer.user.username,
+    bio: state.authReducer.user.bio,
+    is_profile_private: state.authReducer.user.is_profile_private,
+    id: state.authReducer.user.id,
+    profileImage: state.authReducer.user.profileurl
   }
 }
 

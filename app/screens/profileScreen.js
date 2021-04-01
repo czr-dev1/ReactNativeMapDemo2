@@ -82,14 +82,16 @@ function ProfileScreen(props) {
 	return (
 		<View style={styles.container, {paddingTop: insets.top - insets.top}}>
 			<View style={styles.profileBar}>
+        <View style={{flexDirection:'row-reverse', width: '100%', marginBottom: '-15%', marginTop: '10%'}}>
+          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badge')}>
+            <Feather name="target" size={48} color="black" />
+          </TouchableWithoutFeedback>
+        </View>
 				<View style={styles.profileImageContainer}>
 					<Image style={styles.profileImage} source={{uri: props.profileImage}} />
-					<FontAwesome5
-						style={{ marginLeft: '-3%' }}
-						name='pencil-alt'
-						size={24}
-						color='black'
-					/>
+          <TouchableWithoutFeedback  onPress={() => props.navigation.navigate('EditProfileModal')}>
+              <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color="#919191" />
+            </TouchableWithoutFeedback>
 				</View>
 				<View style={styles.bioContainter}>
 					<Text style={{ fontWeight: 'bold', color: 'grey' }}>bio</Text>
