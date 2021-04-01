@@ -107,9 +107,11 @@ function LoginStackScreen() {
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({ navigation }) {
+	// the header left is a hack to make the title centered, otherwise its just terrible to work with
 	return (
 		<ProfileStack.Navigator>
 			<ProfileStack.Screen name='Profile' options={{
+				headerLeft: () => <MaterialIcons name='menu' size={24} color='white'/>,
 				headerTitle: () => <ProfileHeader />,
 				headerRight: () => (
 					<MaterialIcons
