@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/02_thearqive_loading_screen_.gif",
+      "image": "./app/assets/color_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
