@@ -11,7 +11,7 @@ import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-switch';
 import { connect } from 'react-redux';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import makeStoryPrivate from '../redux/actions/storyActions';
 import colors from '../config/colors';
@@ -77,10 +77,11 @@ const BookMark = ({ item }) => {
       <Card containerStyle={{borderRadius: 14}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
           <View style={{flexDirection: 'column', flexShrink: 1}}>
-            <Text style={{flexShrink: 1}}>{item.title.toLowerCase()}</Text>
+            <Text style={{flexShrink: 1, fontSize: 18}}>{item.title.toLowerCase()}</Text>
+            <Text>{item.pinAuthor}</Text>
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <FontAwesome5 name="bookmark" size={24} color="black" />
+            <FontAwesome name="bookmark" size={24} color="black" />
           </View>
         </View>
       </Card>

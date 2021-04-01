@@ -64,7 +64,7 @@ function BookmarkedPostsScreen(props) {
   return(
     ( props.isLoading ) ?
       <View><Text>Loading</Text></View> : (
-    <View>
+    <View style={{height: '100%'}}>
 
     <View style={styles.profileStoryButtons}>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
