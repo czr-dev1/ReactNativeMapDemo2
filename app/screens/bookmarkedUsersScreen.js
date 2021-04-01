@@ -45,7 +45,7 @@ function BookmarkedUsersScreen(props) {
     return <ActivityIndicator />;
   } else {
     return (
-      <SafeAreaView>
+      <View>
         <ScrollView>
           {data.map((item, i) => {
             return (
@@ -59,7 +59,7 @@ function BookmarkedUsersScreen(props) {
             )
           })}
         </ScrollView>
-      </SafeAreaView>
+      </View>
     );
   }
 }
