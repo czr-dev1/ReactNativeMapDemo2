@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import {
 	Button,
 	Image,
@@ -9,11 +9,45 @@ import {
 } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+
+import { connect, useDispatch } from 'react-redux';
+import { setExpoPushToken } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
 function LoginRegisterOption() {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		registerForPushNotificationsAsync()
+			.then((token) => {
+				dispatch(setExpoPushToken(token));
+			});
+	}, []);
+
+	async function registerForPushNotificationsAsync() {
+		let token;
+		if (Constants.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!');
+				return;
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data;
+			console.log(token);
+		} else {
+			alert('Must use physical device for Push Notifications');
+		}
+		return token;
+	}
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>

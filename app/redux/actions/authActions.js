@@ -62,7 +62,7 @@ export const logout = () => {
 }
 
 // REGISTER NEW USER
-export const register = ({ username, email, confirmPassword }) => {
+export const register = ({ username, email, confirmPassword, expoPushToken}) => {
 	return (dispatch) => {
 		const user = {
 			username: username,
@@ -73,6 +73,17 @@ export const register = ({ username, email, confirmPassword }) => {
 
 		axios.post(`https://www.globaltraqsdev.com/api/auth/register`, user, config)
 		.then((res) => {
+			const data = {
+				id: res.data.user.id,
+				expoPushToken: expoPushToken
+			};
+			axios.post(`http://192.81.130.223:8012/api/user/create`, data)
+				.then((res) => {
+					// console.log(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 			dispatch({ type: 'REGISTER_USER_SUCCESS', payload: res.data });
 			dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
 		})
@@ -114,4 +125,10 @@ export const reloadUser = (username) => {
         dispatch({ type: 'USER_PROFILE_RELOAD_FAIL', payload: err});
       });
   }
+};
+
+export const setExpoPushToken = (token) => {
+	return (dispatch) => {
+		dispatch({type: 'SET_EXPO_PUSH_TOKEN', payload: token});
+	};
 };

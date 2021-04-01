@@ -31,6 +31,7 @@ function RegisterScreen(props) {
 		email: '',
 		password: '',
 		confirmPassword: '',
+		expoPushToken: props.expoPushToken,
 		isValidUsername: true,
 		isValidEmail: true,
 		isValidPassword: true,
@@ -39,6 +40,7 @@ function RegisterScreen(props) {
 	});
 
 	const setUsername = (val) => {
+		console.log(user);
 		if (val.length > 15) {
 			setUser({
 				...user,
@@ -323,8 +325,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+	console.log("authReducer: ", state.authReducer);
 	return {
 		registerFail: state.authReducer.registerFail,
+		expoPushToken: state.authReducer.expoPushToken
 	};
 };
 
