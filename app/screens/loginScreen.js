@@ -30,6 +30,7 @@ function LoginScreen(props) {
 		isValidPassword: true,
 		secureTextEntry: true,
 		errors: {},
+		expoPushToken: props.expoPushToken,
 	});
 
 	const handleUsername = (val) => {
@@ -231,6 +232,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	return {
 		loginFail: state.authReducer.loginFail,
+		expoPushToken: state.authReducer.expoPushToken,
 	};
 };
 
