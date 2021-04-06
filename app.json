@@ -25,6 +25,7 @@
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.thearqive.mobile",
+      "useNextNotificationsApi": true,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"
