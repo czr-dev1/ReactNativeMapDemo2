@@ -7,5 +7,6 @@ export default {
   forgotDetails: '#998DB8',
   alert: '#E63F52',
   black: '#000',
-  white: '#fff'
+  white: '#fff',
+  orange: '#F0A055',
 }

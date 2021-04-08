@@ -38,6 +38,8 @@ import EditProfileModal from '../modals/editProfileModal';
 
 import ProfileHeader from '../components/profile/profileHeader';
 
+import colors from '../config/colors.js';
+
 
 
 const AnonMapStack = createStackNavigator();
@@ -203,9 +205,16 @@ function AppTabScreen() {
 	return (
 		<AppTab.Navigator
 			initialRouteName='Map'
+			tabBarOptions={{
+				showLabel: false,
+				style: {
+					backgroundColor: colors.purple
+				}
+			}}
 			screenOptions={({ route }) => ({
-				tabBarIcon: ({ color, size }) => {
+				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
+					let iconColor;
 					if (route.name === 'Map') {
 						iconName = 'map';
 					} else if (route.name === 'Bookmarks') {
@@ -217,7 +226,14 @@ function AppTabScreen() {
 					} else if (route.name === 'Profile') {
 						iconName = 'user';
 					}
-					return <FontAwesome5 name={iconName} size={size} color={color} />;
+
+					if (focused) {
+						iconColor = colors.white;
+					} else {
+						iconColor = colors.border;
+					}
+
+					return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
 				},
 			})}
 		>

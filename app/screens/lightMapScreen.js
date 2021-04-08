@@ -222,7 +222,11 @@ function LightMapScreen(props) {
 					}}
 					onClear={(text) => searchFilterFunction('')}
 					lightTheme={true}
-					placeholder='Type Here...'
+          containerStyle={{backgroundColor: colors.purple, borderBottomColor: 'transparent', borderTopColor: 'transparent'}}
+          inputContainerStyle={{borderRadius: 50, backgroundColor: colors.white, borderWidth: 0}}
+          inputStyle={{fontSize: 18}}
+					placeholder='search'
+          placeholderTextColor={colors.purple}
 					value={search}
 				/>
 
@@ -231,8 +235,9 @@ function LightMapScreen(props) {
 						style={{
 							flexDirection: "row",
 							alignItems: "center",
+              justifyContent: "center",
 							padding: 10,
-							backgroundColor: "#FFFFFF",
+							backgroundColor: colors.purple,
 						}}
 					>
 						<View style={{ width: "15%", alignItems: "center" }}>
@@ -242,7 +247,7 @@ function LightMapScreen(props) {
 										"https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
 								}}
 							/> */}
-							<MaterialIcons name="sort" size={32} color="black" />
+							<MaterialIcons name="sort" size={32} color={colors.white} />
 						</View>
 
 						<View style={styles.screenContainer}>
