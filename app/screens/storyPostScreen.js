@@ -165,26 +165,26 @@ function StoryPostScreen(props) {
               }}/>
           </Modal>
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Text style={{fontSize: 24, padding: 24, fontWeight: 'bold', color:'#787878'}}>add a story</Text>
+            <Text style={{fontSize: 24, padding: 24, fontWeight: 'bold', color: colors.purple}}>add a story</Text>
           </View>
-          <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: '#ddd', alignItems: 'center', paddingBottom: 9, paddingLeft: 7, paddingRight: 14, width: '100%', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', borderBottomWidth: 1, borderColor: colors.border, alignItems: 'center', paddingBottom: 9, paddingLeft: 7, paddingRight: 14, width: '100%', justifyContent: 'space-between'}}>
             <View style={{}}>
-              <Text style={{color: '#919191'}}>anonymous</Text>
+              <Text style={{color: colors.purple, fontWeight: 'bold', fontSize: 16}}>anonymous</Text>
             </View>
             <View style={{}}>
               <Switch
                 value={isAnonymous}
                 onValueChange={(val) => setAnonymous(val)}
-                activeText={'✔'}
-                inActiveText={'✖'}
-                backgroundActive={'#AAAAAA'}
-                backgroundInActive={'#AAAAAA'}
+                activeText={'on'}
+                inActiveText={'off'}
+                backgroundActive={colors.purple}
+                backgroundInActive={colors.purple}
               />
             </View>
           </View>
-          <View style={{borderBottomWidth: 1, borderColor: '#ddd', flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{borderBottomWidth: 1, borderColor: colors.border, flexDirection: 'row', alignItems: 'center'}}>
             <TouchableWithoutFeedback onPress={()=> setExpanded(!isExpanded)}>
-                <FontAwesome5 name={isExpanded ? "minus" : "plus"} size={24} color="#919191" />
+                <FontAwesome5 name={isExpanded ? "minus" : "plus"} size={24} color={colors.border} />
             </TouchableWithoutFeedback>
             <TextInput
               name='address'
@@ -242,27 +242,27 @@ function StoryPostScreen(props) {
               setTitle(val);
             }}
           />
-          <View style={{flexDirection:'row', borderColor: '#ddd', borderBottomWidth: 1, justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={{color: '#919191', padding: 12, alignSelf: 'flex-start'}}>*category</Text>
+          <View style={{flexDirection:'row', borderColor: colors.border, borderBottomWidth: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={{color: colors.border, padding: 12, alignSelf: 'flex-start'}}>* category</Text>
             <Collapse style={{paddingRight: 12}} isCollapsed={isShowing} onToggle={() => setShowing(!isShowing)}>
               <CollapseHeader>
-                <View style={{flexDirection:'row', alignItems: 'center',backgroundColor: '#ddd', borderRadius: 8, padding: 4, }}>
+                <View style={{flexDirection:'row', alignItems: 'center',backgroundColor: colors.purple, borderRadius: 8, padding: 4, }}>
                   <Text style={{color: '#fff', paddingRight: 3}}>{category === 1 ? "personal" : category === 2 ? "community" : "historical"}</Text>
-                  <FontAwesome5 name={isShowing ? "chevron-up" : "chevron-down"} size={24} color="#919191" />
+                  <FontAwesome5 name={isShowing ? "chevron-up" : "chevron-down"} size={24} color={colors.white} />
                 </View>
               </CollapseHeader>
               <CollapseBody>
-                <TouchableOpacity style={{borderRadius: 8, backgroundColor: '#ddd'}} onPress={() => {setCategory(1); setShowing(false);}}>
+                <TouchableOpacity style={{borderRadius: 8, backgroundColor: colors.purple}} onPress={() => {setCategory(1); setShowing(false);}}>
                   <View style={{flexDirection:'row', justifyContent: 'center', padding: 8}}>
                     <Text style={{color: '#fff'}}>personal</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{borderRadius: 8, backgroundColor: '#ddd'}} onPress={() => {setCategory(3); setShowing(false);}}>
+                <TouchableOpacity style={{borderRadius: 8, backgroundColor: colors.purple}} onPress={() => {setCategory(3); setShowing(false);}}>
                   <View style={{flexDirection:'row', justifyContent: 'center', padding: 8}}>
                     <Text style={{color: '#fff'}}>historical</Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={{borderRadius: 8, backgroundColor: '#ddd'}} onPress={() => {setCategory(2); setShowing(false);}}>
+                <TouchableOpacity style={{borderRadius: 8, backgroundColor: colors.purple}} onPress={() => {setCategory(2); setShowing(false);}}>
                   <View style={{flexDirection:'row', justifyContent: 'center', padding: 8}}>
                     <Text style={{color: '#fff'}}>community</Text>
                   </View>
@@ -271,17 +271,18 @@ function StoryPostScreen(props) {
             </Collapse>
           </View>
 
-          <View style={{flexDirection:'row', borderColor: '#ddd', borderBottomWidth: 1, justifyContent: 'space-around', padding: 9}}>
+          <View style={{flexDirection:'row', borderColor: colors.border, borderBottomWidth: 1, justifyContent: 'space-around', alignItems: 'center', padding: 9}}>
             <TouchableWithoutFeedback onPress={() => setIsPickingStartDate(true)}>
               <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
-                <Text style={{color: '#919191', paddingRight: 8}}>{hasPickStart ? startDate.toISOString().slice(0,10) : "start date"}</Text>
-                <FontAwesome5 name="calendar-week" size={24} color="#919191" />
+                <Text style={{color: colors.border, paddingRight: 8}}>{hasPickStart ? startDate.toISOString().slice(0,10) : "start date"}</Text>
+                <FontAwesome5 name="calendar-week" size={24} color={colors.purple} />
               </View>
             </TouchableWithoutFeedback>
+						<Text style={{color: colors.border}}> to </Text>
             <TouchableWithoutFeedback onPress={() => setIsPickingEndDate(true)}>
               <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
-                <Text style={{color: '#919191', padding: 8}}>{hasPickEnd ? endDate.toISOString().slice(0,10) : "end date"}</Text>
-                <FontAwesome5 name="calendar-week" size={24} color="#919191" />
+                <Text style={{color: colors.border, padding: 8}}>{hasPickEnd ? endDate.toISOString().slice(0,10) : "end date"}</Text>
+                <FontAwesome5 name="calendar-week" size={24} color={colors.purple} />
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -297,11 +298,11 @@ function StoryPostScreen(props) {
           />
 
           <View style={{flexDirection: 'column', flex: 1}}>
-            <TouchableOpacity style={{alignSelf: 'flex-start', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}>
+            <TouchableOpacity style={{alignSelf: 'flex-start', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: colors.border, borderWidth: 2}}>
               <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{alignSelf: 'flex-end', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}
+              style={{alignSelf: 'flex-end', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: colors.border, borderWidth: 2}}
               disabled={gotLocation ? false : true}
               onPress={(e) => {
                 submitNewStory();
@@ -341,7 +342,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: colors.border,
     padding: 10,
     fontSize: 14,
     width: '100%',
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   requiredText: {
-    color: 'red',
+    color: colors.alert,
   },
   userBtn: {
     marginTop: 15,
