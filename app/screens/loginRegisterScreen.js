@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	StyleSheet,
 	Text,
+	TouchableOpacity,
 	View
 } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -51,24 +52,26 @@ function LoginRegisterOption() {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/color_splash.png')} />
+			<Image style={styles.logo} source={require('../assets/white_color_logo_highres.png')} />
 			<View style={styles.loginBtn}>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
+					activeOpacity={0.6}
+					underlayColor={colors.darkPurple}
 					onPress={() => {
 						navigation.navigate('Login');
 					}}
 				>
 					<Text style={{color: 'white', alignSelf: 'center'}}>log in</Text>
-				</TouchableWithoutFeedback>
+				</TouchableOpacity>
 			</View>
 			<View style={styles.registerBtn}>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Register');
 					}}
 				>
 					<Text style={{color: 'white', alignSelf: 'center'}}>register</Text>
-				</TouchableWithoutFeedback>
+				</TouchableOpacity>
 			</View>
 			<View>
 				<TouchableWithoutFeedback
@@ -86,14 +89,14 @@ function LoginRegisterOption() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.white,
+		backgroundColor: colors.black,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	logo: {
 		marginTop: 175,
 		width: '80%',
-		height: 100,
+		height: 256,
 	},
 	text: {
 		fontSize: 14,
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
 		marginTop: 50,
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		backgroundColor: colors.purple,
 	},
 	registerBtn: {
 		fontSize: 16,
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
 		marginBottom: 250,
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		backgroundColor: colors.purple,
 	},
 });
 

@@ -115,13 +115,13 @@ function LoginScreen(props) {
 			)}
 
 			<View style={styles.links}>
-				<Text style={{ color: 'gray' }}>forgot your log in details? get help </Text>
+				<Text style={{ color: colors.forgotDetails, fontSize: 12 }}>forgot your log in details? get help </Text>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('ForgotPassword');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>signing in</Text>
+				<Text style={{ fontWeight: 'bold', fontSize: 12, color: colors.forgotDetails }}>signing in</Text>
 				</TouchableOpacity>
 			</View>
 
@@ -175,22 +175,21 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
+		color: colors.purple,
 		marginBottom: 30,
 	},
 	body: {
 		flexDirection: 'row',
 	},
 	input: {
-		fontSize: 20,
-		color: 'gray',
+		fontSize: 16,
+		color: colors.border,
 		width: '85%',
 		height: 50,
 		paddingLeft: 15,
 		borderWidth: 2,
 		borderRadius: 5,
-		borderColor: '#4D4185',
+		borderColor: colors.border,
 		marginTop: 10,
 		marginBottom: 10,
 	},
@@ -216,13 +215,13 @@ const styles = StyleSheet.create({
 		width: '85%',
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		backgroundColor: colors.purple,
 		marginTop: 50,
 		marginBottom: 60,
 	},
 	links: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
+		justifyContent: 'flex-end',
 		fontSize: 14,
 		marginTop: 10,
 		marginBottom: 30,

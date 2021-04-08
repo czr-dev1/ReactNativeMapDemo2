@@ -159,7 +159,7 @@ function RegisterScreen(props) {
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='envelope' color='#DCDCDC' size={20} />
+				<FontAwesome5 name='envelope' color={colors.border} size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.email}
@@ -176,7 +176,7 @@ function RegisterScreen(props) {
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
+				<FontAwesome5 name='lock' color={colors.border} size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.password}
@@ -197,7 +197,7 @@ function RegisterScreen(props) {
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
+				<FontAwesome5 name='lock' color={colors.border} size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.confirmPassword}
@@ -212,7 +212,7 @@ function RegisterScreen(props) {
 					{user.secureTextEntry ? (
 						<FontAwesome5 name='eye-slash' color='#DCDCDC' size={20} />
 					) : (
-						<FontAwesome5 name='eye' color='#DCDCDC' size={20} />
+						<FontAwesome5 name='eye' color={colors.border} size={20} />
 					)}
 				</TouchableOpacity>
 			</View>
@@ -270,14 +270,13 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
+		color: colors.purple,
 		marginBottom: 30,
 	},
 	input: {
 		flex: 1,
-		fontSize: 20,
-		color: 'gray',
+		fontSize: 16,
+		color: colors.border,
 		width: '90%',
 		paddingLeft: 10,
 	},
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		paddingBottom: 5,
 		borderBottomWidth: 2,
-		borderColor: '#4D4185',
+		borderColor: colors.border,
 		marginTop: 10,
 		marginBottom: 20,
 	},
@@ -303,7 +302,7 @@ const styles = StyleSheet.create({
 	},
 	errorMsg: {
 		textAlign: 'center',
-		color: 'red',
+		color: colors.alert,
 		padding: 5,
 	},
 	submitBtn: {
@@ -311,7 +310,7 @@ const styles = StyleSheet.create({
 		width: '85%',
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		backgroundColor: colors.purple,
 		marginTop: 75,
 		marginBottom: 60,
 	},
