@@ -10,8 +10,8 @@ To install Expo:
 
 ## Run Development Server: 
 First enter `expo install` to get install all of the required dependancies
-* `npm install` works as well
-* however installing it through expo would be the better option
+* `npm install` works as well, 
+* however installing it through expo would be the better option, `npm` can install the incompatible versions where as `expo` will install the better versions.
 
 Then `expo start`
 * `npm run android` will attempt to run it on a connected Android device immediatly
