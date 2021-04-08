@@ -133,7 +133,7 @@ function ProfileStackScreen({ navigation }) {
 						name='menu'
 						style={{paddingRight: 10 }}
 						size={24}
-						color='black'
+						color={colors.purple}
 						onPress={() => navigation.openDrawer()}
 					/>
 				)}}

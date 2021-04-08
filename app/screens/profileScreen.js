@@ -84,18 +84,18 @@ function ProfileScreen(props) {
 			<View style={styles.profileBar}>
         <View style={{flexDirection:'row-reverse', width: '100%', marginBottom: '-15%', marginTop: '10%'}}>
           <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badge')}>
-            <Feather name="target" size={48} color="black" />
+            <Feather name="target" size={48} color={colors.purple} />
           </TouchableWithoutFeedback>
         </View>
 				<View style={styles.profileImageContainer}>
 					<Image style={styles.profileImage} source={ (props.profileImage !== null) ? {uri: props.profileImage} : PROFILE_PIC} />
           <TouchableWithoutFeedback  onPress={() => props.navigation.navigate('EditProfileModal')}>
-              <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color="#919191" />
+              <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color={colors.purple} />
             </TouchableWithoutFeedback>
 				</View>
 				<View style={styles.bioContainter}>
-					<Text style={{ fontWeight: 'bold', color: 'grey' }}>bio</Text>
-					<Text>{props.bio}</Text>
+					<Text style={{ fontWeight: 'bold', fontSize: 16, color: colors.gray }}>bio</Text>
+					<Text style={{ fontSize: 14, color: colors.purple}}>{props.bio}</Text>
 				</View>
 			</View>
 			<View style={styles.storyButtons}>
@@ -103,7 +103,7 @@ function ProfileScreen(props) {
 					<View
 						style={selectedButton === 0 ? styles.storySelectedButton : styles.storyUnselectedButton}
 					>
-						<MaterialIcons name='format-list-bulleted' size={24} color='black' />
+						<Text style={styles.textStyle}>all stories</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   storySelectedButton: {
     borderBottomWidth: 5,
-    borderBottomColor: '#919191',
+    borderBottomColor: colors.orange,
     alignItems: 'center',
     flexGrow: 1,
     paddingBottom: 15
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     width: Dimensions.get('window').width,
     height: '100%'
   },
