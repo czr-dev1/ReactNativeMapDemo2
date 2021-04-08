@@ -66,6 +66,7 @@ const BookMark = ({ item }) => {
   return (
     <TouchableWithoutFeedback
       key={item.id}
+      style={{borderRadius: 14}}
       onPress={() => {
         navigation.navigate('Story', {
           title: item.title,
@@ -77,11 +78,11 @@ const BookMark = ({ item }) => {
       <Card containerStyle={{borderRadius: 14}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
           <View style={{flexDirection: 'column', flexShrink: 1}}>
-            <Text style={{flexShrink: 1, fontSize: 18}}>{item.title.toLowerCase()}</Text>
+            <Text style={{flexShrink: 1, fontSize: 18, fontWeight: 'bold'}}>{item.title.toLowerCase()}</Text>
             <Text>{item.pinAuthor}</Text>
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <FontAwesome name="bookmark" size={24} color="black" />
+            <FontAwesome name="bookmark" size={24} color={colors.purple} />
           </View>
         </View>
       </Card>

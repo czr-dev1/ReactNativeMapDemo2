@@ -69,7 +69,7 @@ function BookmarkedPostsScreen(props) {
     <View style={styles.profileStoryButtons}>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
         <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="format-list-bulleted" size={24} color={colors.white} />
+          <Text style={styles.textStyle}>random</Text>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   profileStoryButtons: {
     width: Dimensions.get('window').width,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: colors.purple,
     paddingTop: '2%',
     flexDirection: 'row',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: colors.background,
     width: Dimensions.get('window').width,
     height: '100%'
   },

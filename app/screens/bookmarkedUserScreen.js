@@ -72,9 +72,13 @@ function BookmarkUserScreen(props) {
     return <ActivityIndicator />;
   } else {
     return (
-      <View style={{backgroundColor: 'white', height: '100%'}}>
+      <View style={{backgroundColor: colors.background, height: '100%'}}>
         <ScrollView>
           {data.map((item, i) => {
+            let temp = item.bio
+            if (temp.length > 42) {
+              temp = temp.substring(0, 42) + '...';
+            }
             return (
 							<TouchableWithoutFeedback
                 key={i}
@@ -84,16 +88,19 @@ function BookmarkUserScreen(props) {
                   });
                 }}
               >
-								<Card containerStyle={{borderRadius: 14}}>
+								<Card containerStyle={{borderRadius: 25}}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Image
                         style={{borderRadius: 200, height: 48, width: 48}}
                         source={(data.profileurl !== null) ? {uri: item.profileurl} : PROFILE_PIC} />
-                      <Text style={{paddingLeft: 12, fontSize: 18}}>{item.username}</Text>
+                      <View style={{flexDirection: 'column', paddingLeft: 12}}>
+                        <Text style={{fontSize: 18}}>{item.username}</Text>
+                        <Text>{temp}</Text>
+                      </View>
                     </View>
                     <View>
-                      <FontAwesome name="bookmark" size={24} color="black" />
+                      <FontAwesome name="bookmark" size={24} color={colors.purple} />
                     </View>
                   </View>
 								</Card>
@@ -109,7 +116,7 @@ function BookmarkUserScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },

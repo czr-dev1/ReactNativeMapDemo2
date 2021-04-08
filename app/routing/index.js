@@ -86,7 +86,20 @@ function BookmarkedUsersStackScreen() {
 const BookmarkedTopTab = createMaterialTopTabNavigator();
 function BookmarkedTopTabScreen() {
   return (
-    <BookmarkedTopTab.Navigator style={styles.container}>
+    <BookmarkedTopTab.Navigator
+			style={styles.container}
+			tabBarOptions={{
+				labelStyle: { textTransform: 'lowercase' , fontSize: 20, fontWeight: 'bold'},
+				tabStyle: {
+					backgroundColor: colors.purple,
+					shadowOpacity: 0,
+					shadoRadius: 0
+				},
+				activeTintColor: colors.white,
+				inactiveTintColor: colors.border,
+				backgroundColor: colors.purple
+			}}
+		>
       <BookmarkedTopTab.Screen name="stories" component={ BookmarkedPostsScreen } />
       <BookmarkedTopTab.Screen name="users" component={ BookmarkedUsersStackScreen } />
     </BookmarkedTopTab.Navigator>
