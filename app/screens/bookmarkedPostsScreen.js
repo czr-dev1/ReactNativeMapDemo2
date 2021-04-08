@@ -64,27 +64,27 @@ function BookmarkedPostsScreen(props) {
   return(
     ( props.isLoading ) ?
       <View><Text>Loading</Text></View> : (
-    <View>
+    <View style={{height: '100%'}}>
 
     <View style={styles.profileStoryButtons}>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
         <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="format-list-bulleted" size={32} color="black" />
+          <MaterialIcons name="format-list-bulleted" size={24} color="black" />
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
         <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="chat-bubble-outline" size={32} color="green" />
+          <Text style={styles.textStyle}>personal</Text>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
         <View style={selectedButton === 2 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="chat-bubble-outline" size={32} color="pink" />
+          <Text style={styles.textStyle}>historical</Text>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
         <View style={selectedButton === 3 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="chat-bubble-outline" size={32} color="blue" />
+          <Text style={styles.textStyle}>resource</Text>
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -144,6 +144,9 @@ const styles = StyleSheet.create({
   },
   requiredText: {
     color: 'red'
+  },
+  textStyle: {
+    fontSize: 18
   }
 })
 

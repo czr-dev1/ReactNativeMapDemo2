@@ -82,14 +82,16 @@ function ProfileScreen(props) {
 	return (
 		<View style={styles.container, {paddingTop: insets.top - insets.top}}>
 			<View style={styles.profileBar}>
+        <View style={{flexDirection:'row-reverse', width: '100%', marginBottom: '-15%', marginTop: '10%'}}>
+          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badge')}>
+            <Feather name="target" size={48} color="black" />
+          </TouchableWithoutFeedback>
+        </View>
 				<View style={styles.profileImageContainer}>
-					<Image style={styles.profileImage} source={{uri: props.profileImage}} />
-					<FontAwesome5
-						style={{ marginLeft: '-3%' }}
-						name='pencil-alt'
-						size={24}
-						color='black'
-					/>
+					<Image style={styles.profileImage} source={ (props.profileImage !== null) ? {uri: props.profileImage} : PROFILE_PIC} />
+          <TouchableWithoutFeedback  onPress={() => props.navigation.navigate('EditProfileModal')}>
+              <FontAwesome5 style={{marginTop: -25, marginLeft: 96, marginBottom: 25}} name="pencil-alt" size={24} color="#919191" />
+            </TouchableWithoutFeedback>
 				</View>
 				<View style={styles.bioContainter}>
 					<Text style={{ fontWeight: 'bold', color: 'grey' }}>bio</Text>
@@ -101,28 +103,28 @@ function ProfileScreen(props) {
 					<View
 						style={selectedButton === 0 ? styles.storySelectedButton : styles.storyUnselectedButton}
 					>
-						<MaterialIcons name='format-list-bulleted' size={32} color='black' />
+						<MaterialIcons name='format-list-bulleted' size={24} color='black' />
 					</View>
 				</TouchableWithoutFeedback>
 				<TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
 					<View
 						style={selectedButton === 1 ? styles.storySelectedButton : styles.storyUnselectedButton}
 					>
-						<MaterialIcons name='chat-bubble-outline' size={32} color='pink' />
+						<Text style={styles.textStyle}>personal</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
 					<View
 						style={selectedButton === 2 ? styles.storySelectedButton : styles.storyUnselectedButton}
 					>
-						<MaterialIcons name='chat-bubble-outline' size={32} color='green' />
+						<Text style={styles.textStyle}>historical</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				<TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
 					<View
 						style={selectedButton === 3 ? styles.storySelectedButton : styles.storyUnselectedButton}
 					>
-						<MaterialIcons name='chat-bubble-outline' size={32} color='blue' />
+						<Text style={styles.textStyle}>resource</Text>
 					</View>
 				</TouchableWithoutFeedback>
 			</View>
@@ -212,6 +214,9 @@ const styles = StyleSheet.create({
   },
   requiredText: {
     color: 'red'
+  },
+  textStyle: {
+    fontSize: 18
   }
 })
 

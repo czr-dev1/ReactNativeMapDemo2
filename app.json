@@ -3,7 +3,7 @@
     "privacy": "unlisted",
     "name": "thearqive",
     "slug": "thearqive",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
@@ -25,6 +25,13 @@
     "android": {
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.thearqive.mobile",
+      "useNextNotificationsApi": true,
+      "versionCode": 3,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { 
+import {
   ActivityIndicator,
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
+  Text,
   View,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -13,12 +15,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { FontAwesome } from '@expo/vector-icons';
 
 //Icons
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
+const PROFILE_PIC = require('../assets/profile_blank.png');
 
 //Custom story component
 import StoryList from '../components/storyList';
@@ -32,6 +36,7 @@ function BookmarkUserScreen(props) {
 
   useEffect(() => {
     getUsers();
+    console.log(props.followingList);
   }, [])
 
   const getUsers = async () => {
@@ -42,9 +47,21 @@ function BookmarkUserScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get(`https://globaltraqsdev.com/api/auth/users/`, config)
+    axios.get(`https://globaltraqsdev.com/api/profile/users/`, config)
     .then((res) => {
-      setData(res.data.results);
+      console.log(res);
+      let temp = res.data;
+
+      temp = temp.filter((item) => {
+        if (props.followingList.includes(item.id)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      console.log("following user list: ", temp);
+      setData(temp);
       setLoading(false);
     }).catch((err) => {
       console.log(err);
@@ -55,11 +72,11 @@ function BookmarkUserScreen(props) {
     return <ActivityIndicator />;
   } else {
     return (
-      <View>
+      <View style={{backgroundColor: 'white', height: '100%'}}>
         <ScrollView>
           {data.map((item, i) => {
             return (
-							<TouchableWithoutFeedback 
+							<TouchableWithoutFeedback
                 key={i}
                 onPress={() => {
                   navigation.navigate('UserProfile', {
@@ -67,8 +84,18 @@ function BookmarkUserScreen(props) {
                   });
                 }}
               >
-								<Card>
-									<Card.Title>{item.username}</Card.Title>
+								<Card containerStyle={{borderRadius: 14}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Image
+                        style={{borderRadius: 200, height: 48, width: 48}}
+                        source={(data.profileurl !== null) ? {uri: item.profileurl} : PROFILE_PIC} />
+                      <Text style={{paddingLeft: 12, fontSize: 18}}>{item.username}</Text>
+                    </View>
+                    <View>
+                      <FontAwesome name="bookmark" size={24} color="black" />
+                    </View>
+                  </View>
 								</Card>
 							</TouchableWithoutFeedback>
 						);
@@ -130,11 +157,13 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+  console.log("BM: ", state.authReducer.followingList);
   return {
     isLoading: state.storyReducer.isLoading,
     users: state.authReducer.users,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+    followingList: state.authReducer.followingList,
   }
 }
 

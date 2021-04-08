@@ -26,6 +26,7 @@ import BookmarkedPostsScreen from '../screens/bookmarkedPostsScreen';
 import BookmarkedUsersScreen from '../screens/bookmarkedUsersScreen';
 import BadgeScreen from '../screens/badgeScreen';
 import FollowingProfileScreen from '../screens/followingProfileScreen';
+import NotificationScreen from '../screens/notificationScreen';
 
 import AnonToggleSwitch from '../components/anonToggleSwitch';
 import ModalOpener from '../components/modalOpener';
@@ -106,9 +107,11 @@ function LoginStackScreen() {
 
 const ProfileStack = createStackNavigator();
 function ProfileStackScreen({ navigation }) {
+	// the header left is a hack to make the title centered, otherwise its just terrible to work with
 	return (
 		<ProfileStack.Navigator>
 			<ProfileStack.Screen name='Profile' options={{
+				headerLeft: () => <MaterialIcons name='menu' size={24} color='white'/>,
 				headerTitle: () => <ProfileHeader />,
 				headerRight: () => (
 					<MaterialIcons
@@ -209,6 +212,8 @@ function AppTabScreen() {
 						iconName = 'list';
 					} else if (route.name === 'Post') {
 						iconName = 'plus-square';
+					} else if (route.name === 'Notifications') {
+						iconName = 'bell';
 					} else if (route.name === 'Profile') {
 						iconName = 'user';
 					}
@@ -219,6 +224,7 @@ function AppTabScreen() {
 			<AppTab.Screen name='Map' component={ UserMapStackScreen } />
 			<AppTab.Screen name='Bookmarks' component={ BookmarkedTopTabScreen } />
 			<AppTab.Screen name='Post' component={ StoryPostScreen } />
+			<AppTab.Screen name='Notifications' component={ NotificationScreen } />
 			<AppTab.Screen name='Profile' component={ ProfileDrawerScreen } />
 		</AppTab.Navigator>
 	);

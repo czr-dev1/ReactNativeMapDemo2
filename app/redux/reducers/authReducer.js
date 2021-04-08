@@ -9,6 +9,9 @@ let initialState = {
 	guest_user: true,
 	user: '',
 	users: [],
+	expoPushToken: '',
+	followingList: [],
+	notificationList: [],
 };
 
 export default auth = (state = initialState, action) => {
@@ -82,6 +85,28 @@ export default auth = (state = initialState, action) => {
         return Object.assign({}, state, {
           isLoading: false
         });
+			case 'SET_EXPO_PUSH_TOKEN':
+				return Object.assign({}, state, {
+					expoPushToken: action.payload
+				})
+				break;
+			case 'SET_NOTIFICATIONS_FOLLOWING_LISTS':
+				return Object.assign({}, state, {
+					followingList: action.payload.followingList,
+					notificationList: action.payload.notificationList
+				})
+				break;
+			case 'FOLLOW_USER':
+				return Object.assign({}, state, {
+					followingList: action.payload
+				})
+				break;
+			case 'UNFOLLOW_USER':
+			console.log("ar: ", action.payload);
+				return Object.assign({}, state, {
+					followingList: action.payload
+				})
+				break;
 		default:
 			return state;
 	}

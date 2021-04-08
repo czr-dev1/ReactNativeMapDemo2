@@ -28,7 +28,7 @@ export const getUsers = () => {
 }
 
 // LOGIN USER
-export const login = ({ username, password }) => {
+export const login = ({ username, password, expoPushToken }) => {
 	return (dispatch) => {
 		const user = {
 			username: username,
@@ -38,6 +38,53 @@ export const login = ({ username, password }) => {
 
 		axios.post(`https://www.globaltraqsdev.com/api/auth/login`, user, config)
 		.then((res) => {
+			let data = {
+					id: res.data.user.id
+			};
+
+			// RETRIEVING: user from 2nd backend
+			axios.get(`http://192.81.130.223:8012/api/user/get`, {params: data})
+			.then((res2) => {
+				// setting followingList and notificationsList
+				console.log("recieved data: ", res2.data);
+				dispatch({ type: 'SET_NOTIFICATIONS_FOLLOWING_LISTS', payload: {
+					notificationList: res2.data.notificationList,
+					followingList: res2.data.followingList,
+				}})
+
+				// end setting
+
+				if (res2.data.expoPushToken !== expoPushToken) {
+					data = {
+						id: res.data.user.id,
+						expoPushToken: expoPushToken
+					};
+					//UPDATE: user push token if it is different from previous
+					axios.patch(`http://192.81.130.223:8012/api/user/updatePushToken`, data)
+					.then((res3) => {
+						console.log(res3.data);
+					})
+					.catch((err) => {
+						console.log(err.response.data);
+					})
+				}
+			})
+			.catch((err) => {
+				data = {
+					id: res.data.user.id,
+					expoPushToken: expoPushToken
+				};
+				console.log("Fail getting user: ", err.response.data);
+
+				// CREATING: new entry if none exists (aka has account from website)
+				axios.post(`http://192.81.130.223:8012/api/user/create`, data)
+					.then((res) => {
+						// console.log(res);
+					})
+					.catch((err) => {
+						console.log("Fail creating user: ", err);
+					});
+			});
 			dispatch({ type: 'LOGIN_USER_SUCCESS', payload: res.data });
 			dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
 		})
@@ -62,7 +109,7 @@ export const logout = () => {
 }
 
 // REGISTER NEW USER
-export const register = ({ username, email, confirmPassword }) => {
+export const register = ({ username, email, confirmPassword, expoPushToken}) => {
 	return (dispatch) => {
 		const user = {
 			username: username,
@@ -73,6 +120,17 @@ export const register = ({ username, email, confirmPassword }) => {
 
 		axios.post(`https://www.globaltraqsdev.com/api/auth/register`, user, config)
 		.then((res) => {
+			const data = {
+				id: res.data.user.id,
+				expoPushToken: expoPushToken
+			};
+			axios.post(`http://192.81.130.223:8012/api/user/create`, data)
+				.then((res) => {
+					// console.log(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 			dispatch({ type: 'REGISTER_USER_SUCCESS', payload: res.data });
 			dispatch({ type: 'LOAD_PROFILE_SUCCESS', payload: res.data });
 		})
@@ -114,4 +172,49 @@ export const reloadUser = (username) => {
         dispatch({ type: 'USER_PROFILE_RELOAD_FAIL', payload: err});
       });
   }
+};
+
+export const setExpoPushToken = (token) => {
+	return (dispatch) => {
+		dispatch({type: 'SET_EXPO_PUSH_TOKEN', payload: token});
+	};
+};
+
+export const followUser = ({id, list}) => {
+	return (dispatch) => {
+		let temp = [];
+		temp.push(list[list.length - 1]);
+		const data = {
+			id: id,
+			followingList: temp
+		}
+		console.log("reducer: ", data);
+
+		axios.patch(`http://192.81.130.223:8012/api/user/follow`, data)
+			.then((res) => {
+				console.log(res);
+				dispatch({type: 'FOLLOW_USER', payload: list});
+			}).catch((err) => {
+				console.log(err);
+			});
+
+	};
+};
+
+export const unfollowUser = ({list, id, unfollowing}) => {
+	return (dispatch) => {
+		const data = {
+			id: id,
+			unfollow: unfollowing
+		}
+		console.log('aa', list);
+
+		axios.patch(`http://192.81.130.223:8012/api/user/unfollow`, data)
+			.then((res) => {
+				console.log(res.data);
+				dispatch({type: 'UNFOLLOW_USER', payload: list});
+			}).catch((err) => {
+				console.log(err);
+			});
+	};
 };

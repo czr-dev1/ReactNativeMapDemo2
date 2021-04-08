@@ -16,6 +16,10 @@ import axios from 'axios';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
+// redux
+import { followUser, unfollowUser } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 //profile picture
@@ -41,38 +45,73 @@ function FollowingProfileScreen(props) {
       }
   }
 
+	// https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
   useEffect(() => {
-    getUser();
-  }, [])
+		let isMounted = true; // note this flag denotes mount StatusBar
+		const config = {
+			headers: {
+				"X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+			},
+		};
 
-  const getUser = async () => {
-    const config = {
-      headers: {
-        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-      },
-    };
+		//username can be changed if you want
+		axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${user}`, config)
+		.then((res) => {
+			if (isMounted) {
+				setData(res.data[0]);
+				setLoading(false);
+			}
+		}).catch((err) => {
+			console.log(err);
+		});
+		return () => { isMounted = false };
+  })
 
-    //username can be changed if you want
-    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${user}`, config)
-    .then((res) => {
-      setData(res.data[0]);
-      setLoading(false);
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
+	const follow = () => {
+		let list = props.followingList;
+		list.push(data.id);
+		list = {
+			list: list,
+			id: props.userId
+		};
+		console.log("fp: ", list);
+		props.followUser(list);
+	};
+
+	const unfollow = () => {
+		let list = props.followingList;
+		list = list.filter(item => item !== data.id);
+		list = {
+			list: list,
+			id: props.userId,
+			unfollowing: data.id
+		};
+		props.unfollowUser(list);
+	};
 
   if (isLoading) {
     return <ActivityIndicator />;
   } else {
     return(
-      <SafeAreaView style={styles.container} forceInset={{top: "always"}}>
+      <SafeAreaView style={{backgroundColor: 'white'}} forceInset={{top: "always"}}>
         <View style={styles.profileBar}>
           <View style={styles.nicknameContainer}>
             <Text style={styles.nicknameText}>{user}</Text>
           </View>
           <View style={styles.profileImageContainer}>
-            <Image style={styles.profileImage} source={(data.profileurl !== null) ? {uri: data.profileurl} : PROFILE_PIC}/>
+						<FontAwesome name="bookmark-o" size={24} color="white" />
+						<Image style={styles.profileImage} source={(data.profileurl !== null) ? {uri: data.profileurl} : PROFILE_PIC}/>
+						{
+							(props.followingList.includes(data.id)) ? (
+								<TouchableWithoutFeedback onPress={() => unfollow()}>
+									<FontAwesome name="bookmark" size={32} color="black" />
+								</TouchableWithoutFeedback>
+							) : (
+								<TouchableWithoutFeedback onPress={() => follow()}>
+									<FontAwesome name="bookmark-o" size={32} color="black" />
+								</TouchableWithoutFeedback>
+							)
+						}
           </View>
           <View style={styles.bioContainter}>
             <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
@@ -124,8 +163,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     height: '40%',
   },
   profileImage: {
@@ -182,11 +220,21 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+	console.log('followingList fp: ', state.authReducer.followingList);
   return{
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
-    error: state.storyReducer.error
+    error: state.storyReducer.error,
+		followingList: state.authReducer.followingList,
+		userId: state.authReducer.user.id
   }
 }
 
-export default connect(mapStateToProps)(FollowingProfileScreen);
+const mapDispatchToPros = (dispatch) => {
+	return {
+		followUser: (item) => dispatch(followUser(item)),
+		unfollowUser: (item) => dispatch(unfollowUser(item)),
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToPros)(FollowingProfileScreen);
