@@ -39,6 +39,11 @@ import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
 import StoryList from "../components/storyList";
 
+//Custom icons
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+
 const PERSONAL_PIN = require("../assets/personal_128x128.png");
 const HISTORICAL_PIN = require("../assets/historical_128x128.png");
 const COMMUNITY_PIN = require("../assets/community_128x128.png");
@@ -52,6 +57,14 @@ function MapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [showCategorySearchResults, setShowCategorySearchResults] = useState(
+    false
+  );
+  const [filteredCategoryDataSource, setFilteredCategoryDataSource] = useState(
+    []
+  );
+  const [searchCategory, setSearchCategory] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
   //const urlTemplate = 'https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
   const urlTemplate =
     "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
@@ -95,6 +108,7 @@ function MapScreen(props) {
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
+        //setFilteredCategoryDataSource(responseJson); ///////
         setMasterDataSource(responseJson);
       })
       .catch((error) => {
@@ -102,23 +116,50 @@ function MapScreen(props) {
       });
   };
 
+  //ISSUE: searches the original list but not on the category list when you press a button
   const searchFilterFunction = (text) => {
+    let temp;
+    switch (searchCategory) {
+      case 0:
+        temp = masterDataSource;
+        break;
+      default:
+        temp = filteredCategoryDataSource;
+    }
+    //only when search text is not blank do the flatlists appear
     if (text.length > 0) {
-      setShowSearchResults(true);
+      setShowSearchResults(true); //<-- Flatlists appear
     } else {
+      //setShowSearchResults(false);
       setShowSearchResults(false);
     }
+
+    //filter the masterDataSource and update FilteredDataSource
     if (text) {
-      const newData = masterDataSource.filter(function (item) {
+      //apply filter for the search text
+      const newData = temp.filter(function (item) {
         const itemData = item.title
           ? item.title.toUpperCase()
           : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
+      //update useState
+      //setFilteredCategoryDataSource(newData); ////
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
+      //the search text is blank
+      //update useState
+      /* setFilteredCategoryDataSource(
+        filteredCategoryDataSource.filter(function (item) {
+          const itemData = item.title
+            ? item.title.toUpperCase()
+            : "".toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        })
+      ); */ ////
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
@@ -195,34 +236,92 @@ function MapScreen(props) {
   //Pink = personal(1), Green = Resources(2), Blue = Historical(3)
 
   const renderPersonal = () => {
+    const catArray = [];
     return props.stories.map((item, i) => {
       //console.log(item.category);
-      if (item.category == 1) {
+
+      if (item.category === 1) {
         console.log(item.title);
+        catArray.push({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        });
       }
+      //console.log(catArray);
+      setSearchCategory(1);
+      setFilteredCategoryDataSource(catArray);
+      searchFilterFunction(searchTerm);
+      //setShowCategorySearchResults(true);
     });
-    //console.log(filteredDataSource);
   };
   const renderResources = () => {
+    const catArray = [];
     return props.stories.map((item, i) => {
       //console.log(item.category);
-      if (item.category == 2) {
-        console.log(item.title);
+      if (item.category === 2) {
+        //console.log(item.title);
+        catArray.push({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        });
       }
+      setSearchCategory(2);
+      setFilteredCategoryDataSource(catArray);
+      searchFilterFunction(searchTerm);
+      //setShowCategorySearchResults(true);
     });
-    //console.log(filteredDataSource);
   };
   const renderHistorical = () => {
+    const catArray = [];
     return props.stories.map((item, i) => {
       //console.log(item.category);
-      if (item.category == 3) {
-        console.log(item.title);
+      if (item.category === 3) {
+        //console.log(item.title);
+        catArray.push({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+        });
       }
+      setSearchCategory(3);
+      setFilteredCategoryDataSource(catArray);
+      searchFilterFunction(searchTerm);
+      //setShowCategorySearchResults(true);
     });
-    //console.log(filteredDataSource);
+  };
+  const renderRandom = () => {
+    const catArray = [];
+    return props.stories.map((item, i) => {
+      catArray.push({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+      });
+      setSearchCategory(0);
+      setFilteredCategoryDataSource(catArray);
+      searchFilterFunction(searchTerm);
+      //setShowCategorySearchResults(true);
+    });
   };
 
   const Separator = () => <View style={styles.separator} />;
+
+  //Custom icons
+  const Icon = createIconSetFromIcoMoon(
+    require("../assets/fonts/selection.json"),
+    "IcoMoon",
+    "icomoon.ttf"
+  );
+
+  //Custom icons
+  const [fontsLoaded] = useFonts({
+    IcoMoon: require("../assets/fonts/icomoon.ttf"),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <SafeAreaView style={(styles.container, { flex: 1 })}>
@@ -231,8 +330,14 @@ function MapScreen(props) {
           round
           //searchIcon={{ size: 24 }}
           searchIcon={false}
-          onChangeText={(text) => searchFilterFunction(text)}
-          onClear={(text) => searchFilterFunction("")}
+          onChangeText={(text) => {
+            searchFilterFunction(text);
+            setSearchTerm(text);
+          }}
+          onClear={(text) => {
+            searchFilterFunction("");
+            setSearchTerm("");
+          }}
           lightTheme={true}
           placeholder="search"
           value={search}
@@ -255,13 +360,15 @@ function MapScreen(props) {
                 }}
               /> */}
               <MaterialIcons name="sort" size={32} color="black" />
+
+              {/* <Icon name="badges_hightlighted" size={25} color="#4D4185" /> */}
             </View>
 
             <View style={styles.screenContainer}>
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
+                onPress={() => renderRandom()} /////
               >
                 <Text style={styles.TextStyle}> random </Text>
               </TouchableOpacity>
@@ -454,6 +561,17 @@ function MapScreen(props) {
         {showSearchResults ? (
           <FlatList
             data={filteredDataSource}
+            //data={filteredDataSource.slice(0,5)}
+            keyExtractor={(item, index) => index.toString()}
+            ItemSeparatorComponent={ItemSeparatorView}
+            maxToRenderPerBatch={15}
+            //windowSize={5}
+            renderItem={ItemView}
+          />
+        ) : null}
+        {showCategorySearchResults ? (
+          <FlatList
+            data={filteredCategoryDataSource} //CHANGE
             //data={filteredDataSource.slice(0,5)}
             keyExtractor={(item, index) => index.toString()}
             ItemSeparatorComponent={ItemSeparatorView}
