@@ -10,5 +10,8 @@ export default {
   black: '#000',
   white: '#fff',
   orange: '#F0A055',
-  gray: '#7C7887,'
+  gray: '#7C7887,',
+  personal: '#ea1982',
+  historical: '#008bbc',
+  community: '#00cd7e'
 }

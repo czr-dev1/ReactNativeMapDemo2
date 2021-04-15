@@ -30,6 +30,7 @@ import {
 } from "accordion-collapse-react-native";
 import { Thumbnail } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+import Modal from 'react-native-modal';
 
 import colors from '../config/colors';
 import { loadStories } from '../redux/actions/storyActions';
@@ -60,6 +61,8 @@ function LightMapScreen(props) {
 		latitudeDelta: 0.5,
 		longitudeDelta: 0.5,
 	};
+  const [showModal, setShowModal] = useState(false);
+  const [modalData, setModalData] = useState({});
 
 	useEffect(() => {
 		props.loadStories();
@@ -214,6 +217,23 @@ function LightMapScreen(props) {
 	return (
 		<SafeAreaView style={(styles.container, { flex: 1 })}>
 			<View style={styles.containerStyle}>
+
+        <Modal
+          isVisible={showModal}
+          onBackdropPress={() => setShowModal(false)}
+          onBackButtonPress={() => setShowModal(false)}
+          hasBackdrop={true}
+          backdropOpacity={0}
+          style={{justifyContent: 'flex-end', marginBottom: '25%'}}
+        >
+          <View style={{backgroundColor: (modalData.category === 1 ? colors.personal : (modalData.category === 2) ? colors.community : colors.historical), borderTopLeftRadius: 30, borderTopRightRadius: 30, height: 15}}></View>
+          <View style={{backgroundColor: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, height: '10%'}}>
+            <View style={{flexDirection: 'column', justifyContent: 'space-between', padding: 10, height: '100%'}}>
+              <Text style={{fontSize: 16, fontWeight: 'bold'}}>{modalData.title}</Text>
+              <Text style={{fontSize: 12}}>posted on {modalData.postDate}</Text>
+            </View>
+          </View>
+        </Modal>
 				<SearchBar
 					round
 					searchIcon={{ size: 24 }}
@@ -489,6 +509,8 @@ function LightMapScreen(props) {
 						// the case made it run
 						// expo moves assets to the cloud, figure out how to keep
 						// https://docs.expo.io/guides/preloading-and-caching-assets/
+            // UPDATE: ended up keeping them by converting to a base64 string
+            // and passing that in as an argument
 						let pinType = '';
 						switch (item.category) {
 							case 1:
@@ -512,11 +534,21 @@ function LightMapScreen(props) {
 								}}
 								image={pinType}
 								onPress={() => {
+                  console.log(item);
+                  setModalData({
+                    title: item.title,
+                    description: item.description,
+                    id: item.id,
+                    postDate: item.postDate,
+                    category: item.category
+                  });
+                  setShowModal(true);
+                  /*
 									props.navigation.navigate('Story', {
 										title: item.title,
 										description: item.description,
 										id: item.id
-									});
+									}); */
 								}}
 							>
 							</Marker>
