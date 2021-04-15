@@ -81,10 +81,11 @@ function ProfileScreen(props) {
   // https://reactnavigation.org/docs/handling-safe-area/
 	return (
 		<View style={styles.container, {paddingTop: insets.top - insets.top}}>
+    <ScrollView>
 			<View style={styles.profileBar}>
         <View style={{flexDirection:'row-reverse', width: '100%', marginBottom: '-15%', marginTop: '10%'}}>
-          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Badge')}>
-            <Feather name="target" size={48} color={colors.purple} />
+          <TouchableWithoutFeedback>
+            <Feather name="target" size={48} color={colors.white} />
           </TouchableWithoutFeedback>
         </View>
 				<View style={styles.profileImageContainer}>
@@ -129,7 +130,7 @@ function ProfileScreen(props) {
 				</TouchableWithoutFeedback>
 			</View>
 			<View style={styles.storyList}>{renderStoriesByType()}</View>
-      <Button title='delete account' onPress={() => deleteConfirm()} />
+      </ScrollView>
     </View>
   )
 }

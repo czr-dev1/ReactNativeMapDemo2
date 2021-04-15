@@ -102,8 +102,8 @@ function BookmarkedTopTabScreen() {
 				backgroundColor: colors.purple
 			}}
 		>
-      <BookmarkedTopTab.Screen name="storiess" component={ BookmarkedPostsScreen } />
-      <BookmarkedTopTab.Screen name="userss" component={ BookmarkedUsersStackScreen } />
+      <BookmarkedTopTab.Screen name="stories" component={ BookmarkedPostsScreen } />
+      <BookmarkedTopTab.Screen name="users" component={ BookmarkedUsersStackScreen } />
     </BookmarkedTopTab.Navigator>
   );
 }

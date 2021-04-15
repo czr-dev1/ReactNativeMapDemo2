@@ -17,6 +17,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { loadStories } from '../redux/actions/storyActions';
+import { reloadUser } from '../redux/actions/auth';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
 import Modal from 'react-native-modal';
@@ -36,7 +37,7 @@ function StoryPostScreen(props) {
   const [lastPersonEdit, setLastPersonEdit] = useState('');
   const [location, setLocation] = useState({}); //make sure to split to latitude and longitude
   const [locality, setLocality] = useState('');
-  const [owner, setOwner] = useState('');
+  const [owner, setOwner] = useState(props.userId);
   const [postCode, setPostCode] = useState('');
   const [postDate, setPostDate] = useState('');
   const [region, setRegion] = useState('');
@@ -108,7 +109,7 @@ function StoryPostScreen(props) {
         'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
       },
     };
-    /*
+
     axios
       .post('http://www.globaltraqsdev.com/api/pins/', pin, config)
       .then((res) => {
@@ -118,7 +119,7 @@ function StoryPostScreen(props) {
       .catch((err) => {
         console.log(err);
       });
-      */
+
   };
 
   return (
@@ -361,10 +362,20 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
+	const userId = state.authReducer.isLoggedIn === true ? state.authReducer.user.id : '';
+	const userName = state.authReducer.isLoggedIn === true ? state.authReducer.username : '';
 	return {
-		loadStories: () => dispatch(loadStories()),
+		userId: userId,
+		userName: userName
 	};
 };
 
-export default connect(null, mapDispatchToProps)(StoryPostScreen);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loadStories: () => dispatch(loadStories()),
+		reloadUser: (username) => dispatch(reloadUser(username))
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryPostScreen);

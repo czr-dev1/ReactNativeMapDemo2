@@ -18,7 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
 import { reloadUser } from '../redux/actions/auth';
@@ -32,6 +32,7 @@ function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
   const [bio, setBio] = useState(props.bio);
   const [privacy, setprivacy] = useState(props.is_profile_private);
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
 
@@ -81,40 +82,40 @@ function EditProfileModal(props) {
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems:'center', paddingBottom: 10}}>
           <Entypo onPress={() => {
             props.navigation.goBack();
-          }} style={{padding: 24,}} name="cross" size={28} color="#787878" />
-          <Text style={{fontSize: 24, paddingTop: 24, color: '#787878', fontWeight: 'bold'}}>edit profile</Text>
+          }} style={{padding: 24,}} name="cross" size={28} color={colors.purple} />
+          <Text style={{fontSize: 18, paddingTop: 24, color: colors.purple, fontWeight: 'bold'}}>edit profile</Text>
           <Entypo onPress={() => {
             onSubmit();
-          }} style={{padding: 24}} name="check" size={24} color="#787878" />
+          }} style={{padding: 24}} name="check" size={24} color={colors.purple} />
         </View>
         <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <Image style={styles.profileImage} source={{uri: props.profileImage}}/>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color:'#787878'}} >change profile image</Text>
+          <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.gray}} >change profile image</Text>
         </View>
         <View style={styles.box}>
           <View style={{flexDirection: 'row', borderBottomWidth: 3, borderColor: '#ddd', alignItems: 'center', paddingBottom: 10, paddingLeft: 7, paddingRight: 14, width: '100%', justifyContent: 'space-between'}}>
             <View style={{}}>
-              <Text style={{fontWeight: 'bold', fontSize: 18, color: '#ddd', }}>anonymous</Text>
+              <Text style={{fontWeight: 'bold', fontSize: 16, color: colors.gray, }}>anonymous</Text>
             </View>
             <View style={{}}>
               <Switch
                 value={privacy}
                 onValueChange={(val) => setprivacy(val)}
-                activeText={'✔'}
-                inActiveText={'✖'}
+                activeText={'on'}
+                inActiveText={'off'}
                 backgroundActive={'#AAAAAA'}
                 backgroundInActive={'#AAAAAA'}
               />
             </View>
           </View>
-          <Text style={{fontWeight: 'bold', fontSize: 18, color: '#ddd', paddingLeft: 8, paddingTop: 10}}>username</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16, color: colors.gray, paddingLeft: 8, paddingTop: 10}}>username</Text>
           <TextInput
             style={styles.input}
             placeholder='username'
             value={username}
             editable={false}
             onChangeText={(value) => setUsername(value)}/>
-          <Text style={{fontWeight: 'bold', fontSize: 18, color: '#ddd', paddingLeft: 8}} >bio</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16, color: colors.gray, paddingLeft: 8}} >bio</Text>
           <TextInput
             style={styles.input}
             multiline
@@ -123,7 +124,7 @@ function EditProfileModal(props) {
             onChangeText={(value) => setBio(value)}/>
 
           <TouchableOpacity style={{padding: 8}} onPress={() => deleteConfirm()}>
-            <Text>delete account</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color: colors.gray}}>delete profile</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -153,7 +154,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 14,
     width: '100%',
-    marginBottom: 28
+    marginBottom: 28,
+    color: '#262157'
   },
   inputBorderless: {
     borderColor: '#ddd',
