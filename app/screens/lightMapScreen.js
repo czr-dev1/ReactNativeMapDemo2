@@ -63,6 +63,7 @@ function LightMapScreen(props) {
 	};
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [selectedButton, setSelectedButton] = useState(0);
 
 	useEffect(() => {
 		props.loadStories();
@@ -228,10 +229,19 @@ function LightMapScreen(props) {
         >
           <View style={{backgroundColor: (modalData.category === 1 ? colors.personal : (modalData.category === 2) ? colors.community : colors.historical), borderTopLeftRadius: 30, borderTopRightRadius: 30, height: 15}}></View>
           <View style={{backgroundColor: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, height: '10%'}}>
-            <View style={{flexDirection: 'column', justifyContent: 'space-between', padding: 10, height: '100%'}}>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>{modalData.title}</Text>
-              <Text style={{fontSize: 12}}>posted on {modalData.postDate}</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={() => {
+              props.navigation.navigate('Story', {
+								title: modalData.title,
+								description: modalData.description,
+								id: modalData.id
+							});
+              setShowModal(false);
+            }}>
+              <View style={{flexDirection: 'column', justifyContent: 'space-between', padding: 10, height: '100%'}}>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>{modalData.title}</Text>
+                <Text style={{fontSize: 12}}>posted on {modalData.postDate}</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
         </Modal>
 				<SearchBar
@@ -636,13 +646,12 @@ const styles = StyleSheet.create({
     marginTop: 1,
     marginBottom: 1,
     marginLeft: 5,
-    marginRight: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#D3D3D3",
+    marginRight: 5,
+    backgroundColor: colors.purple,
+    borderBottomWidth: 5,
+    borderColor: colors.orange,
     height: 30,
     width: 75,
   },
