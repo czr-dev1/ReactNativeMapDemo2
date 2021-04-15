@@ -114,7 +114,25 @@ function StoryPostScreen(props) {
       .post('http://www.globaltraqsdev.com/api/pins/', pin, config)
       .then((res) => {
         console.log(res.data);
-        props.loadStories();
+
+				setAddress('');
+				setAnonRadius(1);
+				setCategory(1);
+				setCountry('');
+				setDescription('');
+				setEndDate(new Date());
+				setAnonymous(true);
+				setLastEditDate({});
+				setLastPersonEdit('');
+				setLocation('');
+				setLocality('');
+				setPostCode('');
+				setPostDate('');
+				setRegion('');
+				setStartDate(new Date());
+				setTitle('');
+
+				props.loadStories();
       })
       .catch((err) => {
         console.log(err);
@@ -239,6 +257,7 @@ function StoryPostScreen(props) {
             name='title'
             placeholder='title'
             style={styles.input}
+						value={title}
             onChangeText={(val) => {
               setTitle(val);
             }}
@@ -293,6 +312,7 @@ function StoryPostScreen(props) {
             placeholder='enter story'
             name=''
             style={styles.inputAddress}
+						value={description}
             onChangeText={(val) => {
               setDescription(val);
             }}

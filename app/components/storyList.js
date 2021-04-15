@@ -40,14 +40,14 @@ const Item = ({ item }, props) => {
             <Text style={{flexShrink: 1}}>{item.title.toLowerCase()}</Text>
             <Text style={{color: '#919191'}}>posted on {item.postDate}</Text>
           </View>
-          <View style={{borderWidth: 1, borderRadius: 14, padding: 4, borderColor: '#ddd', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: '#919191'}}>anonymous</Text>
+          <View style={{padding: 4, borderColor: '#ddd', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{color: '#919191'}}>anon</Text>
             <Switch
               value={temp}
-              activeText={'✔'}
-              inActiveText={'✖'}
-              backgroundActive={'#AAAAAA'}
-              backgroundInActive={'#AAAAAA'}
+              activeText={'on'}
+              inActiveText={'off'}
+              backgroundActive={colors.purple}
+              backgroundInActive={colors.border}
               onValueChange={(value) => setTemp(value)}
               />
           </View>
