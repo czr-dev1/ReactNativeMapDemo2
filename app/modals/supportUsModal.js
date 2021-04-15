@@ -20,10 +20,10 @@ function SupportUsModal(props) {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Text style={{fontSize: 24, padding: 24, color: '#787878', fontWeight: 'bold'}}>support us</Text>
+          <Text style={{fontSize: 24, padding: 24, color: colors.purple, fontWeight: 'bold'}}>support us</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Text style={{fontSize: 24, paddingBottom: 24, color: '#787878'}}>how you can help</Text>
+          <Text style={{fontSize: 24, fontWeight: 'bold', paddingBottom: 24, color: colors.purple}}>how you can help</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Image source={require('../assets/Help.png')} />

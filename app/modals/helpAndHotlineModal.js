@@ -46,8 +46,8 @@ function HelpAndHotlineModal(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <Text style={{fontSize: 24, padding: 24, color: '#787878', fontWeight: 'bold'}}>help & hotline</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: colors.purple, width: '100%'}}>
+        <Text style={{fontSize: 18, padding: 24, color: colors.white, fontWeight: 'bold'}}>help & hotline</Text>
       </View>
       <FlatList
         data={data}
@@ -79,24 +79,26 @@ function HelpAndHotlineModal(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.border,
     alignItems: 'center',
     height: '100%',
   },
   box: {
-    borderWidth: 2,
-    borderColor: '#ddd',
     borderRadius: 36,
     paddingTop: 18,
     paddingBottom: 18,
     paddingRight: 32,
     paddingLeft: 32,
-    margin: 6
+    marginRight: 24,
+    marginLeft: 24,
+    marginBottom: 12,
+    marginTop: 12,
+    backgroundColor: colors.white
   },
   itemTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#787878',
+    color: colors.black,
 
   },
   number: {
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
 
   },
   description: {
-    color: '#787878',
+    color: colors.black,
     fontSize: 14,
   }
 });

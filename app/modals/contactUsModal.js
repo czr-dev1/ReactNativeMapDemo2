@@ -7,9 +7,11 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
+	TouchableWitoutFeedback,
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Modal from 'react-native-modal';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -66,22 +68,28 @@ function ContactUsModal(props) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{width: '100%'}}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-          <Text style={{fontSize: 24, paddingTop: 24, paddingBottom: 72, color: '#787878', fontWeight: 'bold'}}>contact us</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontSize: 18, paddingTop: 24, paddingBottom: 72, color: colors.white, fontWeight: 'bold'}}>contact us</Text>
         </View>
-        <View style={styles.box}>
-          <Text style={{fontSize: 22, paddingTop: 12, color: '#787878', fontWeight: 'bold'}}>what's on your mind?</Text>
-          <TextInput
-            style={styles.input}
-            placeholder='email (optional)'/ >
-          <TextInput
-            style={styles.input}
-            placeholder='subject'/ >
-          <TextInput
-            style={styles.inputBorderless}
-            multiline
-            placeholder='message'/ >
-        </View>
+				<Modal
+					isVisible={true}
+					hasBackdrop={false}
+					style={{justifyContent: 'flex-end', margin: 0, height: '100%'}}
+					>
+	        <View style={styles.box}>
+	          <Text style={{fontSize: 22, paddingTop: 12, color: colors.purple, fontWeight: 'bold'}}>what's on your mind?</Text>
+	          <TextInput
+	            style={styles.input}
+	            placeholder='email (optional)'/ >
+	          <TextInput
+	            style={styles.input}
+	            placeholder='subject'/ >
+	          <TextInput
+	            style={styles.inputBorderless}
+	            multiline
+	            placeholder='message'/ >
+	        </View>
+				</Modal>
       </ScrollView>
 
 
@@ -106,7 +114,7 @@ function ContactUsModal(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.purple,
     alignItems: 'center',
     height: '100%',
     width: Dimensions.get('window').width,
@@ -114,12 +122,13 @@ const styles = StyleSheet.create({
   box: {
     borderWidth: 2,
     borderColor: '#ddd',
-    borderRadius: 69,
+		backgroundColor: colors.white,
+		borderTopLeftRadius: 40,
+		borderTopRightRadius: 40,
     paddingTop: 18,
     paddingBottom: 18,
     paddingRight: 32,
     paddingLeft: 32,
-    margin: 6,
     alignItems: 'center',
   },
   input: {

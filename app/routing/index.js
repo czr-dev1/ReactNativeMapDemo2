@@ -85,6 +85,8 @@ function BookmarkedUsersStackScreen() {
 
 const BookmarkedTopTab = createMaterialTopTabNavigator();
 function BookmarkedTopTabScreen() {
+	// Odd glitch with names where it wouldn't display the full name
+	// fixed by adding extra s at the end
   return (
     <BookmarkedTopTab.Navigator
 			style={styles.container}
@@ -100,8 +102,8 @@ function BookmarkedTopTabScreen() {
 				backgroundColor: colors.purple
 			}}
 		>
-      <BookmarkedTopTab.Screen name="stories" component={ BookmarkedPostsScreen } />
-      <BookmarkedTopTab.Screen name="users" component={ BookmarkedUsersStackScreen } />
+      <BookmarkedTopTab.Screen name="storiess" component={ BookmarkedPostsScreen } />
+      <BookmarkedTopTab.Screen name="userss" component={ BookmarkedUsersStackScreen } />
     </BookmarkedTopTab.Navigator>
   );
 }
