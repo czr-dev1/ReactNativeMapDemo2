@@ -13,6 +13,7 @@ import { Card } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from "react-redux";
 import { FontAwesome5 } from '@expo/vector-icons';
+import colors from '../config/colors';
 
 const ItemCard = ({ item }) => {
   console.log(item);
@@ -25,7 +26,7 @@ const ItemCard = ({ item }) => {
             <FontAwesome5 name="comment-alt" size={32} color="black" />
           </View>
           <View style={{flexDirection: 'column', justifyContent: 'space-evenly', paddingLeft: 12}}>
-            <Text style={{fontWeight: 'bold', fontSize: 18, color:'#787878'}}>{item.username}</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 14, color: colors.black}}>{item.username}</Text>
             <Text>{d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}</Text>
           </View>
         </View>
@@ -47,11 +48,11 @@ function NotificationScreen(props){
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-around',
-        backgroundColor: 'white',
+        backgroundColor: colors.border,
       }}>
       <ScrollView>
-        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-          <Text style={{fontSize: 24, paddingTop: 24, paddingBottom: 10, color: '#787878', fontWeight: 'bold'}}>notifications</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', width: '100%', backgroundColor: colors.purple}}>
+          <Text style={{fontSize: 18, paddingTop: 24, paddingBottom: 24, color: colors.white, fontWeight: 'bold'}}>notifications</Text>
         </View>
         <FlatList
           style={{width: Dimensions.get('window').width}}
