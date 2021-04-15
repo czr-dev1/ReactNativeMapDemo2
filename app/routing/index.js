@@ -177,9 +177,17 @@ function NeedAuthTabScreen() {
 	return (
 		<NeedAuthTab.Navigator
 			initialRouteName='Map'
+			tabBarOptions={{
+				showLabel: false,
+				style: {
+					backgroundColor: colors.purple
+				}
+			}}
 			screenOptions={({ route }) => ({
-				tabBarIcon: ({ color, size }) => {
+				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
+					let iconColor;
+
 					if (route.name === 'Map') {
 						iconName = 'map';
 					} else if (route.name === 'Stories') {
@@ -189,7 +197,14 @@ function NeedAuthTabScreen() {
 					} else if (route.name === 'Profile') {
 						iconName = 'user';
 					}
-					return <FontAwesome5 name={iconName} size={size} color={color} />;
+
+					if (focused) {
+						iconColor = colors.white;
+					} else {
+						iconColor = colors.border;
+					}
+
+					return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
 				},
 			})}
 		>
