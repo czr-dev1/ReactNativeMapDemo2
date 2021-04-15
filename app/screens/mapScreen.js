@@ -171,10 +171,11 @@ function MapScreen(props) {
         style={styles.itemStyle}
         onPress={() => {
           //Need to send user to the searched post on the map
-          // props.navigation.navigate('Story', {
-          //title: item.title,
-          //description: item.description
-          //});
+          props.navigation.navigate("Story", {
+            title: item.title,
+            description: item.description,
+            id: item.id,
+          });
         }}
       >
         {item.title.toUpperCase()}
