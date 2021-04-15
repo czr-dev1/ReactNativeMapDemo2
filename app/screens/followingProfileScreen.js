@@ -104,29 +104,24 @@ function FollowingProfileScreen(props) {
 						{
 							(props.followingList.includes(data.id)) ? (
 								<TouchableWithoutFeedback onPress={() => unfollow()}>
-									<FontAwesome name="bookmark" size={32} color="black" />
+									<FontAwesome name="bookmark" size={32} color={colors.purple} />
 								</TouchableWithoutFeedback>
 							) : (
 								<TouchableWithoutFeedback onPress={() => follow()}>
-									<FontAwesome name="bookmark-o" size={32} color="black" />
+									<FontAwesome name="bookmark-o" size={32} color={colors.purple} />
 								</TouchableWithoutFeedback>
 							)
 						}
           </View>
           <View style={styles.bioContainter}>
-            <Text style={{fontWeight: 'bold', color: 'grey'}}>bio</Text>
+            <Text style={{fontWeight: 'bold', color: colors.gray}}>bio</Text>
             <Text>{data.bio}</Text>
           </View>
         </View>
         <View style={styles.profileStoryButtons}>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
             <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-              <MaterialIcons name="format-list-bulleted" size={32} color="black" />
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-            <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-              <Feather name="target" size={32} color="black" />
+              <MaterialIcons name="format-list-bulleted" size={32} color={colors.purple} />
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -158,8 +153,8 @@ const styles = StyleSheet.create({
   },
   nicknameText: {
     fontWeight: 'bold',
-    fontSize: 24,
-    color: 'grey'
+    fontSize: 18,
+    color: colors.purple
   },
   profileImageContainer: {
     flexDirection: 'row',
@@ -185,8 +180,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   profileStorySelectedButton: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
     alignItems: 'center',
     flexGrow: 1,
     paddingBottom: '2%'

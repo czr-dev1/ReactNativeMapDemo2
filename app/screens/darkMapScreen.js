@@ -282,7 +282,7 @@ function LightMapScreen(props) {
 
 						<View style={styles.screenContainer}>
 							<TouchableOpacity
-								style={styles.HeaderButtonStyle}
+								style={(selectedButton === 0 ? styles.HeaderButtonStyle : styles.UnselectedHeaderButtonStyle)}
 								activeOpacity={0.5}
 								//onPress={() => Alert.alert("Cannot press this one")}
 							>
@@ -290,26 +290,35 @@ function LightMapScreen(props) {
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								style={styles.HeaderButtonStyle}
+								style={(selectedButton === 1 ? styles.HeaderButtonStyle : styles.UnselectedHeaderButtonStyle)}
 								activeOpacity={0.5}
 								//onPress={(() => setSelectedCategoryButton(1))}
-								onPress={() => renderPersonal()}
+								onPress={() => {
+                  renderPersonal();
+                  setSelectedButton(1);
+                }}
 							>
 								<Text style={styles.TextStyle}> personal </Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								style={styles.HeaderButtonStyle}
+								style={(selectedButton === 2 ? styles.HeaderButtonStyle : styles.UnselectedHeaderButtonStyle)}
 								activeOpacity={0.5}
-								onPress={() => renderHistorical()}
+								onPress={() => {
+                  renderHistorical()
+                  setSelectedButton(2);
+                }}
 							>
 								<Text style={styles.TextStyle}> historical </Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity
-								style={styles.HeaderButtonStyle}
+								style={(selectedButton === 3 ? styles.HeaderButtonStyle : styles.UnselectedHeaderButtonStyle)}
 								activeOpacity={0.5}
-								onPress={() => renderResources()}
+								onPress={() => {
+                  renderResources()
+                  setSelectedButton(3);
+                }}
 							>
 								<Text style={styles.TextStyle}> resources </Text>
 							</TouchableOpacity>
@@ -335,7 +344,7 @@ function LightMapScreen(props) {
 								activeOpacity={0.5}
 								//onPress={() => Alert.alert("Cannot press this one")}
 							>
-								<Text style={styles.TextStyle}> any </Text>
+								<Text style={styles.TextStyleSortInner}> any </Text>
 							</TouchableOpacity>
 						</View>
 						<Separator />
@@ -345,7 +354,7 @@ function LightMapScreen(props) {
 								activeOpacity={0.5}
 								//onPress={() => Alert.alert("Cannot press this one")}
 							>
-								<Text style={styles.TextStyle}> relevance </Text>
+								<Text style={styles.TextStyleSortInner}> relevance </Text>
 							</TouchableOpacity>
 						</View>
 						<Separator />
@@ -460,7 +469,7 @@ function LightMapScreen(props) {
 								activeOpacity={0.5}
 								//onPress={this.ButtonClickCheckFunction}
 							>
-								<Text style={styles.TextStyle}> clear </Text>
+								<Text style={styles.TextStyleSortInner}> clear </Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity
@@ -468,7 +477,7 @@ function LightMapScreen(props) {
 								activeOpacity={0.5}
 								//onPress={this.ButtonClickCheckFunction}
 							>
-								<Text style={styles.TextStyle}> apply </Text>
+								<Text style={styles.TextStyleSortInner}> apply </Text>
 							</TouchableOpacity>
 						</View>
 					</CollapseBody>
@@ -642,6 +651,17 @@ const styles = StyleSheet.create({
     height: 60,
     width: 140,
   },
+  UnselectedHeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginRight: 5,
+    backgroundColor: colors.purple,
+    height: 30,
+    width: 75,
+  },
   HeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
@@ -656,7 +676,11 @@ const styles = StyleSheet.create({
     width: 75,
   },
   TextStyle: {
-    color: "#000000",
+    color: colors.white,
+    textAlign: "center",
+  },
+  TextStyleSortInner: {
+    color: colors.black,
     textAlign: "center",
   },
   SortTextStyle: {
