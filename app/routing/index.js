@@ -57,7 +57,6 @@ function UserMapStackScreen() {
 	return (
 		<UserMapStack.Navigator screenOptions={{ headerShown: false }}>
 			<UserMapStack.Screen name='Map' component={ LightMapScreen } />
-			<UserMapStack.Screen name='Story' component={ StoryScreen } />
 		</UserMapStack.Navigator>
 	);
 }
@@ -78,7 +77,6 @@ function BookmarkedUsersStackScreen() {
     <BookmarkedUsersStack.Navigator>
       <BookmarkedUsersStack.Screen name='UserList' options={{header: () => null}} component={ BookmarkedUserScreen } />
       <BookmarkedUsersStack.Screen name='UserProfile' options={{header: () => null}} component={ FollowingProfileScreen } />
-      <BookmarkedUsersStack.Screen name ='Story' options={{header: () => null}} component={ StoryScreen } />
     </BookmarkedUsersStack.Navigator>
   );
 }
@@ -141,7 +139,6 @@ function ProfileStackScreen({ navigation }) {
 				)}}
 				component={ ProfileScreen }
 			/>
-			<ProfileStack.Screen name='Story' options={{ header: () => null }} component={ StoryScreen } />
 			<ProfileStack.Screen name='Badge' options={{ header: () => null }} component={ BadgeScreen } />
 		</ProfileStack.Navigator>
 	);
@@ -190,8 +187,6 @@ function NeedAuthTabScreen() {
 
 					if (route.name === 'Map') {
 						iconName = 'map';
-					} else if (route.name === 'Stories') {
-						iconName = 'list';
 					} else if (route.name === 'Post') {
 						iconName = 'plus-square';
 					} else if (route.name === 'Profile') {
@@ -209,7 +204,6 @@ function NeedAuthTabScreen() {
 			})}
 		>
 			<NeedAuthTab.Screen name='Map' component={ AnonMapStackScreen } />
-			<NeedAuthTab.Screen name='Stories' component={ StoriesStackScreen } />
 			<NeedAuthTab.Screen name='Post' component={ StoryPostScreen } />
 			<NeedAuthTab.Screen name='Profile' component={ LoginStackScreen } options={{ tabBarVisible: false }} />
 		</NeedAuthTab.Navigator>
@@ -281,6 +275,7 @@ function AppStackScreen() {
 	return (
 		<AppStack.Navigator screenOptions={{ headerShown: false }}>
 			<AppStack.Screen name='Home' component={AppTabScreen} />
+			<AppStack.Screen name='Story' options={{ header: () => null }} component={ StoryScreen } />
 			<AppStack.Screen name='HelpAndHotlineModal' component={HelpAndHotlineModal} />
 			<AppStack.Screen name='SupportUsModal' component={SupportUsModal} />
 			<AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
