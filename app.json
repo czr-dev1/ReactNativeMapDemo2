@@ -1,13 +1,12 @@
 {
   "expo": {
-    "privacy": "unlisted",
     "name": "MapDemo",
     "slug": "MapDemo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/color_splash.png",
+      "image": "./app/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,15 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.thearqive.thearqivemobile",
-      "buildNumber": "0.1.0"
-    },
-    "android": {
-      "softwareKeyboardLayoutMode": "pan",
-      "package": "com.thearqive.thearqivemobile",
-      "versionCode": 1,
-      "permissions": ["INTERNET"]
+      "supportsTablet": true
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
