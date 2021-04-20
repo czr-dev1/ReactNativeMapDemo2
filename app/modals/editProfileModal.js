@@ -103,8 +103,8 @@ function EditProfileModal(props) {
                 onValueChange={(val) => setprivacy(val)}
                 activeText={'on'}
                 inActiveText={'off'}
-                backgroundActive={'#AAAAAA'}
-                backgroundInActive={'#AAAAAA'}
+                backgroundActive={colors.purple}
+                backgroundInActive={colors.border}
               />
             </View>
           </View>

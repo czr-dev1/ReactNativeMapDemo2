@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native-switch';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
+import axios from 'axios';
 
 import makeStoryPrivate from '../redux/actions/storyActions';
 import colors from '../config/colors';
@@ -20,10 +21,11 @@ const Item = ({ item }, props) => {
   const navigation = useNavigation(); //There was a bug that made me have to import this
   //if not imported and used it will just crash
   //keep that in mind if props.navigation.navigate is not working
-  const [temp, setTemp] = useState(false);
+  const [temp, setTemp] = useState(item.is_anonymous_pin);
   return (
     <TouchableWithoutFeedback
       key={item.id}
+      style={{padding: 12}}
       onPress={() => {
         navigation.navigate('Story', {
           title: item.title,
@@ -32,25 +34,39 @@ const Item = ({ item }, props) => {
         });
       }}
     >
-      <Card containerStyle={{borderRadius: 14}}>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <View style={{flexDirection: 'column', flexShrink: 1}}>
-            <Text style={{flexShrink: 1}}>{item.title.toLowerCase()}</Text>
-            <Text style={{color: '#919191'}}>posted on {item.postDate}</Text>
+      <View style={{padding: 12}}>
+        <View style={{backgroundColor: (item.category === 1 ? colors.personal : (item.category === 2) ? colors.community : colors.historical), borderTopLeftRadius: 30, borderTopRightRadius: 30, height: 15}}></View>
+        <View style={{backgroundColor: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 5}}>
+          <View style={{flexDirection: 'column', flexShrink: 1, padding: 10}}>
+            <Text style={{flexShrink: 1, paddingBottom: 10, fontSize: 16, fontWeight: 'bold'}}>{item.title.toLowerCase()}</Text>
+            <Text style={{color: '#919191'}}>posted on {item.startDatez}</Text>
           </View>
-          <View style={{padding: 4, borderColor: '#ddd', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{color: '#919191'}}>anon</Text>
+          <View style={{padding: 4, borderColor: '#ddd', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 15}}>
+            <Text style={{color: colors.gray}}>anon</Text>
             <Switch
               value={temp}
               activeText={'on'}
               inActiveText={'off'}
               backgroundActive={colors.purple}
               backgroundInActive={colors.border}
-              onValueChange={(value) => setTemp(value)}
+              onValueChange={(value) => {
+                setTemp(value);
+                const config = {
+                  headers: {
+                    "Content-Type": "application/json",
+                    "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+                  },
+                };
+                let data = {
+                  is_anonymous_pin: value
+                };
+                axios
+                  .patch(`https://globaltraqsdev.com/api/pins/${item.id}/`, data, config)
+              }}
               />
           </View>
         </View>
-      </Card>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -102,7 +118,7 @@ function StoryList(props) {
 
   const listEmptyComponent = () => {
       return (
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 20}}>
+          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 20, paddingBottom: '100%'}}>
               <Text>nothing to show here yet</Text>
           </View>
       )
