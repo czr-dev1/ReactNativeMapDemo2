@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Button,
 	Dimensions,
 	StyleSheet,
 	Text,
@@ -13,13 +12,17 @@ import { Collapse, CollapseHeader, CollapseBody } from 'accordion-collapse-react
 import { Switch } from 'react-native-switch';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { loadStories } from '../redux/actions/storyActions';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
 import Modal from 'react-native-modal';
+
+// Icons
+import { FontAwesome5 } from '@expo/vector-icons';
+
+// Redux
+import { loadStories } from '../redux/actions/storyActions';
+import { reloadUser } from '../redux/actions/auth';
 
 import colors from '../config/colors';
 
@@ -30,22 +33,25 @@ function StoryPostScreen(props) {
 	const [category, setCategory] = useState(1);
 	const [country, setCountry] = useState('');
 	const [description, setDescription] = useState('');
-	const [endDate, setEndDate] = useState({});
+	const [endDate, setEndDate] = useState(new Date());
 	const [isAnonymous, setAnonymous] = useState(true);
 	const [lastEditDate, setLastEditDate] = useState({});
 	const [lastPersonEdit, setLastPersonEdit] = useState('');
 	const [location, setLocation] = useState({}); //make sure to split to latitude and longitude
 	const [locality, setLocality] = useState('');
-	const [owner, setOwner] = useState('');
+	const [owner, setOwner] = useState(props.userId);
 	const [postCode, setPostCode] = useState('');
 	const [postDate, setPostDate] = useState('');
 	const [region, setRegion] = useState('');
 	const [startDate, setStartDate] = useState(new Date());
-	const [title, setTitle] = useState(new Date());
+	const [title, setTitle] = useState('');
 
 	const [isExpanded, setExpanded] = useState(false);
+	const [isShowing, setShowing] = useState(false);
 	const [isPickingStartDate, setIsPickingStartDate] = useState(false);
 	const [isPickingEndDate, setIsPickingEndDate] = useState(false);
+	const [hasPickStart, setHasPickStart] = useState(false);
+	const [hasPickEnd, setHasPickEnd] = useState(false);
 
 	const [gotLocation, setGotLocation] = useState(false);
 
@@ -81,8 +87,8 @@ function StoryPostScreen(props) {
 			category: category,
 			country: country,
 			description: description,
-			endDate: new Date(),
-			is_anonymous_pin: true,
+			endDate: endDate,
+			is_anonymous_pin: isAnonymous,
 			lastEditDate: new Date(),
 			lastPersonEdit: null,
 			latitude: latitude,
@@ -92,7 +98,7 @@ function StoryPostScreen(props) {
 			postCode: postCode,
 			postDate: new Date(),
 			region: region,
-			startDate: new Date(),
+			startDate: startDate,
 			title: title,
 		};
 		console.log(pin);
@@ -103,15 +109,32 @@ function StoryPostScreen(props) {
 			},
 		};
 
-		axios
-			.post('http://www.globaltraqsdev.com/api/pins/', pin, config)
-			.then((res) => {
-				console.log(res.data);
-				props.loadStories();
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		axios.post('http://www.globaltraqsdev.com/api/pins/', pin, config)
+		.then((res) => {
+			console.log(res.data);
+
+			setAddress('');
+			setAnonRadius(1);
+			setCategory(1);
+			setCountry('');
+			setDescription('');
+			setEndDate(new Date());
+			setAnonymous(true);
+			setLastEditDate({});
+			setLastPersonEdit('');
+			setLocation('');
+			setLocality('');
+			setPostCode('');
+			setPostDate('');
+			setRegion('');
+			setStartDate(new Date());
+			setTitle('');
+
+			props.loadStories();
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 	};
 
 	return (
@@ -129,9 +152,15 @@ function StoryPostScreen(props) {
 						<Calendar
 							current={startDate}
 							markedDates={{
-								'2021-01-16': { selected: true, marked: true, selectedColor: 'blue' },
+								tempStart: { selected: true, marked: true, selectedColor: 'blue' },
 							}}
-							onDayPress={(day) => setStartDate(new Date(day.year, day.month - 1, day.day))}
+							onDayPress={(day) => {
+								let temp = new Date(day.year, day.month - 1, day.day);
+								setStartDate(temp);
+								setIsPickingStartDate(!isPickingStartDate);
+								setHasPickStart(true);
+							}}
+							enableSwipeMonths={true}
 						/>
 					</Modal>
 					<Modal
@@ -145,19 +174,33 @@ function StoryPostScreen(props) {
 						<Calendar
 							current={endDate}
 							markedDates={{
-								'2021-01-16': { selected: true, marked: true, selectedColor: 'blue' },
+								tempStart: { selected: true, marked: true, selectedColor: 'blue' },
 							}}
-							onDayPress={(day) => setStartDate(new Date(day.year, day.month - 1, day.day))}
+							onDayPress={(day) => {
+								let temp = new Date(day.year, day.month - 1, day.day);
+								setEndDate(temp);
+								setIsPickingEndDate(!isPickingEndDate);
+								setHasPickEnd(true);
+							}}
 						/>
 					</Modal>
 					<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-						<Text style={{ fontSize: 24, padding: 24 }}>add a story</Text>
+						<Text 
+							style={{ 
+								fontSize: 24, 
+								padding: 24, 
+								fontWeight: 'bold', 
+								color: colors.purple 
+							}}
+						>
+							add a story
+						</Text>
 					</View>
 					<View
 						style={{
 							flexDirection: 'row',
 							borderBottomWidth: 1,
-							borderColor: '#ddd',
+							borderColor: colors.border,
 							alignItems: 'center',
 							paddingBottom: 9,
 							paddingLeft: 7,
@@ -167,29 +210,37 @@ function StoryPostScreen(props) {
 						}}
 					>
 						<View style={{}}>
-							<Text style={{ color: '#919191' }}>anonymous</Text>
+							<Text 
+								style={{ 
+									color: colors.purple, 
+									fontWeight: 'bold', 
+									fontSize: 16 
+								}}
+							>
+								anonymous
+							</Text>
 						</View>
 						<View style={{}}>
 							<Switch
 								value={isAnonymous}
 								onValueChange={(val) => setAnonymous(val)}
-								activeText={'✔'}
-								inActiveText={'✖'}
-								backgroundActive={'#AAAAAA'}
-								backgroundInActive={'#AAAAAA'}
+								activeText={'on'}
+								inActiveText={'off'}
+								backgroundActive={colors.purple}
+								backgroundInActive={colors.purple}
 							/>
 						</View>
 					</View>
 					<View
 						style={{
 							borderBottomWidth: 1,
-							borderColor: '#ddd',
+							borderColor: colors.border,
 							flexDirection: 'row',
 							alignItems: 'center',
 						}}
 					>
 						<TouchableWithoutFeedback onPress={() => setExpanded(!isExpanded)}>
-							<FontAwesome5 name={isExpanded ? 'minus' : 'plus'} size={24} color='#919191' />
+							<FontAwesome5 name={isExpanded ? 'minus' : 'plus'} size={24} color={colors.border} />
 						</TouchableWithoutFeedback>
 						<TextInput
 							name='address'
@@ -244,6 +295,7 @@ function StoryPostScreen(props) {
 						name='title'
 						placeholder='title'
 						style={styles.input}
+						value={title}
 						onChangeText={(val) => {
 							setTitle(val);
 						}}
@@ -251,44 +303,78 @@ function StoryPostScreen(props) {
 					<View
 						style={{
 							flexDirection: 'row',
-							borderColor: '#ddd',
+							borderColor: colors.border,
 							borderBottomWidth: 1,
 							justifyContent: 'space-between',
 							alignItems: 'center',
 						}}
 					>
-						<Text style={{ color: '#919191', padding: 12, alignSelf: 'flex-start' }}>
-							*category
+						<Text 
+							style={{ 
+								color: colors.border, 
+								padding: 12, 
+								alignSelf: 'flex-start' 
+							}}
+						>
+							* category
 						</Text>
-						<Collapse style={{ paddingRight: 12 }}>
+						<Collapse
+							style={{ paddingRight: 12 }}
+							isCollapsed={isShowing}
+							onToggle={() => setShowing(!isShowing)}
+						>
 							<CollapseHeader>
 								<View
 									style={{
 										flexDirection: 'row',
 										alignItems: 'center',
-										backgroundColor: '#ddd',
+										backgroundColor: colors.purple,
 										borderRadius: 8,
 										padding: 4,
 									}}
 								>
-									<Text style={{ color: '#fff', paddingRight: 3 }}>personal</Text>
-									<FontAwesome5 name='chevron-down' size={24} color='#919191' />
+									<Text style={{ color: '#fff', paddingRight: 3 }}>
+										{category === 1 ? 'personal' : category === 2 ? 'community' : 'historical'}
+									</Text>
+									<FontAwesome5
+										name={isShowing ? 'chevron-up' : 'chevron-down'}
+										size={24}
+										color={colors.white}
+									/>
 								</View>
 							</CollapseHeader>
 							<CollapseBody>
-								<TouchableOpacity style={{ borderRadius: 8, backgroundColor: '#ddd' }}>
-									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 4 }}>
-										<Text style={{ backgroundColor: '#ddd', color: '#fff' }}>personal</Text>
+								<TouchableOpacity
+									style={{ borderRadius: 8, backgroundColor: colors.purple }}
+									onPress={() => {
+										setCategory(1);
+										setShowing(false);
+									}}
+								>
+									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 8 }}>
+										<Text style={{ color: '#fff' }}>personal</Text>
 									</View>
 								</TouchableOpacity>
-								<TouchableOpacity style={{ borderRadius: 8, backgroundColor: '#ddd' }}>
-									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 4 }}>
-										<Text style={{ backgroundColor: '#ddd', color: '#fff' }}>historical</Text>
+								<TouchableOpacity
+									style={{ borderRadius: 8, backgroundColor: colors.purple }}
+									onPress={() => {
+										setCategory(3);
+										setShowing(false);
+									}}
+								>
+									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 8 }}>
+										<Text style={{ color: '#fff' }}>historical</Text>
 									</View>
 								</TouchableOpacity>
-								<TouchableOpacity style={{ borderRadius: 8, backgroundColor: '#ddd' }}>
-									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 4 }}>
-										<Text style={{ backgroundColor: '#ddd', color: '#fff' }}>community</Text>
+								<TouchableOpacity
+									style={{ borderRadius: 8, backgroundColor: colors.purple }}
+									onPress={() => {
+										setCategory(2);
+										setShowing(false);
+									}}
+								>
+									<View style={{ flexDirection: 'row', justifyContent: 'center', padding: 8 }}>
+										<Text style={{ color: '#fff' }}>community</Text>
 									</View>
 								</TouchableOpacity>
 							</CollapseBody>
@@ -298,13 +384,16 @@ function StoryPostScreen(props) {
 					<View
 						style={{
 							flexDirection: 'row',
-							borderColor: '#ddd',
+							borderColor: colors.border,
 							borderBottomWidth: 1,
 							justifyContent: 'space-around',
+							alignItems: 'center',
 							padding: 9,
 						}}
 					>
-						<TouchableWithoutFeedback onPress={() => setIsPickingStartDate(true)}>
+						<TouchableWithoutFeedback 
+							onPress={() => setIsPickingStartDate(true)}
+						>
 							<View
 								style={{
 									flexDirection: 'row',
@@ -312,10 +401,13 @@ function StoryPostScreen(props) {
 									justifyContent: 'space-evenly',
 								}}
 							>
-								<Text style={{ color: '#919191', paddingRight: 8 }}>start date</Text>
-								<FontAwesome5 name='calendar-week' size={24} color='#919191' />
+								<Text style={{ color: colors.border, paddingRight: 8 }}>
+									{hasPickStart ? startDate.toISOString().slice(0, 10) : 'start date'}
+								</Text>
+								<FontAwesome5 name='calendar-week' size={24} color={colors.purple} />
 							</View>
 						</TouchableWithoutFeedback>
+						<Text style={{ color: colors.border }}> to </Text>
 						<TouchableWithoutFeedback onPress={() => setIsPickingEndDate(true)}>
 							<View
 								style={{
@@ -324,8 +416,10 @@ function StoryPostScreen(props) {
 									justifyContent: 'space-evenly',
 								}}
 							>
-								<Text style={{ color: '#919191', padding: 8 }}>start date</Text>
-								<FontAwesome5 name='calendar-week' size={24} color='#919191' />
+								<Text style={{ color: colors.border, padding: 8 }}>
+									{hasPickEnd ? endDate.toISOString().slice(0, 10) : 'end date'}
+								</Text>
+								<FontAwesome5 name='calendar-week' size={24} color={colors.purple} />
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
@@ -335,6 +429,7 @@ function StoryPostScreen(props) {
 						placeholder='enter story'
 						name=''
 						style={styles.inputAddress}
+						value={description}
 						onChangeText={(val) => {
 							setDescription(val);
 						}}
@@ -347,7 +442,7 @@ function StoryPostScreen(props) {
 								position: 'absolute',
 								bottom: 35,
 								borderRadius: 5,
-								borderColor: '#ddd',
+								borderColor: colors.border,
 								borderWidth: 2,
 							}}
 						>
@@ -369,7 +464,7 @@ function StoryPostScreen(props) {
 								position: 'absolute',
 								bottom: 35,
 								borderRadius: 5,
-								borderColor: '#ddd',
+								borderColor: colors.border,
 								borderWidth: 2,
 							}}
 							disabled={gotLocation ? false : true}
@@ -421,7 +516,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		borderBottomWidth: 1,
-		borderColor: '#ddd',
+		borderColor: colors.border,
 		padding: 10,
 		fontSize: 14,
 		width: '100%',
@@ -432,7 +527,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	requiredText: {
-		color: 'red',
+		color: colors.alert,
 	},
 	userBtn: {
 		marginTop: 15,
@@ -440,10 +535,20 @@ const styles = StyleSheet.create({
 	},
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
+	const userId = state.authReducer.isLoggedIn === true ? state.authReducer.user.id : '';
+	const userName = state.authReducer.isLoggedIn === true ? state.authReducer.username : '';
 	return {
-		loadStories: () => dispatch(loadStories()),
+		userId: userId,
+		userName: userName,
 	};
 };
 
-export default connect(null, mapDispatchToProps)(StoryPostScreen);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		loadStories: () => dispatch(loadStories()),
+		reloadUser: (username) => dispatch(reloadUser(username)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryPostScreen);

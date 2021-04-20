@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Button,
 	Image,
 	SafeAreaView,
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableWithoutFeedback,
+	TouchableOpacity, 
 	View,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
-import { FontAwesome5 } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import * as EmailValidator from 'email-validator';
 
+// Icons
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+
+// Redux
 import { register } from '../redux/actions/authActions';
+
 import colors from '../config/colors';
 
 function RegisterScreen(props) {
@@ -31,6 +33,7 @@ function RegisterScreen(props) {
 		email: '',
 		password: '',
 		confirmPassword: '',
+		expoPushToken: props.expoPushToken,
 		isValidUsername: true,
 		isValidEmail: true,
 		isValidPassword: true,
@@ -130,13 +133,16 @@ function RegisterScreen(props) {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
-			<Text style={styles.title}>register</Text>
+			<Image 
+				style={styles.logo} 
+				source={require('../assets/color_icon.png')} 
+			/>
+			<Text style={styles.title}> register </Text>
 
 			{submitted && failed ? (
 				<View>
-					<Text style={styles.error}>username or email already taken!</Text>
-					<Text style={styles.error}>please try another</Text>
+					<Text style={styles.error}> username or email already taken! </Text>
+					<Text style={styles.error}> please try another </Text>
 				</View>
 			) : null}
 
@@ -152,12 +158,14 @@ function RegisterScreen(props) {
 			</View>
 			{user.isValidUsername ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
-					<Text style={styles.errorMsg}>username must be no longer than 15 characters</Text>
+					<Text style={styles.errorMsg}>
+						username must be no longer than 15 characters
+					</Text>
 				</Animatable.View>
 			)}
 
 			<View style={styles.icon}>
-				<FontAwesome5 name='envelope' color='#DCDCDC' size={20} />
+				<FontAwesome name='envelope' color='#DCDCDC' size={20} />
 				<TextInput
 					style={styles.input}
 					value={user.email}
@@ -216,38 +224,58 @@ function RegisterScreen(props) {
 			</View>
 			{user.isValidConfirmPassword || user.confirmPassword === '' ? null : (
 				<Animatable.View>
-					<Text style={styles.errorMsg}>passwords don't match, please re-enter</Text>
+					<Text style={styles.errorMsg}>
+						the passwords didn't match, please try again
+					</Text>
 				</Animatable.View>
 			)}
 			<View style={styles.submitBtn}>
-				<Button
-					title='register'
-					color='white'
+				<TouchableOpacity
 					onPress={() => {
 						dispatch(register(user));
 						setSubmitted(true);
 					}}
-				/>
+				>
+					<Text 
+						style={{ 
+							color: 'white', 
+							alignSelf: 'center',
+							fontFamily: 'Arial',
+							fontSize: 24,
+						}}
+					>
+						register
+					</Text>
+				</TouchableOpacity>
 			</View>
 
 			<View style={styles.links}>
-				<Text style={{ color: 'gray' }}>already have an account? log in </Text>
+				<Text style={{ color: 'gray' }}>
+					already have an account? log in{' '} 
+				</Text>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Login');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>here</Text>
+					<Text 
+						style={{ 
+							fontWeight: 'bold', 
+							color: '#4D4185' 
+						}}
+					>
+						here
+					</Text>
 				</TouchableOpacity>
 			</View>
 			<View>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Map');
 					}}
 				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+					<Text style={styles.text}> continue </Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
@@ -267,15 +295,15 @@ const styles = StyleSheet.create({
 		width: 100,
 	},
 	title: {
+		fontFamily: 'Arial',
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
+		color: '#4D4185',
 		marginBottom: 30,
 	},
 	input: {
 		flex: 1,
 		fontSize: 20,
-		color: 'gray',
+		color: '#7C7887',
 		width: '90%',
 		paddingLeft: 10,
 	},
@@ -285,13 +313,13 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		paddingBottom: 5,
 		borderBottomWidth: 2,
-		borderColor: '#4D4185',
+		borderColor: colors.border,
 		marginTop: 10,
 		marginBottom: 20,
 	},
 	text: {
 		fontSize: 14,
-		color: '#2380B0',
+		color: '#008BBC',
 		marginTop: 120,
 	},
 	error: {
@@ -305,13 +333,13 @@ const styles = StyleSheet.create({
 		padding: 5,
 	},
 	submitBtn: {
-		fontSize: 16,
-		width: '85%',
-		padding: 10,
-		borderRadius: 5,
 		backgroundColor: '#4D4185',
-		marginTop: 75,
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginTop: 50,
 		marginBottom: 60,
+		width: '80%',
+		height: 60,
 	},
 	links: {
 		flexDirection: 'row',
@@ -325,6 +353,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	return {
 		registerFail: state.authReducer.registerFail,
+		expoPushToken: state.authReducer.expoPushToken,
 	};
 };
 

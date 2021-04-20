@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Button,
 	Image,
 	SafeAreaView,
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableWithoutFeedback,
+	TouchableOpacity,
 	View,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
+// Icons
+import { FontAwesome5 } from '@expo/vector-icons';
+
+// Redux
 import { login } from '../redux/actions/authActions';
+
 import colors from '../config/colors';
 
 function LoginScreen(props) {
@@ -30,6 +33,7 @@ function LoginScreen(props) {
 		isValidPassword: true,
 		secureTextEntry: true,
 		errors: {},
+		expoPushToken: props.expoPushToken,
 	});
 
 	const handleUsername = (val) => {
@@ -64,6 +68,13 @@ function LoginScreen(props) {
 		}
 	};
 
+	const updateSecureTextEntry = () => {
+		setUser({
+			...user,
+			secureTextEntry: !user.secureTextEntry,
+		});
+	};
+
 	useEffect(() => {
 		if (submitted) {
 			setFailed(props.loginFail);
@@ -78,35 +89,49 @@ function LoginScreen(props) {
 			<Text style={styles.title}>log in</Text>
 
 			{submitted && failed ? (
-				<View>
-					<Text style={styles.error}>incorrect username and/or password!</Text>
-					<Text style={styles.error}>please try again</Text>
+				<View style={{ alignItems: 'center' }}>
+					<Text style={{ color: 'red' }}>incorrect username and/or password!</Text>
+					<Text style={{ color: 'red' }}>please try again</Text>
 				</View>
 			) : null}
 
-			<TextInput
-				style={styles.input}
-				value={user.username}
-				placeholder='username'
-				autoCapitalize='none'
-				autoCorrec={false}
-				onChangeText={(val) => handleUsername(val)}
-			/>
-			{user.isValidUser || user.username === '' ? null : (
-				<Animatable.View animation='fadeInLeft' duration={500}>
-					<Text style={styles.errorMsg}>please enter your username</Text>
-				</Animatable.View>
-			)}
+			<View style={styles.input}>
+				<TextInput
+					style={{
+						fontFamily: 'Arial',
+						fontSize: 16,
+					}}
+					value={user.username}
+					placeholder='username'
+					autoCapitalize='none'
+					autoCorrect={false}
+					onChangeText={(val) => handleUsername(val)}
+				/>
+				{user.isValidUser || user.username === '' ? null : (
+					<Animatable.View animation='fadeInLeft' duration={500}>
+						<Text style={styles.errorMsg}>please enter your username</Text>
+					</Animatable.View>
+				)}
+			</View>
 
-			<TextInput
-				style={styles.input}
-				value={user.password}
-				placeholder='password'
-				autoCapitalize='none'
-				autoCorrect={false}
-				secureTextEntry={user.secureTextEntry ? true : false}
-				onChangeText={(val) => handlePassword(val)}
-			/>
+			<View style={styles.input}>
+				<TouchableOpacity style={{ marginTop: 12 }} onPress={updateSecureTextEntry}>
+					{user.secureTextEntry ? (
+						<FontAwesome5 name='eye-slash' color='#DCDCDC' size={20} />
+					) : (
+						<FontAwesome5 name='eye' color='#DCDCDC' size={20} />
+					)}
+				</TouchableOpacity>
+				<TextInput
+					style={{ fontFamily: 'Arial', fontSize: 16, marginLeft: 10 }}
+					value={user.password}
+					placeholder='password'
+					autoCapitalize='none'
+					autoCorrect={false}
+					secureTextEntry={user.secureTextEntry ? true : false}
+					onChangeText={(val) => handlePassword(val)}
+				/>
+			</View>
 			{user.isValidPassword || user.password === '' ? null : (
 				<Animatable.View animation='fadeInLeft' duration={500}>
 					<Text style={styles.errorMsg}>password must be at least 8 characters long</Text>
@@ -114,46 +139,78 @@ function LoginScreen(props) {
 			)}
 
 			<View style={styles.links}>
-				<Text style={{ color: 'gray' }}>forgot your log in details? get help </Text>
+				<Text style={{ marginLeft: 50, color: '#7C7887' }}>
+					forgot your log in details? get help{' '}
+				</Text>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('ForgotPassword');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>signing in</Text>
+					<Text
+						style={{
+							fontWeight: 'bold',
+							color: '#4D4185',
+						}}
+					>
+						signing in
+					</Text>
 				</TouchableOpacity>
 			</View>
 
 			<View style={styles.submitBtn}>
-				<Button
-					title='log in'
-					color='white'
+				<TouchableOpacity
 					onPress={() => {
 						dispatch(login(user));
 						setSubmitted(true);
 					}}
-				/>
+				>
+					<Text
+						style={{
+							color: 'white',
+							alignSelf: 'center',
+							fontFamily: 'Arial',
+							fontSize: 24,
+						}}
+					>
+						log in
+					</Text>
+				</TouchableOpacity>
 			</View>
 
 			<View style={styles.links}>
-				<Text style={{ color: 'gray' }}>don't have an account? register </Text>
+				<Text
+					style={{
+						color: 'gray',
+					}}
+				>
+					{/* Put into brackets b/c of apostrophe */}
+					{`don't have an account? register `}
+				</Text>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Register');
 					}}
 				>
-					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>here</Text>
+					<Text
+						style={{
+							fontWeight: 'bold',
+							color: '#4D4185',
+						}}
+					>
+						here
+					</Text>
 				</TouchableOpacity>
 			</View>
 
 			<View>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Map');
 					}}
 				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+					<Text style={styles.text}> continue </Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
@@ -173,57 +230,47 @@ const styles = StyleSheet.create({
 		width: 100,
 	},
 	title: {
+		fontFamily: 'Arial',
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
+		color: '#4D4185',
 		marginBottom: 30,
 	},
-	body: {
-		flexDirection: 'row',
-	},
 	input: {
-		fontSize: 20,
-		color: 'gray',
-		width: '85%',
-		height: 50,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		color: colors.border,
+		marginTop: 30,
 		paddingLeft: 15,
 		borderWidth: 2,
-		borderRadius: 5,
-		borderColor: '#4D4185',
-		marginTop: 10,
-		marginBottom: 10,
-	},
-	icon: {
-		alignItems: 'flex-end',
-		position: 'absolute',
+		borderColor: colors.border,
+		width: '85%',
+		height: 50,
 	},
 	text: {
 		fontSize: 14,
-		color: '#2380B0',
+		color: '#008BBC',
 		marginTop: 190,
 	},
 	error: {
-		textAlign: 'center',
 		fontSize: 16,
 		color: 'red',
+		textAlign: 'center',
 	},
 	errorMsg: {
 		color: 'red',
 	},
 	submitBtn: {
-		fontSize: 18,
-		width: '85%',
-		padding: 10,
-		borderRadius: 5,
 		backgroundColor: '#4D4185',
+		justifyContent: 'center',
+		borderRadius: 15,
 		marginTop: 50,
 		marginBottom: 60,
+		width: '80%',
+		height: 60,
 	},
 	links: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
 		fontSize: 14,
-		marginTop: 10,
 		marginBottom: 30,
 	},
 });

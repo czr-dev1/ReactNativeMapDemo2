@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { 
-	Alert, 
-  Button, 
+	Alert,
   Image, 
   SafeAreaView, 
   StyleSheet, 
   Text, 
 	TextInput, 
-	TouchableWithoutFeedback, 
+	TouchableOpacity, 
   View, 
 } from 'react-native';
-import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 import useRemovalConfirm from '../components/profile/useRemovalConfirm';
+
 import colors from '../config/colors';
 
 function ForgotPasswordScreen() {
@@ -26,46 +26,8 @@ function ForgotPasswordScreen() {
 	const validateEmail = () => {
 		if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email.length > 0) {
 			setShowError(false);
-			console.log('email validated');
+			// console.log('email validated');
 		}
-	};
-
-	// Searches is email exists
-	const emailExists = (email) => {
-		const config = {
-			headers: {
-				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-			},
-		};
-
-		axios.get(`https://www.globaltraqsdev.com/profile/users?search=${username}`, config)
-		.then((response) => {
-			loginToggle();
-			setEmail('');
-			navToResetPassword();
-		})
-		.catch((error) => {
-			loginToggle();
-			setEmail('');
-			enterValidEmail();
-		})
-	};
-
-	const navToResetPassword = () => {
-		Alert.alert('', 'you are being redirected to reset your password!', [
-			{
-				text: 'ok',
-				onPress: () => navigation.navigate('ResetPassword')
-			}
-		])
-	};
-
-	const enterValidEmail =() => {
-		Alert.alert('', 'please enter a valid email!', [
-			{
-				text: 'dismiss'
-			}
-		])
 	};
 
 	// Send password reset link if applicable
@@ -90,16 +52,16 @@ function ForgotPasswordScreen() {
 	};
 
 	const emailSent = () => {
-		Alert.alert('', 'email has been sent!', [
+		Alert.alert('', 'if valid, you should receive email shortly!', [
 			{
 				text: 'dismiss',
-				onPress: () => navigation.navigate('Login')
+				onPress: () => navigation.navigate('Initial')
 			}
 		])
 	};
 
 	const emailFailed = () => {
-		Alert.alert('', 'please enter a valid email', [
+		Alert.alert('', 'if valid, you should receive email shortly!', [
 			{
 				text: 'dismiss'
 			}
@@ -111,7 +73,15 @@ function ForgotPasswordScreen() {
 			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
 			<Text style={styles.title}>forgot password</Text>
 
-			<Text style={{marginTop: 95, color: 'grey'}}>please intput your e-mail:</Text>
+			<Text
+				style={{
+					fontSize: 16,
+					marginTop: 95,
+					color: colors.gray,
+				}}
+			>
+				please intput your e-mail:
+			</Text>
 			<TextInput
 				style={styles.input}
 				value={email}
@@ -122,21 +92,32 @@ function ForgotPasswordScreen() {
 			/>
 
 			<View style={styles.submitBtn}>
-				<Button 
-					title='forgot password' 
-					color='white' 
-					onPress={() => sendResetLink()} 
-				/>
+				<TouchableOpacity
+					onPress={() => {
+						sendResetLink();
+					}}
+				>
+					<Text
+						style={{
+							color: 'white',
+							alignSelf: 'center',
+							fontFamily: 'Arial',
+							fontSize: 24,
+						}}
+					>
+						forgot password
+					</Text>
+				</TouchableOpacity>
 			</View>
 
 			<View>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Map');
 					}}
 				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+					<Text style={styles.text}> continue </Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
@@ -156,36 +137,34 @@ const styles = StyleSheet.create({
 		width: 100,
 	},
 	title: {
+		fontFamily: 'Arial',
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
+		color: '#4D4185',
 		marginBottom: 30,
 	},
 	input: {
-		fontSize: 20,
-		color: 'gray',
-		width: '85%',
-		height: 50,
+		color: colors.border,
 		paddingLeft: 15,
 		borderWidth: 2,
-		borderRadius: 5,
-		borderColor: '#4D4185',
+		borderColor: colors.border,
 		marginTop: 10,
 		marginBottom: 10,
+		width: '80%',
+		height: 50,
 	},
 	text: {
 		fontSize: 14,
-		color: '#2380B0',
-		paddingTop: 300,
+		color: '#008BBC',
+		marginTop: 260,
 	},
 	submitBtn: {
-		fontSize: 18,
-		width: '85%',
-		padding: 10,
-		borderRadius: 5,
 		backgroundColor: '#4D4185',
-		marginTop: 10,
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginTop: 50,
 		marginBottom: 60,
+		width: '80%',
+		height: 60,
 	},
 });
 

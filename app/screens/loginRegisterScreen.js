@@ -1,49 +1,102 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
-	Button, 
 	Image, 
 	SafeAreaView, 
 	StyleSheet, 
 	Text, 
+	TouchableOpacity, 
 	View 
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+
+// Redux
+import { setExpoPushToken } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
 function LoginRegisterOption() {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		registerForPushNotificationsAsync()
+		.then((token) => {
+			dispatch(setExpoPushToken(token));
+		});
+	}, []);
+
+	async function registerForPushNotificationsAsync() {
+		let token;
+		if (Constants.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync();
+				finalStatus = status;
+			}
+
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for Push Notifications!');
+				return;
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data;
+			// console.log(token);
+		} else {
+			alert('Must use physical device for Push Notifications!');
+		}
+		return token;
+	};
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/color_splash.png')} />
+			<Image style={styles.logo} source={require('../assets/white_color_logo_highres.png')} />
 			<View style={styles.loginBtn}>
-				<Button
-					title='log in'
-					color='white'
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Login');
 					}}
-				/>
+				>
+					<Text
+						style={{
+							color: 'white',
+							alignSelf: 'center',
+							fontFamily: 'Arial',
+							fontSize: 24,
+						}}
+					>
+						log in
+					</Text>
+				</TouchableOpacity>
 			</View>
 			<View style={styles.registerBtn}>
-				<Button
-					title='register'
-					color='white'
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Register');
 					}}
-				/>
+				>
+					<Text
+						style={{
+							color: 'white',
+							alignSelf: 'center',
+							fontFamily: 'Arial',
+							fontSize: 24,
+						}}
+					>
+						register
+					</Text>
+				</TouchableOpacity>
 			</View>
 			<View>
-				<TouchableWithoutFeedback
+				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate('Map');
 					}}
 				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+					<Text style={styles.text}> continue </Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
@@ -52,36 +105,38 @@ function LoginRegisterOption() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.white,
+		backgroundColor: colors.black,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	logo: {
-		marginTop: 175,
-		width: '80%',
+		marginTop: 200,
+		marginBottom: 50,
+		width: '90%',
 		height: 100,
 	},
 	text: {
 		fontSize: 14,
-		marginTop: 60,
-		color: '#2380B0',
+		color: '#008BBC',
 	},
 	loginBtn: {
-		fontSize: 16,
-		width: '85%',
-		marginTop: 50,
+		backgroundColor: colors.purple,
+		justifyContent: 'center',
+		marginTop: 75,
 		padding: 10,
-		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		borderRadius: 15,
+		width: '80%',
+		height: 60,
 	},
 	registerBtn: {
-		fontSize: 16,
-		width: '85%',
+		backgroundColor: colors.purple,
+		justifyContent: 'center',
 		marginTop: 30,
-		marginBottom: 250,
+		marginBottom: 200,
 		padding: 10,
-		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		borderRadius: 15,
+		width: '80%',
+		height: 60,
 	},
 });
 

@@ -14,6 +14,7 @@ export const urlConfig = (getState) => {
 	}
 };
 
+// LOAD ALL STORIES
 export const loadStories = () => {
   return (dispatch, getState) => {
     dispatch({ type: 'LOAD_STORIES_START' });
@@ -27,6 +28,7 @@ export const loadStories = () => {
   }
 }
 
+// CHANGE STORY TO ANONYMOUS AND VICE VERSA
 export const makeStoryPrivate = (id) => {
 	return (dispatch, getState) => { //Might have to remove getState
 		dispatch({ type: 'MAKE_STORY_PRIVATE_START' });

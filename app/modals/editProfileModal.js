@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Button,
+	Alert,
 	Dimensions,
-	FlatList,
-	Image,
-	Linking,
-	Picker,
-	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
 	TouchableOpacity,
-	TouchableWithoutFeedback,
 	View,
+	Picker,
+	ScrollView,
+	Image,
 } from 'react-native';
-import axios from 'axios';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome5, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import axios from 'axios';
 import { Switch } from 'react-native-switch';
-import { reloadUser } from '../redux/actions/authActions';
+
+// Icons
+import { Entypo } from '@expo/vector-icons';
+
+import { reloadUser } from '../redux/actions/auth';
+import { userSelfDelete } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
 
@@ -29,6 +30,7 @@ function EditProfileModal(props) {
 	const [username, setUsername] = useState(props.username);
 	const [bio, setBio] = useState(props.bio);
 	const [privacy, setprivacy] = useState(props.is_profile_private);
+	const dispatch = useDispatch();
 
 	const onSubmit = (e) => {
 		const config = {
@@ -46,12 +48,26 @@ function EditProfileModal(props) {
 
 		axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
 		.then((response) => {
-			props.navigation.goBack();
+			props.navigation.navigate('Profile');
 			props.reloadUser(props.username);
 		})
 		.catch((err) => {
 			console.log(err);
 		});
+	};
+
+	const deleteConfirm = () => {
+		Alert.alert('', 'are you sure you want to delete your profile?', [
+			{
+				text: 'cancel',
+				onPress: () => props.navigation.navigate('Profile'),
+				style: 'cancel',
+			},
+			{
+				text: 'yes, delete my profile',
+				onPress: () => dispatch(userSelfDelete()),
+			},
+		]);
 	};
 
 	return (
@@ -72,9 +88,16 @@ function EditProfileModal(props) {
 						style={{ padding: 24 }}
 						name='cross'
 						size={28}
-						color='#787878'
+						color={colors.purple}
 					/>
-					<Text style={{ fontSize: 24, paddingTop: 24, color: '#787878', fontWeight: 'bold' }}>
+					<Text 
+						style={{ 
+							fontSize: 18, 
+							paddingTop: 24, 
+							color: colors.purple, 
+							fontWeight: 'bold' 
+						}}
+					>
 						edit profile
 					</Text>
 					<Entypo
@@ -84,12 +107,24 @@ function EditProfileModal(props) {
 						style={{ padding: 24 }}
 						name='check'
 						size={24}
-						color='#787878'
+						color={colors.purple}
 					/>
 				</View>
-				<View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+				<View 
+					style={{ 
+						flexDirection: 'column', 
+						justifyContent: 'center', 
+						alignItems: 'center' 
+					}}
+				>
 					<Image style={styles.profileImage} source={{ uri: props.profileImage }} />
-					<Text style={{ fontSize: 18, fontWeight: 'bold', color: '#787878' }}>
+					<Text 
+						style={{ 
+							fontSize: 16, 
+							fontWeight: 'bold', 
+							color: colors.gray 
+						}}
+					>
 						change profile image
 					</Text>
 				</View>
@@ -108,14 +143,22 @@ function EditProfileModal(props) {
 						}}
 					>
 						<View style={{}}>
-							<Text style={{ fontWeight: 'bold', fontSize: 18, color: '#ddd' }}>anonymous</Text>
+							<Text 
+								style={{ 
+									fontWeight: 'bold', 
+									fontSize: 16, 
+									color: colors.gray 
+								}}
+							>
+								anonymous
+							</Text>
 						</View>
 						<View style={{}}>
 							<Switch
 								value={privacy}
 								onValueChange={(val) => setprivacy(val)}
-								activeText={'✔'}
-								inActiveText={'✖'}
+								activeText={'on'}
+								inActiveText={'off'}
 								backgroundActive={'#AAAAAA'}
 								backgroundInActive={'#AAAAAA'}
 							/>
@@ -124,10 +167,10 @@ function EditProfileModal(props) {
 					<Text
 						style={{
 							fontWeight: 'bold',
-							fontSize: 18,
-							color: '#ddd',
+							fontSize: 16,
+							color: colors.gray,
 							paddingLeft: 8,
-							paddingTop: 10,
+							paddingTop: 25,
 						}}
 					>
 						username
@@ -136,9 +179,17 @@ function EditProfileModal(props) {
 						style={styles.input}
 						placeholder='username'
 						value={username}
+						editable={false}
 						onChangeText={(value) => setUsername(value)}
 					/>
-					<Text style={{ fontWeight: 'bold', fontSize: 18, color: '#ddd', paddingLeft: 8 }}>
+					<Text
+						style={{
+							fontWeight: 'bold',
+							fontSize: 16,
+							color: colors.gray,
+							paddingLeft: 8,
+						}}
+					>
 						bio
 					</Text>
 					<TextInput
@@ -149,8 +200,19 @@ function EditProfileModal(props) {
 						onChangeText={(value) => setBio(value)}
 					/>
 
-					<TouchableOpacity style={{ padding: 8, width: '25%' }}>
-						<Text>delete profile</Text>
+					<TouchableOpacity style={{ padding: 8 }} 
+						onPress={() => deleteConfirm()}
+					>
+						<Text 
+							style={{ 
+								fontSize: 16, 
+								fontWeight: 'bold', 
+								marginTop: 200, 
+								color: colors.gray 
+							}}
+						>
+							delete profile
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
@@ -180,6 +242,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		width: '100%',
 		marginBottom: 28,
+		color: '#262157',
 	},
 	inputBorderless: {
 		borderColor: '#ddd',
@@ -196,12 +259,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+	console.log(state.authReducer);
 	return {
-		username: state.authReducer.username,
-		bio: state.authReducer.bio,
-		is_profile_private: state.authReducer.extra[0].is_profile_private,
-		id: state.authReducer.extra[0].id,
-		profileImage: state.authReducer.extra[0].profileurl,
+		username: state.authReducer.user.username,
+		bio: state.authReducer.user.bio,
+		is_profile_private: state.authReducer.user.is_profile_private,
+		id: state.authReducer.user.id,
+		profileImage: state.authReducer.user.profileurl,
 	};
 };
 

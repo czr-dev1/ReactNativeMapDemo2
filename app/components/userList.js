@@ -9,17 +9,16 @@ import {
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
-import colors from '../config/colors';
-
 const Item = ({ item }) => {
-	const navigation = useNavigation(); //There was a bug that made me have to import this
-	//if not imported and used it will just crash
-	//keep that in mind if props.navigation.navigate is not working
+	const navigation = useNavigation(); 
+	// There was a bug that made me have to import this
+	// if not imported and used it will just crash
+	// keep that in mind if props.navigation.navigate is not working
 	return (
 		<TouchableWithoutFeedback
 			key={item.id}
 			onPress={() => {
-				navigation.navigate('UserProfile');
+				navigation.navigate('UserProfile', {});
 			}}
 		>
 			<Card>

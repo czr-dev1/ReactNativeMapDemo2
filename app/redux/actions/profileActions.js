@@ -6,6 +6,15 @@ const config = {
 	},
 };
 
+export const tokenConfig = (getState) => {
+	const token = getState().authReducer.token;
+
+	if (token) {
+		config.headers['Authorization'] = `Token ${token}`;
+	}
+	return config;
+};
+
 export const urlConfig = (getState) => {
 	if (getState.authReducer().isPrivacyMode) {
 		return 'https://globaltraqsdev.com';
@@ -26,7 +35,7 @@ export const loadProfile = (username) => {
     })
     .catch((err) => {
       console.log(err);
-      dispatch({ type: 'LOAD_PROFILE_FAILURE', payload: err });
+      dispatch({ type: 'LOAD_PROFILE_FAILURE', payload: err.res.data });
     })
   }
 }

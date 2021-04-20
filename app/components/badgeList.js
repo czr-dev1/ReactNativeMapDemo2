@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
-  Alert, 
   Dimensions, 
   FlatList, 
   StyleSheet, 
   View, 
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 
-//icons
-import { MaterialIcons } from '@expo/vector-icons';
+// Icons
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-import colors from '../config/colors';
 
 function BadgeList(props) {
 	const badges = [
@@ -26,21 +20,21 @@ function BadgeList(props) {
 		'anchor',
 	];
 
-	const createAlert = () => {
-		Alert.alert(
-			'Alert Title',
-			'My Alert Msg',
-			[
-				{
-					text: 'Cancel',
-					onPress: () => console.log('Cancel Pressed'),
-					style: 'cancel',
-				},
-				{ text: 'OK', onPress: () => console.log('OK Pressed') },
-			],
-			{ cancelable: false }
-		);
-	};
+	// const createAlert = () => {
+	// 	Alert.alert(
+	// 		'Alert Title',
+	// 		'My Alert Msg',
+	// 		[
+	// 			{
+	// 				text: 'Cancel',
+	// 				onPress: () => console.log('Cancel Pressed'),
+	// 				style: 'cancel',
+	// 			},
+	// 			{ text: 'OK', onPress: () => console.log('OK Pressed') },
+	// 		],
+	// 		{ cancelable: false }
+	// 	);
+	// };
 
 	return (
 		<FlatList
@@ -51,7 +45,7 @@ function BadgeList(props) {
 			renderItem={({ item }) => {
 				return (
 					<View style={styles.item}>
-						<MaterialCommunityIcons name={item} size={24} color='black' />
+						<MaterialCommunityIcons name={item} size={24} color='#919191' />
 					</View>
 				);
 			}}
@@ -65,6 +59,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: Dimensions.get('window').width,
+		backgroundColor: 'white',
 	},
 	topIcon: {
 		alignSelf: 'center',
@@ -85,10 +80,11 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		alignItems: 'center',
 		width: Dimensions.get('window').width,
-		backgroundColor: '#eae6e5',
+		backgroundColor: 'white',
 	},
 	grid: {
 		flex: 1,
+		backgroundColor: 'white',
 	},
 });
 

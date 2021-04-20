@@ -1,30 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
-  Dimensions, 
-  Image, 
-  Linking, 
-  ScrollView, 
-  StyleSheet, 
-  Text, 
-  View, 
+	Dimensions, 
+	Image, 
+	Linking, 
+	ScrollView, 
+	StyleSheet, 
+	Text, 
+	View 
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+// Icons
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors';
 
-function SupportUsModal() {
+function SupportUsModal(props) {
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-					<Text style={{ fontSize: 24, padding: 24, color: '#787878', fontWeight: 'bold' }}>
+					<Text 
+						style={{ 
+							fontSize: 24, 
+							padding: 24, 
+							color: colors.purple, 
+							fontWeight: 'bold' 
+						}}
+					>
 						support us
 					</Text>
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-					<Text style={{ fontSize: 24, paddingBottom: 24, color: '#787878' }}>
+					<Text
+						style={{ 
+							fontSize: 24, 
+							fontWeight: 'bold', 
+							paddingBottom: 24, 
+							color: colors.purple 
+						}}
+					>
 						how you can help
 					</Text>
 				</View>
@@ -32,7 +47,14 @@ function SupportUsModal() {
 					<Image source={require('../assets/Help.png')} />
 				</View>
 				<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-					<Text style={{ fontSize: 24, padding: 24, color: '#787878', fontWeight: 'bold' }}>
+					<Text 
+						style={{ 
+							fontSize: 24, 
+							padding: 24, 
+							color: '#787878', 
+							fontWeight: 'bold' 
+						}}
+					>
 						follow us
 					</Text>
 				</View>

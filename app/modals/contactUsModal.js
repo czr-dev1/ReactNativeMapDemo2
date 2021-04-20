@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import {
 	Dimensions,
@@ -10,13 +9,13 @@ import {
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import Modal from 'react-native-modal';
 
 import colors from '../config/colors';
 
-function ContactUsModal() {
+function ContactUsModal(props) {
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
 
@@ -31,15 +30,14 @@ function ContactUsModal() {
 			// Request Body
 			// const body = JSON.stringify({ username, email, password });
 			let data = JSON.stringify({ email: email, message: message });
-			axios
-				.post('https://globaltraqsdev.com/api/contactUs/', data, config)
-				.then((response) => {
-					setEmail('');
-					setMessage('');
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			axios.post('https://globaltraqsdev.com/api/contactUs/', data, config)
+			.then((response) => {
+				setEmail('');
+				setMessage('');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		} else {
 			const config = {
 				headers: {
@@ -48,48 +46,66 @@ function ContactUsModal() {
 			};
 			setEmail(`Anonymous@anon.com`);
 
-			axios
-				.post('https://globaltraqsdev.com/api/contactUs/',
-					{
-						email: email,
-						message: message,
-					}, 
-          config
-				)
-				.then((response) => {
-					setEmail('');
-					setMessage('');
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			axios.post('https://globaltraqsdev.com/api/contactUs/',
+				{
+					email: email,
+					message: message,
+				},
+				config
+			)
+			.then((response) => {
+				setEmail('');
+				setMessage('');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		}
 	};
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView style={{ width: '100%' }}>
-				<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+				<View 
+					style={{ 
+						flexDirection: 'row', 
+						justifyContent: 'center', 
+						alignItems: 'center' 
+					}}
+				>
 					<Text
 						style={{
-							fontSize: 24,
+							fontSize: 18,
 							paddingTop: 24,
 							paddingBottom: 72,
-							color: '#787878',
+							color: colors.white,
 							fontWeight: 'bold',
 						}}
 					>
 						contact us
 					</Text>
 				</View>
-				<View style={styles.box}>
-					<Text style={{ fontSize: 22, paddingTop: 12, color: '#787878', fontWeight: 'bold' }}>
-						what's on your mind?
-					</Text>
-					<TextInput style={styles.input} placeholder='email (optional)' />
-					<TextInput style={styles.input} placeholder='subject' />
-					<TextInput style={styles.inputBorderless} multiline placeholder='message' />
-				</View>
+				<Modal
+					isVisible={true}
+					hasBackdrop={false}
+					style={{ justifyContent: 'flex-end', margin: 0, height: '100%' }}
+				>
+					<View style={styles.box}>
+						<Text
+							style={{ 
+								fontSize: 22, 
+								paddingTop: 12, 
+								color: colors.purple, 
+								fontWeight: 'bold' 
+							}}
+						>
+							what's on your mind?
+						</Text>
+						<TextInput style={styles.input} placeholder='email (optional)' />
+						<TextInput style={styles.input} placeholder='subject' />
+						<TextInput style={styles.inputBorderless} multiline placeholder='message' />
+					</View>
+				</Modal>
 			</ScrollView>
 
 			<View style={{ flexDirection: 'column', flex: 1, width: '80%' }}>
@@ -148,7 +164,7 @@ function ContactUsModal() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.white,
+		backgroundColor: colors.purple,
 		alignItems: 'center',
 		height: '100%',
 		width: Dimensions.get('window').width,
@@ -156,12 +172,13 @@ const styles = StyleSheet.create({
 	box: {
 		borderWidth: 2,
 		borderColor: '#ddd',
-		borderRadius: 69,
+		backgroundColor: colors.white,
+		borderTopLeftRadius: 40,
+		borderTopRightRadius: 40,
 		paddingTop: 18,
 		paddingBottom: 18,
 		paddingRight: 32,
 		paddingLeft: 32,
-		margin: 6,
 		alignItems: 'center',
 	},
 	input: {

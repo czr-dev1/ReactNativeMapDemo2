@@ -6,6 +6,7 @@ import {
   View, 
 } from 'react-native';
 import { connect } from 'react-redux';
+
 import { setPrivacyMode } from '../redux/actions/authActions';
 
 function AnonToggleSwitch(props) {
@@ -15,7 +16,7 @@ function AnonToggleSwitch(props) {
 			<Switch
 				value={props.isPrivacyMode}
 				onValueChange={() => props.setPrivacyMode(!props.isPrivacyMode)}
-				trackColor={{ false: '#767577', true: '#81b0ff' }}
+				trackColor={{false: '#767577', true: '#81b0ff'}}
 				thumbColor={props.isPrivacyMode ? '#f5dd4b' : '#f4f3f4'}
 				ios_backgroundColor='#3e3e3e'
 			/>

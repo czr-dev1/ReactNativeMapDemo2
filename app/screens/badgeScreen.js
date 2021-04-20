@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
 	Dimensions,
 	StyleSheet,
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
 
-//icons
-import { MaterialIcons } from '@expo/vector-icons';
+// Icons
 import { Feather } from '@expo/vector-icons';
 
-import colors from '../config/colors';
 import BadgeList from '../components/badgeList';
 
 function BadgeScreen(props) {

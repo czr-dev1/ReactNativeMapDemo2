@@ -1,45 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Dimensions,
-	Platform,
-	SafeAreaView,
-	ScrollView,
-	StatusBar,
-	StyleSheet,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
-	View,
+import { 
+  Dimensions, 
+  Platform, 
+  SafeAreaView, 
+	ScrollView, 
+  StatusBar, 
+  StyleSheet, 
+  Text, 
+	TextInput, 
+	TouchableOpacity, 
+	TouchableWithoutFeedback, 
+	View, 
 } from 'react-native';
 import { connect } from 'react-redux';
-import { FontAwesome5, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import Modal from 'react-native-modal';
 import RadioButtonRN from 'radio-buttons-react-native';
 
+// Icons
+import { FontAwesome, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+
+// Redux
 import { loadStories } from '../redux/actions/storyActions';
+import { reloadUser } from '../redux/actions/authActions';
+
 import colors from '../config/colors';
 
-function storyScreen(props) {
+const PROFILE_PIC = require('../assets/profile_blank.png');
+
+function StoryScreen(props) {
 	const { title, description, id } = props.route.params;
 	const [story, setStory] = useState({});
-	const [isLoadingProfile, setLoadingProfile] = useState(true);
+	const [isLoadingProfile, setIsLoadingProfile] = useState(true);
 	const [data, setData] = useState([]);
-	const [userComment, setUserComment] = useState([]);
+	const [userComment, setUserComment] = useState('');
 	const [showFlagModal, setShowFlagModal] = useState(false);
+	const [showOptionsModal, setShowOptionsModal] = useState(false);
 	const [flagReason, setFlagReason] = useState('');
 	const [flagType, setFlagType] = useState(1);
-	const [comments, setComments] = useState([
-		{
-			commenter: 0,
-			description: '',
-			id: 0,
-			is_anonymous_comment: false,
-			pin: 0,
-			username: '',
-		},
-	]);
+	const [isBookmarked, setIsBookmarked] = useState(false);
+	const [comments, setComments] = useState([{
+		'commenter': 0,
+		'description': '',
+		'id': 0,
+		'is_anonymous_comment': false,
+		'pin': 0,
+		'usename': '',
+	}]);
 
 	useEffect(() => {
 		getStory();
@@ -47,33 +54,44 @@ function storyScreen(props) {
 	}, []);
 
 	const getStory = () => {
-		let tempStory = props.stories.filter((i) => i.id === id);
-		console.log(tempStory[0]);
-		tempStory[0].commentstory.map((item, i) => {
-			console.log(item.id);
-		});
-		setStory(tempStory[0]);
-		setComments(tempStory[0].commentstory);
-	};
-
-	const getProfile = async () => {
 		const config = {
 			headers: {
 				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-			},
+			}
 		};
 
-		//username can be changed if you want
-		axios
-			.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.username}`, config)
-			.then((res) => {
-				setData(res.data[0]);
-				setLoadingProfile(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+		let tempStory = props.stories.filter(i => i.id === id);
+		// This will get overwritten once the axios call is completed
+		// without it, there's a crash
+		setStory(tempStory[0]);
+		setComments(tempStory[0].commentstory);
+
+		axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+		.then((res) => {
+			setStory(res.data);
+			setComments(res.data.commentstory);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
+
+	const getProfile = () => {
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			}
+		};
+
+		axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.username}`, config)
+		.then((res) => {
+			setData(res.data[0]);
+			setIsLoadingProfile(false);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
 
 	const flagStory = () => {
 		let reportType = 0;
@@ -88,6 +106,7 @@ function storyScreen(props) {
 				reportType = 3;
 				break;
 		}
+
 		let flagData = {
 			flagged: true,
 			flagger: props.userId,
@@ -95,67 +114,95 @@ function storyScreen(props) {
 			reason: flagReason,
 			reportType: reportType,
 		};
+
 		const config = {
 			headers: {
 				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-			},
+			}
 		};
-		console.log(flagData);
-		axios
-			.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
-			.then((res) => {
-				console.log(res.data);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+
+		axios.post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
+		.then((res) => {
+			console.log(res.data);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
 
 	const comment = () => {
-		const config = {
-			headers: {
-				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
-			},
-		};
 		let data = {
 			commenter: props.userId,
 			description: userComment,
 			is_anonymous_pin: props.isPrivacyMode,
 			pin: id,
 		};
-		axios
-			.post('https://globaltraqsdev.com/api/commentStory/', data, config)
-			.then((res) => {
-				props.loadStories();
-				console.log('posted');
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			}
+		};
+
+		axios.post(`https://globaltraqsdev.com/api/commentStory/`, data, config)
+		.then((res) => {
+			getStory();
+			props.loadStories();
+			setUserComment('');
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
+
+	const bookmark = () => {
+		let data = {
+			upvote: true,
+			pinId: id,
+			upVoter: props.userId,
+		};
+
+		const config = {
+			headers: {
+				'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+			}
+		};
+
+		axios.post(`https://globaltraqsdev.com/api/upVoteStory/`, data, config)
+		.then((res) => {
+			props.loadStories();
+			props.reloadUser(props.username);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+	}
 
 	const modalOptions = [
 		{
 			label: 'suspicious or spam',
-			accessibilityLabel: 'suspicious or spam',
+			accessibilityLabel: 'suspicious or spam'
 		},
 		{
 			label: 'harassment',
-			accessibilityLabel: 'harassment',
+			accessibilityLabel: 'harassment'
 		},
 		{
 			label: 'other',
-			accessibilityLabel: 'other',
+			accessibilityLabel: 'other'
 		},
-	];
+	]
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<Modal
-				backdropColor='#ddd'
+				style={{ justifyContent: 'flex-end', margin: 0 }}
 				isVisible={showFlagModal}
 				onBackdropPress={() => setShowFlagModal(false)}
-				onBackButtonPress={() => setShowFlagModal(false)}
+				onBackButtonPress={() => {
+					setShowFlagModal(false);
+					setShowOptionsModal(true);
+				}}
 			>
 				<View style={{ backgroundColor: 'white', borderRadius: 10, padding: 14 }}>
 					<View>
@@ -163,7 +210,7 @@ function storyScreen(props) {
 							data={modalOptions}
 							selectedBtn={(e) => setFlagType(e)}
 							icon={<FontAwesome name='check' size={24} color='black' />}
-							boxStyle={{ borderWidth: 0 }}
+							boxStyle={{ borderRadius: 0 }}
 						/>
 						<TextInput
 							style={styles.box}
@@ -197,6 +244,39 @@ function storyScreen(props) {
 					</View>
 				</View>
 			</Modal>
+
+			<Modal
+				isVisible={showOptionsModal}
+				onBackdropPress={() => setShowOptionsModal(false)}
+				onBackButtonPress={() => setShowOptionsModal(false)}
+				style={{ justifyContent: 'flex-end', margin: 0 }}
+			>
+				<View style={{ backgroundColor: 'white', borderRadius: 10, padding: 14 }}>
+					<View>
+						<TouchableOpacity
+							style={{ flexDirection: 'row', padding: 18 }}
+							onPress={() => {
+								setShowOptionsModal(false);
+								bookmark();
+							}}
+						>
+							<FontAwesome name='bookmark' size={24} color='black' style={{ paddingRight: 14 }} />
+							<Text style={{ fontSize: 18 }}>bookmark post</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{ flexDirection: 'row', padding: 18 }}
+							onPress={() => {
+								setShowOptionsModal(false);
+								setShowFlagModal(true);
+							}}
+						>
+							<FontAwesome name='flag' size={24} color='black' style={{ paddingRight: 14 }} />
+							<Text style={{ fontSize: 18 }}>flag post</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
+
 			<ScrollView
 				style={{ width: '100%' }}
 				keyboardShouldPersistTaps='handled'
@@ -206,15 +286,15 @@ function storyScreen(props) {
 					style={{
 						paddingTop: '40%',
 						backgroundColor:
-							story.category === 1 ? '#e01784' : story.category == 2 ? '#00ce7d' : '#248dc1',
+							story.category === 1 ? '#E01784' : story.category === 2 ? '#00CE7D' : '#248DC1',
 					}}
 				>
 					<View
 						style={{
 							backgroundColor: 'white',
-							paddingTop: '10%',
-							borderTopLeftRadius: 40,
-							borderTopRightRadius: 40,
+							paddingTop: '20%',
+							borderTopLeftRadius: 300,
+							borderTopRightRadius: 300,
 						}}
 					></View>
 				</View>
@@ -235,64 +315,82 @@ function storyScreen(props) {
 							<TouchableWithoutFeedback
 								onPress={() => {
 									if (!story.is_anonymous_pin) {
-										props.navigation.navigate('userprofilemodal', { user: story.username });
+										props.navigation.navigate('UserProfileModal', { user: story.username });
 									}
 								}}
 							>
 								<Text
-									style={{ paddingLeft: 5, color: '#787878', fontSize: 18, fontWeight: 'bold' }}
+									style={{
+										paddingLeft: 5,
+										marginBottom: 12,
+										color: '#787878',
+										fontSize: 18,
+										fontWeight: 'bold',
+									}}
 								>
 									{story.is_anonymous_pin ? 'anonymous' : story.username}
 								</Text>
 							</TouchableWithoutFeedback>
 						</View>
 						{props.isLoggedIn === true ? (
-							<FontAwesome5 name='bookmark' size={24} color='black' />
+							<FontAwesome5
+								name='ellipsis-v'
+								size={24}
+								color='black'
+								onPress={() => setShowOptionsModal(true)}
+							/>
 						) : null}
 					</View>
 					<View style={{ paddingLeft: '5%' }}>
-						<Text style={{ color: '#787878', fontWeight: 'bold', fontSize: 24 }}>
+						<Text 
+							style={{ 
+								color: '#787878',
+								fontWeight: 'bold', 
+								fontSize: 24, 
+								marginBottom: 12 
+							}}
+						>
 							{story.title}
 						</Text>
 						{story.address === '' ? null : (
-							<Text style={{ color: '#787878', fontWeight: 'bold' }}>{story.address}</Text>
+							<Text 
+								style={{ 
+									color: '#787878', 
+									fontWeight: 'bold' 
+								}}
+							>
+								{story.address}
+							</Text>
 						)}
-						<View style={{ flexDirection: 'row', paddingBottom: 5 }}>
+						<View 
+							style={{ 
+								flexDirection: 'row', 
+								paddingBottom: 5, 
+								marginBottom: 12 
+							}}
+						>
 							{story.locality === '' ? null : (
-								<Text style={{ color: '#787878', fontWeight: 'bold' }}>{story.locality}, </Text>
+								<Text style={{ color: '#787878', fontWeight: 'bold' }}>
+									{story.locality}
+								</Text>
 							)}
 							{story.region === '' ? null : (
-								<Text style={{ color: '#787878', fontWeight: 'bold' }}>{story.region}</Text>
+								<Text style={{ color: '#787878', fontWeight: 'bold' }}> {story.region}</Text>
 							)}
 						</View>
-						<Text style={{ paddingBottom: 5 }}>
+						<Text 
+							style={{ 
+								paddingBottom: 5, 
+								marginBottom: 12 
+							}}
+						>
 							{story.startDate === null
 								? story.postDate
 								: story.endDate === null
 								? story.startDate
 								: story.startDate + ' - ' + story.endDate}
 						</Text>
-						<Text>{story.description}</Text>
-						{props.isLoggedIn === true ? (
-							<View style={{ flexDirection: 'row', paddingTop: 14, paddingBottom: 14 }}>
-								<TouchableOpacity
-									style={{ borderRadius: 5, borderColor: '#ddd', borderWidth: 2 }}
-									onPress={() => setShowFlagModal(true)}
-								>
-									<Text
-										style={{
-											paddingTop: 9,
-											paddingBottom: 9,
-											paddingLeft: 18,
-											paddingRight: 18,
-											color: '#919191',
-										}}
-									>
-										flag
-									</Text>
-								</TouchableOpacity>
-							</View>
-						) : null}
+						<Text style={{ marginBottom: 12 }}>{story.description}</Text>
 					</View>
 				</View>
 
@@ -310,13 +408,19 @@ function storyScreen(props) {
 								style={styles.box}
 								multiline
 								placeholder='enter comment'
+								defaultValue={userComment}
 								onChangeText={(val) => {
 									setUserComment(val);
 								}}
 							/>
 							<View style={{ flexDirection: 'row-reverse', padding: 14 }}>
 								<TouchableOpacity
-									style={{ borderRadius: 5, borderColor: '#ddd', borderWidth: 2, width: 'auto' }}
+									style={{ 
+										borderRadius: 5, 
+										borderColor: '#ddd', 
+										borderWidth: 2, 
+										width: 'auto' 
+									}}
 									onPress={() => {
 										comment();
 									}}
@@ -343,24 +447,23 @@ function storyScreen(props) {
 						return (
 							<View
 								key={i}
-								style={{
-									justifyContent: 'space-between',
-									borderTopWidth: 2,
-									borderColor: '#ddd',
-									padding: 14,
+								style={{ 
+									justifyContent: 'space-between', 
+									padding: 14, 
+									marginBottom: 48 
 								}}
 							>
 								<TouchableOpacity
 									onPress={() =>
-										props.navigation.navigate('userprofilemodal', { user: comment.username })
+										props.navigation.navigate('UserProfileModal', { user: comment.username })
 									}
 								>
-									<Text style={{ fontWeight: 'bold' }}>{comment.username}</Text>
+									<Text style={{ fontWeight: 'bold', paddingBottom: 12 }}>{comment.username}</Text>
 								</TouchableOpacity>
-								<Text>{comment.description}</Text>
+								<Text style={{ paddingBottom: 12 }}>{comment.description}</Text>
 								{props.isLoggedIn === true ? (
 									<View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
-										<TouchableOpacity style={{ padding: 14 }}>
+										<TouchableOpacity>
 											<FontAwesome name='flag' size={24} color='black' />
 										</TouchableOpacity>
 									</View>
@@ -382,6 +485,25 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
+	mapStyle: {
+		width: Dimensions.get('window').width,
+		height: '95%',
+	},
+	navStyle: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'dodgerblue',
+		width: Dimensions.get('window').width,
+		height: '5%',
+	},
+	navButton: {
+		flexGrow: 1,
+		textAlign: 'center',
+	},
+	body: {
+		width: '85%',
+	},
 	box: {
 		borderWidth: 2,
 		borderColor: '#ddd',
@@ -396,8 +518,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-	let userId = state.authReducer.isLoggedIn === true ? state.authReducer.extra[0].id : -1;
-	// causes issues if you're logged out, logged out users cannot set privacy settings
+	let userId = state.authReducer.isLoggedIn === true ? state.authReducer.user.id : -1;
+	// Causes issues if you're logged out, logged out users cannot set privacy settings
 	return {
 		isLoading: state.storyReducer.isLoading,
 		stories: state.storyReducer.storyList,
@@ -405,13 +527,17 @@ const mapStateToProps = (state) => {
 		isLoggedIn: state.authReducer.isLoggedIn,
 		isPrivacyMode: state.authReducer.isPrivacyMode,
 		userId: userId,
-	};
+		profileImage: state.authReducer.user.profileurl,
+		userBookmarks: state.authReducer.user.user_upvoted_stories,
+		username: state.authReducer.user.username,
+	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		loadStories: () => dispatch(loadStories()),
-	};
+		reloadUser: (username) => dispatch(reloadUser(username)),
+	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(storyScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(StoryScreen);
