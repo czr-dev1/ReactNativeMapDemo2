@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,16 +6,16 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-} from 'react-native';
-import { Card } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native-switch';
-import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons';
-import axios from 'axios';
+} from "react-native";
+import { Card } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { Switch } from "react-native-switch";
+import { connect } from "react-redux";
+import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
 
-import makeStoryPrivate from '../redux/actions/storyActions';
-import colors from '../config/colors';
+import makeStoryPrivate from "../redux/actions/storyActions";
+import colors from "../config/colors";
 
 const Item = ({ item }, props) => {
   const navigation = useNavigation(); //There was a bug that made me have to import this
@@ -25,28 +25,69 @@ const Item = ({ item }, props) => {
   return (
     <TouchableWithoutFeedback
       key={item.id}
-      style={{padding: 12}}
+      style={{ padding: 12 }}
       onPress={() => {
-        navigation.navigate('Story', {
+        navigation.navigate("Story", {
           title: item.title,
           description: item.description,
-          id: item.id
+          id: item.id,
         });
       }}
     >
-      <View style={{padding: 12}}>
-        <View style={{backgroundColor: (item.category === 1 ? colors.personal : (item.category === 2) ? colors.community : colors.historical), borderTopLeftRadius: 30, borderTopRightRadius: 30, height: 15}}></View>
-        <View style={{backgroundColor: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 5}}>
-          <View style={{flexDirection: 'column', flexShrink: 1, padding: 10}}>
-            <Text style={{flexShrink: 1, paddingBottom: 10, fontSize: 16, fontWeight: 'bold'}}>{item.title.toLowerCase()}</Text>
-            <Text style={{color: '#919191'}}>posted on {item.startDatez}</Text>
+      <View style={{ padding: 12 }}>
+        <View
+          style={{
+            backgroundColor:
+              item.category === 1
+                ? colors.personal
+                : item.category === 2
+                ? colors.community
+                : colors.historical,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            height: 15,
+          }}
+        ></View>
+        <View
+          style={{
+            backgroundColor: "white",
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 5,
+          }}
+        >
+          <View style={{ flexDirection: "column", flexShrink: 1, padding: 10 }}>
+            <Text
+              style={{
+                flexShrink: 1,
+                paddingBottom: 10,
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {item.title.toLowerCase()}
+            </Text>
+            <Text style={{ color: "#919191" }}>
+              posted on {item.startDatez}
+            </Text>
           </View>
-          <View style={{padding: 4, borderColor: '#ddd', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: 15}}>
-            <Text style={{color: colors.gray}}>anon</Text>
+          <View
+            style={{
+              padding: 4,
+              borderColor: "#ddd",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 15,
+            }}
+          >
+            <Text style={{ color: colors.gray }}>anon</Text>
             <Switch
               value={temp}
-              activeText={'on'}
-              inActiveText={'off'}
+              activeText={"on"}
+              inActiveText={"off"}
               backgroundActive={colors.purple}
               backgroundInActive={colors.border}
               onValueChange={(value) => {
@@ -54,16 +95,20 @@ const Item = ({ item }, props) => {
                 const config = {
                   headers: {
                     "Content-Type": "application/json",
-                    "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+                    "X-Arqive-Api-Key":
+                      "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
                   },
                 };
                 let data = {
-                  is_anonymous_pin: value
+                  is_anonymous_pin: value,
                 };
-                axios
-                  .patch(`https://globaltraqsdev.com/api/pins/${item.id}/`, data, config)
+                axios.patch(
+                  `https://globaltraqsdev.com/api/pins/${item.id}/`,
+                  data,
+                  config
+                );
               }}
-              />
+            />
           </View>
         </View>
       </View>
@@ -80,49 +125,92 @@ const BookMark = ({ item }) => {
   return (
     <TouchableWithoutFeedback
       key={item.id}
-      style={{padding: 12}}
+      style={{ padding: 12 }}
       onPress={() => {
-        navigation.navigate('Story', {
+        navigation.navigate("Story", {
           title: item.title,
           description: item.description,
-          id: item.pinId
+          id: item.pinId,
         });
       }}
     >
-    <View style={{padding: 12}}>
-      <View style={{backgroundColor: (item.category === 1 ? colors.personal : (item.category === 2) ? colors.community : colors.historical), borderTopLeftRadius: 30, borderTopRightRadius: 30, height: 15}}></View>
-      <View style={{backgroundColor: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 5}}>
-        <View style={{flexDirection: 'column', justifyContent: 'space-between', padding: 10, }}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>{item.title}</Text>
-          <Text style={{fontSize: 12}}>posted on {item.postDate}</Text>
-        </View>
-        <View style={{justifyContent: 'center', alignItems: 'center', padding: 12}}>
-          <FontAwesome name="bookmark" size={24} color={colors.purple} />
+      <View style={{ padding: 12 }}>
+        <View
+          style={{
+            backgroundColor:
+              item.category === 1
+                ? colors.personal
+                : item.category === 2
+                ? colors.community
+                : colors.historical,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            height: 15,
+          }}
+        ></View>
+        <View
+          style={{
+            backgroundColor: "white",
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 5,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "space-between",
+              padding: 10,
+            }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {item.title}
+            </Text>
+            <Text style={{ fontSize: 12 }}>posted on {item.postDate}</Text>
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 12,
+            }}
+          >
+            <FontAwesome name="bookmark" size={24} color={colors.purple} />
+          </View>
         </View>
       </View>
-    </View>
     </TouchableWithoutFeedback>
   );
 };
 
 function StoryList(props) {
-  const renderItem = ({ item, }) => {
-    const backgroundColor = 'gray';
+  const renderItem = ({ item }) => {
+    const backgroundColor = "gray";
     return <ConnectedItem item={item} style={{ backgroundColor }} />;
   };
 
   const renderBookMark = ({ item }) => {
-    const backgroundColor = 'white';
+    const backgroundColor = "white";
     return <BookMark item={item} props={props} style={{ backgroundColor }} />;
   };
 
   const listEmptyComponent = () => {
-      return (
-          <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 20, paddingBottom: '100%'}}>
-              <Text>nothing to show here yet</Text>
-          </View>
-      )
-  }
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: 20,
+          paddingBottom: "100%",
+        }}
+      >
+        <Text>nothing to show here yet</Text>
+      </View>
+    );
+  };
 
   return (
     <View>
@@ -132,38 +220,38 @@ function StoryList(props) {
         style={styles.cardContainer}
         extraData={props}
         renderItem={props.isBookMark ? renderBookMark : renderItem}
-        keyExtractor={(item) => '' + item.id}
+        keyExtractor={(item) => "" + item.id}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-	cardContainer: {
-		width: Dimensions.get('window').width,
-	},
-	switch: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderWidth: 1,
-		borderRadius: 14,
-		borderColor: '#ddd',
-		padding: 4,
-	},
+  cardContainer: {
+    width: Dimensions.get("window").width,
+  },
+  switch: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 14,
+    borderColor: "#ddd",
+    padding: 4,
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
     isLoading: state.storyReducer.isLoading,
-    error: state.storyReducer.error
-  }
-}
+    error: state.storyReducer.error,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    makeStoryPrivate: (id) => dispatch(makeStoryPrivate(id))
-  }
-}
+    makeStoryPrivate: (id) => dispatch(makeStoryPrivate(id)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoryList);

@@ -1,14 +1,14 @@
 const initialState = {
-	message: '',
+  message: "",
 };
 
 export default message = (state = initialState, action) => {
-	switch (action.type) {
-		case 'CREATE_MESSAGE':
-			return Object.assign({}, state, {
-				message: action.payload
-			});
-		default:
-			return state;
-	}
-}
+  switch (action.type) {
+    case "CREATE_MESSAGE":
+      return Object.assign({}, state, {
+        message: action.payload,
+      });
+    default:
+      return state;
+  }
+};
