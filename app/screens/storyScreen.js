@@ -53,6 +53,8 @@ function storyScreen(props) {
     getProfile();
   }, []);
 
+
+  // credits to https://stackoverflow.com/questions/44195322/a-plain-javascript-way-to-decode-html-entities-works-on-both-browsers-and-node
   const decodeEntities = (encodedString) => {
     var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
     var translate = {
@@ -78,6 +80,11 @@ function storyScreen(props) {
     };
 
     let tempStory = props.stories.filter(i => i.id === id);
+    let regexOut = /(<([^>]+)>)/ig;
+    let descModOut = tempStory[0].description.replace(regexOut, "");
+    descModOut = decodeEntities(descModOut);
+    tempStory[0].description = descModOut;
+
 
     // this will get over written once the axios call is completed
     // without it theres a crash
@@ -87,10 +94,12 @@ function storyScreen(props) {
     axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
       .then((res) => {
         console.log(res.data);
+        // credit to https://stackoverflow.com/questions/48826533/how-to-filter-out-html-tags-from-array-and-replace-with-nothing
         let regex = /(<([^>]+)>)/ig;
         let descMod = res.data.description.replace(regex, "");
         descMod = decodeEntities(descMod);
-        console.log(descMod);
+        //console.log(descMod);
+        //let descMod = `<div>${res.data.description}</div>`
         res.data.description = descMod;
         setStory(res.data);
         setComments(res.data.commentstory);
