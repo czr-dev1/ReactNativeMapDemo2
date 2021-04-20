@@ -7,7 +7,7 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
-	TouchableWitoutFeedback,
+	TouchableWithoutFeedback,
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,6 +21,7 @@ import colors from '../config/colors';
 function ContactUsModal(props) {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+	const [showModal, setShowModal] = useState(true);
 
   const onSubmit = (e) => {
     if (email !== "") {
@@ -67,14 +68,18 @@ function ContactUsModal(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{width: '100%'}}>
+      <ScrollView style={{width: '100%', }}>
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+					<TouchableWithoutFeedback onPress={() => {
+						props.navigation.goBack();
+					}}>
+						<Text>Temp</Text>
+					</TouchableWithoutFeedback>
           <Text style={{fontSize: 18, paddingTop: 24, paddingBottom: 72, color: colors.white, fontWeight: 'bold'}}>contact us</Text>
         </View>
-				<Modal
-					isVisible={true}
-					hasBackdrop={false}
-					style={{justifyContent: 'flex-end', margin: 0, height: '100%'}}
+
+				<View
+					style={{justifyContent: 'flex-end', margin: 0,}}
 					>
 	        <View style={styles.box}>
 	          <Text style={{fontSize: 22, paddingTop: 12, color: colors.purple, fontWeight: 'bold'}}>what's on your mind?</Text>
@@ -89,24 +94,8 @@ function ContactUsModal(props) {
 	            multiline
 	            placeholder='message'/ >
 	        </View>
-				</Modal>
+				</View>
       </ScrollView>
-
-
-      <View style={{flexDirection: 'column', flex: 1, width: '80%'}}>
-        <TouchableOpacity style={{alignSelf: 'flex-start', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}>
-          <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{alignSelf: 'flex-end', position: 'absolute', bottom: 35, borderRadius: 5, borderColor: '#ddd', borderWidth: 2}}
-          onPress={(e) => {
-            onSubmit(e);
-          }}>
-          <Text style={{paddingTop: 9, paddingBottom: 9, paddingLeft: 18, paddingRight: 18, color: '#919191'}}>send</Text>
-        </TouchableOpacity>
-      </View>
-
-
     </SafeAreaView>
   );
 }
@@ -116,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.purple,
     alignItems: 'center',
-    height: '100%',
+    height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
   box: {
