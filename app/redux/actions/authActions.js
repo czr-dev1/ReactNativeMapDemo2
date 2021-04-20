@@ -204,3 +204,9 @@ export const unfollowUser = ({ list, id, unfollowing }) => {
 		});
 	}
 }
+
+export const reset = () => {
+	return (dispatch) => {
+		dispatch({ type: 'RESET_STATE' });
+	};
+}

@@ -103,6 +103,24 @@ export default auth = (state = initialState, action) => {
 				followingList: action.payload,
 			})
 			break;
+		case 'RESET_STATE':
+			console.log('resetting now');
+			return Object.assign({}, state, {
+				token: '',
+				isAuthenticated: null,
+				isLoggedIn: false,
+				isPrivacyMode: false,
+				isLoading: false,
+				loginFail: false,
+				registerFail: false,
+				guest_user: true,
+				user: '',
+				users: [],
+				username: '',
+				expoPushToken: '',
+				followingList: [],
+				notificationList: [],
+			});
 		default:
 			return state;
 	}

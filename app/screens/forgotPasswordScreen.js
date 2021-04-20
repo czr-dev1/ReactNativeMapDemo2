@@ -70,54 +70,62 @@ function ForgotPasswordScreen() {
 
   return (
 		<SafeAreaView style={styles.container}>
-			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
-			<Text style={styles.title}>forgot password</Text>
-
-			<Text
-				style={{
-					fontSize: 16,
-					marginTop: 95,
-					color: colors.gray,
-				}}
-			>
-				please intput your e-mail:
-			</Text>
-			<TextInput
-				style={styles.input}
-				value={email}
-				autoCapitalize='none'
-				autoCorrect={false}
-				onBlur={validateEmail}
-				onChangeText={(val) => setEmail(val)}
-			/>
-
-			<View style={styles.submitBtn}>
-				<TouchableOpacity
-					onPress={() => {
-						sendResetLink();
-					}}
-				>
-					<Text
-						style={{
-							color: 'white',
-							alignSelf: 'center',
-							fontFamily: 'Arial',
-							fontSize: 24,
-						}}
-					>
-						forgot password
-					</Text>
-				</TouchableOpacity>
+			<View style={styles.logo}>
+				<Image 
+					style={{ height: 100, width: 100 }} 
+					source={require('../assets/color_icon.png')} 
+				/>
+				<Text style={styles.title}>forgot password</Text>
 			</View>
 
-			<View>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Map');
-					}}
-				>
-					<Text style={styles.text}> continue </Text>
-				</TouchableOpacity>
+			<View style={styles.inputContainer}>
+				<Text 
+					style={{
+						fontFamily: 'Arial',
+						fontSize: 16,
+						color: '#B6ADCC'
+					}}>
+					please intput your e-mail:
+				</Text>
+				<TextInput
+					style={styles.input}
+					value={email}
+					autoCapitalize='none'
+					autoCorrect={false}
+					onBlur={validateEmail}
+					onChangeText={(val) => setEmail(val)}
+				/>
+			</View>
+
+			<View style={styles.bottomContainer}>
+				<View style={styles.submitBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							sendResetLink();
+						}}
+					>
+						<Text
+							style={{
+								color: 'white',
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							forgot password
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				<View>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Map');
+						}}
+					>
+						<Text style={styles.text}> continue </Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</SafeAreaView>
 	);
@@ -131,40 +139,56 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
-		marginTop: 20,
-		marginBottom: 10,
-		height: 100,
-		width: 100,
+		flex: 0.5,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		alignContent: 'center',
+		marginTop: 10,
+		width: '100%',
 	},
 	title: {
 		fontFamily: 'Arial',
 		fontSize: 24,
-		color: '#4D4185',
-		marginBottom: 30,
+		color: colors.purple,
+	},
+	inputContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%'
 	},
 	input: {
-		color: colors.border,
-		paddingLeft: 15,
 		borderWidth: 2,
 		borderColor: colors.border,
+		fontFamily: 'Arial',
+		fontSize: 16,
+		color: colors.border,
+		paddingLeft: 15,
 		marginTop: 10,
-		marginBottom: 10,
-		width: '80%',
+		paddingLeft: 15,
 		height: 50,
+		width: '80%',
 	},
-	text: {
-		fontSize: 14,
-		color: '#008BBC',
-		marginTop: 260,
+	bottomContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignContent: 'flex-start',
+		alignItems: 'center',
+		width: '100%'
 	},
 	submitBtn: {
 		backgroundColor: '#4D4185',
 		justifyContent: 'center',
 		borderRadius: 15,
-		marginTop: 50,
-		marginBottom: 60,
-		width: '80%',
 		height: 60,
+		width: '80%',
+	},
+	text: {
+		fontSize: 14,
+		color: '#008BBC',
 	},
 });
 

@@ -21,12 +21,12 @@ function LoginRegisterOption() {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	/*useEffect(() => {
 		registerForPushNotificationsAsync()
 		.then((token) => {
 			dispatch(setExpoPushToken(token));
 		});
-	}, []);
+	}, []);*/
 
 	async function registerForPushNotificationsAsync() {
 		let token;
@@ -52,52 +52,62 @@ function LoginRegisterOption() {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/white_color_logo_highres.png')} />
-			<View style={styles.loginBtn}>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Login');
-					}}
-				>
-					<Text
-						style={{
-							color: 'white',
-							alignSelf: 'center',
-							fontFamily: 'Arial',
-							fontSize: 24,
+			<View style={styles.logo}>
+				<Image 
+					style={{ height: 200, width: 400 }} 
+					source={require('../assets/white_color_logo_highres.png')} />
+			</View>
+
+			<View style={styles.loginContainer}>
+				<View style={styles.loginBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Login');
 						}}
 					>
-						log in
-					</Text>
-				</TouchableOpacity>
+						<Text
+							style={{
+								color: 'white',
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							log in
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
-			<View style={styles.registerBtn}>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Register');
-					}}
-				>
-					<Text
-						style={{
-							color: 'white',
-							alignSelf: 'center',
-							fontFamily: 'Arial',
-							fontSize: 24,
+
+			<View style={styles.registerContainer}>
+				<View style={styles.registerBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Register');
 						}}
 					>
-						register
-					</Text>
-				</TouchableOpacity>
+						<Text 
+							style={{
+								color: 'white',
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							register
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<View>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Map');
+						}}
+					>
+						<Text style={styles.text}> continue </Text>
+					</TouchableOpacity>
 			</View>
-			<View>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Map');
-					}}
-				>
-					<Text style={styles.text}> continue </Text>
-				</TouchableOpacity>
-			</View>
+		</View>
 		</SafeAreaView>
 	);
 }
@@ -110,33 +120,42 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
-		marginTop: 200,
-		marginBottom: 50,
+		flex: 1.5,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
 		width: '90%',
-		height: 100,
+	},
+	loginContainer: {
+		flex: 0.5,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		width: '100%',
+	},
+	loginBtn: {
+		backgroundColor: '#4D4185',
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginBottom: 10,
+		height: 60,
+		width: '80%',
+	},
+	registerContainer: {
+		flex: 1,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		width: '100%',
+	},
+	registerBtn: {
+		backgroundColor: '#4D4185',
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginTop: 10,
+		height: 60,
+		width: '80%',
 	},
 	text: {
 		fontSize: 14,
 		color: '#008BBC',
-	},
-	loginBtn: {
-		backgroundColor: colors.purple,
-		justifyContent: 'center',
-		marginTop: 75,
-		padding: 10,
-		borderRadius: 15,
-		width: '80%',
-		height: 60,
-	},
-	registerBtn: {
-		backgroundColor: colors.purple,
-		justifyContent: 'center',
-		marginTop: 30,
-		marginBottom: 200,
-		padding: 10,
-		borderRadius: 15,
-		width: '80%',
-		height: 60,
 	},
 });
 
