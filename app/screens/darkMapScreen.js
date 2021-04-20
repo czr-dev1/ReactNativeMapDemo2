@@ -286,7 +286,7 @@ function LightMapScreen(props) {
 								activeOpacity={0.5}
 								//onPress={() => Alert.alert("Cannot press this one")}
 							>
-								<Text style={styles.TextStyle}> random </Text>
+								<Text style={styles.TextStyle}> all </Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity
