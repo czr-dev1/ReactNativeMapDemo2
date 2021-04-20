@@ -26,11 +26,11 @@ function BookmarkedPostsScreen(props) {
 
     switch (selectedButton){
       case 1:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "1")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === 1)} />
       case 2:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "2")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === 2)} />
       case 3:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "3")} />
+        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === 3)} />
       default:
         return <StoryList isBookMark={true} stories={props.stories} />
       }
@@ -50,7 +50,13 @@ function BookmarkedPostsScreen(props) {
     //username can be changed if you want
     axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
-      setData(res.data[0])
+      const filteredVals = res.data[0].filter((bookmark) => {
+        return props.allStories.forEach((story) => {
+          return story.id === bookmark.pinId;
+        });
+      });
+      console.log("filtered:", filteredVals);
+      setData(filteredVals);
     }).catch((err) => {
       console.log(err);
     })
@@ -147,11 +153,23 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+  let filteredVals = [];
+  state.authReducer.user.user_upvoted_stories.forEach((bookmark, i) => {
+    state.storyReducer.storyList.some((story) => {
+      if (bookmark.pinId === story.id) {
+        story.pinId = story.id
+        filteredVals.push(story);
+      }
+      return bookmark.pinId === story.id
+    });
+  });
+
   return {
     isLoading: state.storyReducer.isLoading,
     error: state.storyReducer.error,
     user: state.authReducer.user.username,
-    stories: state.authReducer.user.user_upvoted_stories,
+    stories: filteredVals,
+    allStories: state.storyReducer.storyList,
   }
 }
 
