@@ -54,12 +54,13 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
   return (
     <SafeAreaProvider>
       {/* Added StatusBar for iOS to see time/battery on each
       page except where page has a black background */}
       <StatusBar
-        barStyle='dark-content'
+        barStyle={(Platform.OS === "android" ? "light-content" : "dark-content")}
       />
       <Provider store={store}>
         <Navigation />
