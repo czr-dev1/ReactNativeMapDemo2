@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
+import { StatusBar, StyleSheet } from 'react-native';
 
 import Navigation from "./app/routing/index";
 
@@ -55,6 +56,11 @@ export default function App() {
   }, []);
   return (
     <SafeAreaProvider>
+      {/* Added StatusBar for iOS to see time/battery on each
+      page except where page has a black background */}
+      <StatusBar
+        barStyle='dark-content'
+      />
       <Provider store={store}>
         <Navigation />
       </Provider>

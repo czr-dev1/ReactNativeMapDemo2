@@ -180,6 +180,7 @@ export const userSelfDelete = () => {
   };
 };
 
+// CHANGES PRIVACY
 export const setPrivacyMode = (setting) => {
   return (dispatch) => {
     dispatch({ type: "SET_PRIVACY_MODE", isPrivacyMode: setting });

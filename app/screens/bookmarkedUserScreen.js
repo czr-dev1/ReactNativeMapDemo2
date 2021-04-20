@@ -30,7 +30,6 @@ import StoryList from "../components/storyList";
 function BookmarkUserScreen(props) {
   const navigation = useNavigation();
 
-  const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -42,7 +41,7 @@ function BookmarkUserScreen(props) {
   const getUsers = async () => {
     const config = {
       headers: {
-        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+        'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
       },
     };
 
@@ -71,7 +70,7 @@ function BookmarkUserScreen(props) {
   };
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator style={{ marginTop: 330 }} />;
   } else {
     return (
       <View style={{ backgroundColor: colors.background, height: "100%" }}>
