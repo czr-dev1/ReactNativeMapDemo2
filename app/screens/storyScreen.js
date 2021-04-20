@@ -48,6 +48,7 @@ function storyScreen(props) {
     }]);
 
   useEffect(() => {
+    console.log("Story Screen: ", id);
     getStory();
     getProfile();
   }, []);
@@ -68,6 +69,7 @@ function storyScreen(props) {
 
     axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
       .then((res) => {
+        console.log(res.data);
         setStory(res.data);
         setComments(res.data.commentstory);
       }).catch((err) => {

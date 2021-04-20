@@ -21,8 +21,6 @@ const Item = ({ item }, props) => {
   //if not imported and used it will just crash
   //keep that in mind if props.navigation.navigate is not working
   const [temp, setTemp] = useState(false);
-  console.log(item);
-  console.log(props);
   return (
     <TouchableWithoutFeedback
       key={item.id}
@@ -62,7 +60,7 @@ const BookMark = ({ item }) => {
   const navigation = useNavigation(); //There was a bug that made me have to import this
   //if not imported and used it will just crash
   //keep that in mind if props.navigation.navigate is not working
-  console.log(item);
+  // For those in the future, note pinId != id in this case, it was the source of many a headache
   return (
     <TouchableWithoutFeedback
       key={item.id}
@@ -71,7 +69,7 @@ const BookMark = ({ item }) => {
         navigation.navigate('Story', {
           title: item.title,
           description: item.description,
-          id: item.id
+          id: item.pinId
         });
       }}
     >

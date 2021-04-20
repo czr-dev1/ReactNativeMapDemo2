@@ -20,8 +20,6 @@ function BookmarkedPostsScreen(props) {
   const [data, setData] = useState([])
 
   const renderStoriesByType = () => {
-    console.log(props.stories);
-    console.log(props);
     if (props.stories === undefined) {
       return <StoryList isBookMark={true} stories={props.stories} />
     }
@@ -39,8 +37,6 @@ function BookmarkedPostsScreen(props) {
   }
 
   useEffect(() => {
-    console.log('-----------------------------------------------------------s');
-    console.log(props.user);
     props.reloadUser(props.user);
   }, []);
 
@@ -54,7 +50,6 @@ function BookmarkedPostsScreen(props) {
     //username can be changed if you want
     axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
-      console.log(res.data);
       setData(res.data[0])
     }).catch((err) => {
       console.log(err);
