@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "MapDemo",
-    "slug": "MapDemo",
+    "name": "Thearqive",
+    "slug": "Thearqive",
+    "privacy": "unlisted",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/color_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -14,10 +15,29 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*",
+      "./app/assets/pinImages/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.Thearqive",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
+    },
+    "android": {
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.Thearqive.mobile",
+      "useNextNotificationsApi": true,
+      "versionCode": 5,
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"
+        }
+      }
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
