@@ -219,11 +219,11 @@ function LoginScreen(props) {
 				</View>
 
 				<View style={styles.links}>
-					<Text
-						style={{
-							color: 'gray',
-						}}
-					>
+					<Text style={{
+						fontFamily: 'Arial',
+						fontSize: 12,
+						color: colors.forgotDetails,
+					}}>
 						{/* Put into brackets b/c of apostrophe */}
 						{`don't have an account? register `}
 					</Text>
@@ -234,8 +234,10 @@ function LoginScreen(props) {
 					>
 						<Text
 							style={{
+								fontFamily: 'Arial',
+								fontSize: 12,
 								fontWeight: 'bold',
-								color: '#4D4185',
+								color: colors.forgotDetails
 							}}
 						>
 							here

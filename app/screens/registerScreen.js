@@ -317,7 +317,7 @@ function RegisterScreen(props) {
 				</View>
 
 				<View style={styles.links}>
-					<Text style={{ color: 'gray' }}>
+					<Text style={styles.forgotDetails}>
 						already have an account? log in{' '} 
 					</Text>
 					<TouchableOpacity
@@ -327,8 +327,10 @@ function RegisterScreen(props) {
 					>
 						<Text 
 							style={{ 
-								fontWeight: 'bold', 
-								color: '#4D4185' 
+								fontFamily: 'Arial',
+								fontSize: 12,
+								fontWeight: 'bold',
+								color: colors.forgotDetails,
 							}}
 						>
 							here
@@ -412,9 +414,7 @@ const styles = StyleSheet.create({
 	forgotDetails: {
 		fontFamily: 'Arial',
 		fontSize: 12,
-		color: colors.forgotDetails,
-		marginTop: 10,
-		marginLeft: 90,
+		color: colors.forgotDetails
 	},
 	text: {
 		fontSize: 14,
