@@ -20,7 +20,7 @@ function ProfileHeader(props) {
 				</Text>
 			</View>
 		</View>
-	);
+	); 
 }
 
 const mapStateToProps = (state) => {
