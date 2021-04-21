@@ -21,12 +21,12 @@ function LoginRegisterOption() {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 
-	/*useEffect(() => {
+	useEffect(() => {
 		registerForPushNotificationsAsync()
 		.then((token) => {
 			dispatch(setExpoPushToken(token));
 		});
-	}, []);*/
+	}, []);
 
 	async function registerForPushNotificationsAsync() {
 		let token;
