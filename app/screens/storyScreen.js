@@ -24,6 +24,8 @@ import { WebView } from "react-native-webview";
 
 import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/authActions";
+import { followUser, unfollowUser } from "../redux/actions/authActions";
+
 import colors from "../config/colors";
 const PROFILE_PIC = require("../assets/profile_blank.png");
 
@@ -118,6 +120,17 @@ function storyScreen(props) {
       }
     }
     */
+  };
+
+  const follow = () => {
+    let list = props.followingList;
+    list.push(data.id);
+    list = {
+      list: list,
+      id: props.userId,
+    };
+    console.log("fp: ", list);
+    props.followUser(list);
   };
 
   const getProfile = async () => {
@@ -250,7 +263,7 @@ function storyScreen(props) {
         style={{ justifyContent: "flex-end", margin: 0 }}
       >
         <View
-          style={{ backgroundColor: "white", borderRadius: 10, padding: 14 }}
+          style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}
         >
           <View>
             <RadioButtonRN
@@ -299,9 +312,24 @@ function storyScreen(props) {
         style={{ justifyContent: "flex-end", margin: 0 }}
       >
         <View
-          style={{ backgroundColor: "white", borderRadius: 10, padding: 14 }}
+          style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}
         >
           <View>
+            {
+              story.is_anonymous_pin ?
+              null
+              :
+              <TouchableOpacity
+                style={{ flexDirection: "row", padding: 18 }}
+                onPress={() => {
+                  setShowOptionsModal(false);
+                  bookmark();
+                }}
+              >
+                <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
+                <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
+              </TouchableOpacity>
+             }
             <TouchableOpacity
               style={{ flexDirection: "row", padding: 18 }}
               onPress={() => {
@@ -312,10 +340,10 @@ function storyScreen(props) {
               <FontAwesome
                 name="bookmark"
                 size={24}
-                color="black"
+                color={ colors.purple }
                 style={{ paddingRight: 14 }}
               />
-              <Text style={{ fontSize: 18 }}>bookmark post</Text>
+              <Text style={{ fontSize: 18, color: colors.purple }}>bookmark post</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ flexDirection: "row", padding: 18 }}
@@ -327,10 +355,10 @@ function storyScreen(props) {
               <FontAwesome
                 name="flag"
                 size={24}
-                color="black"
+                color={ colors.purple }
                 style={{ paddingRight: 14 }}
               />
-              <Text style={{ fontSize: 18 }}>flag post</Text>
+              <Text style={{ fontSize: 18, color: colors.purple }}>flag post</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -392,7 +420,7 @@ function storyScreen(props) {
                   style={{
                     paddingLeft: 5,
                     marginBottom: 12,
-                    color: "#787878",
+                    color: colors.black,
                     fontSize: 18,
                     fontWeight: "bold",
                   }}
@@ -405,7 +433,7 @@ function storyScreen(props) {
               <FontAwesome5
                 name="ellipsis-v"
                 size={24}
-                color="black"
+                color={colors.purple}
                 onPress={() => setShowOptionsModal(true)}
               />
             ) : null}
@@ -413,7 +441,7 @@ function storyScreen(props) {
           <View style={{ paddingLeft: "5%" }}>
             <Text
               style={{
-                color: "#787878",
+                color: colors.black,
                 fontWeight: "bold",
                 fontSize: 24,
                 marginBottom: 12,
@@ -422,7 +450,7 @@ function storyScreen(props) {
               {story.title}
             </Text>
             {story.address === "" ? null : (
-              <Text style={{ color: "#787878", fontWeight: "bold" }}>
+              <Text style={{ color: colors.black,  }}>
                 {story.address}
               </Text>
             )}
@@ -434,22 +462,18 @@ function storyScreen(props) {
               }}
             >
               {story.locality === "" ? null : (
-                <Text style={{ color: "#787878", fontWeight: "bold" }}>
-                  {story.locality},{" "}
+                <Text style={{ color: colors.black }}>
+                  {story.locality}{" "}
                 </Text>
               )}
               {story.region === "" ? null : (
-                <Text style={{ color: "#787878", fontWeight: "bold" }}>
+                <Text style={{ color: colors.black }}>
                   {story.region}
                 </Text>
               )}
             </View>
             <Text style={{ paddingBottom: 5, marginBottom: 12 }}>
-              {story.startDate === null
-                ? story.postDate
-                : story.endDate === null
-                ? story.startDate
-                : story.startDate + " - " + story.endDate}
+              posted on {story.postDate}
             </Text>
             <Text style={{ marginBottom: 12 }}>{story.description}</Text>
           </View>
@@ -514,30 +538,32 @@ function storyScreen(props) {
                   marginBottom: 48,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() =>
-                    props.navigation.navigate("userprofilemodal", {
-                      user: comment.username,
-                    })
-                  }
-                >
-                  <Text style={{ fontWeight: "bold", paddingBottom: 12 }}>
-                    {comment.username}
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ paddingBottom: 12 }}>{comment.description}</Text>
-                {props.isLoggedIn === true ? (
-                  <View
-                    style={{
-                      flexDirection: "row-reverse",
-                      alignItems: "center",
-                    }}
+                <View style={{justifyContent: "space-between", flexDirection: "row"}}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate("userprofilemodal", {
+                        user: comment.username,
+                      })
+                    }
                   >
-                    <TouchableOpacity>
-                      <FontAwesome name="flag" size={24} color="black" />
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
+                    <Text style={{ fontWeight: "bold", paddingBottom: 12 }}>
+                      {comment.username}
+                    </Text>
+                  </TouchableOpacity>
+                  {props.isLoggedIn === true ? (
+                    <View
+                      style={{
+                        flexDirection: "row-reverse",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TouchableOpacity>
+                        <FontAwesome5 name="ellipsis-v" size={24} color={colors.purple} />
+                      </TouchableOpacity>
+                    </View>
+                  ) : null}
+                </View>
+                <Text style={{ paddingBottom: 12 }}>{comment.description}</Text>
               </View>
             );
           })}
@@ -611,6 +637,7 @@ const mapStateToProps = (state) => {
     userId: userId,
     profileImage: state.authReducer.user.profileurl,
     userBookmarks: state.authReducer.user.user_upvoted_stories,
+    followingList: state.authReducer.followingList,
     username: state.authReducer.user.username,
   };
 };
@@ -619,6 +646,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadStories: () => dispatch(loadStories()),
     reloadUser: (username) => dispatch(reloadUser(username)),
+    followUser: (item) => dispatch(followUser(item)),
   };
 };
 
