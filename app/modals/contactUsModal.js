@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  BackHandler,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -13,7 +14,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 import colors from "../config/colors";
@@ -22,6 +23,15 @@ function ContactUsModal(props) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [showModal, setShowModal] = useState(true);
+
+  useEffect(() => {
+    const backAction = () => {
+      props.navigation.goBack();
+    }
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [])
 
   const onSubmit = (e) => {
     if (email !== "") {
@@ -39,6 +49,7 @@ function ContactUsModal(props) {
         .then((response) => {
           setEmail("");
           setMessage("");
+          props.navigation.goBack();
         })
         .catch((err) => {
           console.log(err);
@@ -63,6 +74,7 @@ function ContactUsModal(props) {
         .then((response) => {
           setEmail("");
           setMessage("");
+          props.navigation.goBack();
         })
         .catch((err) => {
           console.log(err);
@@ -76,31 +88,40 @@ function ContactUsModal(props) {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
+            width: "100%",
+            paddingBottom: "25%"
           }}
         >
-          <TouchableWithoutFeedback
+          <Entypo
             onPress={() => {
               props.navigation.goBack();
             }}
-          >
-            <Text>Temp</Text>
-          </TouchableWithoutFeedback>
+            style={{ padding: 24 }}
+            name="cross"
+            size={28}
+            color={colors.white}
+          />
           <Text
             style={{
               fontSize: 18,
-              paddingTop: 24,
-              paddingBottom: 72,
               color: colors.white,
               fontWeight: "bold",
             }}
           >
             contact us
           </Text>
+          <TouchableWithoutFeedback
+            onPress={(e) => {
+              onSubmit(e);
+            }}
+          >
+            <Text style={{color: colors.white, padding: 24}}>done</Text>
+          </TouchableWithoutFeedback>
         </View>
 
-        <View style={{ justifyContent: "flex-end", margin: 0 }}>
+        <View style={{ margin: 0,}}>
           <View style={styles.box}>
             <Text
               style={{
@@ -135,8 +156,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   box: {
-    borderWidth: 2,
-    borderColor: "#ddd",
     backgroundColor: colors.white,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -145,6 +164,7 @@ const styles = StyleSheet.create({
     paddingRight: 32,
     paddingLeft: 32,
     alignItems: "center",
+    height: Dimensions.get("window").height * .8,
   },
   input: {
     borderBottomWidth: 1,
