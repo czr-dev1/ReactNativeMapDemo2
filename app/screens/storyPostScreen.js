@@ -97,7 +97,7 @@ function StoryPostScreen(props) {
     setStartDate(new Date());
     setTitle("");
 
-    props.navigation.navigate("Maps");
+    props.navigation.navigate('Map');
   }
 
   const submitNewStory = async () => {
@@ -157,7 +157,7 @@ function StoryPostScreen(props) {
         setTitle("");
 
         props.loadStories();
-        props.navigation.navigate('Maps')
+        props.navigation.navigate('Map');
       })
       .catch((err) => {
         console.log(err);
@@ -170,7 +170,7 @@ function StoryPostScreen(props) {
       <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%'}}>
         <Entypo
           onPress={() => {
-            props.navigation.goBack();
+            goBack();
           }}
           style={{ padding: 24 }}
           name="cross"
