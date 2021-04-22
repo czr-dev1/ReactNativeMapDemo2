@@ -320,7 +320,7 @@ function storyScreen(props) {
               null
               :
               <TouchableOpacity
-                style={{ flexDirection: "row", padding: 18 }}
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border}}
                 onPress={() => {
                   setShowOptionsModal(false);
                   bookmark();
@@ -331,7 +331,7 @@ function storyScreen(props) {
               </TouchableOpacity>
              }
             <TouchableOpacity
-              style={{ flexDirection: "row", padding: 18 }}
+              style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border}}
               onPress={() => {
                 setShowOptionsModal(false);
                 bookmark();
@@ -382,8 +382,8 @@ function storyScreen(props) {
         >
           <View
             style={{
-              backgroundColor: "white",
-              paddingTop: "20%",
+              backgroundColor: colors.white,
+              paddingTop: "10%",
               borderTopLeftRadius: 300,
               borderTopRightRadius: 300,
             }}
@@ -487,46 +487,8 @@ function storyScreen(props) {
             backgroundColor: "white",
           }}
         >
-          {props.isLoggedIn === true ? (
-            <View>
-              <TextInput
-                style={styles.box}
-                multiline
-                placeholder="enter comment"
-                defaultValue={userComment}
-                onChangeText={(val) => {
-                  setUserComment(val);
-                }}
-              />
-              <View style={{ flexDirection: "row-reverse", padding: 14 }}>
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 5,
-                    borderColor: "#ddd",
-                    borderWidth: 2,
-                    width: "auto",
-                  }}
-                  onPress={() => {
-                    comment();
-                  }}
-                >
-                  <Text
-                    style={{
-                      paddingTop: 9,
-                      paddingBottom: 9,
-                      paddingLeft: 18,
-                      paddingRight: 18,
-                      color: "#919191",
-                    }}
-                  >
-                    comment
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : (
-            <View style={{ padding: 18 }}></View>
-          )}
+
+          <View style={{ padding: 18 }}></View>
 
           {comments.map((comment, i) => {
             return (
@@ -569,6 +531,39 @@ function storyScreen(props) {
           })}
         </View>
       </ScrollView>
+
+      <View style={{ flexDirection: "column", flex: 1, width: '100%'}}>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: '100%',
+            borderColor: colors.border,
+        }}>
+          <View style={{flexDirection: 'row', backgroundColor: colors.background}}>
+
+          <TextInput
+            style={styles.box}
+            multiline
+            placeholder="comment"
+            placeholderTextColor={colors.purple}
+            defaultValue={userComment}
+            onChangeText={(val) => {
+              setUserComment(val);
+            }}
+          />
+          <TouchableOpacity style={{alignItems:"center", justifyContent: "center"}}
+          onPress={() => {
+            comment();
+          }}>
+            <FontAwesome name="send" size={24} color={colors.purple} />
+          </TouchableOpacity>
+          </View>
+        </View>
+        <TouchableOpacity>
+
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -600,14 +595,9 @@ const styles = StyleSheet.create({
     width: "85%",
   },
   box: {
-    borderWidth: 2,
-    borderColor: "#ddd",
-    borderRadius: 14,
-    paddingTop: 18,
-    paddingBottom: 18,
-    paddingRight: 32,
-    paddingLeft: 32,
-    margin: 6,
+    width: '90%',
+    fontSize: 18,
+    padding: 12,
     alignItems: "center",
   },
   profileImageContainer: {
