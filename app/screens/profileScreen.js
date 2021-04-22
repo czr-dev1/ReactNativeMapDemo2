@@ -19,6 +19,7 @@ import { connect, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { loadStories } from "../redux/actions/storyActions";
 import { userSelfDelete } from "../redux/actions/authActions";
+import axios from 'axios';
 
 //Icons
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -36,6 +37,7 @@ import StoryList from "../components/storyList";
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [tempStories, setTempStories] = useState([]);
+  const [privacy, setprivacy] = useState(props.is_profile_private);
   const insets = useSafeAreaInsets();
 
   const renderStoriesByType = () => {
@@ -96,15 +98,40 @@ function ProfileScreen(props) {
         <View style={styles.profileBar}>
           <View
             style={{
-              flexDirection: "row-reverse",
+              flexDirection: "row",
               width: "100%",
               marginBottom: "-15%",
               marginTop: "10%",
             }}
           >
-            <TouchableWithoutFeedback>
-              <Feather name="target" size={48} color={colors.white} />
-            </TouchableWithoutFeedback>
+            <View style={{alignItems: "center", justifyContent: "center"}}>
+              <Text style={{color: colors.gray}}>anon</Text>
+              <Switch
+                value={privacy}
+                onValueChange={(val) => {
+                  const config = {
+                    headers: {
+                      "Content-Type": "application/json",
+                      "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+                    },
+                  };
+                  let data = {
+                    is_profile_private: privacy,
+                  };
+                  axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
+                    .then((res) => {
+                      setprivacy(val);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+                activeText={"on"}
+                inActiveText={"off"}
+                backgroundActive={colors.purple}
+                backgroundInActive={colors.border}
+              />
+            </View>
           </View>
           <View style={styles.profileImageContainer}>
             <Image
@@ -283,6 +310,8 @@ const mapStateToProps = (state) => {
     user: state.authReducer.username,
     bio: state.authReducer.user.bio,
     profileImage: state.authReducer.user.profileurl,
+    is_profile_private: state.authReducer.user.is_profile_private,
+    id: state.authReducer.user.id,
   };
 };
 
