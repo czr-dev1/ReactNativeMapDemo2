@@ -14,6 +14,7 @@ import {
   Button,
   Image,
   ImageBackground,
+  Clipboard,
 } from "react-native";
 import MapView from "react-native-map-clustering";
 import { connect } from "react-redux";
@@ -22,6 +23,7 @@ import axios from "axios";
 import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
 import { WebView } from "react-native-webview";
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/authActions";
@@ -405,12 +407,18 @@ function storyScreen(props) {
         >
           <View
             style={{
-              backgroundColor: colors.white,
+              backgroundColor:
+                story.category === 1
+                  ? "#e01784"
+                  : story.category == 2
+                  ? "#00ce7d"
+                  : "#248dc1",
               paddingTop: "10%",
               borderTopLeftRadius: 300,
               borderTopRightRadius: 300,
             }}
-          ></View>
+          >
+          </View>
         </View>
 
         <View
@@ -498,7 +506,8 @@ function storyScreen(props) {
             <Text style={{ paddingBottom: 5, marginBottom: 12 }}>
               posted on {story.postDate}
             </Text>
-            <Text style={{ marginBottom: 12 }}>{story.description}</Text>
+            <Text style={{ marginBottom: 12 }} selectable={true}
+              selectionColor={colors.border}>{story.description}</Text>
           </View>
         </View>
 
@@ -548,7 +557,7 @@ function storyScreen(props) {
                     </View>
                   ) : null}
                 </View>
-                <Text style={{ paddingBottom: 12 }}>{comment.description}</Text>
+                <Text style={{ paddingBottom: 12 }} onLongPress={() => Clipboard.setString(comment.description)}>{comment.description}</Text>
               </View>
             );
           })}
