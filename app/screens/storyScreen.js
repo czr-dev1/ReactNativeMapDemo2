@@ -13,6 +13,7 @@ import {
   ScrollView,
   Button,
   Image,
+  ImageBackground,
 } from "react-native";
 import MapView from "react-native-map-clustering";
 import { connect } from "react-redux";
@@ -40,6 +41,7 @@ function storyScreen(props) {
   const [flagReason, setFlagReason] = useState("");
   const [flagType, setFlagType] = useState(1);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [imageLink, setImageLink] = useState("");
   const [comments, setComments] = useState([
     {
       commenter: 0,
@@ -77,6 +79,26 @@ function storyScreen(props) {
       });
   };
 
+  const createImageLink = (description) => {
+    let link = "";
+    if (description.indexOf("src") !== -1) {
+      let hasSeenQuote = null;
+      for (var i = description.indexOf("src"); i < description.length; i++) {
+        if (hasSeenQuote === true) {
+          if (description[i] === '"') {
+            break;
+          }
+          link += description[i]
+        } else if (hasSeenQuote === null) {
+          if (description[i] === '"') {
+            hasSeenQuote = true
+          }
+        }
+      }
+      setImageLink(link);
+    }
+  }
+
   const getStory = () => {
     const config = {
       headers: {
@@ -94,11 +116,16 @@ function storyScreen(props) {
     // without it theres a crash
     setStory(tempStory[0]);
     setComments(tempStory[0].commentstory);
+    createImageLink(tempStory[0].description);
 
     axios
       .get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
       .then((res) => {
         console.log(res.data);
+        console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
+        console.log(res.data.description[res.data.description.indexOf("src")]);
+        createImageLink(res.data.description);
+
         // credit to https://stackoverflow.com/questions/48826533/how-to-filter-out-html-tags-from-array-and-replace-with-nothing
         let regex = /(<([^>]+)>)/gi;
         let descMod = res.data.description.replace(regex, "");
@@ -369,15 +396,11 @@ function storyScreen(props) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+      <ImageBackground source={{uri: imageLink}} style={{flex: 1, resizeMode: 'cover', justifyContent: 'center'}}>
         <View
           style={{
             paddingTop: "40%",
-            backgroundColor:
-              story.category === 1
-                ? "#e01784"
-                : story.category == 2
-                ? "#00ce7d"
-                : "#248dc1",
+
           }}
         >
           <View
@@ -530,6 +553,7 @@ function storyScreen(props) {
             );
           })}
         </View>
+        </ImageBackground>
       </ScrollView>
 
       <View style={{ flexDirection: "column", flex: 1, width: '100%'}}>
