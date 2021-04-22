@@ -97,7 +97,11 @@ function StoryPostScreen(props) {
     setStartDate(new Date());
     setTitle("");
 
-    props.navigation.navigate('Map');
+    if (props.isLoggedIn) {
+      props.navigation.navigate('Map');
+    } else {
+      props.navigation.navigate('Maps');
+    }
   }
 
   const submitNewStory = async () => {
@@ -157,7 +161,11 @@ function StoryPostScreen(props) {
         setTitle("");
 
         props.loadStories();
-        props.navigation.navigate('Map');
+        if (props.isLoggedIn) {
+          props.navigation.navigate('Map');
+        } else {
+          props.navigation.navigate('Maps');
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -648,6 +656,7 @@ const mapStateToProps = (state) => {
   return {
     userId: userId,
     userName: userName,
+    isLoggedIn: state.authReducer.isLoggedIn
   };
 };
 
