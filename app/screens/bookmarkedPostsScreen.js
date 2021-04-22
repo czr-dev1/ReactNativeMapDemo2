@@ -106,7 +106,7 @@ function BookmarkedPostsScreen(props) {
                 : styles.profileStoryUnselectedButton
             }
           >
-            <Text style={styles.textStyle}>random</Text>
+            <Text style={styles.textStyle}>all</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
