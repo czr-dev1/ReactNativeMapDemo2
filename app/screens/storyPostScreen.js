@@ -24,6 +24,7 @@ import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/auth";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
+import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
 import colors from "../config/colors";
@@ -47,6 +48,7 @@ function StoryPostScreen(props) {
   const [region, setRegion] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [title, setTitle] = useState("");
+  const [hasSetTitle, setHasSetTitle] = useState(false);
 
   const [isExpanded, setExpanded] = useState(false);
   const [isShowing, setShowing] = useState(false);
@@ -76,6 +78,27 @@ function StoryPostScreen(props) {
       console.log(location);
     }
   };
+
+  const goBack = () => {
+    setAddress("");
+    setAnonRadius(1);
+    setCategory(1);
+    setCountry("");
+    setDescription("");
+    setEndDate(new Date());
+    setAnonymous(true);
+    setLastEditDate({});
+    setLastPersonEdit("");
+    setLocation("");
+    setLocality("");
+    setPostCode("");
+    setPostDate("");
+    setRegion("");
+    setStartDate(new Date());
+    setTitle("");
+
+    props.navigation.navigate("Maps");
+  }
 
   const submitNewStory = async () => {
     const latSplit = location.latitude.toString().split(".");
@@ -134,6 +157,7 @@ function StoryPostScreen(props) {
         setTitle("");
 
         props.loadStories();
+        props.navigation.navigate('Maps')
       })
       .catch((err) => {
         console.log(err);
@@ -143,6 +167,39 @@ function StoryPostScreen(props) {
   return (
     <TouchableWithoutFeedback>
       <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", width: '100%'}}>
+        <Entypo
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+          style={{ padding: 24 }}
+          name="cross"
+          size={28}
+          color={colors.purple}
+        />
+        <Text
+          style={{
+            fontSize: 24,
+            padding: 24,
+            fontWeight: "bold",
+            color: colors.purple,
+          }}
+        >
+          add a story
+        </Text>
+          <TouchableWithoutFeedback onPress={() => {
+            onSubmit();
+          }}>
+          <TouchableOpacity
+            disabled={gotLocation ? false : true}
+            onPress={(e) => {
+              submitNewStory();
+            }}
+          >
+<Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
+          </TouchableOpacity>
+        </TouchableWithoutFeedback>
+      </View>
         <View style={{ width: "80%", height: "100%" }}>
           <Modal
             backdropColor="#ddd"
@@ -195,18 +252,8 @@ function StoryPostScreen(props) {
               }}
             />
           </Modal>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Text
-              style={{
-                fontSize: 24,
-                padding: 24,
-                fontWeight: "bold",
-                color: colors.purple,
-              }}
-            >
-              add a story
-            </Text>
-          </View>
+
+
           <View
             style={{
               flexDirection: "row",
@@ -260,6 +307,7 @@ function StoryPostScreen(props) {
             <TextInput
               name="address"
               placeholder="*address"
+              placeholderTextColor={colors.forgotDetails}
               style={styles.inputAddress}
               onFocus={() => setExpanded(true)}
               onChangeText={(val) => {
@@ -272,6 +320,7 @@ function StoryPostScreen(props) {
               <TextInput
                 name="locality"
                 placeholder="locality (city, township, etc.)"
+                placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
                   setRegion(val);
@@ -280,6 +329,7 @@ function StoryPostScreen(props) {
               <TextInput
                 name="region"
                 placeholder="region (state, province, etc.)"
+                placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
                   setRegion(val);
@@ -288,6 +338,7 @@ function StoryPostScreen(props) {
               <TextInput
                 name="country"
                 placeholder="country"
+                placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
                   setCountry(val);
@@ -296,6 +347,7 @@ function StoryPostScreen(props) {
               <TextInput
                 name="postcode"
                 placeholder="postcode"
+                placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
                   setPostCode(val);
@@ -303,20 +355,6 @@ function StoryPostScreen(props) {
               />
             </View>
           ) : null}
-          {title === "" ? (
-            <Text style={styles.requiredText}>
-              * Please enter a story title{" "}
-            </Text>
-          ) : null}
-          <TextInput
-            name="title"
-            placeholder="title"
-            style={styles.input}
-            value={title}
-            onChangeText={(val) => {
-              setTitle(val);
-            }}
-          />
           <View
             style={{
               flexDirection: "row",
@@ -333,7 +371,7 @@ function StoryPostScreen(props) {
                 alignSelf: "flex-start",
               }}
             >
-              * category
+              *category
             </Text>
             <Collapse
               style={{ paddingRight: 12 }}
@@ -443,7 +481,7 @@ function StoryPostScreen(props) {
                 <Text style={{ color: colors.border, paddingRight: 8 }}>
                   {hasPickStart
                     ? startDate.toISOString().slice(0, 10)
-                    : "start date"}
+                    : "MM/DD/YYYY"}
                 </Text>
                 <FontAwesome5
                   name="calendar-week"
@@ -462,7 +500,7 @@ function StoryPostScreen(props) {
                 }}
               >
                 <Text style={{ color: colors.border, padding: 8 }}>
-                  {hasPickEnd ? endDate.toISOString().slice(0, 10) : "end date"}
+                  {hasPickEnd ? endDate.toISOString().slice(0, 10) : "MM/DD/YYYY"}
                 </Text>
                 <FontAwesome5
                   name="calendar-week"
@@ -473,9 +511,26 @@ function StoryPostScreen(props) {
             </TouchableWithoutFeedback>
           </View>
 
+          {/*title === "" ? (
+            <Text style={styles.requiredText}>
+              * Please enter a story title{" "}
+            </Text>
+          ) : null*/}
+          <TextInput
+            name="title"
+            placeholder="*title"
+            placeholderTextColor={colors.forgotDetails}
+            style={styles.input}
+            value={title}
+            onChangeText={(val) => {
+              setTitle(val);
+            }}
+          />
+
           <TextInput
             multiline
-            placeholder="enter story"
+            placeholder="*enter story"
+            placeholderTextColor={colors.forgotDetails}
             name=""
             style={styles.inputAddress}
             value={description}
@@ -483,6 +538,7 @@ function StoryPostScreen(props) {
               setDescription(val);
             }}
           />
+
 
           <View style={{ flexDirection: "column", flex: 1 }}>
             <TouchableOpacity

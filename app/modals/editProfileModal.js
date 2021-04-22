@@ -85,7 +85,7 @@ function EditProfileModal(props) {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingBottom: 10,
+
           }}
         >
           <Entypo
@@ -100,22 +100,17 @@ function EditProfileModal(props) {
           <Text
             style={{
               fontSize: 18,
-              paddingTop: 24,
               color: colors.purple,
               fontWeight: "bold",
             }}
           >
             edit profile
           </Text>
-          <Entypo
-            onPress={() => {
-              onSubmit();
-            }}
-            style={{ padding: 24 }}
-            name="check"
-            size={24}
-            color={colors.purple}
-          />
+          <TouchableWithoutFeedback onPress={() => {
+            onSubmit();
+          }}>
+            <Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
+          </TouchableWithoutFeedback>
         </View>
         <View
           style={{
@@ -249,6 +244,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   profileImage: {
+    paddingTop: -20,
     borderRadius: 200,
     resizeMode: "center",
     height: 128,
