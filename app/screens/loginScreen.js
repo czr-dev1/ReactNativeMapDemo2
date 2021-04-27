@@ -20,7 +20,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { login, reset } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
-import { Dimensions } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function LoginScreen(props) {
 	const dispatch = useDispatch();
@@ -104,7 +104,7 @@ function LoginScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-				<Image 
+			<Image 
 					style={{ height: 100, width: 100 }} 
 					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> log in </Text>
@@ -127,11 +127,11 @@ function LoginScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.border
+							color: colors.purple
 						}}
 						value={user.username}
 						placeholder='username'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => handleUsername(val)}
@@ -146,21 +146,21 @@ function LoginScreen(props) {
 				<View style={styles.input}>
 					<TouchableOpacity style={{ marginTop: 12 }} onPress={updateSecureTextEntry}>
 						{user.secureTextEntry ? (
-							<FontAwesome5 name='eye-slash' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
 						) : (
-							<FontAwesome5 name='eye' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye' color={colors.purple} size={20} />
 						)}
 					</TouchableOpacity>
 					<TextInput
 						style={{ 
 							fontFamily: 'Arial', 
 							fontSize: 16, 
-							color: colors.border,
+							color: colors.purple,
 							marginLeft: 10 
 						}}
 						value={user.password}
 						placeholder='password'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={user.secureTextEntry ? true : false}
@@ -219,11 +219,13 @@ function LoginScreen(props) {
 				</View>
 
 				<View style={styles.links}>
-					<Text style={{
-						fontFamily: 'Arial',
-						fontSize: 12,
-						color: colors.forgotDetails,
-					}}>
+					<Text
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 12,
+							color: colors.forgotDetails,
+						}}
+					>
 						{/* Put into brackets b/c of apostrophe */}
 						{`don't have an account? register `}
 					</Text>
@@ -237,7 +239,7 @@ function LoginScreen(props) {
 								fontFamily: 'Arial',
 								fontSize: 12,
 								fontWeight: 'bold',
-								color: colors.forgotDetails
+								color: colors.forgotDetails,
 							}}
 						>
 							here
@@ -291,10 +293,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		borderWidth: 2,
-		borderColor: colors.border, // Hex is '#B6ADCC'
+		borderColor: colors.purple, // Hex is '#B6ADCC'
 		fontFamily: 'Arial',
 		fontSize: 16,
-		color: colors.border,
+		color: colors.purple,
 		marginTop: 30,
 		paddingLeft: 15,
 		height: 50,

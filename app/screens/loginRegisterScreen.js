@@ -54,8 +54,8 @@ function LoginRegisterOption() {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
 				<Image 
-					style={{ height: 200, width: 400 }} 
-					source={require('../assets/white_color_logo_highres.png')} />
+					style={{ height: 100, width: 320, marginBottom: 75 }} 
+					source={require('../assets/all_white_logo.png')} />
 			</View>
 
 			<View style={styles.loginContainer}>
@@ -67,7 +67,7 @@ function LoginRegisterOption() {
 					>
 						<Text
 							style={{
-								color: 'white',
+								color: colors.purple,
 								alignSelf: 'center',
 								fontFamily: 'Arial',
 								fontSize: 24,
@@ -88,7 +88,7 @@ function LoginRegisterOption() {
 					>
 						<Text 
 							style={{
-								color: 'white',
+								color: colors.purple,
 								alignSelf: 'center',
 								fontFamily: 'Arial',
 								fontSize: 24,
@@ -115,7 +115,7 @@ function LoginRegisterOption() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.black,
+		backgroundColor: colors.purple,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
 		flex: 1.5,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		width: '90%',
+		width: '100%',
 	},
 	loginContainer: {
 		flex: 0.5,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	loginBtn: {
-		backgroundColor: '#4D4185',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 		borderRadius: 15,
 		marginBottom: 10,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	registerBtn: {
-		backgroundColor: '#4D4185',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 		borderRadius: 15,
 		marginTop: 10,

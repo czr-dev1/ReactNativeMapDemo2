@@ -27,17 +27,17 @@ const ItemCard = ({ item }) => {
 						<FontAwesome5 name='comment-alt' size={32} color='black' />
 					</View>
 					<View
-						style={{ 
-							flexDirection: 'column', 
-							justifyContent: 'space-evenly', 
-							paddingLeft: 12 
+						style={{
+							flexDirection: 'column',
+							justifyContent: 'space-evenly',
+							paddingLeft: 12
 						}}
 					>
-						<Text 
-							style={{ 
-								fontWeight: 'bold', 
-								fontSize: 14, 
-								color: colors.black 
+						<Text
+							style={{
+								fontWeight: 'bold',
+								fontSize: 14,
+								color: colors.black
 							}}
 						>
 							{item.username}

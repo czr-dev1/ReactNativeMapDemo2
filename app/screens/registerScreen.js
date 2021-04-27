@@ -156,10 +156,9 @@ function RegisterScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-				<Image 
+			<Image 
 					style={{ height: 100, width: 100 }} 
-					source={require('../assets/color_icon.png')} 
-				/>
+					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> register </Text>
 			</View>
 
@@ -181,11 +180,11 @@ function RegisterScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.border,
+							color: colors.purple,
 						}}
 						value={user.username}
 						placeholder='username'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => setUsername(val)}
@@ -200,17 +199,17 @@ function RegisterScreen(props) {
 				)}
 
 				<View style={styles.input}>
-					<FontAwesome name='envelope' color='#B6ADCC' size={20} />
+					<FontAwesome name='envelope' color={colors.purple} size={20} />
 					<TextInput
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.border,
+							color: colors.purple,
 							marginLeft: 10,
 						}}
 						value={user.email}
 						placeholder='email'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => setEmail(val)}
@@ -228,22 +227,22 @@ function RegisterScreen(props) {
 						onPress={showPassword}
 					>
 						{hidden ? (
-							<FontAwesome5 name='eye-slash' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
 						) : (
-							<FontAwesome5 name='eye' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye' color={colors.purple} size={20} />
 						)}
 					</TouchableOpacity>
 					<TextInput
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.border,
+							color: colors.purple,
 							marginLeft: 10,
 							width: 290
 						}}
 						value={user.password}
 						placeholder='password'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={hidden ? true : false}
@@ -264,22 +263,22 @@ function RegisterScreen(props) {
 						onPress={updateSecureTextEntry}
 					>
 						{user.secureTextEntry ? (
-							<FontAwesome5 name='eye-slash' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
 						) : (
-							<FontAwesome5 name='eye' color='#B6ADCC' size={20} />
+							<FontAwesome5 name='eye' color={colors.purple} size={20} />
 						)}
 					</TouchableOpacity>
 					<TextInput
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.border,
+							color: colors.purple,
 							marginLeft: 10,
 							width: 290
 						}}
 						value={user.confirmPassword}
 						placeholder='confirm password'
-						placeholderTextColor='#B6ADCC'
+						placeholderTextColor={colors.purple}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={user.secureTextEntry ? true : false}
@@ -317,7 +316,13 @@ function RegisterScreen(props) {
 				</View>
 
 				<View style={styles.links}>
-					<Text style={styles.forgotDetails}>
+					<Text 
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 12,
+							color: colors.forgotDetails,
+						}}
+					>
 						already have an account? log in{' '} 
 					</Text>
 					<TouchableOpacity
@@ -383,10 +388,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderBottomWidth: 2,
-		borderBottomColor: colors.border,
+		borderBottomColor: colors.purple,
 		fontFamily: 'Arial',
 		fontSize: 16,
-		color: colors.border,
+		color: colors.purple,
 		marginTop: 10,
 		marginBottom: 10,
 		paddingLeft: 10,
@@ -414,7 +419,9 @@ const styles = StyleSheet.create({
 	forgotDetails: {
 		fontFamily: 'Arial',
 		fontSize: 12,
-		color: colors.forgotDetails
+		color: colors.forgotDetails,
+		marginTop: 10,
+		marginLeft: 90,
 	},
 	text: {
 		fontSize: 14,

@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Thearqive",
-    "slug": "Thearqive",
     "privacy": "unlisted",
-    "version": "1.0.0",
+    "name": "The arqive",
+    "slug": "Thearqive",
+    "version": "1.1.4",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/color_splash.png",
+      "image": "./app/assets/color_icon_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,18 +19,17 @@
       "./app/assets/pinImages/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.Thearqive",
-      "buildNumber": "1.0.0",
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.thearqive.thearqive"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.Thearqive.mobile",
+      "package": "com.thearqive.mobile",
       "useNextNotificationsApi": true,
-      "versionCode": 5,
+      "versionCode": 7,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
-        "ACESS_FINE_LOCATION",
+        "ACCESS_FINE_LOCATION",
         "FOREGROUND_SERVICE"
       ],
       "config": {

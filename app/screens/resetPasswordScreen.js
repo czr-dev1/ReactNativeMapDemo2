@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  Button, 
-  Image, 
-  SafeAreaView, 
-  StyleSheet, 
-  Text, 
-  TextInput, 
-  TouchableWithoutFeedback, 
-  View, 
+import {
+  Button,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
