@@ -8,8 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.1.0",
     "@react-native-community/datetimepicker": "^3.0.9",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-picker/picker": "^1.9.11",
     "@react-navigation/bottom-tabs": "^5.11.8",
     "@react-navigation/drawer": "^5.12.4",
     "@react-navigation/material-top-tabs": "^5.3.14",
@@ -19,7 +21,9 @@
     "axios": "^0.21.1",
     "email-validator": "^2.0.4",
     "expo": "^39.0.5",
+    "expo-app-loading": "^1.0.2",
     "expo-cli": "^4.1.6",
+    "expo-font": "~8.3.0",
     "expo-image-picker": "~9.1.1",
     "expo-location": "^9.0.1",
     "expo-notifications": "~0.7.2",
