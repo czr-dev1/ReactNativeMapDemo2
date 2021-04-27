@@ -61,8 +61,8 @@ function LightMapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const urlTemplate =
-    "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
+  const urlTemplate = "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
+  const urlTemplateDark = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
@@ -578,7 +578,7 @@ function LightMapScreen(props) {
           flex={1}
         >
           <UrlTile
-            urlTemplate={urlTemplate}
+            urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate}
             shouldReplaceMapContent={true}
             maximumZ={19}
             minimumZ={0}
@@ -762,6 +762,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    is_anonymous_active: state.authReducer.user.is_profile_private,
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
     error: state.storyReducer.error,

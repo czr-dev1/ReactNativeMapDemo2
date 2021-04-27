@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { Constants } from 'expo';
 import { Card } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { Switch } from "react-native-switch";
@@ -34,7 +35,7 @@ const Item = ({ item }, props) => {
         });
       }}
     >
-      <View style={{ padding: 12 }}>
+      <View style={{ padding: 12}} >
         <View
           style={{
             backgroundColor:
@@ -49,14 +50,14 @@ const Item = ({ item }, props) => {
           }}
         ></View>
         <View
-          style={{
+          style={[{
             backgroundColor: "white",
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
             flexDirection: "row",
             justifyContent: "space-between",
             paddingLeft: 5,
-          }}
+          }, styles.shadow2]}
         >
           <View style={{ flexDirection: "column", flexShrink: 1, padding: 10 }}>
             <Text
@@ -125,7 +126,6 @@ const BookMark = ({ item }) => {
   return (
     <TouchableWithoutFeedback
       key={item.id}
-      style={{ padding: 12 }}
       onPress={() => {
         navigation.navigate("Story", {
           title: item.title,
@@ -134,7 +134,7 @@ const BookMark = ({ item }) => {
         });
       }}
     >
-      <View style={{ padding: 12 }}>
+      <View style={{ margin: 12 }}>
         <View
           style={{
             backgroundColor:
@@ -149,14 +149,14 @@ const BookMark = ({ item }) => {
           }}
         ></View>
         <View
-          style={{
+          style={[{
             backgroundColor: "white",
             borderBottomLeftRadius: 20,
             borderBottomRightRadius: 20,
             flexDirection: "row",
             justifyContent: "space-between",
             paddingLeft: 5,
-          }}
+          }, styles.shadow2]}
         >
           <View
             style={{
@@ -226,7 +226,18 @@ function StoryList(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   cardContainer: {
     width: Dimensions.get("window").width,
   },

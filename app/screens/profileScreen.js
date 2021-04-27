@@ -18,6 +18,7 @@ import { Card } from "react-native-elements";
 import { connect, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { loadStories } from "../redux/actions/storyActions";
+import { reloadUser } from "../redux/actions/auth";
 import { userSelfDelete } from "../redux/actions/authActions";
 import axios from 'axios';
 
@@ -37,7 +38,7 @@ import StoryList from "../components/storyList";
 function ProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [tempStories, setTempStories] = useState([]);
-  const [privacy, setprivacy] = useState(props.is_profile_private);
+  const [privacy, setprivacy] = useState(props.is_anonymous_active);
   const insets = useSafeAreaInsets();
 
   const renderStoriesByType = () => {
@@ -52,18 +53,18 @@ function ProfileScreen(props) {
         );
         break;
       case 2:
-        list = props.stories.filter((item) => item.category === 2);
-        return (
-          <StoryList
-            stories={props.stories.filter((item) => item.category === 2)}
-          />
-        );
-        break;
-      case 3:
         list = props.stories.filter((item) => item.category === 3);
         return (
           <StoryList
             stories={props.stories.filter((item) => item.category === 3)}
+          />
+        );
+        break;
+      case 3:
+        list = props.stories.filter((item) => item.category === 2);
+        return (
+          <StoryList
+            stories={props.stories.filter((item) => item.category === 2)}
           />
         );
         break;
@@ -94,7 +95,7 @@ function ProfileScreen(props) {
   // https://reactnavigation.org/docs/handling-safe-area/
   return (
     <View style={(styles.container, { paddingTop: insets.top - insets.top })}>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: colors.background, height: '100%'}}>
         <View style={styles.profileBar}>
           <View
             style={{
@@ -116,11 +117,13 @@ function ProfileScreen(props) {
                     },
                   };
                   let data = {
-                    is_profile_private: privacy,
+                    is_profile_private: val,
                   };
                   axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
                     .then((res) => {
-                      setprivacy(val);
+                      console.log(res.data.is_profile_private);
+                      setprivacy(res.data.is_profile_private);
+                      props.reloadUser(props.user);
                     })
                     .catch((err) => {
                       console.log(err);
@@ -173,7 +176,7 @@ function ProfileScreen(props) {
                   : styles.storyUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>all stories</Text>
+              <Text style={ selectedButton === 0 ? styles.selectedTextStyle : styles.textStyle}>all stories</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
@@ -184,7 +187,7 @@ function ProfileScreen(props) {
                   : styles.storyUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>personal</Text>
+              <Text style={ selectedButton === 1 ? styles.selectedTextStyle : styles.textStyle}>personal</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
@@ -195,7 +198,7 @@ function ProfileScreen(props) {
                   : styles.storyUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>historical</Text>
+              <Text style={ selectedButton === 2 ? styles.selectedTextStyle : styles.textStyle}>historical</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
@@ -206,7 +209,7 @@ function ProfileScreen(props) {
                   : styles.storyUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>resource</Text>
+              <Text style={ selectedButton === 3 ? styles.selectedTextStyle : styles.textStyle}>resource</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   storySelectedButton: {
-    borderBottomWidth: 5,
+    borderBottomWidth: 2,
     borderBottomColor: colors.orange,
     alignItems: "center",
     flexGrow: 1,
@@ -299,20 +302,33 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 16,
+    color: colors.purple
   },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: colors.purple,
+    fontWeight: 'bold'
+  }
 });
 
 const mapStateToProps = (state) => {
+  console.log("username:", state.authReducer.username);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.authReducer.user.userStories,
     error: state.storyReducer.error,
-    user: state.authReducer.username,
+    user: state.profileReducer.profileData.user.username,
     bio: state.authReducer.user.bio,
     profileImage: state.authReducer.user.profileurl,
-    is_profile_private: state.authReducer.user.is_profile_private,
+    is_anonymous_active: state.authReducer.user.is_profile_private,
     id: state.authReducer.user.id,
   };
 };
 
-export default connect(mapStateToProps)(ProfileScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    reloadUser: (username) => dispatch(reloadUser(username)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
