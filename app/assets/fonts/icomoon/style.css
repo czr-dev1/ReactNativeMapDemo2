@@ -1,0 +1,126 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?nttmrn');
+  src:  url('fonts/icomoon.eot?nttmrn#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?nttmrn') format('truetype'),
+    url('fonts/icomoon.woff?nttmrn') format('woff'),
+    url('fonts/icomoon.svg?nttmrn#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-badges_hightlighted:before {
+  content: "\e900";
+  color: #4d4185;
+}
+.icon-profile_hightlighted:before {
+  content: "\e901";
+  color: #4d4185;
+}
+.icon-add_story_highlighted .path1:before {
+  content: "\e902";
+  color: rgb(77, 65, 133);
+}
+.icon-add_story_highlighted .path2:before {
+  content: "\e903";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-add_story_highlighted .path3:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-add_story_highlighted .path4:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-notifications_highlighted .path1:before {
+  content: "\e906";
+  color: rgb(77, 65, 133);
+}
+.icon-notifications_highlighted .path2:before {
+  content: "\e907";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-notifications_highlighted .path3:before {
+  content: "\e908";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-notifications_highlighted .path4:before {
+  content: "\e909";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-notifications_highlighted .path5:before {
+  content: "\e90a";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-notifications_highlighted .path6:before {
+  content: "\e90b";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-bookmark_highlighted:before {
+  content: "\e90c";
+  color: #4d4185;
+}
+.icon-map_highlighted .path1:before {
+  content: "\e90d";
+  color: rgb(77, 65, 133);
+}
+.icon-map_highlighted .path2:before {
+  content: "\e90e";
+  margin-left: -1em;
+  color: rgb(77, 65, 133);
+}
+.icon-map_highlighted .path3:before {
+  content: "\e90f";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-map_highlighted .path4:before {
+  content: "\e910";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.icon-profile_outline:before {
+  content: "\e911";
+  color: #7c7887;
+}
+.icon-add_story_outline:before {
+  content: "\e912";
+  color: #7c7887;
+}
+.icon-bookmark_outline:before {
+  content: "\e913";
+  color: #7c7887;
+}
+.icon-map_outline:before {
+  content: "\e914";
+  color: #7c7887;
+}
+.icon-badges_outline:before {
+  content: "\e915";
+  color: #7c7887;
+}

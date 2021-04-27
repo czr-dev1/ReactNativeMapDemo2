@@ -42,6 +42,14 @@ import EditProfileModal from "../modals/editProfileModal";
 
 import ProfileHeader from "../components/profile/profileHeader";
 
+import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+const Icon = createIconSetFromIcoMoon(
+  require('../assets/fonts/selection.json'),
+  'IcoMoon',
+  'icomoon.ttf'
+);
+
+
 import colors from "../config/colors.js";
 
 const AnonMapStack = createStackNavigator();
@@ -228,13 +236,25 @@ function NeedAuthTabScreen() {
           let iconName;
           let iconColor;
 
-          if (route.name === "Map") {
-            iconName = "map";
-          } else if (route.name === "Post") {
-            iconName = "plus-square";
-          } else if (route.name === "Profile") {
-            iconName = "user";
+          if (focused) {
+            if (route.name === "Map") {
+              iconName = "map_icon_active";
+            } else if (route.name === "Post") {
+              iconName = "add_story_icon";
+            } else if (route.name === "Profile") {
+              iconName = "profile_icon_active";
+            }
+          } else {
+            if (route.name === "Map") {
+              iconName = "map_outline";
+            } else if (route.name === "Post") {
+              iconName = "add_story_outline";
+            } else if (route.name === "Profile") {
+              iconName = "profile_outline";
+            }
           }
+
+
 
           if (focused) {
             iconColor = colors.white;
@@ -242,7 +262,7 @@ function NeedAuthTabScreen() {
             iconColor = colors.border;
           }
 
-          return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
+          return <Icon name={iconName} size={size} color={iconColor} />;
         },
       })}
     >
@@ -292,16 +312,31 @@ function AppTabScreen() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let iconColor;
-          if (route.name === "Map") {
-            iconName = "map";
-          } else if (route.name === "Bookmarks") {
-            iconName = "list";
-          } else if (route.name === "Post") {
-            iconName = "plus-square";
-          } else if (route.name === "Notifications") {
-            iconName = "bell";
-          } else if (route.name === "Profile") {
-            iconName = "user";
+
+          if (focused) {
+            if (route.name === "Map") {
+              iconName = "map_icon_active";
+            } else if (route.name === "Bookmarks") {
+              iconName = "bookmark_icon_active";
+            } else if (route.name === "Post") {
+              iconName = "add_story_icon";
+            } else if (route.name === "Notifications") {
+              iconName = "notification_icon_active";
+            } else if (route.name === "Profile") {
+              iconName = "profile_icon_active";
+            }
+          } else {
+            if (route.name === "Map") {
+              iconName = "map_outline";
+            } else if (route.name === "Bookmarks") {
+              iconName = "bookmark_outline";
+            } else if (route.name === "Post") {
+              iconName = "add_story_outline";
+            } else if (route.name === "Notifications") {
+              iconName = "notifications_outline";
+            } else if (route.name === "Profile") {
+              iconName = "profile_outline";
+            }
           }
 
           if (focused) {
@@ -310,7 +345,7 @@ function AppTabScreen() {
             iconColor = colors.border;
           }
 
-          return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
+          return <Icon name={iconName} size={size} color={iconColor} />;
         },
       })}
     >
@@ -368,7 +403,7 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
   container: {
-    
+
   },
 });
 
