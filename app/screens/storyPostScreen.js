@@ -101,7 +101,7 @@ function StoryPostScreen(props) {
     if (props.isLoggedIn) {
       props.navigation.navigate('Map');
     } else {
-      props.navigation.navigate('Maps');
+      props.navigation.navigate('Map');
     }
   }
 
