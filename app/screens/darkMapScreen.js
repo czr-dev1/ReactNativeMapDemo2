@@ -222,6 +222,71 @@ function LightMapScreen(props) {
 
   const Separator = () => <View style={styles.separator} />;
 
+  const renderPins = () => {
+    let selectedStories = props.stories;
+    switch (selectedButton) {
+      case 1:
+        selectedStories = personalStories;
+        break;
+      case 2:
+        selectedStories = historicalStories;
+        break;
+      case 3:
+        selectedStories = resourcesStories;
+        break;
+    }
+
+    return selectedStories.map((item, i) => {
+      // Removing images completely including
+      // the case made it run
+      // expo moves assets to the cloud, figure out how to keep
+      // https://docs.expo.io/guides/preloading-and-caching-assets/
+      // UPDATE: ended up keeping them by converting to a base64 string
+      // and passing that in as an argument
+      let pinType = "";
+      switch (item.category) {
+        case 1:
+          pinType = PERSONAL_PIN;
+          //pinType = '#6a0dad';
+          break;
+        case 2:
+          pinType = COMMUNITY_PIN;
+          //pinType = '#00FF00';
+          break;
+        default:
+          pinType = HISTORICAL_PIN;
+        //pinType = '#0000FF';
+      }
+      return (
+        <Marker
+          key={i}
+          coordinate={{
+            latitude: parseFloat(item.latitude),
+            longitude: parseFloat(item.longitude),
+          }}
+          image={pinType}
+          onPress={() => {
+            console.log(item);
+            setModalData({
+              title: item.title,
+              description: item.description,
+              id: item.id,
+              postDate: item.postDate,
+              category: item.category,
+            });
+            setShowModal(true);
+            /*
+            props.navigation.navigate('Story', {
+              title: item.title,
+              description: item.description,
+              id: item.id
+            }); */
+          }}
+        ></Marker>
+      );
+    });
+  };
+
   return (
     <SafeAreaView style={(styles.container, { flex: 1 })}>
       <View style={styles.containerStyle}>
@@ -585,55 +650,7 @@ function LightMapScreen(props) {
             minZoomLevel={0}
             zIndex={1}
           />
-          {props.stories.map((item, i) => {
-            // Removing images completely including
-            // the case made it run
-            // expo moves assets to the cloud, figure out how to keep
-            // https://docs.expo.io/guides/preloading-and-caching-assets/
-            // UPDATE: ended up keeping them by converting to a base64 string
-            // and passing that in as an argument
-            let pinType = "";
-            switch (item.category) {
-              case 1:
-                pinType = PERSONAL_PIN;
-                //pinType = '#6a0dad';
-                break;
-              case 2:
-                pinType = COMMUNITY_PIN;
-                //pinType = '#00FF00';
-                break;
-              default:
-                pinType = HISTORICAL_PIN;
-              //pinType = '#0000FF';
-            }
-            return (
-              <Marker
-                key={i}
-                coordinate={{
-                  latitude: parseFloat(item.latitude),
-                  longitude: parseFloat(item.longitude),
-                }}
-                image={pinType}
-                onPress={() => {
-                  console.log(item);
-                  setModalData({
-                    title: item.title,
-                    description: item.description,
-                    id: item.id,
-                    postDate: item.postDate,
-                    category: item.category,
-                  });
-                  setShowModal(true);
-                  /*
-									props.navigation.navigate('Story', {
-										title: item.title,
-										description: item.description,
-										id: item.id
-									}); */
-                }}
-              ></Marker>
-            );
-          })}
+          {renderPins()}
         </MapView>
       )}
     </SafeAreaView>
@@ -758,9 +775,21 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-
+//Personal, Historical, Resources
 const mapStateToProps = (state) => {
+  let personalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 1
+  );
+  let historicalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 2
+  );
+  let resourcesCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 3
+  );
   return {
+    personalStories: personalCategorical,
+    historicalStories: historicalCategorical,
+    resourcesStories: resourcesCategorical,
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
     error: state.storyReducer.error,
