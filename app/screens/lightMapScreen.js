@@ -248,12 +248,12 @@ function LightMapScreen(props) {
             }}
           ></View>
           <View
-            style={{
+            style={[styles.shadow2, {
               backgroundColor: "white",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
               height: "10%",
-            }}
+            }]}
           >
             <TouchableWithoutFeedback
               onPress={() => {
@@ -641,7 +641,18 @@ function LightMapScreen(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   containerStyle: {
     backgroundColor: "white",
     alignItems: "stretch",
