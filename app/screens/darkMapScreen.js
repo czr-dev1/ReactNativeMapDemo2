@@ -226,13 +226,13 @@ function LightMapScreen(props) {
     let selectedStories = props.stories;
     switch (selectedButton) {
       case 1:
-        selectedStories = personalStories;
+        selectedStories = props.personalStories;
         break;
       case 2:
-        selectedStories = historicalStories;
+        selectedStories = props.historicalStories;
         break;
       case 3:
-        selectedStories = resourcesStories;
+        selectedStories = props.resourcesStories;
         break;
     }
 
