@@ -3,7 +3,6 @@ import {
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
 	TouchableOpacity,
 	View
 } from 'react-native';
@@ -15,6 +14,7 @@ import * as Notifications from 'expo-notifications';
 import { connect, useDispatch } from "react-redux";
 import { setExpoPushToken } from "../redux/actions/authActions";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 function LoginRegisterOption() {

@@ -3,7 +3,6 @@ import {
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
 	TextInput,
 	TouchableOpacity,
 	View,
@@ -18,6 +17,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 // Redux
 import { login } from '../redux/actions/authActions';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function LoginScreen(props) {
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
 		marginTop: 30,
 		paddingLeft: 15,
 		borderWidth: 2,
-		borderColor: colors.border,
+		borderColor: colors.purple,
 		width: '85%',
 		height: 50,
 	},
