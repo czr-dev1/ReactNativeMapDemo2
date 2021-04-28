@@ -41,6 +41,8 @@ export default function App() {
   //Custom Icons
   const [fontsLoaded] = useFonts({
     IcoMoon: require("./app/assets/fonts/icomoon.ttf"),
+    Arial: require("./app/assets/fonts/arial.ttf"),
+    ArialBold: require("./app/assets/fonts/arialBold.ttf"),
   });
 
   useEffect(() => {
