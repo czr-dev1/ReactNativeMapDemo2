@@ -3,7 +3,6 @@ import {
   FlatList,
   Linking,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 function HelpAndHotlineModal(props) {

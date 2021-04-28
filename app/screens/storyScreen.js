@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   TextInput,
@@ -29,6 +28,7 @@ import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/authActions";
 import { followUser, unfollowUser } from "../redux/actions/authActions";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 const PROFILE_PIC = require("../assets/profile_blank.png");
 

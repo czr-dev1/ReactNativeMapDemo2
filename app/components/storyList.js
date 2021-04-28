@@ -3,7 +3,6 @@ import {
   Dimensions,
   FlatList,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -16,6 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 
 import makeStoryPrivate from "../redux/actions/storyActions";
+import Text from "./text";
 import colors from "../config/colors";
 
 const Item = ({ item }, props) => {
@@ -207,7 +207,7 @@ function StoryList(props) {
           paddingBottom: "100%",
         }}
       >
-        <Text>nothing to show here yet</Text>
+        <Text style={{}}>nothing to show here yet</Text>
       </View>
     );
   };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
-  Text,
   ActivityIndicator,
   TouchableWithoutFeedback,
   Dimensions,
@@ -18,6 +17,8 @@ import axios from "axios";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+
+import Text from "../components/text";
 import colors from "../config/colors";
 //Custom story component
 import StoryList from "../components/storyList";
@@ -93,7 +94,7 @@ function BookmarkedPostsScreen(props) {
 
   return props.isLoading ? (
     <View>
-      <Text>Loading</Text>
+      <Text style={{}}>Loading</Text>
     </View>
   ) : (
     <View style={{ height: "100%" }}>

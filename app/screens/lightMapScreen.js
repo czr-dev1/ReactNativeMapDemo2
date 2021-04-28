@@ -10,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   ScrollView,
-  Text,
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -37,6 +36,7 @@ import { Thumbnail } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
 

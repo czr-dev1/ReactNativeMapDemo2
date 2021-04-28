@@ -3,11 +3,11 @@ import {
   Button,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Text
 } from "react-native";
 import {
   Collapse,
@@ -26,6 +26,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+
 
 import colors from "../config/colors";
 
@@ -629,12 +630,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
+    fontWeight: 'normal',
     borderColor: colors.border,
     padding: 10,
     fontSize: 14,
     width: "100%",
   },
   inputAddress: {
+    fontWeight: 'normal',
     padding: 10,
     fontSize: 14,
     width: "100%",

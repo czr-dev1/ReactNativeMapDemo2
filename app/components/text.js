@@ -1,10 +1,24 @@
 import React from "react";
 import { Text as DefaultText } from "react-native";
 
+/*
+  WARNING:
+    If you don't supply a style prop to the text you WILL make the application
+    crash, if you don't need styling just add an empty style to the Text like so
+    <Text style={{}}> </Text>
+*/
+
 function Text(props){
-  const fontFamily = {
-    fontFamily: props.fontFamily === 'bold' ? 'ArialBold' : 'Arial',
+  let fontFamily = {
+    fontFamily: 'Arial'
   }
+
+  if (props.style.fontWeight !== undefined) {
+    if (props.style.fontWeight === 'bold') {
+      fontFamily.fontFamily = 'ArialBold';
+    }
+  }
+
   return(
     <DefaultText
       style={[fontFamily, props.style]}

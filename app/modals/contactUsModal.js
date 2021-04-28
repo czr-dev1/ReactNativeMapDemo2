@@ -5,7 +5,6 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -17,6 +16,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 function ContactUsModal(props) {
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 14,
     width: "100%",
+    fontFamily: "Arial",
   },
   inputBorderless: {
     borderColor: "#ddd",

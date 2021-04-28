@@ -4,7 +4,6 @@ import {
 	FlatList,
 	ScrollView,
 	StyleSheet,
-	Text,
 	TouchableWithoutFeedback,
 	View,
 } from 'react-native';
@@ -15,6 +14,7 @@ import { connect } from 'react-redux';
 // Icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 const ItemCard = ({ item }) => {
@@ -43,7 +43,7 @@ const ItemCard = ({ item }) => {
 						>
 							{item.username}
 						</Text>
-						<Text>
+						<Text style={{}}>
 							{d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}
 						</Text>
 					</View>

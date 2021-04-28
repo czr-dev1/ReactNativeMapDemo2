@@ -4,7 +4,6 @@ import {
   Button,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -24,6 +23,7 @@ import { Switch } from "react-native-switch";
 import { reloadUser } from "../redux/actions/auth";
 import { userSelfDelete } from "../redux/actions/authActions";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 const PROFILE_PIC = require("../assets/profile_blank.png");
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   input: {
+    fontFamily: "Arial",
     borderBottomWidth: 3,
     borderColor: "#ddd",
     padding: 10,

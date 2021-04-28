@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
-  Text,
 } from "react-native";
 import { Card } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +12,8 @@ import { Switch } from "react-native-switch";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { makeStoryPrivate } from "../redux/actions/storyActions";
+
+import Text from "./text";
 
 import colors from "../config/colors";
 

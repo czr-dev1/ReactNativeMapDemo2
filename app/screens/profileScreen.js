@@ -6,7 +6,6 @@ import {
   Image,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
   ScrollView,
@@ -27,6 +26,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 // profile picture
