@@ -11,6 +11,7 @@ import Modal from "react-native-modal";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import Text from "../components/text";
+
 import colors from "../config/colors";
 
 function HelpAndHotlineModal(props) {
@@ -21,7 +22,7 @@ function HelpAndHotlineModal(props) {
       name: "the trevor Project",
       number: "(866) 488-7386",
       description:
-        "the trevor Project is the leading national organization providing crisis intervention and suicide prevention services to lesbian, gay, bisexual, transgender and questioning (LGBtQ) young people ages 13-24.",
+        "The Trevor Project is the leading national organization providing crisis intervention and suicide prevention services to lesbian, gay, bisexual, transgender and questioning (LGBTQ) young people ages 13-24.",
     },
     {
       name: "the Gay, Lesbian, Bisexual and transgender National Hotline",
@@ -40,7 +41,7 @@ function HelpAndHotlineModal(props) {
       name: "the true Colors United",
       number: "(212) 461-4401",
       description:
-        "the true Colors Fund is working to end homelessness among lesbian, gay, bisexual, transgender, queer, and questioning youth, creating a world in which all young people can be their true selves. true Colors United runs a database of service providers.",
+        "The true Colors Fund is working to end homelessness among lesbian, gay, bisexual, transgender, queer, and questioning youth, creating a world in which all young people can be their true selves. true Colors United runs a database of service providers.",
     },
     {
       name: "Pride Institute",
@@ -90,7 +91,7 @@ function HelpAndHotlineModal(props) {
                   style={{ transform: [{ rotate: "90deg" }] }}
                   name="phone"
                   size={24}
-                  color="#787878"
+                  color="#4D4185"
                 />
                 <Text style={styles.number}>{item.number}</Text>
               </TouchableOpacity>
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   },
   description: {
     color: colors.black,
-    fontSize: 14,
+    fontSize: 12,
   },
 });
 

@@ -73,23 +73,22 @@ function BookmarkedPostsScreen(props) {
     };
 
     //username can be changed if you want
-    axios
-      .get(
-        `https://globaltraqsdev.com/api/profile/users/?username=${props.user}`,
-        config
-      )
-      .then((res) => {
-        const filteredVals = res.data[0].filter((bookmark) => {
-          return props.allStories.forEach((story) => {
-            return story.id === bookmark.pinId;
-          });
+    axios.get(
+      `https://globaltraqsdev.com/api/profile/users/?username=${props.user}`,
+      config
+    )
+    .then((res) => {
+      const filteredVals = res.data[0].filter((bookmark) => {
+        return props.allStories.forEach((story) => {
+          return story.id === bookmark.pinId;
         });
-        console.log("filtered:", filteredVals);
-        setData(filteredVals);
-      })
-      .catch((err) => {
-        console.log(err);
       });
+      console.log("filtered:", filteredVals);
+      setData(filteredVals);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 
   return props.isLoading ? (

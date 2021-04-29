@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Dimensions,
-  Image,
+  ImageBackground,
   Linking,
   ScrollView,
   StyleSheet,
@@ -14,7 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Text from "../components/text";
 import colors from "../config/colors";
 
-function SupportUsModal(props) {
+function SupportUsModal() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -42,15 +42,76 @@ function SupportUsModal(props) {
             how you can help
           </Text>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Image source={require("../assets/Help.png")} />
+        <View style={{ flexDirection: "column", justifyContent: "center", alignItems: 'center' }}>
+          {/* If you change the size of the image, 
+              you have to change the positioning too */}
+          <ImageBackground 
+            style={styles.image}
+            source={require("../assets/supportUs/Purple_Chat_Bubble.42941b20.png")} 
+          >
+            <Text 
+              style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                color: 'white',
+                textAlign: 'center',
+                position: 'absolute',
+                top: 75,
+                left: 124
+              }}
+            >
+              post
+            </Text>
+            <Text 
+              style={{
+                fontSize: 25,
+                color: 'white',
+                textAlign: 'center',
+                position: 'absolute',
+                top: 120,
+                left: 85
+              }}
+            >
+              your stories
+            </Text>
+          </ImageBackground>
+          <ImageBackground 
+            style={styles.image}
+            source={require("../assets/supportUs/Green_Chat_Bubble.7b3e23e3.png")} 
+          >
+            <Text 
+              style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                color: 'white',
+                textAlign: 'center',
+                position: 'absolute',
+                top: 75,
+                left: 119
+              }}
+            >
+              share
+            </Text>
+            <Text 
+              style={{
+                fontSize: 25,
+                color: 'white',
+                textAlign: 'center',
+                position: 'absolute',
+                top: 120,
+                left: 90
+              }}
+            >
+              #thearqive
+            </Text>
+          </ImageBackground>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text
             style={{
               fontSize: 24,
               padding: 24,
-              color: "#787878",
+              color: colors.purple,
               fontWeight: "bold",
             }}
           >
@@ -71,7 +132,7 @@ function SupportUsModal(props) {
             }
             name="facebook-square"
             size={60}
-            color="#787878"
+            color="#3B5998"
           />
           <FontAwesome5
             onPress={() =>
@@ -79,13 +140,13 @@ function SupportUsModal(props) {
             }
             name="instagram"
             size={60}
-            color="#787878"
+            color="#C13584"
           />
           <MaterialCommunityIcons
             onPress={() => Linking.openURL("https://twitter.com/thearqive")}
             name="twitter-circle"
             size={65}
-            color="#787878"
+            color="#1DA1F2"
           />
         </View>
       </ScrollView>
@@ -97,30 +158,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
+    justifyContent: "center",
     alignItems: "center",
     height: "100%",
     width: Dimensions.get("window").width,
   },
-  box: {
-    borderWidth: 2,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    paddingTop: 18,
-    paddingBottom: 18,
-    paddingRight: 32,
-    paddingLeft: 32,
-    margin: 6,
-  },
-  itemTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#787878",
-  },
-  number: {
-    padding: 8,
-  },
-  description: {
-    color: "#787878",
+  image: {
+    textAlign: 'center', 
+    height: 300, 
+    width: 300, 
+    position: 'relative',
+    marginBottom: -50
   },
 });
 
