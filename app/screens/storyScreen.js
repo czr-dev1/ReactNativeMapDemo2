@@ -407,6 +407,7 @@ function storyScreen(props) {
         >
           <View
             style={{
+              position: "relative",
               backgroundColor:
                 story.category === 1
                   ? "#e01784"
@@ -414,16 +415,30 @@ function storyScreen(props) {
                   ? "#00ce7d"
                   : "#248dc1",
               paddingTop: "10%",
-              borderTopLeftRadius: 300,
-              borderTopRightRadius: 300,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
             }}
           >
+          </View>
+          <View
+            style={{
+              position: "relative",
+              bottom: "30%",
+              paddingBottom: "-30%",
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              backgroundColor: colors.white,
+              paddingTop: "10%"
+            }}
+          >
+
           </View>
         </View>
 
         <View
           style={{
             width: "100%",
+            marginTop: "-10%",
             paddingLeft: "10%",
             paddingRight: "10%",
             backgroundColor: "white",
