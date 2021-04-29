@@ -229,6 +229,39 @@ export const followUser = ({ id, list }) => {
       .then((res) => {
         console.log(res);
         dispatch({ type: "FOLLOW_USER", payload: list });
+        // RETRIEVING: user from 2nd backend
+        axios
+          .get(`http://192.81.130.223:8012/api/user/get`, { params: data })
+          .then((res2) => {
+            // setting followingList and notificationsList
+            console.log("recieved data: ", res2.data);
+            dispatch({
+              type: "SET_NOTIFICATIONS_FOLLOWING_LISTS",
+              payload: {
+                notificationList: res2.data.notificationList,
+                followingList: res2.data.followingList,
+              },
+            });
+
+            // end setting
+          })
+          .catch((err) => {
+            data = {
+              id: res.data.user.id,
+              expoPushToken: expoPushToken,
+            };
+            console.log("Fail getting user: ", err.response.data);
+
+            // CREATING: new entry if none exists (aka has account from website)
+            axios
+              .post(`http://192.81.130.223:8012/api/user/create`, data)
+              .then((res) => {
+                // console.log(res);
+              })
+              .catch((err) => {
+                console.log("Fail creating user: ", err);
+              });
+          });
       })
       .catch((err) => {
         console.log(err);

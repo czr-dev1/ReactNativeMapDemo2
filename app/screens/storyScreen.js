@@ -14,6 +14,7 @@ import {
   Image,
   ImageBackground,
   Clipboard,
+  Text as DefaultText,
 } from "react-native";
 import MapView from "react-native-map-clustering";
 import { connect } from "react-redux";
@@ -153,7 +154,8 @@ function storyScreen(props) {
 
   const follow = () => {
     let list = props.followingList;
-    list.push(data.id);
+    console.log(data.owner);
+    list.push(data.owner);
     list = {
       list: list,
       id: props.userId,
@@ -462,7 +464,7 @@ function storyScreen(props) {
                   }
                 }}
               >
-                <Text
+                <DefaultText
                   style={{
                     paddingLeft: 5,
                     marginBottom: 12,
@@ -472,7 +474,7 @@ function storyScreen(props) {
                   }}
                 >
                   {story.is_anonymous_pin ? "anonymous" : story.username}
-                </Text>
+                </DefaultText>
               </TouchableWithoutFeedback>
             </View>
             {props.isLoggedIn === true ? (
