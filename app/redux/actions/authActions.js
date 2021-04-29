@@ -199,6 +199,7 @@ export const reloadUser = (username) => {
       )
       .then((res) => {
         dispatch({ type: "USER_PROFILE_RELOADED", extra: res.data[0] });
+        console.log("reloadUser");
       })
       .catch((err) => {
         console.log(err);

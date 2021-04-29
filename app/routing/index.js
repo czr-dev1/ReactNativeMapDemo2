@@ -2,10 +2,14 @@ import React from "react";
 import { StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator, DrawerContentScrollView } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 import DarkMapScreen from "../screens/darkMapScreen";
@@ -19,7 +23,6 @@ import LoginRegisterScreen from "../screens/loginRegisterScreen";
 import LoginScreen from "../screens/loginScreen";
 import RegisterScreen from "../screens/registerScreen";
 import ForgotPasswordScreen from "../screens/forgotPasswordScreen";
-import ResetPasswordScreen from "../screens/resetPasswordScreen";
 import ProfileScreen from "../screens/profileScreen";
 import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
@@ -33,6 +36,15 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+
+
+import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+
+const Icon = createIconSetFromIcoMoon(
+  require('../assets/fonts/selection.json'),
+  'IcoMoon',
+  'icomoon.ttf'
+);
 
 import colors from "../config/colors.js";
 
@@ -95,7 +107,7 @@ function BookmarkedTopTabScreen() {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
-          marginTop: 50,
+          marginTop: 35,
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -126,11 +138,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Initial" component={LoginRegisterScreen} />
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
-      <LoginStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScreen}
-      />
-      <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
     </LoginStack.Navigator>
   );
 }
@@ -221,13 +229,25 @@ function NeedAuthTabScreen() {
           let iconName;
           let iconColor;
 
-          if (route.name === "Map") {
-            iconName = "map";
-          } else if (route.name === "Post") {
-            iconName = "plus-square";
-          } else if (route.name === "Profile") {
-            iconName = "user";
+          if (focused) {
+            if (route.name === "Map") {
+              iconName = "map_icon_active";
+            } else if (route.name === "Post") {
+              iconName = "add_story_icon";
+            } else if (route.name === "Profile") {
+              iconName = "profile_icon_active";
+            }
+          } else {
+            if (route.name === "Map") {
+              iconName = "map_outline";
+            } else if (route.name === "Post") {
+              iconName = "add_story_outline";
+            } else if (route.name === "Profile") {
+              iconName = "profile_outline";
+            }
           }
+
+
 
           if (focused) {
             iconColor = colors.white;
@@ -235,7 +255,7 @@ function NeedAuthTabScreen() {
             iconColor = colors.border;
           }
 
-          return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
+          return <Icon name={iconName} size={size} color={iconColor} />;
         },
       })}
     >
@@ -285,16 +305,31 @@ function AppTabScreen() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let iconColor;
-          if (route.name === "Map") {
-            iconName = "map";
-          } else if (route.name === "Bookmarks") {
-            iconName = "list";
-          } else if (route.name === "Post") {
-            iconName = "plus-square";
-          } else if (route.name === "Notifications") {
-            iconName = "bell";
-          } else if (route.name === "Profile") {
-            iconName = "user";
+
+          if (focused) {
+            if (route.name === "Map") {
+              iconName = "map_icon_active";
+            } else if (route.name === "Bookmarks") {
+              iconName = "bookmark_icon_active";
+            } else if (route.name === "Post") {
+              iconName = "add_story_icon";
+            } else if (route.name === "Notifications") {
+              iconName = "notification_icon_active";
+            } else if (route.name === "Profile") {
+              iconName = "profile_icon_active";
+            }
+          } else {
+            if (route.name === "Map") {
+              iconName = "map_outline";
+            } else if (route.name === "Bookmarks") {
+              iconName = "bookmark_outline";
+            } else if (route.name === "Post") {
+              iconName = "add_story_outline";
+            } else if (route.name === "Notifications") {
+              iconName = "notifications_outline";
+            } else if (route.name === "Profile") {
+              iconName = "profile_outline";
+            }
           }
 
           if (focused) {
@@ -303,7 +338,7 @@ function AppTabScreen() {
             iconColor = colors.border;
           }
 
-          return <FontAwesome5 name={iconName} size={size} color={iconColor} />;
+          return <Icon name={iconName} size={size} color={iconColor} />;
         },
       })}
     >
@@ -361,7 +396,7 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
   container: {
-    
+
   },
 });
 

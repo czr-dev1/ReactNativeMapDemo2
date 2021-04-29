@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
@@ -47,7 +48,7 @@ const HISTORICAL_PIN =
 const COMMUNITY_PIN =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAQrnpUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHja7ZpZdiQ5jGz/uYpeAmeQy+EAntM7eMvvC3qEclBWVVYpP59Ckrt8oIMYzAx0Of1//3vc//BVolSXi7Taa/V85Z57HOw0/3z1+zv4fH/fr/cp/v7huPs4ETmU2KbnTxmv6wfHy+eBwvzxuGuvM7G9BnqdeA+Y7MmRnf29kRyPz/GQXwN1fXZqb/K9qTM+2/W68Jry+mn92mKDPaf4231/IAte2oUHpRg1heTv7/Zck56fwU/nd0yF6zh795tjk1N/WYJDfpjee+v99w76wcnvPfez9z/2fnJ+HK/j6Sdf1peP2PnliVB+7fzr4u8enD4sij+eqDWkT9N5/Zyz2zn6zG7kikfrK6O8e3vH7uHCicvTva3yEX4K+3I/nU/zwy9Cvv3yk88KPUQefVzIYYcRTtC7XWFhYo4ahW2MK6Z7rCWJPa5kccr2CScK0dtELaYV1aXE4fhhS7jP7fd5KzSevAOXxsBggVv+8uP+7uS/+bhzlrko+PbhK+yKlqKYYZGz31xFQMJ5xa1cB78/r/D77/KHVCWC5bq5McHh5zPELOFbbqUb58R1he1TQsHJfg2Ai3h2wZiQiIAnDUqowUuMEgJ+bARoYHlMOU4iEEqJGyNjTqlGJ7FFezb3SLjXxhJrtMNgE4EoqSYhNtQXwcq5kD+SGzk0Siq5lFKLlOZKL6OmmmuptUo1kBuSJEuRKiJNuoyWWm6l1Sattd5Gjz2BgaXXLr313seIbvCgwViD6wdHZpxp5llmnTLb7HMs0mflVVZdstrqa+y40wYmdt2y2+57aHAKUmjWolVFm3Ydh1w76eRTTj1y2ulnfETtFdVPn38RtfCKWryRsuvkI2ocdSLvIYLBSbGYEbGYAxEXiwAJHS1mvoWco0XOYuZ7pChKxMhisXE7WMQIYdYQywkfsfsWud+Kmyvtt+IW/ylyzkL3JyLnCN3nuP0iatt4bt2IPVVoPvWJ6rO7yKM2tKR1/Ij8BQr+16376gD/f6C/327dacIj4+hwu4bAgV5IvFlPVKnpdAhF0RQtrUDdgSN5x9l2rKcmX9s4uTKGgn17r92yJFdUR+L0bHXp4U54ir3cwkleYKK2wll1bDkr9kPenNHUtpqH2LZKKau7GM/u+cyg5aDeRvubG/LfnHNZIjP45VhccK9/rv42zufjDOHSH7Eni/sz9qTt/ow9Mbs/Y0/P7s/Y05L7LXtKC6OdlfKBiyfX9gCuTiRM3FvCjLLdCUvmaT6fNcpEtkoErYYheEhDYtle07CyAF39rY/hf7F1r52xKzwnZavlcKBkegYz98qz79Zno3ZQ6yR+9JJ9HVw2j1AcC9ahC3EzszcGOMv0mFKh3LDutFr3XJVSQW01jWOkoLUWJJqkNEPfGuppggEa1jyuzt0pUMpWYENFBK6ZwukFmVfVOgg04BGFOHQxxabcmaa0hXGz7hJ2VgjOzYHnGBZ9OlfrTFRrVGw5Q9a1MagC6rY3tcvpg97A/oKcnjlcOna93WAu6Cnh9r6gArigw7KSztpETuompCFx4XysvoHvGI5eRiLZcff5RDwVKJEDr3nS4YAt58Q06wCS+mdbHlMctrS/OnnPMao/uiuwBNsps1pNN95CQR81fXZ2jsfZDRFQJCsBuG8nfji+R87pm4k8Nt3z38xs7hpyzYBIzZDHxPbr49+bZzyr1+1movtko9XTNYUo/WTkj2d+NNP9niv/2ZPu91z5z550/+jK7ifFp9TLIJf2OEi1LWvFjUl1DuTNKWWC2WT4PnVGPTSsYECWAeicil7KHbtPltCzSaaSOlTVUmnHq6LPzukJwSN1qiPn05xU3dYUdS/q5qDrDhpSI9+dtC2bKOqBS3ufa080HIoqAz6TOvax19NdRndSZjV1NcTyu5SNQtSJGkOoZdTbbq+7w9xJQllqfUSn5dBhPUcbIAVddh1FKdCNrET8tTbBVV1+CwouL0Jw/RalHj2JWzZg5fdOwCIggkumT408mhXZW/iOn5QCCoE5TeKEQWV39C3jVuFbcYDMlLSKAczcjpqvQFYDl5qiE0C0DlICu8Cfeo7WyDCB2xhWgEycReBwmu8LVXmyAdUEav0gdQjW2AF/nKKr1FDHIdj0nyhVJIlq9so5dOrc5ZQOACM/KJ7YaYLPHK6jdycjn4ROJ6QbAEbX0vFojBO3oV2YYk1DTfaXJcjzEosgf7Sm1FDMzCCg/BsgXvBkXQ8nrHZC/mu6+Iute++M3KL0uEctnZ4CxjLegDkOGh3GQ0tX32dWJccI4waOU5EpNffUOu36mVtJewm7eW1xygC7U8ZOMkNHYTaM0ju1FQJJObfQ4NCOFKHH4RfCX0txbZE6o9R+VglHO/4F9K1ZpbxGoF460n8m++YXnNMP7oeoik74JGBgKppcJ52PFSFtFc3wlEQvggNVn+yi0YnPnq1ePVsyAf4GSDo9WN7Ufp0XaumkdBp0FBBiP5jX+qi2tymcgzY9xagkL3wikhOPEWyA5yi0gAJwHUzQfG/xGBTI9AQlGdjB+3dQIJUipPIEzutVl2lWhp+LufDsapY62rjefLlW+/++FTdTuQDL44ZV0DKWvTxOrYJUGIffBTETKe3taw4nlHy66LBOLDGIQZuzvTT6ht/rZAa3XpE3ff2cc1QpogEujTHWjqtp+cyEbBlRHGnyCgFc+woCLMGg5yMGnVpsZKIw+In08/kJyOpyh7IlLPd2sv5HJ7997L7q5LeP3Ved/Pax+6qT3z52X3Xy28fuq05++8x91clvH7uvOvntY/dVJ7997P6Vk+Wzk7mjnDCAkY4o6DAxWkDvrH0o9rxdJGUgmdE0oZgBZghv73b9VKKkHzzn/oyrlzqQPi6F7WgdIJGdIHiVgNLA+XkcSKz4gcvGHl1K0jajNwZTugnSIUOaHc5waos67HV0UoNdyhnPkws8oJ/QeiSmioCvG+ZCVUDRSH2aH0cSEtnMySiCCNGCRrNl1GTMQ2IoPT8aK0AgERpNE8rrAtujW2huTm0VSgkOhsZUbRmNEgTxNRIqYhYaKJm1xPOxPqEbHbgCTG+rfrCcTZbRIfESOhYVaE1j2JEujE6mNxiwF4GPTtZcZZIMEU0XC4QaOg6GhOkbmZ+QMCizdsZy0oQerogPnf6lI9aYKD2jVNMosZGoh15tbVod9CcFSFiMTdEZEKxRlEhX8AgnU6Wz5QMxwd+9WF3yHJPBiAB0lcrTZsVIi9s2VT7QySdJXKGS94oYdIduDJ019iPIM0V2MwRiNs0NYWu6PTZRYrh1+tNjl5vtiGtoskZRpF8x6j2YTnbRE/5kiLUNjyHWfjRqiQeQaU+NYTa6X6lj15LesezwX472bVq3mXmPR1tjI97x3GvA93i/ZVshmTYCP2Wa5mjhpV+jKm3JCRipCXCZJnFqXtMjGP3s6CMydyQy/2Z3o6LaIFMLWGHNZ+hC0qXl1m2TD9qI+M6SeXhCayGdScxHuOCGjiwi8jZ6nr3nsuemDTBpjl5C1Q2HTPNUzY1EfrrqwQ1IO1SveFoWhhtINoseXXzDjF3m2wcDHzB2gWlN9iehcvOJ6DOSjKtQh3mPIrhu6QodoUgXQg4yy+oHCXsqzzJN3ji1JbsUx6LtEAynLnh6sYUG2jc8tDJ6088WGpqrV8TwsbQ2dT/zSKYvdwjIZQoRWcOVVHCw9WfB6bYyYh3JwU/Zuva0t/Qw2iJnZ6IGgXtdtFJM0nNoCC1/cIUQFy5ZxhZM5yBN0aEKIZS9CX6fs2br9tbe4BPSNDcIwBokJDLiHhJSJWrsEeX8Ir3Q2ydgrUdobWBRACvweBwToKO638sycFZ0OBBUDaI1ktstbiTv2HgS89L0myTY5DOdS6fVRc+P91pqBvNoUG1Z6MzsPpZSSdwCIuF3COQCHIIfslpvgCtCnl+A89vy0gCOIT1dCznu9ICYdCj2HFIR1wlYyhTSpI4SQEk2kBdrhPRA8IEHDIjIY0AQ/wmoXO9S/U1HkAVXUFfNVtl6PE8zHh4QQT/48dBieXrw8rovVuulhMaPqmiMautos8trmQBQ5brhKVLN1jsT1meBJySA91K3ETAK57nHofATA4r/4nDuddOXh3Pfm/d5uFEGbeX2OqiQXcEb9Zo8aE+7LjMEek5fKeToImzF89AnM9na2rs1Bx1IaeCiL4XG/e2fS2z2Mpc6o6ICHfMYVdptct2aNXBf3ckvOr2USMPGw2jpwS+hRQJBcgxmHGQZUDS5YYIa6cRLe+QSvUgHuhooVqw9podOVBkSIvXbacdDHoXdpflKfqWy6QtPOyCBaRFQYFrjjbtcWcFWY3yZCSyMZ+3+ALzxbsm2Yor0yGeEdd9yaSAKMyHMii38vKNiS2NPUNAt34XF/oUBHDRNC1IBcVRUfuSenXvn55OdNzchyFhnv6tqthhVfHxW1aatqtk7tJjzxLNUBBiKDFwXr3Ra/4nGo9FMTwuR52wnRZpMe/s1x0qtFrxXATYkj1UQQE29jvmxXiRFvy0X7TEUffSsF3lbL0KQ9WVFi/uzDhCntdeawlr/tKTgfnutYZNMU9qoSg2j/La9iX4Q6ehUh+oF7ZIH02C2HGKyACKeBjr7kWrPktRbqj0LWibVui1J9avUAiLCb0My8Pm0IAxwdpuTvnw/ClyBbnhIbG1vZ9mKqIkD2UqEGsbBkL4XEJISymQtVAofAvjiJzpne6AwgZIE0csBehcxmyguyEbVfqFuI1QUrOYYzUULGUwfQLVGKnRb6MeCnuiIKM2gEXFKOlKvTUKhV0IBIAMpqLuYgQJAOwWHC5pxaL6i0X4GKlCVBsYKgvSqmm2LezcFXJb1XWdTnUwjbe5naImuIn8ZdxTfn/cdN8u9ib/LAg0UebFAr0j+IA8LoDSqXhbwWSAghztgRLQMBD1t5dHug7LiYuBakVQID9jnxHAgYlgt1xYMIOzVBxCBjEAriZu9bFumh7JuBYbU279eznpe+P7+DSgQfGX6ph0wbuAh2Ez3xHMw7V0+so51gTqzFXvZjNQx3iNjETG4nwaE2faZCVmxN5Icvb6yAm10wxOExIl+ngTVBrLcihv92GiMRgIy21KdPdPD5GltD/oRGrX/n1pIakUIFQPv4+oAPfB3pqHiqTRLQs5kLq90EGciRmwhFZ+2MjZsvbgU2ScoOTo12l3OkvduVDTkmDSqtAK2RMV8irEnF0Lm9jrJXqCWttFEoeoU5key2iKprwtFYsmf1dG3EHwUXTFPUgg0qZZC8WqHWsibKcFynYCKp05jLrbQmMl0NIut+8EchaYGU5Z1grgRe1f+udn7va37FzcYWQZUXDJVCONR7nQrtk6NhHK2tHgmyQxjHIPtgqhac0Ty0l4a2byz7ms+6Aty1DVeeg3BK6Z9U4vZBbV/nRoQG6BsVUIlAIM7LdOlEq7gBsx43kQxrZ60VDpWU0w+RHv/GKy3dnsiD6u1b9XWRNfQpzMWA4dnFkBq/24W89skQNX3JBxzgOOHLO2Pv2Nf/j/42/2HAJnfQd0mhsxwUQO/qyNv6aKudLl4lAuQjG4mvTYUlu01Rz/WYNN6wYa7kvebVAv2mhFiacmEe3lWtOhFwHzw2joJVD9cgHCkj4FGxiu+hql41d5N0EfPYf8x+YR3cv90tH2p22LKe5nq81oxonR3938aeRQkDdopaQAAAYVpQ0NQSUNDIHByb2ZpbGUAAHicfZE9SMNQFIVPW6UqFQcLSnHIUF20ICriqFUoQoVQK7TqYPLSP2jSkKS4OAquBQd/FqsOLs66OrgKguAPiJOjk6KLlHhfUmgR44XH+zjvnsN79wH+epmpZsc4oGqWkUrEhUx2VQi+ohsR+DCAUYmZ+pwoJuFZX/fUSXUX41nefX9Wr5IzGeATiGeZbljEG8TTm5bOeZ84zIqSQnxOPGbQBYkfuS67/Ma54LCfZ4aNdGqeOEwsFNpYbmNWNFTiKeKoomqU78+4rHDe4qyWq6x5T/7CUE5bWeY6rSEksIgliBAgo4oSyrAQo10jxUSKzuMe/ojjF8klk6sERo4FVKBCcvzgf/B7tmZ+csJNCsWBzhfb/hgGgrtAo2bb38e23TgBAs/AldbyV+rAzCfptZYWPQL6toGL65Ym7wGXO8Dgky4ZkiMFaPnzeeD9jL4pC/TfAj1r7tya5zh9ANI0q+QNcHAIjBQoe93j3V3tc/u3pzm/H2kDcqNoXOB4AAABF1BMVEU1MDlHcEz///////////////////////////////////////////////////////////////////////////////8kznskznskznv///8kznv///8kznskznskznskznskznskznskznskznskznskznskznv////////////7/v3y/Pf3/fr////0/fnu+/X////////////////////////////////////r+/OC47RV2Zkkznv///9b2pyS573y/Pcy0YPJ895N15Tk+e/X9ud24K2t7c4/1Iy78NaE5LVp3aSg6sb3/frw/Pbu+/Xm+fDr+/Pt+/T4/fvn+vH2/fro+vFl3aJl3KLj+e7p+vKE47Wg6sUwwadwAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAHdElNRQfkCRoBHDS1tOVhAAAB1ElEQVR42u3awW6CQBAG4M08xD4ENnrXRAMG2I1JY0o0buH9n6OmxQXbQxkcGJv+/8ETZj43E8EZjUEQBEEQBEEQBEEQ5I+EZKJcfiyBZKNcnk0g0hUQ6QqIdAW9d7z6emMfiSvKwBbEy1c7K5Ei8ATx4sxZoZTJGIC3cllXwwXx81vJ7NiAdycKsNlQwe26Wra+dSceIFjpeB6gFAdseYCLOMC+DRN8XZTI149tOAhwVAMQAAAAAAAAAAAAAAAAAADAkwCCGqAVLCcABA6A9vKAJQuwE69/4M0Hcu0JifiEwi2GjskmOoKSmABqROuvE/agMpEc1BUnxqw2CuTOoKlY4/JuWr0VKV8zp+W9fUGS1eljxfe1Xz20sbjel8JvydL+biDk2TXe++trWMyzs+kN9p3O1qr3xb1Q2du9XH6O5eddXYbYBo3c8nZcG2y11texDRK58ixEdWuDXK40D3hM72978//JoV2zFXMDzPc2IDVB2wbH2QFdGzjOw99kbVDPD7hvg5QUBZ9tsFIARMHZDf4ROF0bNBqATtDYjQqge5g+2EpXcHa5LoCyUgfQEygBjPCTiIDg/wGMOsCoA8xzHYHRPgKjLTDKAmNUBQZBkGfOB4QXreasl7fqAAAAAElFTkSuQmCC";
 
-function LightMapScreen(props) {
+function DarkMapScreen(props) {
   const [gotLocation, setGotLocation] = useState(false);
   const [location, setLocation] = useState({
     latitude: 34.0522,
@@ -112,6 +113,12 @@ function LightMapScreen(props) {
       });
   };
 
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   const searchFilterFunction = (text) => {
     if (text.length > 0) {
       setShowSearchResults(true);
@@ -140,10 +147,11 @@ function LightMapScreen(props) {
         style={styles.itemStyle}
         onPress={() => {
           //Need to send user to the searched post on the map
-          // props.navigation.navigate('Story', {
-          //title: item.title,
-          //description: item.description
-          //});
+          // props.navigation.navigate("Story", {
+          //   title: item.title,
+          //   description: item.description,
+          // });
+          Alert.alert("Should display search item");
         }}
       >
         {item.title.toUpperCase()}
@@ -220,7 +228,70 @@ function LightMapScreen(props) {
     //console.log(filteredDataSource);
   };
 
-  const Separator = () => <View style={styles.separator} />;
+  const renderPins = () => {
+    let selectedStories = props.stories;
+    switch (selectedButton) {
+      case 1:
+        selectedStories = props.personalStories;
+        break;
+      case 2:
+        selectedStories = props.resourcesStories;
+        break;
+      case 3:
+        selectedStories = props.historicalStories;
+        break;
+    }
+
+    return selectedStories.map((item, i) => {
+      // Removing images completely including
+      // the case made it run
+      // expo moves assets to the cloud, figure out how to keep
+      // https://docs.expo.io/guides/preloading-and-caching-assets/
+      // UPDATE: ended up keeping them by converting to a base64 string
+      // and passing that in as an argument
+      let pinType = "";
+      switch (item.category) {
+        case 1:
+          pinType = PERSONAL_PIN;
+          //pinType = '#6a0dad';
+          break;
+        case 2:
+          pinType = COMMUNITY_PIN;
+          //pinType = '#00FF00';
+          break;
+        default:
+          pinType = HISTORICAL_PIN;
+        //pinType = '#0000FF';
+      }
+      return (
+        <Marker
+          key={i}
+          coordinate={{
+            latitude: parseFloat(item.latitude),
+            longitude: parseFloat(item.longitude),
+          }}
+          image={pinType}
+          onPress={() => {
+            console.log(item);
+            setModalData({
+              title: item.title,
+              description: item.description,
+              id: item.id,
+              postDate: item.postDate,
+              category: item.category,
+            });
+            setShowModal(true);
+            /*
+            props.navigation.navigate('Story', {
+              title: item.title,
+              description: item.description,
+              id: item.id
+            }); */
+          }}
+        ></Marker>
+      );
+    });
+  };
 
   return (
     <SafeAreaView style={(styles.container, { flex: 1 })}>
@@ -305,248 +376,78 @@ function LightMapScreen(props) {
           placeholderTextColor={colors.purple}
           value={search}
         />
-
-        <Collapse>
-          <CollapseHeader
+        <HideKeyboard>
+          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
               padding: 10,
               backgroundColor: colors.purple,
             }}
           >
-            <View style={{ width: "15%", alignItems: "center" }}>
-              {/* <Thumbnail
-								source={{
-									uri:
-										"https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
-								}}
-							/> */}
-              <MaterialIcons name="sort" size={32} color={colors.white} />
-            </View>
+            <TouchableOpacity
+              style={
+                selectedButton === 0
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                //render all stories list
+                setSelectedButton(0);
+              }}
+            >
+              <Text style={styles.TextStyle}> all </Text>
+            </TouchableOpacity>
 
-            <View style={styles.screenContainer}>
-              <TouchableOpacity
-                style={
-                  selectedButton === 0
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  setSelectedButton(0);
-                }}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyle}> all </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 1
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              //onPress={(() => setSelectedCategoryButton(1))}
+              onPress={() => {
+                renderPersonal();
+                setSelectedButton(1);
+              }}
+            >
+              <Text style={styles.TextStyle}> personal </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 1
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                //onPress={(() => setSelectedCategoryButton(1))}
-                onPress={() => {
-                  renderPersonal();
-                  setSelectedButton(1);
-                }}
-              >
-                <Text style={styles.TextStyle}> personal </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 2
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderHistorical();
+                setSelectedButton(2);
+              }}
+            >
+              <Text style={styles.TextStyle}> historical </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 2
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderHistorical();
-                  setSelectedButton(2);
-                }}
-              >
-                <Text style={styles.TextStyle}> historical </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={
-                  selectedButton === 3
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderResources();
-                  setSelectedButton(3);
-                }}
-              >
-                <Text style={styles.TextStyle}> resources </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseHeader>
-          <CollapseBody
-            //Styles the body portion
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              backgroundColor: "#EDEDED",
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.SortTextStyle}> sort by </Text>
-            </View>
-
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> any </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> relevance </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            {/* <DropDownPicker
-							items={[
-								{
-									label: "radius",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "continent",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "date",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/> */}
-            <Separator />
-            <View style={styles.fixToText}>
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> clear </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> apply </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseBody>
-        </Collapse>
+            <TouchableOpacity
+              style={
+                selectedButton === 3
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(3);
+              }}
+            >
+              <Text style={styles.TextStyle}> resources </Text>
+            </TouchableOpacity>
+          </View>
+        </HideKeyboard>
 
         {showSearchResults ? (
           <FlatList
@@ -588,55 +489,7 @@ function LightMapScreen(props) {
             minZoomLevel={0}
             zIndex={1}
           />
-          {props.stories.map((item, i) => {
-            // Removing images completely including
-            // the case made it run
-            // expo moves assets to the cloud, figure out how to keep
-            // https://docs.expo.io/guides/preloading-and-caching-assets/
-            // UPDATE: ended up keeping them by converting to a base64 string
-            // and passing that in as an argument
-            let pinType = "";
-            switch (item.category) {
-              case 1:
-                pinType = PERSONAL_PIN;
-                //pinType = '#6a0dad';
-                break;
-              case 2:
-                pinType = COMMUNITY_PIN;
-                //pinType = '#00FF00';
-                break;
-              default:
-                pinType = HISTORICAL_PIN;
-              //pinType = '#0000FF';
-            }
-            return (
-              <Marker
-                key={i}
-                coordinate={{
-                  latitude: parseFloat(item.latitude),
-                  longitude: parseFloat(item.longitude),
-                }}
-                image={pinType}
-                onPress={() => {
-                  console.log(item);
-                  setModalData({
-                    title: item.title,
-                    description: item.description,
-                    id: item.id,
-                    postDate: item.postDate,
-                    category: item.category,
-                  });
-                  setShowModal(true);
-                  /*
-									props.navigation.navigate('Story', {
-										title: item.title,
-										description: item.description,
-										id: item.id
-									}); */
-                }}
-              ></Marker>
-            );
-          })}
+          {renderPins()}
         </MapView>
       )}
     </SafeAreaView>
@@ -761,9 +614,21 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-
+//Personal, Historical, Resources
 const mapStateToProps = (state) => {
+  let personalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 1
+  );
+  let historicalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 3
+  );
+  let resourcesCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 2
+  );
   return {
+    personalStories: personalCategorical,
+    historicalStories: historicalCategorical,
+    resourcesStories: resourcesCategorical,
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
     error: state.storyReducer.error,
@@ -776,4 +641,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LightMapScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DarkMapScreen);

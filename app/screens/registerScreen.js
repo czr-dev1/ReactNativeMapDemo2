@@ -4,9 +4,8 @@ import {
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
 	TextInput,
-	TouchableOpacity, 
+	TouchableOpacity,
 	View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -20,12 +19,13 @@ import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 // Redux
 import { register, reset } from '../redux/actions/authActions';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function RegisterScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
-	
+
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
 	const [hidden, setHidden] = useState(true);
@@ -125,14 +125,16 @@ function RegisterScreen(props) {
 		});
 	};
 
+	// Handles showing/hiding password
 	const showPassword = () => {
 		setHidden(hidden ? false : true);
 	};
 
+	// Alerts when registration fails
 	const failedRegister = () => {
 		Alert.alert(
-			'failed to register!', 
-			'username or email already taken! try another', 
+			'failed to register!',
+			'username or email already taken! try another',
 			[
 				{
 					text: 'ok',
@@ -156,16 +158,16 @@ function RegisterScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-			<Image 
-					style={{ height: 100, width: 100 }} 
+			<Image
+					style={{ height: 150, width: 150 }}
 					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> register </Text>
 			</View>
 
 			{submitted && failed ? (
 				<View style={{ alignItems: 'center' }}>
-				{/* Made it an Alert so that I could reset props.registerFail 
-				back to false and update useState for setSubmitted. Also had 
+				{/* Made it an Alert so that I could reset props.registerFail
+				back to false and update useState for setSubmitted. Also had
 				to add some things to authActions and authReducer */}
 					<View>
 						<Text> {failedRegister()} </Text>
@@ -223,7 +225,7 @@ function RegisterScreen(props) {
 
 				<View style={styles.input}>
 					{/* allows user to show/hide password */}
-					<TouchableOpacity 
+					<TouchableOpacity
 						onPress={showPassword}
 					>
 						{hidden ? (
@@ -259,7 +261,7 @@ function RegisterScreen(props) {
 
 				<View style={styles.input}>
 					{/* allows user to show/hide password */}
-					<TouchableOpacity 
+					<TouchableOpacity
 						onPress={updateSecureTextEntry}
 					>
 						{user.secureTextEntry ? (
@@ -302,9 +304,9 @@ function RegisterScreen(props) {
 							setSubmitted(!submitted);
 						}}
 					>
-						<Text 
-							style={{ 
-								color: 'white', 
+						<Text
+							style={{
+								color: 'white',
 								alignSelf: 'center',
 								fontFamily: 'Arial',
 								fontSize: 24,
@@ -316,22 +318,22 @@ function RegisterScreen(props) {
 				</View>
 
 				<View style={styles.links}>
-					<Text 
+					<Text
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 12,
 							color: colors.forgotDetails,
 						}}
 					>
-						already have an account? log in{' '} 
+						already have an account? log in{' '}
 					</Text>
 					<TouchableOpacity
 						onPress={() => {
 							navigation.navigate('Login');
 						}}
 					>
-						<Text 
-							style={{ 
+						<Text
+							style={{
 								fontFamily: 'Arial',
 								fontSize: 12,
 								fontWeight: 'bold',
@@ -426,6 +428,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		color: '#008BBC',
+		marginBottom: 50,
 	},
 	errorMsg: {
 		fontSize: 12,

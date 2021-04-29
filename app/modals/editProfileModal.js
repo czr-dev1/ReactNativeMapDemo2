@@ -4,7 +4,6 @@ import {
   Button,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -24,6 +23,7 @@ import { Switch } from "react-native-switch";
 import { reloadUser } from "../redux/actions/auth";
 import { userSelfDelete } from "../redux/actions/authActions";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 
 const PROFILE_PIC = require("../assets/profile_blank.png");
@@ -55,7 +55,7 @@ function EditProfileModal(props) {
         config
       )
       .then((response) => {
-        props.navigation.goBack();
+        props.navigation.navigate('Profile');
         props.reloadUser(props.username);
       })
       .catch((err) => {
@@ -106,11 +106,11 @@ function EditProfileModal(props) {
           >
             edit profile
           </Text>
-          <TouchableWithoutFeedback onPress={() => {
+          <TouchableOpacity onPress={() => {
             onSubmit();
           }}>
             <Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   input: {
+    fontFamily: "Arial",
     borderBottomWidth: 3,
     borderColor: "#ddd",
     padding: 10,

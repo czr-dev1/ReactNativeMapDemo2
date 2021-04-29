@@ -3,11 +3,11 @@ import {
   Button,
   Dimensions,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Text
 } from "react-native";
 import {
   Collapse,
@@ -26,6 +26,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+
 
 import colors from "../config/colors";
 
@@ -553,10 +554,11 @@ function StoryPostScreen(props) {
               style={{
                 alignSelf: "flex-start",
                 position: "absolute",
-                bottom: 55,
+                bottom: 35,
                 borderRadius: 5,
                 borderColor: colors.border,
                 borderWidth: 2,
+                marginBottom: 50,
               }}
             >
               <Text
@@ -575,10 +577,11 @@ function StoryPostScreen(props) {
               style={{
                 alignSelf: "flex-end",
                 position: "absolute",
-                bottom: 55,
+                bottom: 35,
                 borderRadius: 5,
                 borderColor: colors.border,
                 borderWidth: 2,
+                marginBottom: 50,
               }}
               disabled={gotLocation ? false : true}
               onPress={(e) => {
@@ -629,12 +632,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
+    fontWeight: 'normal',
     borderColor: colors.border,
     padding: 10,
     fontSize: 14,
     width: "100%",
   },
   inputAddress: {
+    fontWeight: 'normal',
     padding: 10,
     fontSize: 14,
     width: "100%",

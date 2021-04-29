@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
-import { 
-	Image, 
-	SafeAreaView, 
-	StyleSheet, 
-	Text, 
-	TouchableOpacity, 
-	View 
+import {
+	Image,
+	SafeAreaView,
+	StyleSheet,
+	TouchableOpacity,
+	View
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
 // Redux
-import { setExpoPushToken } from '../redux/actions/authActions';
+import { connect, useDispatch } from "react-redux";
+import { setExpoPushToken } from "../redux/actions/authActions";
 
-import colors from '../config/colors';
+import Text from "../components/text";
+import colors from "../config/colors";
 
 function LoginRegisterOption() {
 	const navigation = useNavigation();
@@ -54,8 +54,8 @@ function LoginRegisterOption() {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
 				<Image 
-					style={{ height: 100, width: 320, marginBottom: 75 }} 
-					source={require('../assets/all_white_logo.png')} />
+					style={{ height: 110, width: 350, marginBottom: 75 }} 
+					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
 			</View>
 
 			<View style={styles.loginContainer}>
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		color: '#008BBC',
+		marginBottom: 50,
 	},
 });
 

@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, Switch, Text, View } from "react-native";
+import { StyleSheet, Switch, View } from "react-native";
 import { connect } from "react-redux";
 import { setPrivacyMode } from "../redux/actions/authActions";
+import Text from "./text";
 
 function AnonToggleSwitch(props) {
   return (
     <View style={styles.container}>
-      <Text>privacy mode</Text>
+      <Text style={{}}>privacy mode</Text>
       <Switch
         value={props.isPrivacyMode}
         onValueChange={() => props.setPrivacyMode(!props.isPrivacyMode)}

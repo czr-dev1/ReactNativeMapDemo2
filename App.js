@@ -12,6 +12,17 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./app/redux/reducers/rootReducer";
 
+//Custom Icons
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+
+const Icon = createIconSetFromIcoMoon(
+  require("./app/assets/fonts/selection.json"),
+  "IcoMoon",
+  "icomoon.ttf"
+);
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 Notifications.setNotificationHandler({
@@ -27,6 +38,12 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  //Custom Icons
+  const [fontsLoaded] = useFonts({
+    IcoMoon: require("./app/assets/fonts/icomoon.ttf"),
+    Arial: require("./app/assets/fonts/arial.ttf"),
+    ArialBold: require("./app/assets/fonts/arialBold.ttf"),
+  });
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
@@ -55,18 +72,22 @@ export default function App() {
     };
   }, []);
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
   return (
-    <SafeAreaProvider>
-      {/* Added StatusBar for iOS to see time/battery on each
-      page except where page has a black background */}
-      <StatusBar
-        barStyle={(Platform.OS === "android" ? "light-content" : "dark-content")}
-      />
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
-    </SafeAreaProvider>
-  );
+      <SafeAreaProvider>
+        {/* Added StatusBar for iOS to see time/battery on each
+        page except where page has a black background */}
+        <StatusBar
+          barStyle={(Platform.OS === "android" ? "light-content" : "dark-content")}
+        />
+        <Provider store={store}>
+          <Navigation />
+        </Provider>
+      </SafeAreaProvider>
+    );
+  }
 
   async function registerForPushNotificationsAsync() {
     let token;

@@ -6,9 +6,10 @@ import {
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
-  Text,
   View,
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Card } from "react-native-elements";
 import { connect } from "react-redux";
@@ -19,6 +20,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+
+import Text from "../components/text";
 import colors from "../config/colors";
 const PROFILE_PIC = require("../assets/profile_blank.png");
 
@@ -110,7 +113,7 @@ function BookmarkUserScreen(props) {
                         style={{ flexDirection: "column", paddingLeft: 12 }}
                       >
                         <Text style={{ fontSize: 18 }}>{item.username}</Text>
-                        <Text>{temp}</Text>
+                        <Text style={{}}>{temp}</Text>
                       </View>
                     </View>
                     <View>

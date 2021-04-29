@@ -4,7 +4,6 @@ import {
   Dimensions,
   Image,
   StyleSheet,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -21,6 +20,7 @@ import { FontAwesome } from "@expo/vector-icons";
 // redux
 import { followUser, unfollowUser } from "../redux/actions/authActions";
 
+import Text from "../components/text";
 import colors from "../config/colors";
 //profile picture
 const PROFILE_PIC = require("../assets/profile_blank.png");
@@ -133,7 +133,7 @@ function FollowingProfileScreen(props) {
           </View>
           <View style={styles.bioContainter}>
             <Text style={{ fontWeight: "bold", color: colors.gray }}>bio</Text>
-            <Text>{data.bio}</Text>
+            <Text style={{}}>{data.bio}</Text>
           </View>
         </View>
         <View style={styles.profileStoryButtons}>

@@ -20,7 +20,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { login, reset } from '../redux/actions/authActions';
 
 import colors from '../config/colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function LoginScreen(props) {
 	const dispatch = useDispatch();
@@ -104,8 +103,8 @@ function LoginScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-			<Image 
-					style={{ height: 100, width: 100 }} 
+				<Image 
+					style={{ height: 150, width: 150 }} 
 					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> log in </Text>
 			</View>
@@ -330,6 +329,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		color: '#008BBC',
+		marginBottom: 50,
 	},
 	errorMsg: {
 		fontSize: 12,

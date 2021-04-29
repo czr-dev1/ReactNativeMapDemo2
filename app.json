@@ -1,13 +1,13 @@
 {
   "expo": {
     "privacy": "unlisted",
-    "name": "The arqive",
-    "slug": "Thearqive",
-    "version": "1.1.4",
+    "name": "thearqive",
+    "slug": "thearqive",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./app/assets/color_icon.png",
     "splash": {
-      "image": "./app/assets/color_icon_splash.png",
+      "image": "./app/assets/color_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,8 +19,8 @@
       "./app/assets/pinImages/*"
     ],
     "ios": {
-      "supportsTablet": false,
-      "bundleIdentifier": "com.thearqive.thearqive"
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thearqive",
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",

@@ -3,7 +3,7 @@ import {
 	Dimensions,
 	FlatList,
 	ScrollView,
-	Text,
+	StyleSheet,
 	TouchableWithoutFeedback,
 	View,
 } from 'react-native';
@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 // Icons
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 const ItemCard = ({ item }) => {
@@ -21,7 +22,7 @@ const ItemCard = ({ item }) => {
 	let d = new Date(item.time * 1);
 	return (
 		<TouchableWithoutFeedback>
-			<Card containerStyle={{ borderRadius: 14 }}>
+			<Card containerStyle={[{ borderRadius: 14, marginBottom: 12 }, styles.shadow2]}>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<View style={{ padding: 12 }}>
 						<FontAwesome5 name='comment-alt' size={32} color='black' />
@@ -42,7 +43,7 @@ const ItemCard = ({ item }) => {
 						>
 							{item.username}
 						</Text>
-						<Text>
+						<Text style={{}}>
 							{d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}
 						</Text>
 					</View>
@@ -89,7 +90,7 @@ function NotificationScreen(props) {
 					</Text>
 				</View>
 				<FlatList
-					style={{ width: Dimensions.get('window').width }}
+					style={{ width: Dimensions.get('window').width}}
 					data={props.notificationList}
 					renderItem={renderItem}
 					keyExtractor={(item) => '' + item.time}
@@ -98,6 +99,20 @@ function NotificationScreen(props) {
 		</SafeAreaView>
 	);
 }
+
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
+const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
+});
 
 const mapStateToProps = (state) => {
 	// console.log(state.authReducer.notificationList);
