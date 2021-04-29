@@ -421,14 +421,14 @@ function LightMapScreen(props) {
 
             <TouchableOpacity
               style={
-                selectedButton === 2
+                selectedButton === 3
                   ? styles.HeaderButtonStyle
                   : styles.UnselectedHeaderButtonStyle
               }
               activeOpacity={0.5}
               onPress={() => {
                 renderHistorical();
-                setSelectedButton(2);
+                setSelectedButton(3);
               }}
             >
               <Text style={styles.TextStyle}> historical </Text>
@@ -436,14 +436,14 @@ function LightMapScreen(props) {
 
             <TouchableOpacity
               style={
-                selectedButton === 3
+                selectedButton === 2
                   ? styles.HeaderButtonStyle
                   : styles.UnselectedHeaderButtonStyle
               }
               activeOpacity={0.5}
               onPress={() => {
                 renderResources();
-                setSelectedButton(3);
+                setSelectedButton(2);
               }}
             >
               <Text style={styles.TextStyle}> resources </Text>
