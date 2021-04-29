@@ -384,7 +384,8 @@ function LightMapScreen(props) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-evenly",
-              padding: 10,
+              paddingBottom: 10,
+              paddingRight: 15,
               backgroundColor: colors.purple,
             }}
           >
@@ -400,7 +401,7 @@ function LightMapScreen(props) {
                 setSelectedButton(0);
               }}
             >
-              <Text style={styles.TextStyle}> all </Text>
+              <Text style={styles.TextStyle}>all</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -416,22 +417,7 @@ function LightMapScreen(props) {
                 setSelectedButton(1);
               }}
             >
-              <Text style={styles.TextStyle}> personal </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={
-                selectedButton === 3
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(3);
-              }}
-            >
-              <Text style={styles.TextStyle}> historical </Text>
+              <Text style={styles.TextStyle}>personal</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -442,11 +428,26 @@ function LightMapScreen(props) {
               }
               activeOpacity={0.5}
               onPress={() => {
-                renderResources();
+                renderHistorical();
                 setSelectedButton(2);
               }}
             >
-              <Text style={styles.TextStyle}> resources </Text>
+              <Text style={styles.TextStyle}>historical</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={
+                selectedButton === 3
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(3);
+              }}
+            >
+              <Text style={styles.TextStyle}>resources</Text>
             </TouchableOpacity>
           </View>
         </HideKeyboard>
@@ -584,10 +585,10 @@ const styles = StyleSheet.create({
   UnselectedHeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
-    marginLeft: 5,
+    //marginLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    marginRight: 5,
+    //marginRight: 5,
     backgroundColor: colors.purple,
     height: 30,
     width: 75,
@@ -595,10 +596,10 @@ const styles = StyleSheet.create({
   HeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
-    marginLeft: 5,
+    //marginLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    marginRight: 5,
+    //marginRight: 5,
     backgroundColor: colors.purple,
     borderBottomWidth: 5,
     borderColor: colors.orange,
