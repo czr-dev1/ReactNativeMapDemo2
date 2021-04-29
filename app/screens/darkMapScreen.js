@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
@@ -113,6 +114,12 @@ function LightMapScreen(props) {
       });
   };
 
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   const searchFilterFunction = (text) => {
     if (text.length > 0) {
       setShowSearchResults(true);
@@ -141,10 +148,11 @@ function LightMapScreen(props) {
         style={styles.itemStyle}
         onPress={() => {
           //Need to send user to the searched post on the map
-          // props.navigation.navigate('Story', {
-          //title: item.title,
-          //description: item.description
-          //});
+          // props.navigation.navigate("Story", {
+          //   title: item.title,
+          //   description: item.description,
+          // });
+          Alert.alert("Should display search item");
         }}
       >
         {item.title.toUpperCase()}
@@ -221,8 +229,6 @@ function LightMapScreen(props) {
     //console.log(filteredDataSource);
   };
 
-  const Separator = () => <View style={styles.separator} />;
-
   const renderPins = () => {
     let selectedStories = props.stories;
     switch (selectedButton) {
@@ -230,10 +236,10 @@ function LightMapScreen(props) {
         selectedStories = props.personalStories;
         break;
       case 2:
-        selectedStories = props.historicalStories;
+        selectedStories = props.resourcesStories;
         break;
       case 3:
-        selectedStories = props.resourcesStories;
+        selectedStories = props.historicalStories;
         break;
     }
 
@@ -371,245 +377,78 @@ function LightMapScreen(props) {
           placeholderTextColor={colors.purple}
           value={search}
         />
-
-        <Collapse>
-          <CollapseHeader
+        <HideKeyboard>
+          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               padding: 10,
               backgroundColor: colors.purple,
             }}
           >
-            <View style={{ width: "15%", alignItems: "center" }}>
-              {/* <Thumbnail
-								source={{
-									uri:
-										"https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
-								}}
-							/> */}
-              <MaterialIcons name="sort" size={32} color={colors.white} />
-            </View>
+            <TouchableOpacity
+              style={
+                selectedButton === 0
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                //render all stories list
+                setSelectedButton(0);
+              }}
+            >
+              <Text style={styles.TextStyle}> all </Text>
+            </TouchableOpacity>
 
-            <View style={styles.screenContainer}>
-              <TouchableOpacity
-                style={
-                  selectedButton === 0
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyle}> all </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 1
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              //onPress={(() => setSelectedCategoryButton(1))}
+              onPress={() => {
+                renderPersonal();
+                setSelectedButton(1);
+              }}
+            >
+              <Text style={styles.TextStyle}> personal </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 1
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                //onPress={(() => setSelectedCategoryButton(1))}
-                onPress={() => {
-                  renderPersonal();
-                  setSelectedButton(1);
-                }}
-              >
-                <Text style={styles.TextStyle}> personal </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 2
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderHistorical();
+                setSelectedButton(2);
+              }}
+            >
+              <Text style={styles.TextStyle}> historical </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 2
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderHistorical();
-                  setSelectedButton(2);
-                }}
-              >
-                <Text style={styles.TextStyle}> historical </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={
-                  selectedButton === 3
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderResources();
-                  setSelectedButton(3);
-                }}
-              >
-                <Text style={styles.TextStyle}> resources </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseHeader>
-          <CollapseBody
-            //Styles the body portion
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              backgroundColor: "#EDEDED",
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.SortTextStyle}> sort by </Text>
-            </View>
-
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> any </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> relevance </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            {/* <DropDownPicker
-							items={[
-								{
-									label: "radius",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "continent",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "date",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/> */}
-            <Separator />
-            <View style={styles.fixToText}>
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> clear </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> apply </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseBody>
-        </Collapse>
+            <TouchableOpacity
+              style={
+                selectedButton === 3
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(3);
+              }}
+            >
+              <Text style={styles.TextStyle}> resources </Text>
+            </TouchableOpacity>
+          </View>
+        </HideKeyboard>
 
         {showSearchResults ? (
           <FlatList
@@ -793,10 +632,10 @@ const mapStateToProps = (state) => {
     (story) => story.category === 1
   );
   let historicalCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 2
+    (story) => story.category === 3
   );
   let resourcesCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 3
+    (story) => story.category === 2
   );
   return {
     personalStories: personalCategorical,
