@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-	Button,
+	Alert,
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
 	TextInput,
-	TouchableWithoutFeedback,
+	TouchableOpacity,
 	View,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { connect, useDispatch } from 'react-redux';
-import { FontAwesome5 } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import * as EmailValidator from 'email-validator';
 
-import { register } from '../redux/actions/authActions';
+// Icons
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+
+// Redux
+import { register, reset } from '../redux/actions/authActions';
+
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function RegisterScreen(props) {
@@ -25,6 +28,7 @@ function RegisterScreen(props) {
 
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
+	const [hidden, setHidden] = useState(true);
 
 	const [user, setUser] = useState({
 		username: '',
@@ -40,7 +44,6 @@ function RegisterScreen(props) {
 	});
 
 	const setUsername = (val) => {
-		console.log(user);
 		if (val.length > 15) {
 			setUser({
 				...user,
@@ -122,6 +125,28 @@ function RegisterScreen(props) {
 		});
 	};
 
+	// Handles showing/hiding password
+	const showPassword = () => {
+		setHidden(hidden ? false : true);
+	};
+
+	// Alerts when registration fails
+	const failedRegister = () => {
+		Alert.alert(
+			'failed to register!',
+			'username or email already taken! try another',
+			[
+				{
+					text: 'ok',
+					onPress: () => {
+						setSubmitted(!submitted);
+						dispatch(reset());
+					}
+				}
+			]
+		);
+	};
+
 	useEffect(() => {
 		if (submitted) {
 			setFailed(props.registerFail);
@@ -132,124 +157,202 @@ function RegisterScreen(props) {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/color_icon.png')} />
-			<Text style={styles.title}>register</Text>
+			<View style={styles.logo}>
+			<Image
+					style={{ height: 150, width: 150 }}
+					source={require('../assets/color_icon.png')} />
+				<Text style={styles.title}> register </Text>
+			</View>
 
 			{submitted && failed ? (
-				<View>
-					<Text style={styles.error}>username or email already taken!</Text>
-					<Text style={styles.error}>please try another</Text>
+				<View style={{ alignItems: 'center' }}>
+				{/* Made it an Alert so that I could reset props.registerFail
+				back to false and update useState for setSubmitted. Also had
+				to add some things to authActions and authReducer */}
+					<View>
+						<Text> {failedRegister()} </Text>
+					</View>
 				</View>
-			) : null}
+			) : null
+			}
 
-			<View style={styles.icon}>
-				<TextInput
-					style={styles.input}
-					value={user.username}
-					placeholder='username'
-					autoCapitalize='none'
-					autoCorrect={false}
-					onChangeText={(val) => setUsername(val)}
-				/>
-			</View>
-			{user.isValidUsername ? null : (
-				<Animatable.View animation='fadeInLeft' duration={500}>
-					<Text style={styles.errorMsg}>username must be no longer than 15 characters</Text>
-				</Animatable.View>
-			)}
+			<View style={styles.inputContainer}>
+				<View style={styles.input}>
+					<TextInput
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
+							color: colors.purple,
+						}}
+						value={user.username}
+						placeholder='username'
+						placeholderTextColor={colors.purple}
+						autoCapitalize='none'
+						autoCorrect={false}
+						onChangeText={(val) => setUsername(val)}
+					/>
+				</View>
+				{user.isValidUsername ? null : (
+					<Animatable.View animation='fadeInLeft' duration={500}>
+						<Text style={styles.errorMsg}>
+							username must be no longer than 15 characters
+						</Text>
+					</Animatable.View>
+				)}
 
-			<View style={styles.icon}>
-				<FontAwesome5 name='envelope' color='#DCDCDC' size={20} />
-				<TextInput
-					style={styles.input}
-					value={user.email}
-					placeholder='email'
-					autoCapitalize='none'
-					autoCorrect={false}
-					onChangeText={(val) => setEmail(val)}
-				/>
-			</View>
-			{user.isValidEmail || user.email === '' ? null : (
-				<Animatable.View animation='fadeInLeft' duration={500}>
-					<Text style={styles.errorMsg}>please enter valid email</Text>
-				</Animatable.View>
-			)}
+				<View style={styles.input}>
+					<FontAwesome name='envelope' color={colors.purple} size={20} />
+					<TextInput
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
+							color: colors.purple,
+							marginLeft: 10,
+						}}
+						value={user.email}
+						placeholder='email'
+						placeholderTextColor={colors.purple}
+						autoCapitalize='none'
+						autoCorrect={false}
+						onChangeText={(val) => setEmail(val)}
+					/>
+				</View>
+				{user.isValidEmail || user.email === '' ? null : (
+					<Animatable.View animation='fadeInLeft' duration={500}>
+						<Text style={styles.errorMsg}>please enter a valid email</Text>
+					</Animatable.View>
+				)}
 
-			<View style={styles.icon}>
-				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
-				<TextInput
-					style={styles.input}
-					value={user.password}
-					placeholder='password'
-					autoCapitalize='none'
-					autoCorrect={false}
-					secureTextEntry={user.secureTextEntry ? true : false}
-					onChangeText={(val) => setPassword(val)}
-					onEndEditing={(val) => setConfirmPassword(val)}
-				/>
+				<View style={styles.input}>
+					{/* allows user to show/hide password */}
+					<TouchableOpacity
+						onPress={showPassword}
+					>
+						{hidden ? (
+							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
+						) : (
+							<FontAwesome5 name='eye' color={colors.purple} size={20} />
+						)}
+					</TouchableOpacity>
+					<TextInput
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
+							color: colors.purple,
+							marginLeft: 10,
+							width: 290
+						}}
+						value={user.password}
+						placeholder='password'
+						placeholderTextColor={colors.purple}
+						autoCapitalize='none'
+						autoCorrect={false}
+						secureTextEntry={hidden ? true : false}
+						onChangeText={(val) => setPassword(val)}
+					/>
+				</View>
+				{user.isValidPassword || user.password === '' ? null : (
+					<Animatable.View animation='fadeInLeft' duration={500}>
+						<Text style={styles.errorMsg}>
+							must be at least 8 characters long with at least 1 uppercase letter, 1 number, and 1 special character
+						</Text>
+					</Animatable.View>
+				)}
+
+				<View style={styles.input}>
+					{/* allows user to show/hide password */}
+					<TouchableOpacity
+						onPress={updateSecureTextEntry}
+					>
+						{user.secureTextEntry ? (
+							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
+						) : (
+							<FontAwesome5 name='eye' color={colors.purple} size={20} />
+						)}
+					</TouchableOpacity>
+					<TextInput
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
+							color: colors.purple,
+							marginLeft: 10,
+							width: 290
+						}}
+						value={user.confirmPassword}
+						placeholder='confirm password'
+						placeholderTextColor={colors.purple}
+						autoCapitalize='none'
+						autoCorrect={false}
+						secureTextEntry={user.secureTextEntry ? true : false}
+						onChangeText={(val) => setConfirmPassword(val)}
+					/>
+				</View>
+				{user.isValidConfirmPassword || (user.confirmPassword === '' && user.password === '') ? null : (
+					<Animatable.View>
+						<Text style={styles.errorMsg}>
+							the passwords don't match, please try again
+						</Text>
+					</Animatable.View>
+				)}
 			</View>
-			{user.isValidPassword || user.password === '' ? null : (
-				<Animatable.View animation='fadeInLeft' duration={500}>
-					<Text style={styles.errorMsg}>
-						must be at least 8 characters long with at least 1 uppercase letter, 1 number, and 1 special character
+
+			<View style={styles.bottomContainer}>
+				<View style={styles.submitBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							dispatch(register(user));
+							setSubmitted(!submitted);
+						}}
+					>
+						<Text
+							style={{
+								color: 'white',
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							register
+						</Text>
+					</TouchableOpacity>
+				</View>
+
+				<View style={styles.links}>
+					<Text
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 12,
+							color: colors.forgotDetails,
+						}}
+					>
+						already have an account? log in{' '}
 					</Text>
-				</Animatable.View>
-			)}
-
-			<View style={styles.icon}>
-				<FontAwesome5 name='lock' color='#DCDCDC' size={20} />
-				<TextInput
-					style={styles.input}
-					value={user.confirmPassword}
-					placeholder='confirm password'
-					autoCapitalize='none'
-					autoCorrect={false}
-					secureTextEntry={user.secureTextEntry ? true : false}
-					onChangeText={(val) => setConfirmPassword(val)}
-				/>
-				{/* allows user to show/hide password */}
-				<TouchableOpacity onPress={updateSecureTextEntry}>
-					{user.secureTextEntry ? (
-						<FontAwesome5 name='eye-slash' color='#DCDCDC' size={20} />
-					) : (
-						<FontAwesome5 name='eye' color='#DCDCDC' size={20} />
-					)}
-				</TouchableOpacity>
-			</View>
-			{user.isValidConfirmPassword || user.confirmPassword === '' ? null : (
-				<Animatable.View>
-					<Text style={styles.errorMsg}>passwords don't match, please re-enter</Text>
-				</Animatable.View>
-			)}
-			<View style={styles.submitBtn}>
-				<TouchableWithoutFeedback
-					onPress={() => {
-						dispatch(register(user));
-						setSubmitted(true);
-					}}
-				>
-					<Text style={{color: 'white', alignSelf: 'center'}}>register</Text>
-				</TouchableWithoutFeedback>
-			</View>
-
-			<View style={styles.links}>
-				<Text style={{ color: 'gray' }}>already have an account? log in </Text>
-				<TouchableOpacity
-					onPress={() => {
-						navigation.navigate('Login');
-					}}
-				>
-					<Text style={{ fontWeight: 'bold', color: '#4D4185' }}>here</Text>
-				</TouchableOpacity>
-			</View>
-			<View>
-				<TouchableWithoutFeedback
-					onPress={() => {
-						navigation.navigate('Map');
-					}}
-				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Login');
+						}}
+					>
+						<Text
+							style={{
+								fontFamily: 'Arial',
+								fontSize: 12,
+								fontWeight: 'bold',
+								color: colors.forgotDetails,
+							}}
+						>
+							here
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<View>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Map');
+						}}
+					>
+						<Text style={styles.text}> continue </Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</SafeAreaView>
 	);
@@ -263,72 +366,82 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	logo: {
-		marginTop: 20,
-		marginBottom: 10,
-		height: 100,
-		width: 100,
+		flex: 0.5,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		alignContent: 'center',
+		marginTop: 10,
+		width: '100%',
 	},
 	title: {
+		fontFamily: 'Arial',
 		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#A9A9A9',
-		marginBottom: 30,
+		color: colors.purple,
+	},
+	inputContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%'
 	},
 	input: {
-		flex: 1,
-		fontSize: 20,
-		color: 'gray',
-		width: '90%',
-		paddingLeft: 10,
-	},
-	icon: {
 		flexDirection: 'row',
-		width: '85%',
-		paddingLeft: 5,
-		paddingBottom: 5,
+		alignItems: 'center',
 		borderBottomWidth: 2,
-		borderColor: '#4D4185',
-		marginTop: 10,
-		marginBottom: 20,
-	},
-	text: {
-		fontSize: 14,
-		color: '#2380B0',
-		marginTop: 120,
-	},
-	error: {
-		textAlign: 'center',
+		borderBottomColor: colors.purple,
+		fontFamily: 'Arial',
 		fontSize: 16,
-		color: 'red',
+		color: colors.purple,
+		marginTop: 10,
+		marginBottom: 10,
+		paddingLeft: 10,
+		height: 40,
+		width: '85%',
 	},
-	errorMsg: {
-		textAlign: 'center',
-		color: 'red',
-		padding: 5,
+	bottomContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignContent: 'flex-start',
+		alignItems: 'center',
+		width: '100%'
 	},
 	submitBtn: {
-		fontSize: 16,
-		width: '85%',
-		padding: 10,
-		borderRadius: 5,
 		backgroundColor: '#4D4185',
-		marginTop: 75,
-		marginBottom: 60,
+		justifyContent: 'center',
+		borderRadius: 15,
+		height: 60,
+		width: '80%',
 	},
 	links: {
 		flexDirection: 'row',
-		justifyContent: 'flex-start',
+	},
+	forgotDetails: {
+		fontFamily: 'Arial',
+		fontSize: 12,
+		color: colors.forgotDetails,
+		marginTop: 10,
+		marginLeft: 90,
+	},
+	text: {
 		fontSize: 14,
-		marginTop: 25,
-		marginBottom: 15,
+		color: '#008BBC',
+		marginBottom: 50,
+	},
+	errorMsg: {
+		fontSize: 12,
+		textAlign: 'center',
+		color: colors.alert,
+		width: 330
 	},
 });
 
 const mapStateToProps = (state) => {
-	console.log("authReducer: ", state.authReducer);
 	return {
 		registerFail: state.authReducer.registerFail,
-		expoPushToken: state.authReducer.expoPushToken
+		expoPushToken: state.authReducer.expoPushToken,
 	};
 };
 

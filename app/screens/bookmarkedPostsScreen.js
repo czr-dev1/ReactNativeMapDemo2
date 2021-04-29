@@ -1,46 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, TouchableWithoutFeedback,
-  Dimensions, View, Image, StatusBar, Button } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
+  Dimensions,
+  View,
+  Image,
+  StatusBar,
+  Button,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { connect } from "react-redux";
+import axios from "axios";
 
 //Icons
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import colors from '../config/colors';
+
+import Text from "../components/text";
+import colors from "../config/colors";
 //Custom story component
-import StoryList from '../components/storyList';
-import { reloadUser } from '../redux/actions/auth';
+import StoryList from "../components/storyList";
+import { reloadUser } from "../redux/actions/auth";
 
 function BookmarkedPostsScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   const renderStoriesByType = () => {
-    console.log(props.stories);
-    console.log(props);
     if (props.stories === undefined) {
-      return <StoryList isBookMark={true} stories={props.stories} />
+      return <StoryList isBookMark={true} stories={props.stories} />;
     }
 
-    switch (selectedButton){
+    switch (selectedButton) {
       case 1:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "1")} />
+        return (
+          <StoryList
+            isBookMark={true}
+            stories={props.stories.filter((item) => item.category === 1)}
+          />
+        );
       case 2:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "2")} />
+        return (
+          <StoryList
+            isBookMark={true}
+            stories={props.stories.filter((item) => item.category === 3)}
+          />
+        );
       case 3:
-        return <StoryList isBookMark={true} stories={props.stories.filter(item => item.category === "3")} />
+        return (
+          <StoryList
+            isBookMark={true}
+            stories={props.stories.filter((item) => item.category === 2)}
+          />
+        );
       default:
-        return <StoryList isBookMark={true} stories={props.stories} />
-      }
-  }
+        return <StoryList isBookMark={true} stories={props.stories} />;
+    }
+  };
 
   useEffect(() => {
-    console.log('-----------------------------------------------------------s');
-    console.log(props.user);
     props.reloadUser(props.user);
   }, []);
 
@@ -52,117 +73,177 @@ function BookmarkedPostsScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
-    .then((res) => {
-      console.log(res.data);
-      setData(res.data[0])
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
+    axios
+      .get(
+        `https://globaltraqsdev.com/api/profile/users/?username=${props.user}`,
+        config
+      )
+      .then((res) => {
+        const filteredVals = res.data[0].filter((bookmark) => {
+          return props.allStories.forEach((story) => {
+            return story.id === bookmark.pinId;
+          });
+        });
+        setData(filteredVals);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  return(
-    ( props.isLoading ) ?
-      <View><Text>Loading</Text></View> : (
-    <View style={{height: '100%'}}>
-
-    <View style={styles.profileStoryButtons}>
-      <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-        <View style={selectedButton === 0 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <MaterialIcons name="format-list-bulleted" size={24} color="black" />
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-        <View style={selectedButton === 1 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <Text style={styles.textStyle}>personal</Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
-        <View style={selectedButton === 2 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <Text style={styles.textStyle}>historical</Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
-        <View style={selectedButton === 3 ? styles.profileStorySelectedButton : styles.profileStoryUnselectedButton}>
-          <Text style={styles.textStyle}>resource</Text>
-        </View>
-      </TouchableWithoutFeedback>
+  return props.isLoading ? (
+    <View>
+      <Text style={{}}>Loading</Text>
     </View>
-    <View style={styles.storyList}>
-      {renderStoriesByType()}
+  ) : (
+    <View style={{ height: "100%" }}>
+      <View style={styles.shadow2}>
+        <View style={[styles.profileStoryButtons]}>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+            <View
+              style={
+                selectedButton === 0
+                  ? styles.profileStorySelectedButton
+                  : styles.profileStoryUnselectedButton
+              }
+            >
+              <Text style={styles.textStyle}>all</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
+            <View
+              style={
+                selectedButton === 1
+                  ? styles.profileStorySelectedButton
+                  : styles.profileStoryUnselectedButton
+              }
+            >
+              <Text style={styles.textStyle}>personal</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
+            <View
+              style={
+                selectedButton === 2
+                  ? styles.profileStorySelectedButton
+                  : styles.profileStoryUnselectedButton
+              }
+            >
+              <Text style={styles.textStyle}>historical</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
+            <View
+              style={
+                selectedButton === 3
+                  ? styles.profileStorySelectedButton
+                  : styles.profileStoryUnselectedButton
+              }
+            >
+              <Text style={styles.textStyle}>resource</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </View>
+      <View style={styles.storyList}>{renderStoriesByType()}</View>
     </View>
-    </View>
-  )
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileStoryButtons: {
-    width: Dimensions.get('window').width,
-    borderTopWidth: 1,
-    borderTopColor: '#eae6e5',
-    paddingTop: '2%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'white'
+    width: Dimensions.get("window").width,
+    borderTopWidth: 0,
+    borderTopColor: colors.purple,
+    paddingTop: "2%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: colors.purple,
   },
   profileStorySelectedButton: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'black',
-    alignItems: 'center',
+    borderBottomWidth: 4,
+    borderBottomColor: colors.orange,
+    alignItems: "center",
     flexGrow: 1,
-    paddingBottom: '2%'
+    paddingBottom: "2%",
   },
   profileStoryUnselectedButton: {
-    alignItems: 'center',
-    flexGrow: 1
+    alignItems: "center",
+    flexGrow: 1,
   },
   storyList: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    width: Dimensions.get('window').width,
-    height: '100%'
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.background,
+    width: Dimensions.get("window").width,
+    height: "100%",
   },
   navButton: {
     flexGrow: 1,
-    textAlign: 'center'
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 6,
     padding: 10,
     fontSize: 10,
-    width: '80%'
+    width: "80%",
   },
   requiredText: {
-    color: 'red'
+    color: "red",
   },
   textStyle: {
-    fontSize: 18
-  }
-})
+    color: colors.white,
+    fontSize: 18,
+  },
+});
 
 const mapStateToProps = (state) => {
+  let filteredVals = [];
+  state.authReducer.user.user_upvoted_stories.forEach((bookmark, i) => {
+    state.storyReducer.storyList.some((story) => {
+      if (bookmark.pinId === story.id) {
+        story.pinId = story.id;
+        filteredVals.push(story);
+      }
+      return bookmark.pinId === story.id;
+    });
+  });
+
   return {
     isLoading: state.storyReducer.isLoading,
     error: state.storyReducer.error,
     user: state.authReducer.user.username,
-    stories: state.authReducer.user.user_upvoted_stories,
-  }
-}
+    stories: filteredVals,
+    allStories: state.storyReducer.storyList,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    reloadUser: (username) => dispatch(reloadUser(username))
-  }
-}
+    reloadUser: (username) => dispatch(reloadUser(username)),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookmarkedPostsScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookmarkedPostsScreen);

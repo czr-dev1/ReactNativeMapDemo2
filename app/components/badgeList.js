@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Alert, Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { connect } from "react-redux";
 
 //icons
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import colors from '../config/colors';
+import colors from "../config/colors";
 
 function BadgeList(props) {
   const badges = [
@@ -24,23 +18,23 @@ function BadgeList(props) {
     "alien",
     "all-inclusive",
     "anchor",
-  ]
+  ];
 
   const createAlert = () => {
     Alert.alert(
-     "Alert Title",
-     "My Alert Msg",
-     [
-       {
-         text: "Cancel",
-         onPress: () => console.log("Cancel Pressed"),
-         style: "cancel"
-       },
-       { text: "OK", onPress: () => console.log("OK Pressed") }
-     ],
-     { cancelable: false }
-   )
-  }
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ],
+      { cancelable: false }
+    );
+  };
 
   return (
     <FlatList
@@ -62,36 +56,36 @@ function BadgeList(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: Dimensions.get('window').width,
-    backgroundColor: 'white'
+    alignItems: "center",
+    justifyContent: "center",
+    width: Dimensions.get("window").width,
+    backgroundColor: "white",
   },
   topIcon: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    padding: 30
+    alignSelf: "center",
+    alignItems: "center",
+    padding: 30,
   },
   item: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    backgroundColor: 'white',
-    width: Dimensions.get('window').width / 3,
-    height: Dimensions.get('window').width / 3,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    backgroundColor: "white",
+    width: Dimensions.get("window").width / 3,
+    height: Dimensions.get("window").width / 3,
     borderBottomWidth: 1,
     borderRightWidth: 1,
   },
   flatWrapper: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    width: Dimensions.get('window').width,
-    backgroundColor: 'white',
+    alignSelf: "center",
+    alignItems: "center",
+    width: Dimensions.get("window").width,
+    backgroundColor: "white",
   },
   grid: {
     flex: 1,
-    backgroundColor: 'white'
-  }
-})
+    backgroundColor: "white",
+  },
+});
 
 export default BadgeList;

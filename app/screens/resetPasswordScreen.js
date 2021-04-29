@@ -4,13 +4,14 @@ import {
   Image,
   SafeAreaView,
   StyleSheet,
-  Text,
+  Text as DefaultText,
   TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function ResetPasswordScreen() {
@@ -30,20 +31,20 @@ function ResetPasswordScreen() {
 			((len < 8 || len >= 8) && val.search(/[A-Z]/) === -1) ||
 			((len < 8 || len >= 8) && val.search(/\d/) === -1)
 		) {
-			setUser({
-				...user,
+			setNewPassword({
+				...newPassword,
 				password: val,
 				isValidPassword: false,
 			});
 		} else if (len < 8) {
-			setUser({
-				...user,
+			setNewPassword({
+				...newPassword,
 				password: val,
 				isValidPassword: false,
 			});
 		} else {
-			setUser({
-				...user,
+			setNewPassword({
+				...newPassword,
 				password: val,
 				isValidPassword: true,
 			});
@@ -51,15 +52,15 @@ function ResetPasswordScreen() {
 	};
 
 	const setConfirmPassword = (val) => {
-		if (val !== user.password) {
-			setUser({
-				...user,
+		if (val !== newPassword.password) {
+			setNewPassword({
+				...newPassword,
 				confirmPassword: val,
 				isValidConfirmPassword: false,
 			});
 		} else {
-			setUser({
-				...user,
+			setNewPassword({
+				...newPassword,
 				confirmPassword: val,
 				isValidConfirmPassword: true,
 			});
@@ -77,7 +78,9 @@ function ResetPasswordScreen() {
 				</Text>
 			</View>
 
-			<Text style={{ marginTop: 10, color: 'grey' }}>please input your new password:</Text>
+			<Text style={{ marginTop: 10, color: 'grey' }}>
+				please input your new password:
+			</Text>
 			<View style={styles.input}>
 				<TextInput
 					value={newPassword.password}
@@ -87,7 +90,9 @@ function ResetPasswordScreen() {
 				/>
 			</View>
 
-			<Text style={{ marginTop: 10, color: 'grey' }}>please confirm your new password:</Text>
+			<Text style={{ marginTop: 10, color: 'grey' }}>
+				please confirm your new password:
+			</Text>
 			<View style={styles.input}>
 				<TextInput
 					value={newPassword.password}
@@ -99,13 +104,6 @@ function ResetPasswordScreen() {
 
 			<View style={styles.submitBtn}>
 				<Button title='reset password' color='white' onPress={() => sendResetLink()} />
-        <TouchableWithoutFeedback
-          onPress={() => {
-            sendResetLink()
-          }}
-        >
-          <Text style={{color: 'white', alignSelf: 'center'}}>reset password</Text>
-        </TouchableWithoutFeedback>
 			</View>
 
 			<View>
@@ -114,7 +112,7 @@ function ResetPasswordScreen() {
 						navigation.navigate('Map');
 					}}
 				>
-					<Text style={styles.text}>continue</Text>
+					<Text style={styles.text}> continue </Text>
 				</TouchableWithoutFeedback>
 			</View>
 		</SafeAreaView>

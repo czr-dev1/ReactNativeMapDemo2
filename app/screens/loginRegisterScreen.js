@@ -1,21 +1,21 @@
-import React, { useEffect }from 'react';
+import React, { useEffect } from 'react';
 import {
-	Button,
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
+	TouchableOpacity,
 	View
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
-import { connect, useDispatch } from 'react-redux';
-import { setExpoPushToken } from '../redux/actions/authActions';
+// Redux
+import { connect, useDispatch } from "react-redux";
+import { setExpoPushToken } from "../redux/actions/authActions";
 
-import colors from '../config/colors';
+import Text from "../components/text";
+import colors from "../config/colors";
 
 function LoginRegisterOption() {
 	const navigation = useNavigation();
@@ -23,9 +23,9 @@ function LoginRegisterOption() {
 
 	useEffect(() => {
 		registerForPushNotificationsAsync()
-			.then((token) => {
-				dispatch(setExpoPushToken(token));
-			});
+		.then((token) => {
+			dispatch(setExpoPushToken(token));
+		});
 	}, []);
 
 	async function registerForPushNotificationsAsync() {
@@ -37,48 +37,77 @@ function LoginRegisterOption() {
 				const { status } = await Notifications.requestPermissionsAsync();
 				finalStatus = status;
 			}
+
 			if (finalStatus !== 'granted') {
-				alert('Failed to get push token for push notification!');
+				alert('Failed to get push token for Push Notifications!');
 				return;
 			}
 			token = (await Notifications.getExpoPushTokenAsync()).data;
-			console.log(token);
+			// console.log(token);
 		} else {
-			alert('Must use physical device for Push Notifications');
+			alert('Must use physical device for Push Notifications!');
 		}
 		return token;
-	}
+	};
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<Image style={styles.logo} source={require('../assets/color_splash.png')} />
-			<View style={styles.loginBtn}>
-				<TouchableWithoutFeedback
-					onPress={() => {
-						navigation.navigate('Login');
-					}}
-				>
-					<Text style={{color: 'white', alignSelf: 'center'}}>log in</Text>
-				</TouchableWithoutFeedback>
+			<View style={styles.logo}>
+				<Image 
+					style={{ height: 110, width: 350, marginBottom: 75 }} 
+					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
 			</View>
-			<View style={styles.registerBtn}>
-				<TouchableWithoutFeedback
-					onPress={() => {
-						navigation.navigate('Register');
-					}}
-				>
-					<Text style={{color: 'white', alignSelf: 'center'}}>register</Text>
-				</TouchableWithoutFeedback>
+
+			<View style={styles.loginContainer}>
+				<View style={styles.loginBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Login');
+						}}
+					>
+						<Text
+							style={{
+								color: colors.purple,
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							log in
+						</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
-			<View>
-				<TouchableWithoutFeedback
-					onPress={() => {
-						navigation.navigate('Map');
-					}}
-				>
-					<Text style={styles.text}>continue</Text>
-				</TouchableWithoutFeedback>
+
+			<View style={styles.registerContainer}>
+				<View style={styles.registerBtn}>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Register');
+						}}
+					>
+						<Text 
+							style={{
+								color: colors.purple,
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							register
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<View>
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Map');
+						}}
+					>
+						<Text style={styles.text}> continue </Text>
+					</TouchableOpacity>
 			</View>
+		</View>
 		</SafeAreaView>
 	);
 }
@@ -86,36 +115,48 @@ function LoginRegisterOption() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.white,
+		backgroundColor: colors.purple,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	logo: {
-		marginTop: 175,
+		flex: 1.5,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		width: '100%',
+	},
+	loginContainer: {
+		flex: 0.5,
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		width: '100%',
+	},
+	loginBtn: {
+		backgroundColor: 'white',
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginBottom: 10,
+		height: 60,
 		width: '80%',
-		height: 100,
+	},
+	registerContainer: {
+		flex: 1,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		width: '100%',
+	},
+	registerBtn: {
+		backgroundColor: 'white',
+		justifyContent: 'center',
+		borderRadius: 15,
+		marginTop: 10,
+		height: 60,
+		width: '80%',
 	},
 	text: {
 		fontSize: 14,
-		marginTop: 60,
-		color: '#2380B0',
-	},
-	loginBtn: {
-		fontSize: 16,
-		width: '85%',
-		marginTop: 50,
-		padding: 10,
-		borderRadius: 5,
-		backgroundColor: '#4D4185',
-	},
-	registerBtn: {
-		fontSize: 16,
-		width: '85%',
-		marginTop: 30,
-		marginBottom: 250,
-		padding: 10,
-		borderRadius: 5,
-		backgroundColor: '#4D4185',
+		color: '#008BBC',
+		marginBottom: 50,
 	},
 });
 
