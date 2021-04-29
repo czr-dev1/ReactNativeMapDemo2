@@ -21,6 +21,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.thearqive",
+      "config": {
+        "googleMapsApiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"
+      }
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
