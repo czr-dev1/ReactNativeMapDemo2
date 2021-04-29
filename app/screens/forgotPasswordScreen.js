@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
   Alert,
-  Button,
   Image,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -41,21 +41,17 @@ function ForgotPasswordScreen() {
       },
     };
 
-    axios
-      .get(
-        `https://www.globaltraqsdev.com/profile/users?search=${username}`,
-        config
-      )
-      .then((response) => {
-        loginToggle();
-        setEmail("");
-        navToResetPassword();
-      })
-      .catch((error) => {
-        loginToggle();
-        setEmail("");
-        enterValidEmail();
-      });
+    axios.get(`https://www.globaltraqsdev.com/profile/users?search=${username}`, config)
+    .then((response) => {
+      loginToggle();
+      setEmail("");
+      navToResetPassword();
+    })
+    .catch((error) => {
+      loginToggle();
+      setEmail("");
+      enterValidEmail();
+    });
   };
 
   const navToResetPassword = () => {
@@ -78,20 +74,19 @@ function ForgotPasswordScreen() {
   // Send password reset link if applicable
   const sendResetLink = () => {
     if (!showError) {
-      axios
-        .post("https://www.globaltraqsdev.com/api/password_reset/", {
-          email: email,
-        })
-        .then((response) => {
-          loginToggle();
-          setEmail("");
-          emailSent();
-        })
-        .catch((error) => {
-          loginToggle();
-          setEmail("");
-          emailFailed();
-        });
+      axios.post("https://www.globaltraqsdev.com/api/password_reset/", {
+        email: email,
+      })
+      .then((response) => {
+        loginToggle();
+        setEmail("");
+        emailSent();
+      })
+      .catch((error) => {
+        loginToggle();
+        setEmail("");
+        emailFailed();
+      });
     } else {
       loginToggle();
       setEmail("");
@@ -117,42 +112,63 @@ function ForgotPasswordScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/color_icon.png")} />
-      <Text style={styles.title}>forgot password</Text>
+    <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+      <View style={styles.logo}>
+				<Image
+					style={{ height: 150, width: 150 }}
+					source={require('../assets/color_icon.png')} />
+				<Text style={styles.title}> forgot password </Text>
+			</View>
 
-      <Text style={{ marginTop: 95, color: "grey" }}>
-        please intput your e-mail:
-      </Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        autoCapitalize="none"
-        autoCorrect={false}
-        onBlur={validateEmail}
-        onChangeText={(val) => setEmail(val)}
-      />
-
-      <View style={styles.submitBtn}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            sendResetLink();
-          }}
-        >
-          <Text style={{ color: "white", alignSelf: "center" }}>
-            forgot password
-          </Text>
-        </TouchableWithoutFeedback>
+      <View style={styles.inputContainer}>
+        <Text style={{ color: colors.purple}}>
+          please intput your e-mail:
+        </Text>
+        <View style={styles.input}>
+          <TextInput
+            style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
+							color: colors.purple
+						}}
+            value={email}
+            autoCapitalize='none'
+            autoCorrect={false}
+            onBlur={validateEmail}
+            onChangeText={(val) => setEmail(val)}
+          />
+        </View>
       </View>
 
-      <View>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            navigation.navigate("Map");
-          }}
-        >
-          <Text style={styles.text}>continue</Text>
-        </TouchableWithoutFeedback>
+      <View style={styles.bottomContainer}>
+        <View style={styles.submitBtn}>
+          <TouchableOpacity
+            onPress={() => {
+              sendResetLink();
+            }}
+          >
+            <Text
+							style={{
+								color: 'white',
+								alignSelf: 'center',
+								fontFamily: 'Arial',
+								fontSize: 24,
+							}}
+						>
+							forgot password
+						</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Map");
+            }}
+          >
+            <Text style={styles.text}> continue </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -165,44 +181,60 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  logo: {
-    marginTop: 20,
-    marginBottom: 10,
-    height: 100,
-    width: 100,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#A9A9A9",
-    marginBottom: 30,
-  },
-  input: {
-    fontSize: 20,
-    color: "gray",
-    width: "85%",
-    height: 50,
-    paddingLeft: 15,
-    borderWidth: 2,
-    borderRadius: 5,
-    borderColor: "#4D4185",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  text: {
-    fontSize: 14,
-    color: "#2380B0",
-    paddingTop: 300,
-  },
-  submitBtn: {
-    fontSize: 18,
-    width: "85%",
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#4D4185",
-    marginTop: 10,
-    marginBottom: 60,
-  },
+	logo: {
+		flex:  0.5,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		alignContent: 'center',
+		marginTop: 10,
+		width: '100%'
+	},
+	title: {
+		fontFamily: 'Arial',
+		fontSize: 24,
+		color: colors.purple, // Hex is '#4D4185'
+	},
+	inputContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+	},
+	input: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		borderWidth: 2,
+		borderColor: colors.purple, // Hex is '#B6ADCC'
+		fontFamily: 'Arial',
+		fontSize: 16,
+		color: colors.purple,
+		marginTop: 30,
+		paddingLeft: 15,
+		height: 50,
+		width: '85%',
+	},
+	bottomContainer: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignContent: 'flex-start',
+		alignItems: 'center',
+		width: '100%'
+	},
+	submitBtn: {
+		backgroundColor: '#4D4185',
+		justifyContent: 'center',
+		borderRadius: 15,
+		height: 60,
+		width: '80%',
+	},
+	text: {
+		fontSize: 14,
+		color: '#008BBC',
+		marginBottom: 50,
+	},
 });
 
 export default ForgotPasswordScreen;

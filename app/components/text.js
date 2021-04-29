@@ -8,7 +8,7 @@ import { Text as DefaultText } from "react-native";
     <Text style={{}}> </Text>
 */
 
-function Text(props){
+function Text(props) {
   let fontFamily = {
     fontFamily: 'Arial'
   }

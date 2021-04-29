@@ -4,6 +4,7 @@ import {
   Image,
   SafeAreaView,
   StyleSheet,
+  Text as DefaultText,
   TextInput,
   TouchableWithoutFeedback,
   View,

@@ -159,7 +159,7 @@ function RegisterScreen(props) {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
 			<Image
-					style={{ height: 100, width: 100 }}
+					style={{ height: 150, width: 150 }}
 					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> register </Text>
 			</View>
@@ -428,6 +428,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		color: '#008BBC',
+		marginBottom: 50,
 	},
 	errorMsg: {
 		fontSize: 12,

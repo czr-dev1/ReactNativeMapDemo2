@@ -547,58 +547,6 @@ function StoryPostScreen(props) {
               setDescription(val);
             }}
           />
-
-
-          <View style={{ flexDirection: "column", flex: 1 }}>
-            <TouchableOpacity
-              style={{
-                alignSelf: "flex-start",
-                position: "absolute",
-                bottom: 35,
-                borderRadius: 5,
-                borderColor: colors.border,
-                borderWidth: 2,
-              }}
-            >
-              <Text
-                style={{
-                  paddingTop: 9,
-                  paddingBottom: 9,
-                  paddingLeft: 18,
-                  paddingRight: 18,
-                  color: "#919191",
-                }}
-              >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                alignSelf: "flex-end",
-                position: "absolute",
-                bottom: 35,
-                borderRadius: 5,
-                borderColor: colors.border,
-                borderWidth: 2,
-              }}
-              disabled={gotLocation ? false : true}
-              onPress={(e) => {
-                submitNewStory();
-              }}
-            >
-              <Text
-                style={{
-                  paddingTop: 9,
-                  paddingBottom: 9,
-                  paddingLeft: 18,
-                  paddingRight: 18,
-                  color: "#919191",
-                }}
-              >
-                Post
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

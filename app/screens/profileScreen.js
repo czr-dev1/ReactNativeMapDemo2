@@ -74,20 +74,6 @@ function ProfileScreen(props) {
     }
   };
 
-  const deleteConfirm = () => {
-    Alert.alert("", "are you sure you want to delete your profile?", [
-      {
-        text: "cancel",
-        onPress: () => navigation.navigate("Profile"),
-        style: "cancel",
-      },
-      {
-        text: "yes, delete my profile",
-        onPress: () => dispatch(userSelfDelete()),
-      },
-    ]);
-  };
-
   // Removing the paddingTop property on the outter view will cause it to shift
   // the whole screen up, I konw its a bit hacky but without subtracting it leaves
   // a large gap, it used to be the SafeAreaView from this library but it wasn't
