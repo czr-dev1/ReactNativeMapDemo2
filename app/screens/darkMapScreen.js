@@ -151,6 +151,7 @@ function LightMapScreen(props) {
           //   title: item.title,
           //   description: item.description,
           // });
+          Alert.alert("Should display search item");
         }}
       >
         {item.title.toUpperCase()}
@@ -234,10 +235,10 @@ function LightMapScreen(props) {
         selectedStories = props.personalStories;
         break;
       case 2:
-        selectedStories = props.historicalStories;
+        selectedStories = props.resourcesStories;
         break;
       case 3:
-        selectedStories = props.resourcesStories;
+        selectedStories = props.historicalStories;
         break;
     }
 
@@ -619,10 +620,10 @@ const mapStateToProps = (state) => {
     (story) => story.category === 1
   );
   let historicalCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 2
+    (story) => story.category === 3
   );
   let resourcesCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 3
+    (story) => story.category === 2
   );
   return {
     personalStories: personalCategorical,
