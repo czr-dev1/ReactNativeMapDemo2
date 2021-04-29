@@ -461,12 +461,15 @@ function storyScreen(props) {
               </TouchableWithoutFeedback>
             </View>
             {props.isLoggedIn === true ? (
-              <FontAwesome5
-                name="ellipsis-v"
-                size={24}
-                color={colors.purple}
-                onPress={() => setShowOptionsModal(true)}
-              />
+              <TouchableWithoutFeedback
+                onPress={() => setShowOptionsModal(true)}>
+                <FontAwesome5
+                  name="ellipsis-v"
+                  size={24}
+                  style={{padding: 4}}
+                  color={colors.purple}
+                />
+              </TouchableWithoutFeedback>
             ) : null}
           </View>
           <View style={{ paddingLeft: "5%" }}>
