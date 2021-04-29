@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar } from "react-native";
+import { StyleSheet, StatusBar, View, Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -105,21 +105,26 @@ function BookmarkedTopTabScreen() {
   // fixed by adding extra s at the end
   return (
     <BookmarkedTopTab.Navigator
-      style={styles.container}
+      style={{elevation: 0}}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
+          fontFamily: 'Arial',
         },
         tabStyle: {
           backgroundColor: colors.purple,
           shadowOpacity: 0,
-          shadoRadius: 0,
+          shadowRadius: 0,
         },
         activeTintColor: colors.white,
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
+        style: {
+          elevation: 0,
+          shadowOpacity: 0
+        }
       }}
     >
       <BookmarkedTopTab.Screen
@@ -192,24 +197,30 @@ function ProfileDrawerScreen() {
       drawerStyle={{ width: "80%" }}
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView {...props}>
-            <AnonToggleSwitch {...props} />
-            <ModalOpener
-              {...props}
-              name="help & hotline"
-              navigateTo="HelpAndHotlineModal"
-            />
-            <ModalOpener
-              {...props}
-              name="support us"
-              navigateTo="SupportUsModal"
-            />
-            <ModalOpener
-              {...props}
-              name="contact us"
-              navigateTo="ContactUsModal"
-            />
-            <ModalOpener {...props} name="log out" />
+          <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
+            <View style={{justifyContent: "space-between", flex: 1}}>
+              <View>
+                <ModalOpener
+                  {...props}
+                  name="help & hotline"
+                  navigateTo="HelpAndHotlineModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="support us"
+                  navigateTo="SupportUsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="contact us"
+                  navigateTo="ContactUsModal"
+                />
+                <AnonToggleSwitch {...props} />
+              </View>
+              <View>
+                <ModalOpener {...props} name="log out" />
+              </View>
+            </View>
           </DrawerContentScrollView>
         );
       }}
@@ -403,7 +414,7 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
   container: {
-
+    elevation: 0
   },
 });
 

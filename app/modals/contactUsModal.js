@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Text as DefaultText
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
@@ -117,7 +118,7 @@ function ContactUsModal(props) {
               onSubmit(e);
             }}
           >
-            <Text style={{color: colors.white, padding: 24}}>done</Text>
+            <DefaultText style={{color: colors.white, padding: 24}}>done</DefaultText>
           </TouchableWithoutFeedback>
         </View>
 

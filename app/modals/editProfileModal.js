@@ -13,7 +13,11 @@ import {
   ScrollView,
   Image,
   Linking,
+  Text as DefaultText
 } from "react-native";
+// Changed Text to DefaultText because there is a bug that prevents fontFamily
+// from making a TouchableOpacity work in this case
+// not sure why it makes it stop working though 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
@@ -107,9 +111,10 @@ function EditProfileModal(props) {
             edit profile
           </Text>
           <TouchableWithoutFeedback onPress={() => {
+            console.log('submit');
             onSubmit();
           }}>
-            <Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
+            <DefaultText style={{fontSize: 16, color: colors.purple, padding: 24, borderWidth: 1, borderColor: colors.black}}>done</DefaultText>
           </TouchableWithoutFeedback>
         </View>
         <View
