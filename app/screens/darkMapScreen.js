@@ -383,7 +383,8 @@ function DarkMapScreen(props) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-evenly",
-              padding: 10,
+              paddingBottom: 10,
+              paddingRight: 15,
               backgroundColor: colors.purple,
             }}
           >
@@ -399,7 +400,7 @@ function DarkMapScreen(props) {
                 setSelectedButton(0);
               }}
             >
-              <Text style={styles.TextStyle}> all </Text>
+              <Text style={styles.TextStyle}>all</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -415,22 +416,7 @@ function DarkMapScreen(props) {
                 setSelectedButton(1);
               }}
             >
-              <Text style={styles.TextStyle}> personal </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={
-                selectedButton === 3
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(3);
-              }}
-            >
-              <Text style={styles.TextStyle}> historical </Text>
+              <Text style={styles.TextStyle}>personal</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -441,11 +427,26 @@ function DarkMapScreen(props) {
               }
               activeOpacity={0.5}
               onPress={() => {
-                renderResources();
+                renderHistorical();
                 setSelectedButton(2);
               }}
             >
-              <Text style={styles.TextStyle}> resources </Text>
+              <Text style={styles.TextStyle}>historical</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={
+                selectedButton === 3
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(3);
+              }}
+            >
+              <Text style={styles.TextStyle}>resources</Text>
             </TouchableOpacity>
           </View>
         </HideKeyboard>
