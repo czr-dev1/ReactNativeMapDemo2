@@ -59,6 +59,22 @@ function NotificationScreen(props) {
 		return <ItemCard item={item} style={{ backgroundColor }} />;
 	};
 
+	const listEmptyComponent = () => {
+		return (
+			<View
+				style={{
+					flexDirection: "column",
+					alignItems: "center",
+					justifyContent: "center",
+					paddingTop: 20,
+					paddingBottom: "100%",
+				}}
+			>
+				<Text style={{}}>nothing to show here yet</Text>
+			</View>
+		);
+	};
+
 	return (
 		<SafeAreaView
 			style={{
@@ -90,6 +106,7 @@ function NotificationScreen(props) {
 					</Text>
 				</View>
 				<FlatList
+					ListEmptyComponent={listEmptyComponent}
 					style={{ width: Dimensions.get('window').width}}
 					data={props.notificationList}
 					renderItem={renderItem}

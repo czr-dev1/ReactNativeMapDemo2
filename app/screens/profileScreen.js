@@ -167,51 +167,53 @@ function ProfileScreen(props) {
             </Text>
           </View>
         </View>
-        <View style={styles.storyButtons}>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-            <View
-              style={
-                selectedButton === 0
-                  ? styles.storySelectedButton
-                  : styles.storyUnselectedButton
-              }
-            >
-              <Text style={ selectedButton === 0 ? styles.selectedTextStyle : styles.textStyle}>all stories</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-            <View
-              style={
-                selectedButton === 1
-                  ? styles.storySelectedButton
-                  : styles.storyUnselectedButton
-              }
-            >
-              <Text style={ selectedButton === 1 ? styles.selectedTextStyle : styles.textStyle}>personal</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
-            <View
-              style={
-                selectedButton === 2
-                  ? styles.storySelectedButton
-                  : styles.storyUnselectedButton
-              }
-            >
-              <Text style={ selectedButton === 2 ? styles.selectedTextStyle : styles.textStyle}>historical</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
-            <View
-              style={
-                selectedButton === 3
-                  ? styles.storySelectedButton
-                  : styles.storyUnselectedButton
-              }
-            >
-              <Text style={ selectedButton === 3 ? styles.selectedTextStyle : styles.textStyle}>resource</Text>
-            </View>
-          </TouchableWithoutFeedback>
+        <View style={styles.shadow2}>
+          <View style={styles.storyButtons}>
+            <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+              <View
+                style={
+                  selectedButton === 0
+                    ? styles.storySelectedButton
+                    : styles.storyUnselectedButton
+                }
+              >
+                <Text style={ selectedButton === 0 ? styles.selectedTextStyle : styles.textStyle}>all stories</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
+              <View
+                style={
+                  selectedButton === 1
+                    ? styles.storySelectedButton
+                    : styles.storyUnselectedButton
+                }
+              >
+                <Text style={ selectedButton === 1 ? styles.selectedTextStyle : styles.textStyle}>personal</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
+              <View
+                style={
+                  selectedButton === 2
+                    ? styles.storySelectedButton
+                    : styles.storyUnselectedButton
+                }
+              >
+                <Text style={ selectedButton === 2 ? styles.selectedTextStyle : styles.textStyle}>historical</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
+              <View
+                style={
+                  selectedButton === 3
+                    ? styles.storySelectedButton
+                    : styles.storyUnselectedButton
+                }
+              >
+                <Text style={ selectedButton === 3 ? styles.selectedTextStyle : styles.textStyle}>resource</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
         <View style={styles.storyList}>{renderStoriesByType()}</View>
       </ScrollView>
@@ -219,7 +221,18 @@ function ProfileScreen(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: "white",
