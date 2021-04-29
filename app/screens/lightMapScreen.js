@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
@@ -37,6 +38,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
 import Text from "../components/text";
+
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
 
@@ -113,6 +115,12 @@ function LightMapScreen(props) {
       });
   };
 
+  const HideKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
+    </TouchableWithoutFeedback>
+  );
+
   const searchFilterFunction = (text) => {
     if (text.length > 0) {
       setShowSearchResults(true);
@@ -141,10 +149,11 @@ function LightMapScreen(props) {
         style={styles.itemStyle}
         onPress={() => {
           //Need to send user to the searched post on the map
-          // props.navigation.navigate('Story', {
-          //title: item.title,
-          //description: item.description
-          //});
+          // props.navigation.navigate("Story", {
+          //   title: item.title,
+          //   description: item.description,
+          // });
+          Alert.alert("Should display search item");
         }}
       >
         {item.title.toUpperCase()}
@@ -221,7 +230,70 @@ function LightMapScreen(props) {
     //console.log(filteredDataSource);
   };
 
-  const Separator = () => <View style={styles.separator} />;
+  const renderPins = () => {
+    let selectedStories = props.stories;
+    switch (selectedButton) {
+      case 1:
+        selectedStories = props.personalStories;
+        break;
+      case 2:
+        selectedStories = props.resourcesStories;
+        break;
+      case 3:
+        selectedStories = props.historicalStories;
+        break;
+    }
+
+    return selectedStories.map((item, i) => {
+      // Removing images completely including
+      // the case made it run
+      // expo moves assets to the cloud, figure out how to keep
+      // https://docs.expo.io/guides/preloading-and-caching-assets/
+      // UPDATE: ended up keeping them by converting to a base64 string
+      // and passing that in as an argument
+      let pinType = "";
+      switch (item.category) {
+        case 1:
+          pinType = PERSONAL_PIN;
+          //pinType = '#6a0dad';
+          break;
+        case 2:
+          pinType = COMMUNITY_PIN;
+          //pinType = '#00FF00';
+          break;
+        default:
+          pinType = HISTORICAL_PIN;
+        //pinType = '#0000FF';
+      }
+      return (
+        <Marker
+          key={i}
+          coordinate={{
+            latitude: parseFloat(item.latitude),
+            longitude: parseFloat(item.longitude),
+          }}
+          image={pinType}
+          onPress={() => {
+            console.log(item);
+            setModalData({
+              title: item.title,
+              description: item.description,
+              id: item.id,
+              postDate: item.postDate,
+              category: item.category,
+            });
+            setShowModal(true);
+            /*
+            props.navigation.navigate('Story', {
+              title: item.title,
+              description: item.description,
+              id: item.id
+            }); */
+          }}
+        ></Marker>
+      );
+    });
+  };
 
   return (
     <SafeAreaView style={(styles.container, { flex: 1 })}>
@@ -235,7 +307,7 @@ function LightMapScreen(props) {
           style={{ justifyContent: "flex-end", marginBottom: "25%" }}
         >
           <View
-            style={{
+            style={[{
               backgroundColor:
                 modalData.category === 1
                   ? colors.personal
@@ -245,7 +317,7 @@ function LightMapScreen(props) {
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
               height: 15,
-            }}
+            }]}
           ></View>
           <View
             style={[styles.shadow2, {
@@ -306,245 +378,78 @@ function LightMapScreen(props) {
           placeholderTextColor={colors.purple}
           value={search}
         />
-
-        <Collapse>
-          <CollapseHeader
+        <HideKeyboard>
+          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               padding: 10,
               backgroundColor: colors.purple,
             }}
           >
-            <View style={{ width: "15%", alignItems: "center" }}>
-              {/* <Thumbnail
-								source={{
-									uri:
-										"https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
-								}}
-							/> */}
-              <MaterialIcons name="sort" size={32} color={colors.white} />
-            </View>
+            <TouchableOpacity
+              style={
+                selectedButton === 0
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                //render all stories list
+                setSelectedButton(0);
+              }}
+            >
+              <Text style={styles.TextStyle}> all </Text>
+            </TouchableOpacity>
 
-            <View style={styles.screenContainer}>
-              <TouchableOpacity
-                style={
-                  selectedButton === 0
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyle}> all </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 1
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              //onPress={(() => setSelectedCategoryButton(1))}
+              onPress={() => {
+                renderPersonal();
+                setSelectedButton(1);
+              }}
+            >
+              <Text style={styles.TextStyle}> personal </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 1
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                //onPress={(() => setSelectedCategoryButton(1))}
-                onPress={() => {
-                  renderPersonal();
-                  setSelectedButton(1);
-                }}
-              >
-                <Text style={styles.TextStyle}> personal </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                selectedButton === 2
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderHistorical();
+                setSelectedButton(2);
+              }}
+            >
+              <Text style={styles.TextStyle}> historical </Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity
-                style={
-                  selectedButton === 2
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderHistorical();
-                  setSelectedButton(2);
-                }}
-              >
-                <Text style={styles.TextStyle}> historical </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={
-                  selectedButton === 3
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
-                }
-                activeOpacity={0.5}
-                onPress={() => {
-                  renderResources();
-                  setSelectedButton(3);
-                }}
-              >
-                <Text style={styles.TextStyle}> resources </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseHeader>
-          <CollapseBody
-            //Styles the body portion
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              backgroundColor: "#EDEDED",
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.SortTextStyle}> sort by </Text>
-            </View>
-
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> any </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.OptionButtonStyle}
-                activeOpacity={0.5}
-                //onPress={() => Alert.alert("Cannot press this one")}
-              >
-                <Text style={styles.TextStyleSortInner}> relevance </Text>
-              </TouchableOpacity>
-            </View>
-            <Separator />
-            {/* <DropDownPicker
-							items={[
-								{
-									label: "radius",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "continent",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/>
-						<Separator />
-						<DropDownPicker
-							items={[
-								{
-									label: "date",
-									value: "placeholder",
-									//hidden: true,
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-								{
-									label: "placeholder",
-									value: "placeholder",
-								},
-							]}
-							defaultValue={this.state.radiusSize}
-							containerStyle={{
-								width: 140,
-								height: 60,
-								marginTop: 5,
-								marginBottom: 5,
-							}}
-							style={{ backgroundColor: "#FFFFFF" }}
-							itemStyle={{
-								justifyContent: "flex-start",
-							}}
-							dropDownStyle={{ backgroundColor: "#FFFFFF" }}
-							onChangeItem={(item) =>
-								this.setState({
-									radiusSize: item.value,
-								})
-							}
-						/> */}
-            <Separator />
-            <View style={styles.fixToText}>
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> clear </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.SubmitButtonStyle}
-                activeOpacity={0.5}
-                //onPress={this.ButtonClickCheckFunction}
-              >
-                <Text style={styles.TextStyleSortInner}> apply </Text>
-              </TouchableOpacity>
-            </View>
-          </CollapseBody>
-        </Collapse>
+            <TouchableOpacity
+              style={
+                selectedButton === 3
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(3);
+              }}
+            >
+              <Text style={styles.TextStyle}> resources </Text>
+            </TouchableOpacity>
+          </View>
+        </HideKeyboard>
 
         {showSearchResults ? (
           <FlatList
@@ -586,55 +491,7 @@ function LightMapScreen(props) {
             minZoomLevel={0}
             zIndex={1}
           />
-          {props.stories.map((item, i) => {
-            // Removing images completely including
-            // the case made it run
-            // expo moves assets to the cloud, figure out how to keep
-            // https://docs.expo.io/guides/preloading-and-caching-assets/
-            // UPDATE: ended up keeping them by converting to a base64 string
-            // and passing that in as an argument
-            let pinType = "";
-            switch (item.category) {
-              case 1:
-                pinType = PERSONAL_PIN;
-                //pinType = '#6a0dad';
-                break;
-              case 2:
-                pinType = COMMUNITY_PIN;
-                //pinType = '#00FF00';
-                break;
-              default:
-                pinType = HISTORICAL_PIN;
-              //pinType = '#0000FF';
-            }
-            return (
-              <Marker
-                key={i}
-                coordinate={{
-                  latitude: parseFloat(item.latitude),
-                  longitude: parseFloat(item.longitude),
-                }}
-                image={pinType}
-                onPress={() => {
-                  console.log(item);
-                  setModalData({
-                    title: item.title,
-                    description: item.description,
-                    id: item.id,
-                    postDate: item.postDate,
-                    category: item.category,
-                  });
-                  setShowModal(true);
-                  /*
-									props.navigation.navigate('Story', {
-										title: item.title,
-										description: item.description,
-										id: item.id
-									}); */
-                }}
-              ></Marker>
-            );
-          })}
+          {renderPins()}
         </MapView>
       )}
     </SafeAreaView>
@@ -770,9 +627,21 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-
+//Personal, Historical, Resources
 const mapStateToProps = (state) => {
+  let personalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 1
+  );
+  let historicalCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 3
+  );
+  let resourcesCategorical = state.storyReducer.storyList.filter(
+    (story) => story.category === 2
+  );
   return {
+    personalStories: personalCategorical,
+    historicalStories: historicalCategorical,
+    resourcesStories: resourcesCategorical,
     is_anonymous_active: state.authReducer.user.is_profile_private,
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,
