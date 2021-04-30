@@ -1,4 +1,4 @@
-let initialState = {
+const initialState = Object.freeze({
   token: "",
   isAuthenticated: null,
   isLoggedIn: false,
@@ -12,7 +12,7 @@ let initialState = {
   expoPushToken: "",
   followingList: [],
   notificationList: [],
-};
+});
 
 export default auth = (state = initialState, action) => {
   switch (action.type) {

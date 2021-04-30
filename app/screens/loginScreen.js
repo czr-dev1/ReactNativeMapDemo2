@@ -77,6 +77,8 @@ function LoginScreen(props) {
 	};
 
 	const failedLogin = () => {
+		setSubmitted(false);
+		setFailed(false);
 		Alert.alert(
 			'failed to log in!',
 			'incorrect username and/or password! please try again',
@@ -84,8 +86,7 @@ function LoginScreen(props) {
 				{
 					text: 'ok',
 					onPress: () => {
-						setSubmitted(!submitted);
-						dispatch(reset());
+						//dispatch(reset());
 					}
 				}
 			]
