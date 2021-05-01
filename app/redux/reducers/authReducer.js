@@ -1,4 +1,4 @@
-const initialState = Object.freeze({
+const getInitialState = () => ({
   token: "",
   isAuthenticated: null,
   isLoggedIn: false,
@@ -14,7 +14,10 @@ const initialState = Object.freeze({
   notificationList: [],
 });
 
-export default auth = (state = initialState, action) => {
+export default auth = (state, action) => {
+	if (!state) {
+		state = getInitialState();
+	}
   switch (action.type) {
     case "GET_USERS":
       return Object.assign({}, state, {
@@ -107,6 +110,9 @@ export default auth = (state = initialState, action) => {
         followingList: action.payload,
       });
       break;
+	case "RESET":
+		console.log("reset", state);
+		return getInitialState();
     default:
       return state;
   }

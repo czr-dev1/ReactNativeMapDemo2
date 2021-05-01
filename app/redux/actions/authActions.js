@@ -288,3 +288,9 @@ export const unfollowUser = ({ list, id, unfollowing }) => {
       });
   };
 };
+
+export const reset = (token) => {
+  return (dispatch) => {
+    dispatch({ type: "RESET" });
+  };
+};
