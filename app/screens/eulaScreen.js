@@ -74,7 +74,7 @@ export default function() {
 				<Text style={styles.eulaText}>Do not share information about others without their permission. Do not post personal information that you would not be comfortable sharing with a stranger. We recommend that you don’t post any information that may identify you or anyone else, such as your address, email, or phone number.</Text>
 				<Text style={styles.eulaText}>We don’t allow spam or promotional posts (if you want to work with us or have suggestions of good people or organizations with whom we should partner, you can contact us at https://thearqive.com/ContactUs).</Text>
 				<Text style={styles.eulaText}>Use your own words, stories, and experiences. Don’t copy someone else’s intellectual property without their permission.</Text>
-				<Text style={styles.eulaText}>Please be aware that we reserve the right to delete comments at our discretion and block any repeat offenders.</Text>
+				<Text style={styles.eulaText}>Please be aware that we reserve the right to delete posts and comments at our discretion and block any repeat offenders.</Text>
 				<Text style={styles.eulaText}>By registering to this site, you agree to these community guidelines and warrant that you are 13 years or older. Anyone under the age of 18 must have approval from a parent or a guardian. These guidelines are subject to change for bettering the community and creating a safer place for all.</Text>
 			</ScrollView>
 			<View style={styles.registerContainer}>
