@@ -15,7 +15,7 @@ import colors from "../config/colors";
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: colors.purple,
+		backgroundColor: colors.white,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	registerBtn: {
-		backgroundColor: 'white',
+		backgroundColor: colors.purple,
 		justifyContent: 'center',
 		borderRadius: 15,
 		marginTop: 10,
@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.black,
 		margin: 20,
 	},
 	eulaText: {
 		fontSize: 14,
-		color: colors.white,
+		color: colors.black,
 		alignSelf: 'flex-start',
 		fontFamily: 'Arial',
 	}
@@ -53,7 +53,7 @@ export default function() {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View>
 				<Text style={{
-					color: colors.white,
+					color: colors.black,
 					alignSelf: 'center',
 					fontFamily: 'Arial',
 					fontSize: 24,
@@ -72,8 +72,8 @@ export default function() {
 				<Text style={styles.eulaText}>-misleading, unlawful, or threatening content</Text>
 				<Text style={styles.eulaText}>-bullying, name-calling, trolling, and abuse</Text>
 				<Text style={styles.eulaText}>Do not share information about others without their permission. Do not post personal information that you would not be comfortable sharing with a stranger. We recommend that you don’t post any information that may identify you or anyone else, such as your address, email, or phone number.</Text>
-				<Text style={styles.eulaText}>We don’t allow spam, promotional posts, or third-party links (if you want to work with us or have suggestions of good people or organizations with whom we should partner, you can contact us here).
-Use your own words, stories, and experiences. Don’t copy someone else’s intellectual property without their permission.</Text>
+				<Text style={styles.eulaText}>We don’t allow spam or promotional posts (if you want to work with us or have suggestions of good people or organizations with whom we should partner, you can contact us at https://thearqive.com/ContactUs).</Text>
+				<Text style={styles.eulaText}>Use your own words, stories, and experiences. Don’t copy someone else’s intellectual property without their permission.</Text>
 				<Text style={styles.eulaText}>Please be aware that we reserve the right to delete comments at our discretion and block any repeat offenders.</Text>
 				<Text style={styles.eulaText}>By registering to this site, you agree to these community guidelines and warrant that you are 13 years or older. Anyone under the age of 18 must have approval from a parent or a guardian. These guidelines are subject to change for bettering the community and creating a safer place for all.</Text>
 			</ScrollView>
@@ -86,7 +86,7 @@ Use your own words, stories, and experiences. Don’t copy someone else’s inte
 					>
 						<Text
 							style={{
-								color: colors.purple,
+								color: colors.white,
 								alignSelf: 'center',
 								fontFamily: 'Arial',
 								fontSize: 24,
