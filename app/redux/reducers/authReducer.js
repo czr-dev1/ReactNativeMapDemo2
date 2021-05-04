@@ -1,4 +1,4 @@
-let initialState = {
+const getInitialState = () => ({
   token: "",
   isAuthenticated: null,
   isLoggedIn: false,
@@ -12,9 +12,12 @@ let initialState = {
   expoPushToken: "",
   followingList: [],
   notificationList: [],
-};
+});
 
-export default auth = (state = initialState, action) => {
+export default auth = (state, action) => {
+	if (!state) {
+		state = getInitialState();
+	}
   switch (action.type) {
     case "GET_USERS":
       return Object.assign({}, state, {
@@ -107,6 +110,9 @@ export default auth = (state = initialState, action) => {
         followingList: action.payload,
       });
       break;
+	case "RESET":
+		console.log("reset", state);
+		return getInitialState();
     default:
       return state;
   }
