@@ -115,6 +115,7 @@ export const logout = () => {
         tokenConfig(getState)
       )
       .then(() => {
+        delete config.headers["Authorization"];
         dispatch({ type: "LOGOUT_USER_SUCCESS" });
       })
       .catch((err) => {
