@@ -23,6 +23,7 @@ import StoryPostScreen from "../screens/storyPostScreen";
 import LoginRegisterScreen from "../screens/loginRegisterScreen";
 import LoginScreen from "../screens/loginScreen";
 import RegisterScreen from "../screens/registerScreen";
+import EULAScreen from "../screens/eulaScreen";
 import ForgotPasswordScreen from "../screens/forgotPasswordScreen";
 import ResetPasswordScreen from "../screens/resetPasswordScreen";
 import ProfileScreen from "../screens/profileScreen";
@@ -146,6 +147,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Initial" component={LoginRegisterScreen} />
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
+      <LoginStack.Screen name="EULA" component={EULAScreen} />
       <LoginStack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
