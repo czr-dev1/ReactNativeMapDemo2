@@ -304,7 +304,7 @@ function LightMapScreen(props) {
           onBackButtonPress={() => setShowModal(false)}
           hasBackdrop={true}
           backdropOpacity={0}
-          style={{ justifyContent: "flex-end", marginBottom: "25%" }}
+          style={{ justifyContent: "flex-end", marginBottom: "17%" }}
         >
           <View
             style={[{
@@ -324,7 +324,7 @@ function LightMapScreen(props) {
               backgroundColor: "white",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
-              height: "10%",
+              height: "12%",
             }]}
           >
             <TouchableWithoutFeedback

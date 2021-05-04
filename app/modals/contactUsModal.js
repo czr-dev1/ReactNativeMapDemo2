@@ -128,17 +128,19 @@ function ContactUsModal(props) {
               style={{
                 fontSize: 22,
                 paddingTop: 12,
+                paddingBottom: 12,
                 color: colors.purple,
                 fontWeight: "bold",
               }}
             >
               what's on your mind?
             </Text>
-            <TextInput style={styles.input} placeholder="email (optional)" />
-            <TextInput style={styles.input} placeholder="subject" />
+            <TextInput style={styles.input} placeholder="email (optional)" placeholderTextColor={colors.emailInput}/>
+            <TextInput style={styles.input} placeholder="subject" placeholderTextColor={colors.emailInput}/>
             <TextInput
               style={styles.inputBorderless}
               multiline
+              placeholderTextColor={colors.emailInput}
               placeholder="message"
             />
           </View>
@@ -169,11 +171,12 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderColor: "#ddd",
+    borderColor: colors.emailBars,
     padding: 10,
     fontSize: 14,
     width: "100%",
     fontFamily: "Arial",
+    color: colors.emailInput
   },
   inputBorderless: {
     borderColor: "#ddd",

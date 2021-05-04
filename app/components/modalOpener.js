@@ -13,16 +13,16 @@ function ModalOpener(props) {
   const dispatch = useDispatch();
 
   return (
-    <View style={{ }}>
+    <View style={{justifyContent: "center", width: "100%", borderWidth: 1, borderColor: "red"}}>
       {props.name === "log out" ? (
         <TouchableWithoutFeedback
           onPress={() => {
             dispatch(logout());
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderTopWidth: 1, borderTopColor: colors.border}}>
-            <MaterialCommunityIcons name="logout" size={24} color="black" />
-            <Text style={{ padding: 5 }}>{props.name}</Text>
+          <View style={{flexDirection: "row", alignItems: "center", padding: 24}}>
+            <MaterialCommunityIcons name="logout" size={24} color={colors.white} />
+            <Text style={{ padding: 5, color: colors.white }}>{props.name}</Text>
           </View>
         </TouchableWithoutFeedback>
       ) : (
@@ -31,7 +31,7 @@ function ModalOpener(props) {
             navigation.navigate(props.navigateTo, {});
           }}
         >
-          <Text style={{ padding: 24 }}>{props.name}</Text>
+          <Text style={{ padding: 24, color: colors.white, }}>{props.name}</Text>
         </TouchableWithoutFeedback>
       )}
     </View>

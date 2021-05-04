@@ -52,11 +52,8 @@ function SupportUsModal(props) {
           >
             support us
           </Text>
-          <TouchableWithoutFeedback
-          onPress={() => {
-            props.navigation.goBack();
-          }}>
-            <DefaultText style={{padding: 24, color: colors.purple, fontSize: 16}}>done</DefaultText>
+          <TouchableWithoutFeedback>
+            <DefaultText style={{padding: 24, color: colors.white, fontSize: 16}}>done</DefaultText>
           </TouchableWithoutFeedback>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>

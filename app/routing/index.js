@@ -198,8 +198,7 @@ function ProfileDrawerScreen() {
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
-            <View style={{justifyContent: "space-between", flex: 1}}>
-              <View>
+            <View style={{justifyContent: "space-evenly", flex: 1, backgroundColor: colors.purple}}>
                 <ModalOpener
                   {...props}
                   name="help & hotline"
@@ -215,11 +214,20 @@ function ProfileDrawerScreen() {
                   name="contact us"
                   navigateTo="ContactUsModal"
                 />
+                <ModalOpener
+                  {...props}
+                  name="faqs"
+                  navigateTo="ContactUsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="accessibility"
+                  navigateTo="ContactUsModal"
+                />
                 <AnonToggleSwitch {...props} />
-              </View>
-              <View>
-                <ModalOpener {...props} name="log out" />
-              </View>
+                <ModalOpener
+                  {...props}
+                  name="log out" />
             </View>
           </DrawerContentScrollView>
         );

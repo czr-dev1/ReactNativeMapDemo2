@@ -63,12 +63,12 @@ function HelpAndHotlineModal(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View
-        style={{
+        style={[styles.shadow2, {
           flexDirection: "row",
           justifyContent: "space-between",
           backgroundColor: colors.purple,
           width: "100%",
-        }}
+        }]}
       >
         <Entypo
           onPress={() => {
@@ -101,7 +101,7 @@ function HelpAndHotlineModal(props) {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
           return (
-            <View style={styles.box}>
+            <View style={[styles.shadow2, styles.box]}>
               <Text style={styles.itemTitle}>{item.name.toLowerCase()}</Text>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
@@ -130,7 +130,18 @@ function HelpAndHotlineModal(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.border,

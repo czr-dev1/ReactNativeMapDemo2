@@ -1,17 +1,20 @@
 import React from "react";
-import { StyleSheet, Switch, View } from "react-native";
+import { StyleSheet, Switch as DefaultSwitch, View } from "react-native";
 import { connect } from "react-redux";
 import { setPrivacyMode } from "../redux/actions/authActions";
 import Text from "./text";
 
+import colors from "../config/colors";
+import { Switch } from "react-native-switch";
+
 function AnonToggleSwitch(props) {
   return (
     <View style={styles.container}>
-      <Text style={{}}>privacy mode</Text>
+      <Text style={{color: colors.white, paddingRight: 50}}>anonymous</Text>
       <Switch
         value={props.isPrivacyMode}
         onValueChange={() => props.setPrivacyMode(!props.isPrivacyMode)}
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        backgroundActive={colors.menuBorder}
         thumbColor={props.isPrivacyMode ? "#f5dd4b" : "#f4f3f4"}
         ios_backgroundColor="#3e3e3e"
       />
@@ -21,11 +24,10 @@ function AnonToggleSwitch(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-around",
-    padding: 20,
+    padding: 24,
+    borderWidth: 1
   },
 });
 

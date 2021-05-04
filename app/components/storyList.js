@@ -165,7 +165,7 @@ const BookMark = ({ item }) => {
               padding: 10,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 25 }}>
               {item.title}
             </Text>
             <Text style={{ fontSize: 12 }}>posted on {item.postDate}</Text>

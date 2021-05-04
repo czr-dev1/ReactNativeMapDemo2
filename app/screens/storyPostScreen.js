@@ -211,7 +211,6 @@ function StoryPostScreen(props) {
       </View>
         <View style={{ width: "80%", height: "100%" }}>
           <Modal
-            backdropColor="#ddd"
             isVisible={isPickingStartDate}
             onBackdropPress={() => setIsPickingStartDate(false)}
             onBackButtonPress={() => setIsPickingStartDate(false)}
@@ -237,7 +236,6 @@ function StoryPostScreen(props) {
             />
           </Modal>
           <Modal
-            backdropColor="#ddd"
             isVisible={isPickingEndDate}
             onBackdropPress={() => setIsPickingEndDate(false)}
             onBackButtonPress={() => setIsPickingEndDate(false)}
@@ -269,7 +267,7 @@ function StoryPostScreen(props) {
               borderBottomWidth: 1,
               borderColor: colors.border,
               alignItems: "center",
-              paddingBottom: 9,
+              paddingBottom: 12,
               paddingLeft: 7,
               paddingRight: 14,
               width: "100%",
@@ -389,31 +387,32 @@ function StoryPostScreen(props) {
             >
               <CollapseHeader>
                 <View
-                  style={{
+                  style={[{
                     flexDirection: "row",
                     alignItems: "center",
                     backgroundColor: colors.purple,
+                    marginTop: 12,
                     borderRadius: 8,
-                    padding: 4,
-                  }}
+                    padding: 7,
+                  }]}
                 >
-                  <Text style={{ color: "#fff", paddingRight: 3 }}>
+                  <Text style={{ color: "#fff", paddingRight: 6 }}>
                     {category === 1
                       ? "personal"
                       : category === 2
-                      ? "community"
+                      ? "resource"
                       : "historical"}
                   </Text>
                   <FontAwesome5
                     name={isShowing ? "chevron-up" : "chevron-down"}
-                    size={24}
+                    size={15}
                     color={colors.white}
                   />
                 </View>
               </CollapseHeader>
               <CollapseBody>
                 <TouchableOpacity
-                  style={{ borderRadius: 8, backgroundColor: colors.purple }}
+                  style={{ borderRadius: 0, borderTopWidth: 1, borderColor: colors.border, backgroundColor: colors.purple }}
                   onPress={() => {
                     setCategory(1);
                     setShowing(false);
@@ -430,7 +429,7 @@ function StoryPostScreen(props) {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{ borderRadius: 8, backgroundColor: colors.purple }}
+                  style={{ borderRadius: 0, borderTopWidth: 1, borderColor: colors.border, backgroundColor: colors.purple }}
                   onPress={() => {
                     setCategory(3);
                     setShowing(false);
@@ -447,7 +446,7 @@ function StoryPostScreen(props) {
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{ borderRadius: 8, backgroundColor: colors.purple }}
+                  style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8, borderTopWidth: 1, borderColor: colors.border, backgroundColor: colors.purple, marginBottom: 12 }}
                   onPress={() => {
                     setCategory(2);
                     setShowing(false);
@@ -460,7 +459,7 @@ function StoryPostScreen(props) {
                       padding: 8,
                     }}
                   >
-                    <Text style={{ color: "#fff" }}>community</Text>
+                    <Text style={{ color: "#fff" }}>resource</Text>
                   </View>
                 </TouchableOpacity>
               </CollapseBody>

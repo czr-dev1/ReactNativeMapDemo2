@@ -184,10 +184,11 @@ function LoginScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
 								color: colors.forgotDetails,
-								marginTop: 10
+								marginTop: 10,
+								paddingRight: 13
 							}}
 						>
 							signing in
@@ -221,7 +222,7 @@ function LoginScreen(props) {
 					<Text
 						style={{
 							fontFamily: 'Arial',
-							fontSize: 12,
+							fontSize: 14,
 							color: colors.forgotDetails,
 						}}
 					>
@@ -236,7 +237,7 @@ function LoginScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
 								color: colors.forgotDetails,
 							}}
@@ -321,14 +322,14 @@ const styles = StyleSheet.create({
 	},
 	forgotDetails: {
 		fontFamily: 'Arial',
-		fontSize: 12,
+		fontSize: 14,
 		color: colors.forgotDetails,
 		marginTop: 10,
 		marginLeft: 90,
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 	errorMsg: {

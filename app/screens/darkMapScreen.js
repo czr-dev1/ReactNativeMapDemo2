@@ -63,7 +63,8 @@ function DarkMapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const urlTemplate = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+  //const urlTemplate = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+  const urlTemplate = "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
@@ -303,7 +304,7 @@ function DarkMapScreen(props) {
           onBackButtonPress={() => setShowModal(false)}
           hasBackdrop={true}
           backdropOpacity={0}
-          style={{ justifyContent: "flex-end", marginBottom: "25%" }}
+          style={{ justifyContent: "flex-end", marginBottom: "17%" }}
         >
           <View
             style={[{
@@ -323,7 +324,7 @@ function DarkMapScreen(props) {
               backgroundColor: "white",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
-              height: "10%",
+              height: "12%",
             }]}
           >
             <TouchableWithoutFeedback
@@ -340,7 +341,10 @@ function DarkMapScreen(props) {
                 style={{
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  padding: 10,
+                  paddingLeft: 20,
+                  paddingRight: 20,
+                  paddingTop: 10,
+                  paddingBottom: 10,
                   height: "100%",
                 }}
               >
@@ -354,102 +358,105 @@ function DarkMapScreen(props) {
             </TouchableWithoutFeedback>
           </View>
         </Modal>
-        <SearchBar
-          round
-          searchIcon={{ size: 24 }}
-          onChangeText={(text) => {
-            searchFilterFunction(text);
-          }}
-          onClear={(text) => searchFilterFunction("")}
-          lightTheme={true}
-          containerStyle={{
-            backgroundColor: colors.purple,
-            borderBottomColor: "transparent",
-            borderTopColor: "transparent",
-          }}
-          inputContainerStyle={{
-            borderRadius: 50,
-            backgroundColor: colors.white,
-            borderWidth: 0,
-          }}
-          inputStyle={{ fontSize: 18 }}
-          placeholder="search"
-          placeholderTextColor={colors.purple}
-          value={search}
-        />
-        <HideKeyboard>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              paddingBottom: 10,
-              paddingRight: 15,
-              backgroundColor: colors.purple,
+        
+        <View style={styles.shadow2}>
+          <SearchBar
+            round
+            searchIcon={{ size: 24 }}
+            onChangeText={(text) => {
+              searchFilterFunction(text);
             }}
-          >
-            <TouchableOpacity
-              style={
-                selectedButton === 0
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                //render all stories list
-                setSelectedButton(0);
-              }}
+            onClear={(text) => searchFilterFunction("")}
+            lightTheme={true}
+            containerStyle={{
+              backgroundColor: colors.purple,
+              borderBottomColor: "transparent",
+              borderTopColor: "transparent",
+            }}
+            inputContainerStyle={{
+              borderRadius: 50,
+              backgroundColor: colors.white,
+              borderWidth: 0,
+            }}
+            inputStyle={{ fontSize: 18 }}
+            placeholder="search"
+            placeholderTextColor={colors.purple}
+            value={search}
+          />
+          <HideKeyboard>
+            <View
+              style={[{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                paddingBottom: 10,
+                paddingRight: 15,
+                backgroundColor: colors.purple,
+              }, styles.shadow2]}
             >
-              <Text style={styles.TextStyle}>all</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  selectedButton === 0
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
+                }
+                activeOpacity={0.5}
+                onPress={() => {
+                  //render all stories list
+                  setSelectedButton(0);
+                }}
+              >
+                <Text style={styles.TextStyle}>all</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={
-                selectedButton === 1
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              //onPress={(() => setSelectedCategoryButton(1))}
-              onPress={() => {
-                renderPersonal();
-                setSelectedButton(1);
-              }}
-            >
-              <Text style={styles.TextStyle}>personal</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  selectedButton === 1
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
+                }
+                activeOpacity={0.5}
+                //onPress={(() => setSelectedCategoryButton(1))}
+                onPress={() => {
+                  renderPersonal();
+                  setSelectedButton(1);
+                }}
+              >
+                <Text style={styles.TextStyle}>personal</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={
-                selectedButton === 3
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(3);
-              }}
-            >
-              <Text style={styles.TextStyle}>historical</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  selectedButton === 3
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
+                }
+                activeOpacity={0.5}
+                onPress={() => {
+                  renderHistorical();
+                  setSelectedButton(3);
+                }}
+              >
+                <Text style={styles.TextStyle}>historical</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={
-                selectedButton === 2
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderResources();
-                setSelectedButton(2);
-              }}
-            >
-              <Text style={styles.TextStyle}>resources</Text>
-            </TouchableOpacity>
-          </View>
-        </HideKeyboard>
+              <TouchableOpacity
+                style={
+                  selectedButton === 2
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
+                }
+                activeOpacity={0.5}
+                onPress={() => {
+                  renderResources();
+                  setSelectedButton(2);
+                }}
+              >
+                <Text style={styles.TextStyle}>resources</Text>
+              </TouchableOpacity>
+            </View>
+          </HideKeyboard>
+        </View>
 
         {showSearchResults ? (
           <FlatList
