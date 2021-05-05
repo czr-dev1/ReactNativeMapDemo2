@@ -9,9 +9,8 @@ To install Expo:
 `npm install --global expo-cli`
 
 ## Run Development Server: 
-First enter `expo install` to get install all of the required dependancies
-* `npm install` works as well, 
-* however installing it through expo would be the better option, `npm` can install the incompatible versions where as `expo` will install the better versions.
+First enter `npm ci` to get install all of the required dependancies
+* `expo install` works as well, however it modifies package.json and package-lock.json and could potentially cause merge conflicts. Use `expo install` for new dependencies
 
 Then `expo start`
 * `npm run android` will attempt to run it on a connected Android device immediatly
