@@ -202,26 +202,31 @@ function ProfileDrawerScreen() {
                 <ModalOpener
                   {...props}
                   name="help & hotline"
+                  icon="phone"
                   navigateTo="HelpAndHotlineModal"
                 />
                 <ModalOpener
                   {...props}
                   name="support us"
+                  icon="support"
                   navigateTo="SupportUsModal"
                 />
                 <ModalOpener
                   {...props}
                   name="contact us"
+                  icon="contact"
                   navigateTo="ContactUsModal"
                 />
                 <ModalOpener
                   {...props}
                   name="faqs"
+                  icon="faqs"
                   navigateTo="ContactUsModal"
                 />
                 <ModalOpener
                   {...props}
                   name="accessibility"
+                  icon="accessibility"
                   navigateTo="ContactUsModal"
                 />
                 <AnonToggleSwitch {...props} />
@@ -248,6 +253,7 @@ function NeedAuthTabScreen() {
         showLabel: false,
         style: {
           backgroundColor: colors.purple,
+          elevation: 4
         },
       }}
       screenOptions={({ route }) => ({
@@ -327,6 +333,7 @@ function AppTabScreen() {
           backgroundColor: colors.purple,
         },
       }}
+      style={{elevation: 20}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
