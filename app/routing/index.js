@@ -310,6 +310,7 @@ function NeedAuthStackScreen() {
       />
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
+      <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
       <NeedAuthStack.Screen
         name="EditProfileModal"
         component={EditProfileModal}

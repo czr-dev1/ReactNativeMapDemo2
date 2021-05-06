@@ -47,7 +47,7 @@ function ModalOpener(props) {
             navigation.push(props.navigateTo, {isMapScreen: isMapScreen});
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderBottomWidth: 1, borderColor: colors.menuBorder}}>
+          <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderBottomWidth: props.bottomBorder ? 0 : 1, borderColor: colors.menuBorder}}>
             {icons[props.icon]}
             <Text style={{ padding: 24, color: colors.white, }}>{props.name}</Text>
           </View>

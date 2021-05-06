@@ -39,7 +39,7 @@ import Modal from "react-native-modal";
 import SideMenu from 'react-native-side-menu-updated';
 
 import Text from "../components/text";
-import DrawerMenu from "../components/drawerMenu";
+import DrawerMenuSignedIn from "../components/drawerSignedIn";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -299,7 +299,7 @@ function LightMapScreen(props) {
   };
 
   const menu = (
-    <DrawerMenu />
+    <DrawerMenuSignedIn />
   );
 
   return (
@@ -670,6 +670,7 @@ const mapStateToProps = (state) => {
     (story) => story.category === 2
   );
   return {
+    isAuthenticated: true,
     personalStories: personalCategorical,
     historicalStories: historicalCategorical,
     resourcesStories: resourcesCategorical,

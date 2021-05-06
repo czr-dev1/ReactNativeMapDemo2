@@ -5,7 +5,7 @@ import ModalOpener from "./modalOpener";
 import colors from "../config/colors";
 import { connect } from 'react-redux';
 
-function DrawerMenu(props) {
+function DrawerMenuSignedIn(props) {
 
   return(
     <View style={{justifyContent: "space-evenly", flex: 1, backgroundColor: colors.purple}}>
@@ -41,12 +41,13 @@ function DrawerMenu(props) {
           {...props}
           name="accessibility"
           icon="accessibility"
-          bottomBorder={true}
           isMapScreen={true}
           navigateTo="ContactUsModal"
         />
+        <ModalOpener {...props} name="log out" />
+
     </View>
   )
 }
 
-export default DrawerMenu;
+export default DrawerMenuSignedIn;
