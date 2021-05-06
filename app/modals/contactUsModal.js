@@ -27,9 +27,18 @@ function ContactUsModal(props) {
 
   useEffect(() => {
     const backAction = () => {
-      props.navigation.goBack();
+      if (props.route.params.isMapScreen) {
+        // console.log("maps");
+        // fun bug where on the map screen it wasn't routing correctly
+        // you still the other navigation because it handles routing oddly
+        // if you don't do that in the profile screen
+      } else {
+        // console.log("not maps");
+        props.navigation.goBack();
+      }
     }
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+    console.log(props.route.params.isMapScreen);
 
     return () => backHandler.remove();
   }, [])
@@ -123,22 +132,24 @@ function ContactUsModal(props) {
         </View>
 
         <View style={{ margin: 0,}}>
-          <View style={styles.box}>
+          <View style={[styles.box, styles.shadow2]}>
             <Text
               style={{
                 fontSize: 22,
                 paddingTop: 12,
+                paddingBottom: 12,
                 color: colors.purple,
                 fontWeight: "bold",
               }}
             >
               what's on your mind?
             </Text>
-            <TextInput style={styles.input} placeholder="email (optional)" />
-            <TextInput style={styles.input} placeholder="subject" />
+            <TextInput style={styles.input} placeholder="email (optional)" placeholderTextColor={colors.emailInput}/>
+            <TextInput style={styles.input} placeholder="subject" placeholderTextColor={colors.emailInput}/>
             <TextInput
               style={styles.inputBorderless}
               multiline
+              placeholderTextColor={colors.emailInput}
               placeholder="message"
             />
           </View>
@@ -148,7 +159,18 @@ function ContactUsModal(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.purple,
@@ -169,11 +191,12 @@ const styles = StyleSheet.create({
   },
   input: {
     borderBottomWidth: 1,
-    borderColor: "#ddd",
+    borderColor: colors.emailBars,
     padding: 10,
     fontSize: 14,
     width: "100%",
     fontFamily: "Arial",
+    color: colors.emailInput
   },
   inputBorderless: {
     borderColor: "#ddd",

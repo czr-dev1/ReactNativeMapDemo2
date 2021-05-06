@@ -63,6 +63,7 @@ function BookmarkedPostsScreen(props) {
 
   useEffect(() => {
     props.reloadUser(props.user);
+    // this is the page being used
   }, []);
 
   const loadProfile = async () => {
@@ -98,7 +99,7 @@ function BookmarkedPostsScreen(props) {
   ) : (
     <View style={{ height: "100%" }}>
       <View style={styles.shadow2}>
-        <View style={[styles.profileStoryButtons]}>
+        <View style={[styles.profileStoryButtons, styles.shadow2]}>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
             <View
               style={

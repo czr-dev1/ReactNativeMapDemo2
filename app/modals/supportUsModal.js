@@ -22,7 +22,15 @@ function SupportUsModal(props) {
 
   useEffect(() => {
     const backAction = () => {
-      props.navigation.goBack();
+      if (props.route.params.isMapScreen) {
+        // console.log("maps");
+        // fun bug where on the map screen it wasn't routing correctly
+        // you still the other navigation because it handles routing oddly
+        // if you don't do that in the profile screen
+      } else {
+        // console.log("not maps");
+        props.navigation.goBack();
+      }
     }
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
@@ -52,11 +60,8 @@ function SupportUsModal(props) {
           >
             support us
           </Text>
-          <TouchableWithoutFeedback
-          onPress={() => {
-            props.navigation.goBack();
-          }}>
-            <DefaultText style={{padding: 24, color: colors.purple, fontSize: 16}}>done</DefaultText>
+          <TouchableWithoutFeedback>
+            <DefaultText style={{padding: 24, color: colors.white, fontSize: 16}}>done</DefaultText>
           </TouchableWithoutFeedback>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>

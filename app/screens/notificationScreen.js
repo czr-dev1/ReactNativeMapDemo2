@@ -86,12 +86,12 @@ function NotificationScreen(props) {
 		>
 			<ScrollView>
 				<View
-					style={{
+					style={[{
 						alignItems: 'center',
 						justifyContent: 'center',
 						width: '100%',
 						backgroundColor: colors.purple,
-					}}
+					}, styles.shadow2]}
 				>
 					<Text
 						style={{

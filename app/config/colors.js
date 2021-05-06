@@ -14,4 +14,7 @@ export default {
   personal: "#ea1982",
   historical: "#008bbc",
   community: "#00cd7e",
+  menuBorder: "#8073a7",
+  emailInput: "#998DB8",
+  emailBars: "#C4C1D7",
 };
