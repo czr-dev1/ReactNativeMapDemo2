@@ -40,6 +40,8 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+
+import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
 
 import ProfileHeader from "../components/profile/profileHeader";
@@ -124,7 +126,6 @@ function BookmarkedTopTabScreen() {
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
         style: {
-          elevation: 0,
           shadowOpacity: 0
         }
       }}
@@ -195,28 +196,40 @@ function ProfileDrawerScreen() {
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
-            <View style={{justifyContent: "space-between", flex: 1}}>
-              <View>
+            <View style={{justifyContent: "space-evenly", flex: 1, backgroundColor: colors.purple}}>
                 <ModalOpener
                   {...props}
                   name="help & hotline"
+                  icon="phone"
                   navigateTo="HelpAndHotlineModal"
                 />
                 <ModalOpener
                   {...props}
                   name="support us"
+                  icon="support"
                   navigateTo="SupportUsModal"
                 />
                 <ModalOpener
                   {...props}
                   name="contact us"
+                  icon="contact"
                   navigateTo="ContactUsModal"
                 />
-                <AnonToggleSwitch {...props} />
-              </View>
-              <View>
-                <ModalOpener {...props} name="log out" />
-              </View>
+                <ModalOpener
+                  {...props}
+                  name="faqs"
+                  icon="faqs"
+                  navigateTo="FaqsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="accessibility"
+                  icon="accessibility"
+                  navigateTo="ContactUsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="log out" />
             </View>
           </DrawerContentScrollView>
         );
@@ -237,6 +250,7 @@ function NeedAuthTabScreen() {
         showLabel: false,
         style: {
           backgroundColor: colors.purple,
+          elevation: 4
         },
       }}
       screenOptions={({ route }) => ({
@@ -296,6 +310,7 @@ function NeedAuthStackScreen() {
       />
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
+      <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
       <NeedAuthStack.Screen
         name="EditProfileModal"
         component={EditProfileModal}
@@ -316,6 +331,7 @@ function AppTabScreen() {
           backgroundColor: colors.purple,
         },
       }}
+      style={{elevation: 20}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -380,6 +396,7 @@ function AppStackScreen() {
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
+      <AppStack.Screen name="FaqsModal" component={FaqsModal} />
       <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
       <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
     </AppStack.Navigator>

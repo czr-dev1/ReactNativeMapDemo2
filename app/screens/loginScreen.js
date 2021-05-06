@@ -186,10 +186,11 @@ function LoginScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
-								color: colors.purple,
-								marginTop: 10
+								color: colors.forgotDetails,
+								marginTop: 10,
+								paddingRight: 13
 							}}
 						>
 							signing in
@@ -199,7 +200,7 @@ function LoginScreen(props) {
 			</View>
 
 			<View style={styles.bottomContainer}>
-				<View style={styles.submitBtn}>
+				<View style={[styles.submitBtn, styles.shadow2]}>
 					<TouchableOpacity
 						onPress={() => {
 							dispatch(login(user));
@@ -223,8 +224,8 @@ function LoginScreen(props) {
 					<Text
 						style={{
 							fontFamily: 'Arial',
-							fontSize: 12,
-							color: colors.gray,
+							fontSize: 14,
+							color: colors.forgotDetails,
 						}}
 					>
 						{/* Put into brackets b/c of apostrophe */}
@@ -238,7 +239,7 @@ function LoginScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
 								color: colors.purple,
 							}}
@@ -262,7 +263,18 @@ function LoginScreen(props) {
 	);
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+	shadow2: elevationShadowStyle(20),
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
@@ -323,14 +335,14 @@ const styles = StyleSheet.create({
 	},
 	forgotDetails: {
 		fontFamily: 'Arial',
-		fontSize: 12,
-		color: colors.gray,
+		fontSize: 14,
+		color: colors.forgotDetails,
 		marginTop: 10,
 		marginLeft: 90,
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 	errorMsg: {

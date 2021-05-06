@@ -513,15 +513,15 @@ function storyScreen(props) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-      <ImageBackground source={{uri: imageLink}} style={{flex: 1, resizeMode: 'cover', justifyContent: 'center'}}>
+      <ImageBackground source={{uri: imageLink}} style={{flex: 1, resizeMode: 'cover', justifyContent: 'center', backgroundColor: colors.white}}>
         <View
-          style={{
+          style={[{
             paddingTop: "40%",
-
-          }}
+            backgroundColor: 'transparent'
+          }]}
         >
           <View
-            style={{
+            style={[{
               position: "relative",
               backgroundColor:
                 story.category === 1
@@ -532,11 +532,11 @@ function storyScreen(props) {
               paddingTop: "10%",
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
-            }}
+            }]}
           >
           </View>
           <View
-            style={{
+            style={[{
               position: "relative",
               bottom: "30%",
               paddingBottom: "-30%",
@@ -544,20 +544,20 @@ function storyScreen(props) {
               borderTopRightRadius: 10,
               backgroundColor: colors.white,
               paddingTop: "10%"
-            }}
+            }, styles.shadow2]}
           >
 
           </View>
         </View>
 
         <View
-          style={{
+          style={[{
             width: "100%",
             marginTop: "-10%",
             paddingLeft: "10%",
             paddingRight: "10%",
             backgroundColor: "white",
-          }}
+          }]}
         >
           <View
             style={{
@@ -645,12 +645,12 @@ function storyScreen(props) {
         </View>
 
         <View
-          style={{
+          style={[{
             width: "100%",
             paddingLeft: "7%",
             paddingRight: "10%",
             backgroundColor: "white",
-          }}
+          }]}
         >
 
           <View style={{ padding: 18 }}></View>
@@ -734,7 +734,18 @@ function storyScreen(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.white,

@@ -299,7 +299,7 @@ function RegisterScreen(props) {
 			</View>
 
 			<View style={styles.bottomContainer}>
-				<View style={styles.submitBtn}>
+				<View style={[styles.submitBtn, styles.shadow2]}>
 					<TouchableOpacity
 						onPress={() => {
 							dispatch(register(user));
@@ -323,8 +323,8 @@ function RegisterScreen(props) {
 					<Text
 						style={{
 							fontFamily: 'Arial',
-							fontSize: 12,
-							color: colors.gray,
+							fontSize: 14,
+							color: colors.forgotDetails,
 						}}
 					>
 						already have an account? log in{' '}
@@ -337,7 +337,7 @@ function RegisterScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
 								color: colors.purple,
 							}}
@@ -360,7 +360,18 @@ function RegisterScreen(props) {
 	);
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+	shadow2: elevationShadowStyle(20),
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
@@ -429,7 +440,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 	errorMsg: {

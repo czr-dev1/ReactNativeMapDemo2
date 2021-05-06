@@ -59,7 +59,7 @@ function LoginRegisterOption() {
 			</View>
 
 			<View style={styles.loginContainer}>
-				<View style={styles.loginBtn}>
+				<View style={[styles.loginBtn, styles.shadow2]}>
 					<TouchableOpacity
 						onPress={() => {
 							navigation.navigate('Login');
@@ -80,7 +80,7 @@ function LoginRegisterOption() {
 			</View>
 
 			<View style={styles.registerContainer}>
-				<View style={styles.registerBtn}>
+				<View style={[styles.registerBtn, styles.shadow2]}>
 					<TouchableOpacity
 						onPress={() => {
 							navigation.navigate('EULA');
@@ -112,7 +112,18 @@ function LoginRegisterOption() {
 	);
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+	shadow2: elevationShadowStyle(20),
 	container: {
 		flex: 1,
 		backgroundColor: colors.purple,
