@@ -20,10 +20,11 @@ import Modal from "react-native-modal";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
-import { getStory } from '../redux/actions/storyActions';
+import { getStory, loadStories } from '../redux/actions/storyActions';
 
 import Text from "../components/text";
 import colors from "../config/colors";
+import { reloadUser } from '../redux/actions/authActions';
 
 function EditStoryModal(props) {
   const dispatch = useDispatch();
@@ -62,7 +63,9 @@ function EditStoryModal(props) {
       config
     )
     .then((response) => {
-      props.navigation.navigate('Profile');
+      dispatch(reloadUser(props.route.params.username));
+      dispatch(loadStories());
+      props.navigation.goBack();
     })
     .catch((err) => {
       console.log(err);

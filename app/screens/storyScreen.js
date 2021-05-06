@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Dimensions,
   Platform,
   SafeAreaView,
@@ -275,10 +276,11 @@ function storyScreen(props) {
 
     axios.delete(`https://globaltraqsdev.com/api/pins/${id}/`, config)
     .then((res) => {
-      dispatch({ type: 'DELETE_STORY', payload: id });
+      console.log(res);
+      //dispatch({ type: 'DELETE_STORY', payload: id });
       props.loadStories();
       props.reloadUser(props.username);
-      props.navigation.navigate('Profile');
+      props.navigation.goBack();
     })
     .catch((err) => {
       console.log(err);
@@ -437,6 +439,7 @@ function storyScreen(props) {
                     startDate: story.startDate,
                     endDate: story.endDate,
                     description: story.description,
+                    username: props.username,
                   });
                   setShowOptionsModal(false);
                 }}
