@@ -205,7 +205,7 @@ function StoryPostScreen(props) {
               submitNewStory();
             }}
           >
-<Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
+            <Text style={{fontSize: 16, color: colors.purple, padding: 24}}>done</Text>
           </TouchableOpacity>
         </TouchableWithoutFeedback>
       </View>

@@ -40,6 +40,7 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+import EditStoryModal from '../modals/editStoryModal';
 
 import ProfileHeader from "../components/profile/profileHeader";
 
@@ -128,14 +129,8 @@ function BookmarkedTopTabScreen() {
         }
       }}
     >
-      <BookmarkedTopTab.Screen
-        name="stories"
-        component={BookmarkedPostsScreen}
-      />
-      <BookmarkedTopTab.Screen
-        name="users"
-        component={BookmarkedUsersStackScreen}
-      />
+      <BookmarkedTopTab.Screen name="stories" component={BookmarkedPostsScreen} />
+      <BookmarkedTopTab.Screen name="users" component={BookmarkedUsersStackScreen} />
     </BookmarkedTopTab.Navigator>
   );
 }
@@ -381,17 +376,12 @@ function AppStackScreen() {
         options={{ header: () => null }}
         component={StoryScreen}
       />
-      <AppStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <AppStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
-      <Stack.Screen
-        name="userprofilemodal"
-        component={FollowingProfileScreen}
-      />
+      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
     </AppStack.Navigator>
   );
 }

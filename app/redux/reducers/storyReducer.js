@@ -35,6 +35,11 @@ export default stories = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				isLoading: false
 			});
+		case 'DELETE_STORY':
+			console.log('deleting pin');
+			return Object.assign({}, state, {
+				storyList: state.storyList.filter((storyList) => storyList.id !== action.payload),
+			});
 		default:
 			return state;
 	}

@@ -48,6 +48,8 @@ export default auth = (state, action) => {
       console.log("LOGOUT SUCCESSFUL");
       return Object.assign({}, state, {
         token: null,
+        isAuthenticated: false,
+        isLoggedIn: false,
         guest_user: true,
       });
     case "REGISTER_USER_SUCCESS":
