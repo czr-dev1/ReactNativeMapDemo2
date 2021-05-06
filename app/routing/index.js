@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar } from "react-native";
+import { Platform, StyleSheet, StatusBar, View, Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -22,7 +22,9 @@ import StoryPostScreen from "../screens/storyPostScreen";
 import LoginRegisterScreen from "../screens/loginRegisterScreen";
 import LoginScreen from "../screens/loginScreen";
 import RegisterScreen from "../screens/registerScreen";
+import EULAScreen from "../screens/eulaScreen";
 import ForgotPasswordScreen from "../screens/forgotPasswordScreen";
+import ResetPasswordScreen from "../screens/resetPasswordScreen";
 import ProfileScreen from "../screens/profileScreen";
 import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
@@ -36,15 +38,16 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+import EditStoryModal from '../modals/editStoryModal';
 
 
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
-
 const Icon = createIconSetFromIcoMoon(
   require('../assets/fonts/selection.json'),
   'IcoMoon',
   'icomoon.ttf'
 );
+
 
 import colors from "../config/colors.js";
 
@@ -101,32 +104,31 @@ function BookmarkedTopTabScreen() {
   // fixed by adding extra s at the end
   return (
     <BookmarkedTopTab.Navigator
-      style={styles.container}
+      style={{elevation: 0}}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
-          marginTop: 35,
+          fontFamily: 'Arial',
+          marginTop: 30
         },
         tabStyle: {
           backgroundColor: colors.purple,
           shadowOpacity: 0,
-          shadoRadius: 0,
+          shadowRadius: 0,
         },
         activeTintColor: colors.white,
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
+        style: {
+          elevation: 0,
+          shadowOpacity: 0
+        }
       }}
     >
-      <BookmarkedTopTab.Screen
-        name="stories"
-        component={BookmarkedPostsScreen}
-      />
-      <BookmarkedTopTab.Screen
-        name="users"
-        component={BookmarkedUsersStackScreen}
-      />
+      <BookmarkedTopTab.Screen name="stories" component={BookmarkedPostsScreen} />
+      <BookmarkedTopTab.Screen name="users" component={BookmarkedUsersStackScreen} />
     </BookmarkedTopTab.Navigator>
   );
 }
@@ -138,7 +140,12 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Initial" component={LoginRegisterScreen} />
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
-      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <LoginStack.Screen name="EULA" component={EULAScreen} />
+      <LoginStack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+      />
+      <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </LoginStack.Navigator>
   );
 }
@@ -185,24 +192,30 @@ function ProfileDrawerScreen() {
       drawerStyle={{ width: "80%" }}
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView {...props}>
-            <AnonToggleSwitch {...props} />
-            <ModalOpener
-              {...props}
-              name="help & hotline"
-              navigateTo="HelpAndHotlineModal"
-            />
-            <ModalOpener
-              {...props}
-              name="support us"
-              navigateTo="SupportUsModal"
-            />
-            <ModalOpener
-              {...props}
-              name="contact us"
-              navigateTo="ContactUsModal"
-            />
-            <ModalOpener {...props} name="log out" />
+          <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
+            <View style={{justifyContent: "space-between", flex: 1}}>
+              <View>
+                <ModalOpener
+                  {...props}
+                  name="help & hotline"
+                  navigateTo="HelpAndHotlineModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="support us"
+                  navigateTo="SupportUsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="contact us"
+                  navigateTo="ContactUsModal"
+                />
+                <AnonToggleSwitch {...props} />
+              </View>
+              <View>
+                <ModalOpener {...props} name="log out" />
+              </View>
+            </View>
           </DrawerContentScrollView>
         );
       }}
@@ -361,17 +374,12 @@ function AppStackScreen() {
         options={{ header: () => null }}
         component={StoryScreen}
       />
-      <AppStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <AppStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
-      <Stack.Screen
-        name="userprofilemodal"
-        component={FollowingProfileScreen}
-      />
+      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
     </AppStack.Navigator>
   );
 }
@@ -396,7 +404,7 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
   container: {
-
+    elevation: 0
   },
 });
 
