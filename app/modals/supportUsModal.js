@@ -1,24 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  BackHandler,
   Dimensions,
+  Image,
   ImageBackground,
   Linking,
   ScrollView,
   StyleSheet,
   View,
+  TouchableWithoutFeedback,
+  Text as DefaultText
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 import Text from "../components/text";
 import colors from "../config/colors";
 
-function SupportUsModal() {
+function SupportUsModal(props) {
+
+  useEffect(() => {
+    const backAction = () => {
+      props.navigation.goBack();
+    }
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Entypo
+            onPress={() => {
+              props.navigation.goBack();
+            }}
+            style={{ padding: 24 }}
+            name="chevron-left"
+            size={28}
+            color={colors.purple}
+          />
           <Text
             style={{
               fontSize: 24,
@@ -29,6 +52,12 @@ function SupportUsModal() {
           >
             support us
           </Text>
+          <TouchableWithoutFeedback
+          onPress={() => {
+            props.navigation.goBack();
+          }}>
+            <DefaultText style={{padding: 24, color: colors.purple, fontSize: 16}}>done</DefaultText>
+          </TouchableWithoutFeedback>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text
@@ -43,13 +72,13 @@ function SupportUsModal() {
           </Text>
         </View>
         <View style={{ flexDirection: "column", justifyContent: "center", alignItems: 'center' }}>
-          {/* If you change the size of the image, 
+          {/* If you change the size of the image,
               you have to change the positioning too */}
-          <ImageBackground 
+          <ImageBackground
             style={styles.image}
-            source={require("../assets/supportUs/Purple_Chat_Bubble.42941b20.png")} 
+            source={require("../assets/supportUs/Purple_Chat_Bubble.42941b20.png")}
           >
-            <Text 
+            <Text
               style={{
                 fontSize: 25,
                 fontWeight: 'bold',
@@ -62,7 +91,7 @@ function SupportUsModal() {
             >
               post
             </Text>
-            <Text 
+            <Text
               style={{
                 fontSize: 25,
                 color: 'white',
@@ -75,11 +104,11 @@ function SupportUsModal() {
               your stories
             </Text>
           </ImageBackground>
-          <ImageBackground 
+          <ImageBackground
             style={styles.image}
-            source={require("../assets/supportUs/Green_Chat_Bubble.7b3e23e3.png")} 
+            source={require("../assets/supportUs/Green_Chat_Bubble.7b3e23e3.png")}
           >
-            <Text 
+            <Text
               style={{
                 fontSize: 25,
                 fontWeight: 'bold',
@@ -92,7 +121,7 @@ function SupportUsModal() {
             >
               share
             </Text>
-            <Text 
+            <Text
               style={{
                 fontSize: 25,
                 color: 'white',
@@ -164,9 +193,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
   },
   image: {
-    textAlign: 'center', 
-    height: 300, 
-    width: 300, 
+    textAlign: 'center',
+    height: 300,
+    width: 300,
     position: 'relative',
     marginBottom: -50
   },

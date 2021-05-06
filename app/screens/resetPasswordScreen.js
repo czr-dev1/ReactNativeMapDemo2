@@ -4,13 +4,14 @@ import {
   Image,
   SafeAreaView,
   StyleSheet,
-  Text,
+  Text as DefaultText,
   TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function ResetPasswordScreen() {

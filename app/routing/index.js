@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet, StatusBar, View, Dimensions } from "react-native";
+import { StyleSheet, StatusBar, View, Dimensions } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -9,12 +9,13 @@ import {
 } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 
 import DarkMapScreen from "../screens/darkMapScreen";
 import LightMapScreen from "../screens/lightMapScreen";
-import BookmarkedPostsScreen from "../screens/bookmarkedPostsScreen";
+import BookmarkedPostScreen from "../screens/bookmarkedPostScreen";
 import BookmarkedUserScreen from "../screens/bookmarkedUserScreen";
 import StoryListScreen from "../screens/storyListScreen";
 import StoryScreen from "../screens/storyScreen";
@@ -26,13 +27,14 @@ import EULAScreen from "../screens/eulaScreen";
 import ForgotPasswordScreen from "../screens/forgotPasswordScreen";
 import ResetPasswordScreen from "../screens/resetPasswordScreen";
 import ProfileScreen from "../screens/profileScreen";
+import BookmarkedPostsScreen from "../screens/bookmarkedPostsScreen";
+import BookmarkedUsersScreen from "../screens/bookmarkedUsersScreen";
 import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
 import NotificationScreen from "../screens/notificationScreen";
 
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
-import ProfileHeader from "../components/profile/profileHeader";
 
 import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
@@ -40,6 +42,7 @@ import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
 import EditStoryModal from '../modals/editStoryModal';
 
+import ProfileHeader from "../components/profile/profileHeader";
 
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 const Icon = createIconSetFromIcoMoon(
@@ -111,7 +114,6 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: 'Arial',
-          marginTop: 30
         },
         tabStyle: {
           backgroundColor: colors.purple,

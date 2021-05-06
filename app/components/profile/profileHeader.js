@@ -8,7 +8,7 @@ import colors from "../../config/colors";
 function ProfileHeader(props) {
   return (
     <View>
-      {/* determines if platform is android or ios 
+      {/* determines if platform is android or ios
       to style header properly */}
       {Platform.OS === 'android' ? (
         <View
@@ -48,7 +48,7 @@ function ProfileHeader(props) {
         </Text>
       </View>
       )}
-      
+
     </View>
   );
 }

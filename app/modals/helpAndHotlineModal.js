@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  BackHandler,
   FlatList,
   Linking,
   StyleSheet,
@@ -8,14 +9,22 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Entypo } from "@expo/vector-icons";
 
 import Text from "../components/text";
-
 import colors from "../config/colors";
 
 function HelpAndHotlineModal(props) {
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const backAction = () => {
+      props.navigation.goBack();
+    }
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [])
 
   const data = [
     {
@@ -56,11 +65,20 @@ function HelpAndHotlineModal(props) {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "center",
+          justifyContent: "space-between",
           backgroundColor: colors.purple,
           width: "100%",
         }}
       >
+        <Entypo
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+          style={{ padding: 24 }}
+          name="chevron-left"
+          size={28}
+          color={colors.white}
+        />
         <Text
           style={{
             fontSize: 18,
@@ -71,6 +89,12 @@ function HelpAndHotlineModal(props) {
         >
           help & hotline
         </Text>
+        <Entypo
+          style={{ padding: 24 }}
+          name="cross"
+          size={28}
+          color={colors.purple}
+        />
       </View>
       <FlatList
         data={data}
