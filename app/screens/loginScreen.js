@@ -77,6 +77,7 @@ function LoginScreen(props) {
 	};
 
 	const failedLogin = () => {
+		setSubmitted(false);
 		Alert.alert(
 			'failed to log in!',
 			'incorrect username and/or password! please try again',
@@ -84,7 +85,6 @@ function LoginScreen(props) {
 				{
 					text: 'ok',
 					onPress: () => {
-						setSubmitted(!submitted);
 						dispatch(reset());
 					}
 				}
@@ -126,11 +126,12 @@ function LoginScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.purple
+							color: colors.purple,
+							width: '90%',
 						}}
 						value={user.username}
 						placeholder='username'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => handleUsername(val)}
@@ -143,7 +144,7 @@ function LoginScreen(props) {
 				</View>
 
 				<View style={styles.input}>
-					<TouchableOpacity style={{ marginTop: 12 }} onPress={updateSecureTextEntry}>
+					<TouchableOpacity style={{ marginTop: 18 }} onPress={updateSecureTextEntry}>
 						{user.secureTextEntry ? (
 							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
 						) : (
@@ -155,11 +156,12 @@ function LoginScreen(props) {
 							fontFamily: 'Arial',
 							fontSize: 16,
 							color: colors.purple,
-							marginLeft: 10
+							marginLeft: 10,
+							width: '90%',
 						}}
 						value={user.password}
 						placeholder='password'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={user.secureTextEntry ? true : false}
@@ -231,7 +233,7 @@ function LoginScreen(props) {
 					</Text>
 					<TouchableOpacity
 						onPress={() => {
-							navigation.navigate('Register');
+							navigation.navigate('EULA');
 						}}
 					>
 						<Text
@@ -239,7 +241,7 @@ function LoginScreen(props) {
 								fontFamily: 'Arial',
 								fontSize: 14,
 								fontWeight: 'bold',
-								color: colors.forgotDetails,
+								color: colors.purple,
 							}}
 						>
 							here
@@ -299,7 +301,7 @@ const styles = StyleSheet.create({
 		color: colors.purple,
 		marginTop: 30,
 		paddingLeft: 15,
-		height: 50,
+		height: 60,
 		width: '85%',
 	},
 	bottomContainer: {

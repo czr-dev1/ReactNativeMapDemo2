@@ -23,6 +23,7 @@ import StoryPostScreen from "../screens/storyPostScreen";
 import LoginRegisterScreen from "../screens/loginRegisterScreen";
 import LoginScreen from "../screens/loginScreen";
 import RegisterScreen from "../screens/registerScreen";
+import EULAScreen from "../screens/eulaScreen";
 import ForgotPasswordScreen from "../screens/forgotPasswordScreen";
 import ResetPasswordScreen from "../screens/resetPasswordScreen";
 import ProfileScreen from "../screens/profileScreen";
@@ -39,7 +40,9 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+
 import FaqsModal from "../modals/faqsModal";
+import EditStoryModal from '../modals/editStoryModal';
 
 import ProfileHeader from "../components/profile/profileHeader";
 
@@ -128,14 +131,8 @@ function BookmarkedTopTabScreen() {
         }
       }}
     >
-      <BookmarkedTopTab.Screen
-        name="stories"
-        component={BookmarkedPostsScreen}
-      />
-      <BookmarkedTopTab.Screen
-        name="users"
-        component={BookmarkedUsersStackScreen}
-      />
+      <BookmarkedTopTab.Screen name="stories" component={BookmarkedPostsScreen} />
+      <BookmarkedTopTab.Screen name="users" component={BookmarkedUsersStackScreen} />
     </BookmarkedTopTab.Navigator>
   );
 }
@@ -147,6 +144,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Initial" component={LoginRegisterScreen} />
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
+      <LoginStack.Screen name="EULA" component={EULAScreen} />
       <LoginStack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
@@ -394,18 +392,13 @@ function AppStackScreen() {
         options={{ header: () => null }}
         component={StoryScreen}
       />
-      <AppStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <AppStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
       <AppStack.Screen name="FaqsModal" component={FaqsModal} />
-      <Stack.Screen
-        name="userprofilemodal"
-        component={FollowingProfileScreen}
-      />
+      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
     </AppStack.Navigator>
   );
 }

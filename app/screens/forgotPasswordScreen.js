@@ -23,10 +23,11 @@ function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
   const [showError, setShowError] = useState(true);
 
-  const validateEmail = () => {
+  const validateEmail = (val) => {
+    console.log(val.trim());
     if (
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
-      email.length > 0
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(val.trim()) &&
+      val.length > 0
     ) {
       setShowError(false);
       console.log("email validated");
@@ -73,9 +74,10 @@ function ForgotPasswordScreen() {
 
   // Send password reset link if applicable
   const sendResetLink = () => {
+    console.log(showError);
     if (!showError) {
       axios.post("https://www.globaltraqsdev.com/api/password_reset/", {
-        email: email,
+        email: email.trim(),
       })
       .then((response) => {
         loginToggle();
@@ -83,6 +85,7 @@ function ForgotPasswordScreen() {
         emailSent();
       })
       .catch((error) => {
+        console.log(error);
         loginToggle();
         setEmail("");
         emailFailed();
@@ -104,7 +107,7 @@ function ForgotPasswordScreen() {
   };
 
   const emailFailed = () => {
-    Alert.alert("", "please enter a valid email", [
+    Alert.alert("", "Error contacting server", [
       {
         text: "dismiss",
       },
@@ -122,20 +125,24 @@ function ForgotPasswordScreen() {
 
       <View style={styles.inputContainer}>
         <Text style={{ color: colors.purple}}>
-          please intput your e-mail:
+          please input your e-mail:
         </Text>
         <View style={styles.input}>
           <TextInput
             style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.purple
+							color: colors.purple,
+              width: '90%',
 						}}
             value={email}
+            placeholder='sample@email.com'
             autoCapitalize='none'
             autoCorrect={false}
-            onBlur={validateEmail}
-            onChangeText={(val) => setEmail(val)}
+            onChangeText={(val) => {
+              setEmail(val);
+              validateEmail(val);
+            }}
           />
         </View>
       </View>
@@ -212,7 +219,7 @@ const styles = StyleSheet.create({
 		color: colors.purple,
 		marginTop: 30,
 		paddingLeft: 15,
-		height: 50,
+		height: 60,
 		width: '85%',
 	},
 	bottomContainer: {

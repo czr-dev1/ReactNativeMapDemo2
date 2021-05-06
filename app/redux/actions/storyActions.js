@@ -40,15 +40,49 @@ export const makeStoryPrivate = (id) => {
       is_anonymous_pin: true,
     };
 
-    axios
-      .patch(`${urlConfig(getState)}/api/pins/${id}/`, data, config)
-      .then((res) => {
-        console.log(res);
-        dispatch({ type: "MAKE_STORY_PRIVATE_SUCCESS", payload: res.data });
-      })
-      .catch((err) => {
-        console.log(err);
-        dispatch({ type: "MAKE_STORY_PRIVATE_FAILURE", payload: err });
-      });
+    axios.patch(`${urlConfig(getState)}/api/pins/${id}/`, data, config)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: "MAKE_STORY_PRIVATE_SUCCESS", payload: res.data });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: "MAKE_STORY_PRIVATE_FAILURE", payload: err });
+    });
   };
+};
+
+export const getStory = (id) => {
+  let tempStory = props.stories.filter((i) => i.id === id);
+  let regexOut = /(<([^>]+)>)/gi;
+  let descModOut = tempStory[0].description.replace(regexOut, "");
+  descModOut = decodeEntities(descModOut);
+  tempStory[0].description = descModOut;
+
+  // this will get over written once the axios call is completed
+  // without it theres a crash
+  setStory(tempStory[0]);
+  setComments(tempStory[0].commentstory);
+  createImageLink(tempStory[0].description);
+
+  axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+  .then((res) => {
+    console.log(res.data);
+    console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
+    console.log(res.data.description[res.data.description.indexOf("src")]);
+    createImageLink(res.data.description);
+
+    // credit to https://stackoverflow.com/questions/48826533/how-to-filter-out-html-tags-from-array-and-replace-with-nothing
+    let regex = /(<([^>]+)>)/gi;
+    let descMod = res.data.description.replace(regex, "");
+    descMod = decodeEntities(descMod);
+    //console.log(descMod);
+    //let descMod = `<div>${res.data.description}</div>`
+    res.data.description = descMod;
+    setStory(res.data);
+    setComments(res.data.commentstory);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 };

@@ -115,6 +115,7 @@ export const logout = () => {
         tokenConfig(getState)
       )
       .then(() => {
+        delete config.headers["Authorization"];
         dispatch({ type: "LOGOUT_USER_SUCCESS" });
       })
       .catch((err) => {
@@ -286,5 +287,11 @@ export const unfollowUser = ({ list, id, unfollowing }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+};
+
+export const reset = (token) => {
+  return (dispatch) => {
+    dispatch({ type: "RESET" });
   };
 };
