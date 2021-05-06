@@ -26,8 +26,10 @@ function ContactUsModal(props) {
   const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
+    const history = props.navigation.dangerouslyGetState();
+    console.log(history);
     const backAction = () => {
-      props.navigation.goBack();
+      props.navigation.push("Maps");
     }
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 

@@ -358,8 +358,8 @@ function DarkMapScreen(props) {
             </TouchableWithoutFeedback>
           </View>
         </Modal>
-        
-        <View style={styles.shadow2}>
+
+        <View style={[{backgroundColor: colors.white}]}>
           <SearchBar
             round
             searchIcon={{ size: 24 }}
@@ -368,11 +368,11 @@ function DarkMapScreen(props) {
             }}
             onClear={(text) => searchFilterFunction("")}
             lightTheme={true}
-            containerStyle={{
+            containerStyle={[{
               backgroundColor: colors.purple,
               borderBottomColor: "transparent",
               borderTopColor: "transparent",
-            }}
+            }, styles.shadow2]}
             inputContainerStyle={{
               borderRadius: 50,
               backgroundColor: colors.white,
@@ -515,8 +515,19 @@ function elevationShadowStyle(elevation) {
   };
 }
 
+function elevationShadowStyleEdit(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
   shadow2: elevationShadowStyle(20),
+  shadow3: elevationShadowStyleEdit(20),
   containerStyle: {
     backgroundColor: "white",
     alignItems: "stretch",

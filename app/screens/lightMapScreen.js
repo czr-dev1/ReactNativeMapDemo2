@@ -39,6 +39,7 @@ import Modal from "react-native-modal";
 import SideMenu from 'react-native-side-menu-updated';
 
 import Text from "../components/text";
+import DrawerMenu from "../components/drawerMenu";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -298,9 +299,7 @@ function LightMapScreen(props) {
   };
 
   const menu = (
-    <View style={{backgroundColor: colors.purple, width: '100%', height: '100%'}}>
-      <Text style={{}}>Hello Menu</Text>
-    </View>
+    <DrawerMenu />
   );
 
   return (

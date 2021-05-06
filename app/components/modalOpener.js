@@ -36,7 +36,7 @@ function ModalOpener(props) {
       ) : (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(props.navigateTo, {});
+            navigation.push(props.navigateTo);
           }}
         >
           <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderBottomWidth: 1, borderColor: colors.menuBorder}}>
