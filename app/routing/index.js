@@ -39,6 +39,7 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+import FaqsModal from "../modals/faqsModal";
 
 import ProfileHeader from "../components/profile/profileHeader";
 
@@ -221,7 +222,7 @@ function ProfileDrawerScreen() {
                   {...props}
                   name="faqs"
                   icon="faqs"
-                  navigateTo="ContactUsModal"
+                  navigateTo="FaqsModal"
                 />
                 <ModalOpener
                   {...props}
@@ -229,7 +230,6 @@ function ProfileDrawerScreen() {
                   icon="accessibility"
                   navigateTo="ContactUsModal"
                 />
-                <AnonToggleSwitch {...props} />
                 <ModalOpener
                   {...props}
                   name="log out" />
@@ -401,6 +401,7 @@ function AppStackScreen() {
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
+      <AppStack.Screen name="FaqsModal" component={FaqsModal} />
       <Stack.Screen
         name="userprofilemodal"
         component={FollowingProfileScreen}

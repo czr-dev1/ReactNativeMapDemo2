@@ -132,7 +132,7 @@ function ContactUsModal(props) {
         </View>
 
         <View style={{ margin: 0,}}>
-          <View style={styles.box}>
+          <View style={[styles.box, styles.shadow2]}>
             <Text
               style={{
                 fontSize: 22,
@@ -159,7 +159,18 @@ function ContactUsModal(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.purple,

@@ -33,7 +33,7 @@ function DrawerMenu(props) {
           name="faqs"
           icon="faqs"
           isMapScreen={true}
-          navigateTo="ContactUsModal"
+          navigateTo="FaqsModal"
         />
         <ModalOpener
           {...props}
@@ -42,7 +42,6 @@ function DrawerMenu(props) {
           isMapScreen={true}
           navigateTo="ContactUsModal"
         />
-        <AnonToggleSwitch {...props} />
         <ModalOpener
           {...props}
           name="log out" />
