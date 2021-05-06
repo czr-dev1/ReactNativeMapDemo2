@@ -36,7 +36,7 @@ function ModalOpener(props) {
             dispatch(logout());
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderTopWidth: 1, borderColor: colors.menuBorder}}>
+          <View style={{flexDirection: "row", alignItems: "center", padding: 24, }}>
             <FontAwesome name="sign-out" size={24} color={iconColor} />
             <Text style={{ padding: 5, color: colors.white }}>{props.name}</Text>
           </View>
