@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const config = {
   headers: {
@@ -22,7 +23,13 @@ export const loadStories = () => {
     axios
       .get(`${urlConfig(getState)}/api/pins`, config)
       .then((res) => {
-        dispatch({ type: "LOAD_STORIES_SUCCESS", payload: res.data });
+		return AsyncStorage.getItem("@blockedUsers").then(s => {
+			const blockedUsers = new Set(s ? s.split(",").map(Number) : []);
+			
+			const filtered = res.data.filter(story => !blockedUsers.has(story.owner));
+			
+			return dispatch({ type: "LOAD_STORIES_SUCCESS", payload: filtered });
+		}).catch(console.error);
       })
       .catch((err) => {
         dispatch({ type: "LOAD_STORIES_FAILURE", payload: err.response.data });
