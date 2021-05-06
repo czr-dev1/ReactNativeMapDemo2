@@ -265,6 +265,25 @@ function storyScreen(props) {
         console.log(err);
       });
   };
+  
+  const deletePin = () => {
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+
+    axios.delete(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+    .then((res) => {
+      dispatch({ type: 'DELETE_STORY', payload: id });
+      props.loadStories();
+      props.reloadUser(props.username);
+      props.navigation.navigate('Profile');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
 
   const modalOptions = [
     {
