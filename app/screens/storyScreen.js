@@ -285,6 +285,21 @@ function storyScreen(props) {
     });
   };
 
+  const confirmDelete = () => {
+    Alert.alert('', 'are you sure you want to delete this post?',
+    [
+      {
+        text: 'cancel',
+      },
+      {
+        text: `yes, i'm sure`,
+        onPress: () => {
+          deletePin();
+        }
+      }
+    ])
+  };
+
   const modalOptions = [
     {
       label: "suspicious or spam",
@@ -439,14 +454,14 @@ function storyScreen(props) {
             
             {props.isAuthenticated && (props.username === story.username) ? (
               <TouchableOpacity
-                style={{ flexDirection: "row", padding: 18 }}
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
                 onPress={() => {
-                  setShowOptionsModal(false);
-                  setShowFlagModal(true);
+                  setShowOptionsModal(true);
+                  confirmDelete();
                 }}
               >
                 <FontAwesome 
-                  name="minus"
+                  name="times"
                   size={24}
                   color={ colors.purple }
                   style={{ paddingRight: 14 }} 
