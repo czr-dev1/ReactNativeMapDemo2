@@ -19,7 +19,15 @@ function HelpAndHotlineModal(props) {
 
   useEffect(() => {
     const backAction = () => {
-      props.navigation.goBack();
+      if (props.route.params.isMapScreen) {
+        // console.log("maps");
+        // fun bug where on the map screen it wasn't routing correctly
+        // you still the other navigation because it handles routing oddly
+        // if you don't do that in the profile screen
+      } else {
+        // console.log("not maps");
+        props.navigation.goBack();
+      }
     }
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 

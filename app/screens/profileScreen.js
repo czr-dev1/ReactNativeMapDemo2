@@ -82,7 +82,7 @@ function ProfileScreen(props) {
   return (
     <View style={(styles.container, { paddingTop: insets.top - insets.top })}>
       <ScrollView style={{backgroundColor: colors.background, height: '100%'}}>
-      <View style={styles.shadow2}>
+      <View style={[{backgroundColor: colors.white}, styles.shadow2]}>
 
           <View style={[styles.profileBar]}>
             <View
@@ -156,7 +156,7 @@ function ProfileScreen(props) {
               </View>
           </View>
 
-          <View style={[styles.storyButtons, ]}>
+          <View style={[styles.storyButtons]}>
               <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
                 <View
                   style={
@@ -202,8 +202,8 @@ function ProfileScreen(props) {
                 </View>
               </TouchableWithoutFeedback>
           </View>
-          
-        </View>
+
+      </View>
 
         <View style={styles.storyList}>{renderStoriesByType()}</View>
       </ScrollView>

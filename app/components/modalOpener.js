@@ -12,6 +12,14 @@ function ModalOpener(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const iconColor = colors.border
+  const isMapScreen = props.isMapScreen || false;
+  /*
+    ^ Checks to see if props.isMapScreen is undefined
+      * if it is defined it sets the value equal to it
+      * if its undefined it sets the value equal to false
+    You can set the undefined value to be whatever you want it to be
+  */
+
   const icons = {
     "phone": <FontAwesome name="phone" size={24} color={iconColor} />,
     "support": <FontAwesome name="handshake-o" size={24} color={iconColor} />,
@@ -36,7 +44,7 @@ function ModalOpener(props) {
       ) : (
         <TouchableOpacity
           onPress={() => {
-            navigation.push(props.navigateTo);
+            navigation.push(props.navigateTo, {isMapScreen: isMapScreen});
           }}
         >
           <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderBottomWidth: 1, borderColor: colors.menuBorder}}>

@@ -11,30 +11,35 @@ function DrawerMenu(props) {
           {...props}
           name="help & hotline"
           icon="phone"
+          isMapScreen={true}
           navigateTo="HelpAndHotlineModal"
         />
         <ModalOpener
           {...props}
           name="support us"
           icon="support"
+          isMapScreen={true}
           navigateTo="SupportUsModal"
         />
         <ModalOpener
           {...props}
           name="contact us"
           icon="contact"
+          isMapScreen={true}
           navigateTo="ContactUsModal"
         />
         <ModalOpener
           {...props}
           name="faqs"
           icon="faqs"
+          isMapScreen={true}
           navigateTo="ContactUsModal"
         />
         <ModalOpener
           {...props}
           name="accessibility"
           icon="accessibility"
+          isMapScreen={true}
           navigateTo="ContactUsModal"
         />
         <AnonToggleSwitch {...props} />
