@@ -16,6 +16,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // redux
 import { followUser, unfollowUser } from "../redux/actions/authActions";
@@ -34,6 +35,7 @@ function FollowingProfileScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const insets = useSafeAreaInsets();
 
   const renderStoriesByType = () => {
     switch (selectedButton) {
@@ -101,9 +103,8 @@ function FollowingProfileScreen(props) {
     return (
       <SafeAreaView
         style={{ backgroundColor: "white" }}
-        forceInset={{ top: "always" }}
       >
-        <View style={styles.profileBar}>
+        <View style={[{paddingTop: insets.top}, styles.profileBar]}>
           <View style={styles.nicknameContainer}>
             <Text style={styles.nicknameText}>{user}</Text>
           </View>
@@ -136,20 +137,16 @@ function FollowingProfileScreen(props) {
             <Text style={{}}>{data.bio}</Text>
           </View>
         </View>
-        <View style={styles.profileStoryButtons}>
+        <View style={[styles.profileStoryButtons]}>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
             <View
-              style={
+              style={[styles.shadow2,
                 selectedButton === 0
                   ? styles.profileStorySelectedButton
                   : styles.profileStoryUnselectedButton
-              }
+              ]}
             >
-              <MaterialIcons
-                name="format-list-bulleted"
-                size={32}
-                color={colors.purple}
-              />
+              <Text style={{fontWeight: "bold", color: colors.purple, paddingTop: 12, marginBottom: -8, borderBottomWidth: 2, borderColor: colors.orange, fontSize: 16}}>stories</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -159,7 +156,18 @@ function FollowingProfileScreen(props) {
   }
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.white,
@@ -171,7 +179,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     paddingLeft: "10%",
     paddingRight: "10%",
-    height: "20%",
   },
   nicknameContainer: {
     alignItems: "center",
@@ -185,13 +192,12 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: "40%",
   },
   profileImage: {
     borderRadius: 200,
     resizeMode: "center",
-    height: "100%",
-    width: "30%",
+    height: 128,
+    width: 128,
   },
   bioContainter: {
     paddingTop: "5%",
@@ -199,8 +205,7 @@ const styles = StyleSheet.create({
   },
   profileStoryButtons: {
     width: Dimensions.get("window").width,
-    borderTopWidth: 1,
-    borderTopColor: "#eae6e5",
+    borderTopColor: colors.border,
     paddingTop: "2%",
     flexDirection: "row",
     justifyContent: "space-around",
@@ -217,7 +222,7 @@ const styles = StyleSheet.create({
   storyList: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#eae6e5",
+    backgroundColor: colors.background,
     width: Dimensions.get("window").width,
     height: "80%",
   },

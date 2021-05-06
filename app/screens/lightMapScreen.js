@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Button,
   Dimensions,
   FlatList,
+  PixelRatio,
+  Platform,
+  StatusBar,
   StyleSheet,
+  ScrollView,
+  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -15,7 +21,7 @@ import MapView from "react-native-map-clustering";
 import {
   Marker,
   MAP_TYPES,
-  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
   UrlTile,
 } from "react-native-maps";
 import * as Location from "expo-location";
@@ -58,6 +64,7 @@ function LightMapScreen(props) {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const urlTemplate = "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
+  const urlTemplateDark = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
@@ -313,12 +320,12 @@ function LightMapScreen(props) {
             }]}
           ></View>
           <View
-            style={{
+            style={[styles.shadow2, {
               backgroundColor: "white",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
               height: "10%",
-            }}
+            }]}
           >
             <TouchableWithoutFeedback
               onPress={() => {
@@ -377,7 +384,8 @@ function LightMapScreen(props) {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-evenly",
-              padding: 10,
+              paddingBottom: 10,
+              paddingRight: 15,
               backgroundColor: colors.purple,
             }}
           >
@@ -393,7 +401,7 @@ function LightMapScreen(props) {
                 setSelectedButton(0);
               }}
             >
-              <Text style={styles.TextStyle}> all </Text>
+              <Text style={styles.TextStyle}>all</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -409,22 +417,7 @@ function LightMapScreen(props) {
                 setSelectedButton(1);
               }}
             >
-              <Text style={styles.TextStyle}> personal </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={
-                selectedButton === 2
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(2);
-              }}
-            >
-              <Text style={styles.TextStyle}> historical </Text>
+              <Text style={styles.TextStyle}>personal</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -435,11 +428,26 @@ function LightMapScreen(props) {
               }
               activeOpacity={0.5}
               onPress={() => {
-                renderResources();
+                renderHistorical();
                 setSelectedButton(3);
               }}
             >
-              <Text style={styles.TextStyle}> resources </Text>
+              <Text style={styles.TextStyle}>historical</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={
+                selectedButton === 2
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(2);
+              }}
+            >
+              <Text style={styles.TextStyle}>resources</Text>
             </TouchableOpacity>
           </View>
         </HideKeyboard>
@@ -462,7 +470,7 @@ function LightMapScreen(props) {
       ) : (
         <MapView
           style={styles.mapStyle}
-          provider={PROVIDER_GOOGLE}
+          provider={PROVIDER_DEFAULT}
           mapType={MAP_TYPES.NONE}
           initialRegion={INITIAL_REGION}
           rotateEnabled={false}
@@ -476,7 +484,7 @@ function LightMapScreen(props) {
           flex={1}
         >
           <UrlTile
-            urlTemplate={urlTemplate}
+            urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate}
             shouldReplaceMapContent={true}
             maximumZ={19}
             minimumZ={0}
@@ -491,7 +499,18 @@ function LightMapScreen(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   containerStyle: {
     backgroundColor: "white",
     alignItems: "stretch",
@@ -508,6 +527,18 @@ const styles = StyleSheet.create({
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  navStyle: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "dodgerblue",
+    width: Dimensions.get("window").width,
+    height: "5%",
+  },
+  navButton: {
+    flexGrow: 1,
+    textAlign: "center",
   },
   screenContainer: {
     flexDirection: "row",
@@ -554,10 +585,10 @@ const styles = StyleSheet.create({
   UnselectedHeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
-    marginLeft: 5,
+    //marginLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    marginRight: 5,
+    //marginRight: 5,
     backgroundColor: colors.purple,
     height: 30,
     width: 75,
@@ -565,10 +596,10 @@ const styles = StyleSheet.create({
   HeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
-    marginLeft: 5,
+    //marginLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    marginRight: 5,
+    //marginRight: 5,
     backgroundColor: colors.purple,
     borderBottomWidth: 5,
     borderColor: colors.orange,
@@ -597,7 +628,6 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-
 //Personal, Historical, Resources
 const mapStateToProps = (state) => {
   let personalCategorical = state.storyReducer.storyList.filter(
@@ -609,7 +639,6 @@ const mapStateToProps = (state) => {
   let resourcesCategorical = state.storyReducer.storyList.filter(
     (story) => story.category === 2
   );
-
   return {
     personalStories: personalCategorical,
     historicalStories: historicalCategorical,

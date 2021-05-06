@@ -53,8 +53,8 @@ function LoginRegisterOption() {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-				<Image 
-					style={{ height: 110, width: 350, marginBottom: 75 }} 
+				<Image
+					style={{ height: 103, width: '80%', marginBottom: 75 }}
 					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
 			</View>
 
@@ -83,10 +83,10 @@ function LoginRegisterOption() {
 				<View style={styles.registerBtn}>
 					<TouchableOpacity
 						onPress={() => {
-							navigation.navigate('Register');
+							navigation.navigate('EULA');
 						}}
 					>
-						<Text 
+						<Text
 							style={{
 								color: colors.purple,
 								alignSelf: 'center',

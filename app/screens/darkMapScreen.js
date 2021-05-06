@@ -10,7 +10,6 @@ import {
   StatusBar,
   StyleSheet,
   ScrollView,
-  Text,
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -37,6 +36,8 @@ import {
 import { Thumbnail } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+
+import Text from "../components/text";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -305,7 +306,7 @@ function DarkMapScreen(props) {
           style={{ justifyContent: "flex-end", marginBottom: "25%" }}
         >
           <View
-            style={{
+            style={[{
               backgroundColor:
                 modalData.category === 1
                   ? colors.personal
@@ -315,15 +316,15 @@ function DarkMapScreen(props) {
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
               height: 15,
-            }}
+            }]}
           ></View>
           <View
-            style={{
+            style={[styles.shadow2, {
               backgroundColor: "white",
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
               height: "10%",
-            }}
+            }]}
           >
             <TouchableWithoutFeedback
               onPress={() => {
@@ -381,8 +382,9 @@ function DarkMapScreen(props) {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "space-between",
-              padding: 10,
+              justifyContent: "space-evenly",
+              paddingBottom: 10,
+              paddingRight: 15,
               backgroundColor: colors.purple,
             }}
           >
@@ -398,7 +400,7 @@ function DarkMapScreen(props) {
                 setSelectedButton(0);
               }}
             >
-              <Text style={styles.TextStyle}> all </Text>
+              <Text style={styles.TextStyle}>all</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -414,22 +416,7 @@ function DarkMapScreen(props) {
                 setSelectedButton(1);
               }}
             >
-              <Text style={styles.TextStyle}> personal </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={
-                selectedButton === 2
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(2);
-              }}
-            >
-              <Text style={styles.TextStyle}> historical </Text>
+              <Text style={styles.TextStyle}>personal</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -440,11 +427,26 @@ function DarkMapScreen(props) {
               }
               activeOpacity={0.5}
               onPress={() => {
-                renderResources();
+                renderHistorical();
                 setSelectedButton(3);
               }}
             >
-              <Text style={styles.TextStyle}> resources </Text>
+              <Text style={styles.TextStyle}>historical</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={
+                selectedButton === 2
+                  ? styles.HeaderButtonStyle
+                  : styles.UnselectedHeaderButtonStyle
+              }
+              activeOpacity={0.5}
+              onPress={() => {
+                renderResources();
+                setSelectedButton(2);
+              }}
+            >
+              <Text style={styles.TextStyle}>resources</Text>
             </TouchableOpacity>
           </View>
         </HideKeyboard>
@@ -496,7 +498,18 @@ function DarkMapScreen(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   containerStyle: {
     backgroundColor: "white",
     alignItems: "stretch",

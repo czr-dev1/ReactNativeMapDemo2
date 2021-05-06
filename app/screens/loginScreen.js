@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
 	Alert,
 	Image,
 	SafeAreaView,
 	StyleSheet,
-	Text,
 	TextInput,
 	TouchableOpacity,
 	View,
@@ -19,6 +18,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 // Redux
 import { login, reset } from '../redux/actions/authActions';
 
+import Text from "../components/text";
 import colors from '../config/colors';
 
 function LoginScreen(props) {
@@ -77,14 +77,14 @@ function LoginScreen(props) {
 	};
 
 	const failedLogin = () => {
+		setSubmitted(false);
 		Alert.alert(
-			'failed to log in!', 
-			'incorrect username and/or password! please try again', 
+			'failed to log in!',
+			'incorrect username and/or password! please try again',
 			[
 				{
 					text: 'ok',
 					onPress: () => {
-						setSubmitted(!submitted);
 						dispatch(reset());
 					}
 				}
@@ -103,18 +103,18 @@ function LoginScreen(props) {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-				<Image 
-					style={{ height: 150, width: 150 }} 
+				<Image
+					style={{ height: 150, width: 150 }}
 					source={require('../assets/color_icon.png')} />
 				<Text style={styles.title}> log in </Text>
 			</View>
 
 			{submitted && failed ? (
 				<View style={{ alignItems: 'center' }}>
-				{/* Made it an Alert so that I could reset props.loginFail 
-				back to false and update useState for setSubmitted. Also had 
+				{/* Made it an Alert so that I could reset props.loginFail
+				back to false and update useState for setSubmitted. Also had
 				to add some things to authActions and authReducer */}
-					<View> 
+					<View>
 						<Text> {failedLogin()} </Text>
 					</View>
 				</View>
@@ -126,11 +126,12 @@ function LoginScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.purple
+							color: colors.purple,
+							width: '90%',
 						}}
 						value={user.username}
 						placeholder='username'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => handleUsername(val)}
@@ -143,7 +144,7 @@ function LoginScreen(props) {
 				</View>
 
 				<View style={styles.input}>
-					<TouchableOpacity style={{ marginTop: 12 }} onPress={updateSecureTextEntry}>
+					<TouchableOpacity style={{ marginTop: 18 }} onPress={updateSecureTextEntry}>
 						{user.secureTextEntry ? (
 							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
 						) : (
@@ -151,15 +152,16 @@ function LoginScreen(props) {
 						)}
 					</TouchableOpacity>
 					<TextInput
-						style={{ 
-							fontFamily: 'Arial', 
-							fontSize: 16, 
+						style={{
+							fontFamily: 'Arial',
+							fontSize: 16,
 							color: colors.purple,
-							marginLeft: 10 
+							marginLeft: 10,
+							width: '90%',
 						}}
 						value={user.password}
 						placeholder='password'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={user.secureTextEntry ? true : false}
@@ -181,12 +183,12 @@ function LoginScreen(props) {
 							navigation.navigate('ForgotPassword');
 						}}
 					>
-						<Text 
+						<Text
 							style={{
 								fontFamily: 'Arial',
 								fontSize: 12,
 								fontWeight: 'bold',
-								color: colors.forgotDetails,
+								color: colors.purple,
 								marginTop: 10
 							}}
 						>
@@ -195,7 +197,7 @@ function LoginScreen(props) {
 					</TouchableOpacity>
 				</View>
 			</View>
-			
+
 			<View style={styles.bottomContainer}>
 				<View style={styles.submitBtn}>
 					<TouchableOpacity
@@ -222,7 +224,7 @@ function LoginScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 12,
-							color: colors.forgotDetails,
+							color: colors.gray,
 						}}
 					>
 						{/* Put into brackets b/c of apostrophe */}
@@ -230,7 +232,7 @@ function LoginScreen(props) {
 					</Text>
 					<TouchableOpacity
 						onPress={() => {
-							navigation.navigate('Register');
+							navigation.navigate('EULA');
 						}}
 					>
 						<Text
@@ -238,7 +240,7 @@ function LoginScreen(props) {
 								fontFamily: 'Arial',
 								fontSize: 12,
 								fontWeight: 'bold',
-								color: colors.forgotDetails,
+								color: colors.purple,
 							}}
 						>
 							here
@@ -298,7 +300,7 @@ const styles = StyleSheet.create({
 		color: colors.purple,
 		marginTop: 30,
 		paddingLeft: 15,
-		height: 50,
+		height: 60,
 		width: '85%',
 	},
 	bottomContainer: {
@@ -322,7 +324,7 @@ const styles = StyleSheet.create({
 	forgotDetails: {
 		fontFamily: 'Arial',
 		fontSize: 12,
-		color: colors.forgotDetails,
+		color: colors.gray,
 		marginTop: 10,
 		marginLeft: 90,
 	},
@@ -339,9 +341,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-	return {
-		loginFail: state.authReducer.loginFail,
-	};
+  return {
+    loginFail: state.authReducer.loginFail,
+    expoPushToken: state.authReducer.expoPushToken,
+  };
 };
 
 export default connect(mapStateToProps)(LoginScreen);

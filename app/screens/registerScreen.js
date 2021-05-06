@@ -183,10 +183,11 @@ function RegisterScreen(props) {
 							fontFamily: 'Arial',
 							fontSize: 16,
 							color: colors.purple,
+							width: '90%'
 						}}
 						value={user.username}
 						placeholder='username'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => setUsername(val)}
@@ -208,10 +209,11 @@ function RegisterScreen(props) {
 							fontSize: 16,
 							color: colors.purple,
 							marginLeft: 10,
+							width: '90%'
 						}}
 						value={user.email}
 						placeholder='email'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						onChangeText={(val) => setEmail(val)}
@@ -240,11 +242,11 @@ function RegisterScreen(props) {
 							fontSize: 16,
 							color: colors.purple,
 							marginLeft: 10,
-							width: 290
+							width: '90%'
 						}}
 						value={user.password}
 						placeholder='password'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={hidden ? true : false}
@@ -276,11 +278,11 @@ function RegisterScreen(props) {
 							fontSize: 16,
 							color: colors.purple,
 							marginLeft: 10,
-							width: 290
+							width: '90%'
 						}}
 						value={user.confirmPassword}
 						placeholder='confirm password'
-						placeholderTextColor={colors.purple}
+						placeholderTextColor={colors.forgotDetails}
 						autoCapitalize='none'
 						autoCorrect={false}
 						secureTextEntry={user.secureTextEntry ? true : false}
@@ -322,7 +324,7 @@ function RegisterScreen(props) {
 						style={{
 							fontFamily: 'Arial',
 							fontSize: 12,
-							color: colors.forgotDetails,
+							color: colors.gray,
 						}}
 					>
 						already have an account? log in{' '}
@@ -337,7 +339,7 @@ function RegisterScreen(props) {
 								fontFamily: 'Arial',
 								fontSize: 12,
 								fontWeight: 'bold',
-								color: colors.forgotDetails,
+								color: colors.purple,
 							}}
 						>
 							here
@@ -395,7 +397,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		color: colors.purple,
 		marginTop: 10,
-		marginBottom: 10,
+		marginBottom: 15,
 		paddingLeft: 10,
 		height: 40,
 		width: '85%',
