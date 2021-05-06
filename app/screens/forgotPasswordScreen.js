@@ -125,16 +125,18 @@ function ForgotPasswordScreen() {
 
       <View style={styles.inputContainer}>
         <Text style={{ color: colors.purple}}>
-          please intput your e-mail:
+          please input your e-mail:
         </Text>
         <View style={styles.input}>
           <TextInput
             style={{
 							fontFamily: 'Arial',
 							fontSize: 16,
-							color: colors.purple
+							color: colors.purple,
+              width: '90%',
 						}}
             value={email}
+            placeholder='sample@email.com'
             autoCapitalize='none'
             autoCorrect={false}
             onChangeText={(val) => {
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
 		color: colors.purple,
 		marginTop: 30,
 		paddingLeft: 15,
-		height: 50,
+		height: 60,
 		width: '85%',
 	},
 	bottomContainer: {

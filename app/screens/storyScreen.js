@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Dimensions,
   Platform,
   SafeAreaView,
@@ -121,27 +122,26 @@ function storyScreen(props) {
     setComments(tempStory[0].commentstory);
     createImageLink(tempStory[0].description);
 
-    axios
-      .get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
-      .then((res) => {
-        console.log(res.data);
-        console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
-        console.log(res.data.description[res.data.description.indexOf("src")]);
-        createImageLink(res.data.description);
+    axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+    .then((res) => {
+      console.log(res.data);
+      console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
+      console.log(res.data.description[res.data.description.indexOf("src")]);
+      createImageLink(res.data.description);
 
-        // credit to https://stackoverflow.com/questions/48826533/how-to-filter-out-html-tags-from-array-and-replace-with-nothing
-        let regex = /(<([^>]+)>)/gi;
-        let descMod = res.data.description.replace(regex, "");
-        descMod = decodeEntities(descMod);
-        //console.log(descMod);
-        //let descMod = `<div>${res.data.description}</div>`
-        res.data.description = descMod;
-        setStory(res.data);
-        setComments(res.data.commentstory);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      // credit to https://stackoverflow.com/questions/48826533/how-to-filter-out-html-tags-from-array-and-replace-with-nothing
+      let regex = /(<([^>]+)>)/gi;
+      let descMod = res.data.description.replace(regex, "");
+      descMod = decodeEntities(descMod);
+      //console.log(descMod);
+      //let descMod = `<div>${res.data.description}</div>`
+      res.data.description = descMod;
+      setStory(res.data);
+      setComments(res.data.commentstory);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
     /*
     if (props.isLoggedIn) {
@@ -266,6 +266,41 @@ function storyScreen(props) {
         console.log(err);
       });
   };
+  
+  const deletePin = () => {
+    const config = {
+      headers: {
+        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+      },
+    };
+
+    axios.delete(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+    .then((res) => {
+      console.log(res);
+      //dispatch({ type: 'DELETE_STORY', payload: id });
+      props.loadStories();
+      props.reloadUser(props.username);
+      props.navigation.goBack();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+
+  const confirmDelete = () => {
+    Alert.alert('', 'are you sure you want to delete this post?',
+    [
+      {
+        text: 'cancel',
+      },
+      {
+        text: `yes, i'm sure`,
+        onPress: () => {
+          deletePin();
+        }
+      }
+    ])
+  };
 
   const modalOptions = [
     {
@@ -347,22 +382,22 @@ function storyScreen(props) {
         >
           <View>
             {
-              story.is_anonymous_pin ?
-              null
-              :
-              <TouchableOpacity
-                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border}}
-                onPress={() => {
-                  setShowOptionsModal(false);
-                  bookmark();
-                }}
-              >
-                <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
-                <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
-              </TouchableOpacity>
-             }
+              story.is_anonymous_pin || props.username === story.username ? null
+              : (
+                <TouchableOpacity
+                  style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
+                  onPress={() => {
+                    setShowOptionsModal(false);
+                    bookmark();
+                  }}
+                >
+                  <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
+                  <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
+                </TouchableOpacity>
+              )}
+
             <TouchableOpacity
-              style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border}}
+              style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
                 setShowOptionsModal(false);
                 bookmark();
@@ -376,8 +411,9 @@ function storyScreen(props) {
               />
               <Text style={{ fontSize: 18, color: colors.purple }}>bookmark post</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
-              style={{ flexDirection: "row", padding: 18 }}
+              style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
                 setShowOptionsModal(false);
                 setShowFlagModal(true);
@@ -391,6 +427,52 @@ function storyScreen(props) {
               />
               <Text style={{ fontSize: 18, color: colors.purple }}>flag post</Text>
             </TouchableOpacity>
+
+            {props.isAuthenticated && (props.username === story.username) ? (
+              <TouchableOpacity
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
+                onPress={() => {
+                  props.navigation.navigate("EditStoryModal", {
+                    id: id,
+                    title: story.title,
+                    category: story.category,
+                    startDate: story.startDate,
+                    endDate: story.endDate,
+                    description: story.description,
+                    username: props.username,
+                  });
+                  setShowOptionsModal(false);
+                }}
+              >
+                <FontAwesome 
+                  name="pencil"
+                  size={24}
+                  color={ colors.purple }
+                  style={{ paddingRight: 14 }} 
+                />
+                <Text style={{ fontSize: 18, color: colors.purple }}>edit post</Text>
+              </TouchableOpacity>
+            ) : null
+            }
+            
+            {props.isAuthenticated && (props.username === story.username) ? (
+              <TouchableOpacity
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
+                onPress={() => {
+                  setShowOptionsModal(true);
+                  confirmDelete();
+                }}
+              >
+                <FontAwesome 
+                  name="times"
+                  size={24}
+                  color={ colors.purple }
+                  style={{ paddingRight: 14 }} 
+                />
+                <Text style={{ fontSize: 18, color: colors.purple }}>delete post</Text>
+              </TouchableOpacity>
+            ) : null
+            }
           </View>
         </View>
       </Modal>
@@ -458,7 +540,7 @@ function storyScreen(props) {
               <TouchableWithoutFeedback
                 onPress={() => {
                   if (!story.is_anonymous_pin) {
-                    props.navigation.navigate("userprofilemodal", {
+                    props.navigation.navigate("UserProfileModal", {
                       user: story.username,
                     });
                   }
@@ -682,6 +764,7 @@ const mapStateToProps = (state) => {
     userBookmarks: state.authReducer.user.user_upvoted_stories,
     followingList: state.authReducer.followingList,
     username: state.authReducer.user.username,
+    isAuthenticated: state.authReducer.isAuthenticated,
   };
 };
 
