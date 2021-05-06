@@ -84,25 +84,48 @@ const BookMark = ({ item }) => {
       key={item.id}
       onPress={() => {
         navigation.navigate("Story", {
-          title: item.title,
-          description: item.description,
           id: item.id,
         });
       }}
     >
-      <Card containerStyle={{ borderRadius: 14 }}>
+      <View style={{ margin: 12 }}>
         <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
+            backgroundColor:
+              item.category === 1
+                ? colors.personal
+                : item.category === 2
+                ? colors.community
+                : colors.historical,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+            height: 15,
           }}
+        ></View>
+        <View
+          style={[{
+            backgroundColor: "white",
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 5,
+          }, styles.shadow2]}
         >
-          <View style={{ flexDirection: "column", flexShrink: 1 }}>
-            <Text style={{ flexShrink: 1 }}>{item.title.toLowerCase()}</Text>
+          <View
+            style={{
+              flexDirection: "column",
+              justifyContent: "space-between",
+              padding: 10,
+            }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {item.title}
+            </Text>
+            <Text style={{ fontSize: 12 }}>posted on {item.startDate}</Text>
           </View>
         </View>
-      </Card>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -142,7 +165,18 @@ function StoryList(props) {
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   cardContainer: {
     width: Dimensions.get("window").width,
   },

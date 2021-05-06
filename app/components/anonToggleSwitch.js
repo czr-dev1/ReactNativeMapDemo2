@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     padding: 20,
-    borderBottomWidth: 2,
-    borderColor: "#ddd",
   },
 });
 

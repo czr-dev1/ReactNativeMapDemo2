@@ -13,7 +13,7 @@ function Text(props) {
     fontFamily: 'Arial'
   }
 
-  if (props.style.fontWeight !== undefined) {
+  if (props.style !== undefined) {
     if (props.style.fontWeight === 'bold') {
       fontFamily.fontFamily = 'ArialBold';
     }
