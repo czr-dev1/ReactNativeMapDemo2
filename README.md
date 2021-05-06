@@ -2,11 +2,15 @@
 ## Install Expo CLI
 Requirements: 
 
-`Node.js, Git, Expo` 
+Node.js, Git, Expo
 
 To install Expo:
 
-`npm install --global expo-cli`
+```sh
+npm install --global expo-cli
+```
+
+Alternatively, expo has already been installed as a dev dependency for this project, so `node node_modules/expo-cli/bin/expo.js` can be used in place of `expo` in commands after running `npm ci`.
 
 ## Run Development Server: 
 First enter `npm ci` to get install all of the required dependancies
@@ -26,4 +30,4 @@ Then `expo start`
  * Note that compiling takes around 30ish minutes
 
 Expo is like a compatibility layer that makes it easier to develop React Native Apps.
-It is not a replacement or something entirely  different, it is in addition you could say.
+It is not a replacement or something entirely different, it is in addition you could say.
