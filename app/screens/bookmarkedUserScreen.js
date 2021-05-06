@@ -75,7 +75,7 @@ function BookmarkUserScreen(props) {
   } else {
     return (
       <View style={{ backgroundColor: colors.background, height: "100%" }}>
-        <ScrollView>
+        <ScrollView style={{}}>
           {data.map((item, i) => {
             let temp = item.bio;
             if (temp.length > 42) {
@@ -90,7 +90,7 @@ function BookmarkUserScreen(props) {
                   });
                 }}
               >
-                <Card containerStyle={{ borderRadius: 25 }}>
+                <Card containerStyle={[{ borderRadius: 25, marginBottom: 10, borderWidth: 0 }, styles.shadow2]}>
                   <View
                     style={{
                       flexDirection: "row",
@@ -134,7 +134,18 @@ function BookmarkUserScreen(props) {
   }
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.background,

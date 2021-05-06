@@ -126,7 +126,6 @@ function BookmarkedTopTabScreen() {
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
         style: {
-          elevation: 0,
           shadowOpacity: 0
         }
       }}

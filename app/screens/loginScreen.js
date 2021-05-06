@@ -200,7 +200,7 @@ function LoginScreen(props) {
 			</View>
 
 			<View style={styles.bottomContainer}>
-				<View style={styles.submitBtn}>
+				<View style={[styles.submitBtn, styles.shadow2]}>
 					<TouchableOpacity
 						onPress={() => {
 							dispatch(login(user));
@@ -263,7 +263,18 @@ function LoginScreen(props) {
 	);
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+	shadow2: elevationShadowStyle(20),
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
