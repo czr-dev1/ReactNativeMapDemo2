@@ -25,6 +25,7 @@ import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
 import { WebView } from "react-native-webview";
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/authActions";
@@ -382,20 +383,21 @@ function storyScreen(props) {
         >
           <View>
             {
-              story.is_anonymous_pin || props.username === story.username ? null
-              : (
-                <TouchableOpacity
-                  style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
-                  onPress={() => {
-                    setShowOptionsModal(false);
-                    bookmark();
-                  }}
-                >
-                  <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
-                  <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
-                </TouchableOpacity>
-              )}
-
+              story.is_anonymous_pin || props.username === story.username ?
+              null
+              :
+              <TouchableOpacity
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border}}
+                onPress={() => {
+                  setShowOptionsModal(false);
+                  bookmark();
+                }}
+              >
+                <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
+                <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
+              </TouchableOpacity>
+             }
+			 { props.isLoggedIn === true ?
             <TouchableOpacity
               style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
@@ -411,7 +413,8 @@ function storyScreen(props) {
               />
               <Text style={{ fontSize: 18, color: colors.purple }}>bookmark post</Text>
             </TouchableOpacity>
-
+			: null
+			 }
             <TouchableOpacity
               style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
@@ -427,7 +430,35 @@ function storyScreen(props) {
               />
               <Text style={{ fontSize: 18, color: colors.purple }}>flag post</Text>
             </TouchableOpacity>
-
+			{ story.owner !== undefined && story.owner !== null ? (
+            <TouchableOpacity
+              style={{ flexDirection: "row", padding: 18 }}
+              onPress={() => {
+                setShowOptionsModal(false);
+                setShowFlagModal(false);
+				return AsyncStorage.getItem("@blockedUsers").then(s => {
+					const blockedUsers = (s ? s.split(",") : []);
+					
+					if (blockedUsers.includes(story.owner.toString())) {
+						return;
+					}
+					
+					blockedUsers.push(story.owner);
+					
+					return AsyncStorage.setItem("@blockedUsers", blockedUsers.join(","));
+				}).catch(console.error);
+              }}
+            >
+              <FontAwesome
+                name="ban"
+                size={24}
+                color={ colors.purple }
+                style={{ paddingRight: 14 }}
+              />
+              <Text style={{ fontSize: 18, color: colors.purple }}>block user</Text>
+            </TouchableOpacity>
+			) : null
+			}
             {props.isAuthenticated && (props.username === story.username) ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
@@ -559,7 +590,7 @@ function storyScreen(props) {
                 </DefaultText>
               </TouchableWithoutFeedback>
             </View>
-            {props.isLoggedIn === true ? (
+            {/*props.isLoggedIn === true*/ true ? (
               <TouchableWithoutFeedback
                 onPress={() => setShowOptionsModal(true)}>
                 <FontAwesome5
@@ -646,7 +677,7 @@ function storyScreen(props) {
                       {comment.username}
                     </Text>
                   </TouchableOpacity>
-                  {props.isLoggedIn === true ? (
+                  {/*props.isLoggedIn === true*/ true ? (
                     <View
                       style={{
                         flexDirection: "row-reverse",
