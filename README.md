@@ -1,4 +1,4 @@
-# the arqive Mobile Application
+# The arqive Mobile Application
 ## Install Expo CLI
 Requirements: 
 
