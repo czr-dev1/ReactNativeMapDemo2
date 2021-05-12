@@ -162,13 +162,13 @@ function ProfileStackScreen({ navigation }) {
         name="Profile"
         options={{
           headerLeft: () => (
-            <MaterialIcons name="menu" size={24} color="white" />
+            <FontAwesome5 name="ellipsis-v" style={{ padding: 15 }} size={24} color="white" />
           ),
           headerTitle: () => <ProfileHeader />,
           headerRight: () => (
-            <MaterialIcons
-              name="menu"
-              style={{ paddingRight: 10 }}
+            <FontAwesome5
+              name="ellipsis-v"
+              style={{ padding: 15 }}
               size={24}
               color={colors.purple}
               onPress={() => navigation.openDrawer()}
@@ -193,6 +193,16 @@ function ProfileDrawerScreen() {
       drawerPosition="right"
       drawerType="slide"
       drawerStyle={{ width: "80%" }}
+      options={{
+        drawerIcon: ({focused, size}) => (
+          <FontAwesome5
+            name="ellipsis-v"
+            size={24}
+            style={{padding: 4}}
+            color={colors.purple}
+          />
+        )
+      }}
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>

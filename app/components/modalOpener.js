@@ -21,11 +21,11 @@ function ModalOpener(props) {
   */
 
   const icons = {
-    "phone": <FontAwesome name="phone" size={24} color={iconColor} />,
-    "support": <FontAwesome name="handshake-o" size={24} color={iconColor} />,
-    "contact": <FontAwesome name="id-card" size={24} color={iconColor} />,
-    "faqs": <FontAwesome name="question-circle-o" size={24} color={iconColor} />,
-    "accessibility": <FontAwesome name="universal-access" size={24} color={iconColor} />,
+    "phone": <FontAwesome name="phone" style={{width: "10%"}} size={24} color={iconColor} />,
+    "support": <FontAwesome name="handshake-o" style={{width: "10%"}} size={24} color={iconColor} />,
+    "contact": <FontAwesome name="id-card" style={{width: "10%"}} size={24} color={iconColor} />,
+    "faqs": <FontAwesome name="question-circle-o" style={{width: "10%"}} size={24} color={iconColor} />,
+    "accessibility": <FontAwesome name="universal-access" style={{width: "10%"}} size={24} color={iconColor} />,
   }
 
   return (
@@ -36,9 +36,9 @@ function ModalOpener(props) {
             dispatch(logout());
           }}
         >
-          <View style={{flexDirection: "row", alignItems: "center", padding: 24, }}>
-            <FontAwesome name="sign-out" size={24} color={iconColor} />
-            <Text style={{ padding: 5, color: colors.white }}>{props.name}</Text>
+          <View style={{flexDirection: "row", alignItems: "center", padding: 24}}>
+            <FontAwesome name="sign-out" style={{width: "16%"}} size={24} color={iconColor} />
+            <Text style={{ padding: 5, color: colors.white, fontSize: 16 }}>{props.name}</Text>
           </View>
         </TouchableOpacity>
       ) : (
@@ -49,7 +49,7 @@ function ModalOpener(props) {
         >
           <View style={{flexDirection: "row", alignItems: "center", padding: 24, borderBottomWidth: props.bottomBorder ? 0 : 1, borderColor: colors.menuBorder}}>
             {icons[props.icon]}
-            <Text style={{ padding: 24, color: colors.white, }}>{props.name}</Text>
+            <Text style={{ padding: 24, color: colors.white, fontSize: 16}}>{props.name}</Text>
           </View>
         </TouchableOpacity>
       )}

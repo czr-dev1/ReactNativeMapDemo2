@@ -267,7 +267,7 @@ function storyScreen(props) {
         console.log(err);
       });
   };
-  
+
   const deletePin = () => {
     const config = {
       headers: {
@@ -432,19 +432,19 @@ function storyScreen(props) {
             </TouchableOpacity>
 			{ story.owner !== undefined && story.owner !== null ? (
             <TouchableOpacity
-              style={{ flexDirection: "row", padding: 18 }}
+              style={{ flexDirection: "row", padding: 18, borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
                 setShowOptionsModal(false);
                 setShowFlagModal(false);
 				return AsyncStorage.getItem("@blockedUsers").then(s => {
 					const blockedUsers = (s ? s.split(",") : []);
-					
+
 					if (blockedUsers.includes(story.owner.toString())) {
 						return;
 					}
-					
+
 					blockedUsers.push(story.owner);
-					
+
 					return AsyncStorage.setItem("@blockedUsers", blockedUsers.join(","));
 				}).catch(console.error);
               }}
@@ -475,17 +475,17 @@ function storyScreen(props) {
                   setShowOptionsModal(false);
                 }}
               >
-                <FontAwesome 
+                <FontAwesome
                   name="pencil"
                   size={24}
                   color={ colors.purple }
-                  style={{ paddingRight: 14 }} 
+                  style={{ paddingRight: 14 }}
                 />
                 <Text style={{ fontSize: 18, color: colors.purple }}>edit post</Text>
               </TouchableOpacity>
             ) : null
             }
-            
+
             {props.isAuthenticated && (props.username === story.username) ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
@@ -494,11 +494,11 @@ function storyScreen(props) {
                   confirmDelete();
                 }}
               >
-                <FontAwesome 
+                <FontAwesome
                   name="times"
                   size={24}
                   color={ colors.purple }
-                  style={{ paddingRight: 14 }} 
+                  style={{ paddingRight: 14 }}
                 />
                 <Text style={{ fontSize: 18, color: colors.purple }}>delete post</Text>
               </TouchableOpacity>
