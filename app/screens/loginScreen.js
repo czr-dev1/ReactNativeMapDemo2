@@ -24,6 +24,7 @@ import colors from '../config/colors';
 function LoginScreen(props) {
 	const dispatch = useDispatch();
 	const navigation = useNavigation();
+
 	const [submitted, setSubmitted] = useState(false);
 	const [failed, setFailed] = useState(false);
 
@@ -77,7 +78,6 @@ function LoginScreen(props) {
 	};
 
 	const failedLogin = () => {
-		setSubmitted(false);
 		Alert.alert(
 			'failed to log in!',
 			'incorrect username and/or password! please try again',
@@ -86,6 +86,7 @@ function LoginScreen(props) {
 					text: 'ok',
 					onPress: () => {
 						dispatch(reset());
+						setSubmitted(false);
 					}
 				}
 			]
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: colors.forgotDetails,
 		marginTop: 10,
-		marginLeft: 90,
+		marginLeft: 70,
 	},
 	text: {
 		fontSize: 14,

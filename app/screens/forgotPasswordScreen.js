@@ -124,7 +124,7 @@ function ForgotPasswordScreen() {
 			</View>
 
       <View style={styles.inputContainer}>
-        <Text style={{ color: colors.purple}}>
+        <Text style={{ fontSize: 14, color: colors.purple}}>
           please input your e-mail:
         </Text>
         <View style={styles.input}>
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 });

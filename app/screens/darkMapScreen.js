@@ -2,15 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Dimensions,
   FlatList,
-  PixelRatio,
-  Platform,
-  StatusBar,
   StyleSheet,
-  ScrollView,
-  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -21,7 +15,7 @@ import MapView from "react-native-map-clustering";
 import {
   Marker,
   MAP_TYPES,
-  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
   UrlTile,
 } from "react-native-maps";
 import * as Location from "expo-location";
@@ -34,7 +28,7 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import { Thumbnail } from "native-base";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
 import Text from "../components/text";
@@ -214,6 +208,7 @@ function DarkMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderResources = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -223,6 +218,7 @@ function DarkMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderHistorical = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -266,7 +262,7 @@ function DarkMapScreen(props) {
           break;
         default:
           pinType = HISTORICAL_PIN;
-        //pinType = '#0000FF';
+          //pinType = '#0000FF';
       }
       return (
         <Marker
@@ -304,26 +300,26 @@ function DarkMapScreen(props) {
 
   return (
     <SideMenu
-    menu={menu}
-    bounceBackOnOverdraw={false}
-    openMenuOffset={Dimensions.get("window").width * .80}
-    isOpen={showDrawer}
-    overlayColor={'hsla(0, 0%, 0%, 0.7)'}
-    onChange={isOpen => setShowDrawer(isOpen)}
-    menuPosition={'right'}
+      menu={menu}
+      bounceBackOnOverdraw={false}
+      openMenuOffset={Dimensions.get("window").width * .80}
+      isOpen={showDrawer}
+      overlayColor={'hsla(0, 0%, 0%, 0.7)'}
+      onChange={isOpen => setShowDrawer(isOpen)}
+      menuPosition={'right'}
     >
-      <SafeAreaView style={(styles.container, { flex: 1 })}>
-        <View style={styles.containerStyle}>
+      <SafeAreaView style={styles.container}>
+        <View>
           <Modal
             isVisible={showModal}
             onBackdropPress={() => setShowModal(false)}
             onBackButtonPress={() => setShowModal(false)}
             hasBackdrop={true}
             backdropOpacity={0}
-            style={{ justifyContent: "flex-end", marginBottom: "17%" }}
+            style={{justifyContent: "flex-end", marginBottom: "30%"}}
           >
             <View
-              style={[{
+              style={{
                 backgroundColor:
                   modalData.category === 1
                     ? colors.personal
@@ -333,22 +329,23 @@ function DarkMapScreen(props) {
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
                 height: 15,
-              }]}
-            ></View>
+              }}
+            >
+            </View>
             <View
-              style={[styles.shadow2, {
+              style={{
                 backgroundColor: "white",
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
                 height: "12%",
-              }]}
+              }}
             >
               <TouchableWithoutFeedback
                 onPress={() => {
                   props.navigation.navigate("Story", {
+                    id: modalData.id,
                     title: modalData.title,
                     description: modalData.description,
-                    id: modalData.id,
                   });
                   setShowModal(false);
                 }}
@@ -364,10 +361,10 @@ function DarkMapScreen(props) {
                     height: "100%",
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                  <Text style={{fontSize: 16, fontWeight: "bold"}}>
                     {modalData.title}
                   </Text>
-                  <Text style={{ fontSize: 12 }}>
+                  <Text style={{fontSize: 12}}>
                     posted on {modalData.postDate}
                   </Text>
                 </View>
@@ -375,44 +372,44 @@ function DarkMapScreen(props) {
             </View>
           </Modal>
 
-          <View style={[{backgroundColor: colors.purple}]}>
-          <View style={{flexDirection: 'row', width: '90%'}}>
-            <SearchBar
-              round
-              searchIcon={{ size: 24 }}
-              onChangeText={(text) => {
-                searchFilterFunction(text);
-              }}
-              onClear={(text) => searchFilterFunction("")}
-              lightTheme={true}
-              containerStyle={{
-                backgroundColor: colors.purple,
-                borderBottomColor: "transparent",
-                borderTopColor: "transparent",
-                width: '100%'
-              }}
-              inputContainerStyle={{
-                borderRadius: 50,
-                backgroundColor: colors.white,
-                borderWidth: 0,
-              }}
-              inputStyle={{ fontSize: 18 }}
-              placeholder="search"
-              placeholderTextColor={colors.purple}
-              value={search}
-            />
-            <TouchableWithoutFeedback onPress={() => setShowDrawer(true)}>
-              <View style={{justifyContent: 'center', alignItems: 'center', width: '10%'}}>
-                <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+          <View style={{flex: 0.25, backgroundColor: colors.purple}}>
+            <View style={{flexDirection: "row", width: "90%"}}>
+              <SearchBar
+                round
+                searchIcon={{ size:24 }}
+                onChangeText={(text) => {
+                  searchFilterFunction(text);
+                }}
+                onClear={(text) => searchFilterFunction("")}
+                lightTheme={true}
+                containerStyle={{
+                  backgroundColor: colors.purple,
+                  borderTopColor: "transparent",
+                  borderBottomColor: "transparent",
+                  width: "100%",
+                }}
+                inputContainerStyle={{
+                  backgroundColor: colors.white,
+                  borderRadius: 50,
+                  borderWidth: 0,
+                }}
+                inputStyle={{ fontSize: 18 }}
+                placeholder="search"
+                placeholderTextColor={colors.purple}
+                value={search}
+              />
+              <TouchableWithoutFeedback onPress={() => setShowDrawer(true)}>
+                <View style={{justifyContent: "center", alignItems: "center", width: "10%"}}>
+                  <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
             <HideKeyboard>
               <View
                 style={[{
                   flexDirection: "row",
-                  alignItems: "center",
                   justifyContent: "space-evenly",
+                  alignItems: "center",
                   paddingBottom: 10,
                   paddingRight: 15,
                   backgroundColor: colors.purple,
@@ -436,8 +433,8 @@ function DarkMapScreen(props) {
                 <TouchableOpacity
                   style={
                     selectedButton === 1
-                      ? styles.HeaderButtonStyle
-                      : styles.UnselectedHeaderButtonStyle
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
                   }
                   activeOpacity={0.5}
                   //onPress={(() => setSelectedCategoryButton(1))}
@@ -484,6 +481,7 @@ function DarkMapScreen(props) {
 
           {showSearchResults ? (
             <FlatList
+              style={{ flex: 1, backgroundColor: "white", marginTop: 30}}
               data={filteredDataSource}
               //data={filteredDataSource.slice(0,5)}
               keyExtractor={(item, index) => index.toString()}
@@ -493,38 +491,40 @@ function DarkMapScreen(props) {
               renderItem={ItemView}
             />
           ) : null}
-        </View>
 
-        {props.isLoading ? (
-          <ActivityIndicator style={styles.mapStyle} />
-        ) : (
-          <MapView
-            style={styles.mapStyle}
-            provider={PROVIDER_DEFAULT}
-            mapType={MAP_TYPES.NONE}
-            initialRegion={INITIAL_REGION}
-            rotateEnabled={false}
-            clusterColor={"#FFA500"}
-            clusterTextColor={"#000000"}
-            maxZoomLevel={21}
-            minZoomLevel={1}
-            minZoom={0}
-            maxZoom={19}
-            minPoints={5}
-            flex={1}
-          >
-            <UrlTile
-              urlTemplate={urlTemplate}
-              shouldReplaceMapContent={true}
-              maximumZ={19}
-              minimumZ={0}
-              maxZoomLevel={19}
-              minZoomLevel={0}
-              zIndex={1}
-            />
-            {renderPins()}
-          </MapView>
-        )}
+          <View style={{flex: 1, backgroundColor: "white"}}>
+            {props.isLoading ? (
+              <ActivityIndicator style={styles.mapStyle} />
+            ) : (
+              <MapView
+                style={styles.mapStyle}
+                provider={PROVIDER_GOOGLE}
+                mapType={MAP_TYPES.NONE}
+                initialRegion={INITIAL_REGION}
+                rotateEnabled={false}
+                clusterColor={"#FFA500"}
+                clusterTextColor={"#000000"}
+                maxZoomLevel={21}
+                minZoomLevel={1}
+                maxZoom={19}
+                minZoom={0}
+                minPoints={5}
+                flex={1}
+              >
+                <UrlTile
+                  urlTemplate={urlTemplate}
+                  shouldReplaceMapContent={true}
+                  maximumZ={19}
+                  minimumZ={0}
+                  maxZoomLevel={19}
+                  minZoomLevel={0}
+                  zIndex={1}
+                />
+                {renderPins()}
+              </MapView>
+            )}
+          </View>
+        </View>
       </SafeAreaView>
     </SideMenu>
   );
@@ -553,16 +553,12 @@ function elevationShadowStyleEdit(elevation) {
 const styles = StyleSheet.create({
   shadow2: elevationShadowStyle(20),
   shadow3: elevationShadowStyleEdit(20),
-  containerStyle: {
-    backgroundColor: colors.purple,
-    alignItems: "stretch",
-  },
   itemStyle: {
     padding: 5,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.purple,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -570,71 +566,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: colors.white,
-  },
-  navStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "dodgerblue",
-    width: Dimensions.get("window").width,
-    height: "5%",
-  },
-  navButton: {
-    flexGrow: 1,
-    textAlign: "center",
-  },
-  screenContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomColor: "black",
-  },
-  containerPicker: {
-    flex: 1,
-    //backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fixToText: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "95%",
-  },
-  SubmitButtonStyle: {
-    marginTop: 10,
-    marginBottom: 20,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 25,
-    marginRight: 25,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 50,
-    width: 80,
-  },
-  OptionButtonStyle: {
-    marginTop: 5,
-    marginBottom: 5,
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 60,
-    width: 140,
-  },
-  UnselectedHeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
-    backgroundColor: colors.purple,
-    height: 30,
-    width: 75,
   },
   HeaderButtonStyle: {
     marginTop: 1,
@@ -649,28 +580,23 @@ const styles = StyleSheet.create({
     height: 30,
     width: 75,
   },
+  UnselectedHeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginRight: 5,
+    backgroundColor: colors.purple,
+    height: 30,
+    width: 75,
+  },
   TextStyle: {
     color: colors.white,
     textAlign: "center",
   },
-  TextStyleSortInner: {
-    color: colors.black,
-    textAlign: "center",
-  },
-  SortTextStyle: {
-    marginTop: 10,
-    marginLeft: 25,
-    fontSize: 20,
-    flex: 1,
-  },
-  appButtonText: {
-    fontSize: 12,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
-  },
 });
+
 //Personal, Historical, Resources
 const mapStateToProps = (state) => {
   let personalCategorical = state.storyReducer.storyList.filter(
@@ -682,6 +608,7 @@ const mapStateToProps = (state) => {
   let resourcesCategorical = state.storyReducer.storyList.filter(
     (story) => story.category === 2
   );
+
   return {
     isAuthenticated: false,
     personalStories: personalCategorical,

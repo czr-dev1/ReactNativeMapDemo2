@@ -35,6 +35,7 @@ import NotificationScreen from "../screens/notificationScreen";
 
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
+import ProfileHeader from "../components/profile/profileHeader";
 
 import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
@@ -44,15 +45,13 @@ import EditProfileModal from "../modals/editProfileModal";
 import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
 
-import ProfileHeader from "../components/profile/profileHeader";
-
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+
 const Icon = createIconSetFromIcoMoon(
   require('../assets/fonts/selection.json'),
   'IcoMoon',
   'icomoon.ttf'
 );
-
 
 import colors from "../config/colors.js";
 
@@ -116,6 +115,7 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: 'Arial',
+          marginTop: 30,
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -144,10 +144,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
       <LoginStack.Screen name="EULA" component={EULAScreen} />
-      <LoginStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScreen}
-      />
+      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </LoginStack.Navigator>
   );
@@ -286,8 +283,6 @@ function NeedAuthTabScreen() {
             }
           }
 
-
-
           if (focused) {
             iconColor = colors.white;
           } else {
@@ -314,17 +309,10 @@ function NeedAuthStackScreen() {
   return (
     <NeedAuthStack.Navigator screenOptions={{ headerShown: false }}>
       <NeedAuthStack.Screen name="Main" component={NeedAuthTabScreen} />
-      <NeedAuthStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <NeedAuthStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
-      <NeedAuthStack.Screen
-        name="EditProfileModal"
-        component={EditProfileModal}
-      />
     </NeedAuthStack.Navigator>
   );
 }
@@ -407,8 +395,8 @@ function AppStackScreen() {
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
       <AppStack.Screen name="FaqsModal" component={FaqsModal} />
-      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
-      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
     </AppStack.Navigator>
   );
 }

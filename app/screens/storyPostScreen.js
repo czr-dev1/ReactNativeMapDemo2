@@ -139,38 +139,37 @@ function StoryPostScreen(props) {
       },
     };
 
-    axios
-      .post("http://www.globaltraqsdev.com/api/pins/", pin, config)
-      .then((res) => {
-        console.log(res.data);
+    axios.post("http://www.globaltraqsdev.com/api/pins/", pin, config)
+    .then((res) => {
+      console.log(res.data);
 
-        setAddress("");
-        setAnonRadius(1);
-        setCategory(1);
-        setCountry("");
-        setDescription("");
-        setEndDate(new Date());
-        setAnonymous(true);
-        setLastEditDate({});
-        setLastPersonEdit("");
-        setLocation("");
-        setLocality("");
-        setPostCode("");
-        setPostDate("");
-        setRegion("");
-        setStartDate(new Date());
-        setTitle("");
+      setAddress("");
+      setAnonRadius(1);
+      setCategory(1);
+      setCountry("");
+      setDescription("");
+      setEndDate(new Date());
+      setAnonymous(true);
+      setLastEditDate({});
+      setLastPersonEdit("");
+      setLocation("");
+      setLocality("");
+      setPostCode("");
+      setPostDate("");
+      setRegion("");
+      setStartDate(new Date());
+      setTitle("");
 
-        props.loadStories();
-        if (props.isLoggedIn) {
-          props.navigation.navigate('Map');
-        } else {
-          props.navigation.navigate('Maps');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      props.loadStories();
+      if (props.isLoggedIn) {
+        props.navigation.navigate('Map');
+      } else {
+        props.navigation.navigate('Maps');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 
   return (
@@ -259,7 +258,6 @@ function StoryPostScreen(props) {
               }}
             />
           </Modal>
-
 
           <View
             style={{

@@ -159,8 +159,8 @@ function EditProfileModal(props) {
             edit profile
           </Text>
           <TouchableWithoutFeedback onPress={() => {
-            console.log('submit');
             onSubmit();
+            console.log(props.is_profile_private);
           }}>
             <DefaultText style={{fontSize: 16, color: colors.purple, padding: 24}}>done</DefaultText>
           </TouchableWithoutFeedback>
@@ -191,7 +191,7 @@ function EditProfileModal(props) {
             style={{
               flexDirection: "row",
               borderBottomWidth: 3,
-              borderColor: "#ddd",
+              borderColor: colors.forgotDetails,
               alignItems: "center",
               paddingBottom: 10,
               paddingLeft: 7,
@@ -242,6 +242,7 @@ function EditProfileModal(props) {
               fontSize: 16,
               color: colors.gray,
               paddingLeft: 8,
+              marginBottom: 3,
             }}
           >
             bio
@@ -259,7 +260,12 @@ function EditProfileModal(props) {
             onPress={() => deleteConfirm()}
           >
             <Text
-              style={{ fontSize: 16, fontWeight: "bold", color: colors.gray }}
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                color: colors.forgotDetails,
+                marginTop: 200
+              }}
             >
               delete profile
             </Text>
@@ -288,7 +294,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Arial",
     borderBottomWidth: 3,
-    borderColor: "#ddd",
+    borderColor: colors.forgotDetails,
     padding: 10,
     fontSize: 14,
     width: "100%",
@@ -303,7 +309,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     paddingTop: -20,
-    borderRadius: 200,
+    borderRadius: 2000,
     resizeMode: "center",
     height: 128,
     width: 128,

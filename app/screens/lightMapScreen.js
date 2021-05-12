@@ -2,15 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Dimensions,
   FlatList,
-  PixelRatio,
-  Platform,
-  StatusBar,
   StyleSheet,
-  ScrollView,
-  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -21,7 +15,7 @@ import MapView from "react-native-map-clustering";
 import {
   Marker,
   MAP_TYPES,
-  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
   UrlTile,
 } from "react-native-maps";
 import * as Location from "expo-location";
@@ -34,7 +28,7 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import { Thumbnail } from "native-base";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import SideMenu from 'react-native-side-menu-updated';
 
@@ -43,6 +37,7 @@ import DrawerMenuSignedIn from "../components/drawerSignedIn";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
+import { reloadUser } from "../redux/actions/authActions";
 
 const PERSONAL_PIN =
   "data:image/png;base64,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";
@@ -79,6 +74,7 @@ function LightMapScreen(props) {
   const [selectedButton, setSelectedButton] = useState(0);
 
   useEffect(() => {
+    props.reloadUser();
     props.loadStories();
     getLocation();
     searchData();
@@ -214,6 +210,7 @@ function LightMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderResources = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -223,6 +220,7 @@ function LightMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderHistorical = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -304,26 +302,26 @@ function LightMapScreen(props) {
 
   return (
     <SideMenu
-    menu={menu}
-    bounceBackOnOverdraw={false}
-    openMenuOffset={Dimensions.get("window").width * .80}
-    isOpen={showDrawer}
-    overlayColor={'hsla(0, 0%, 0%, 0.7)'}
-    onChange={isOpen => setShowDrawer(isOpen)}
-    menuPosition={'right'}
+      menu={menu}
+      bounceBackOnOverdraw={false}
+      openMenuOffset={Dimensions.get("window").width * .80}
+      isOpen={showDrawer}
+      overlayColor={'hsla(0, 0%, 0%, 0.7)'}
+      onChange={isOpen => setShowDrawer(isOpen)}
+      menuPosition={'right'}
     >
-      <SafeAreaView style={(styles.container, { flex: 1 })}>
-        <View style={styles.containerStyle}>
+      <SafeAreaView style={styles.container}>
+        <View>
           <Modal
             isVisible={showModal}
             onBackdropPress={() => setShowModal(false)}
             onBackButtonPress={() => setShowModal(false)}
             hasBackdrop={true}
             backdropOpacity={0}
-            style={{ justifyContent: "flex-end", marginBottom: "17%" }}
+            style={{justifyContent: "flex-end", marginBottom: "17%"}}
           >
             <View
-              style={[{
+              style={{
                 backgroundColor:
                   modalData.category === 1
                     ? colors.personal
@@ -333,22 +331,23 @@ function LightMapScreen(props) {
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
                 height: 15,
-              }]}
-            ></View>
+              }}
+            >
+            </View>
             <View
-              style={[styles.shadow2, {
+              style={{
                 backgroundColor: "white",
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
                 height: "12%",
-              }]}
+              }}
             >
               <TouchableWithoutFeedback
                 onPress={() => {
                   props.navigation.navigate("Story", {
+                    id: modalData.id,
                     title: modalData.title,
                     description: modalData.description,
-                    id: modalData.id,
                   });
                   setShowModal(false);
                 }}
@@ -357,14 +356,17 @@ function LightMapScreen(props) {
                   style={{
                     flexDirection: "column",
                     justifyContent: "space-between",
-                    padding: 10,
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10,
                     height: "100%",
                   }}
                 >
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                  <Text style={{fontSize: 16, fontWeight: "bold"}}>
                     {modalData.title}
                   </Text>
-                  <Text style={{ fontSize: 12 }}>
+                  <Text style={{fontSize: 12}}>
                     posted on {modalData.postDate}
                   </Text>
                 </View>
@@ -372,11 +374,11 @@ function LightMapScreen(props) {
             </View>
           </Modal>
 
-          <View style={[{backgroundColor: colors.purple}, styles.shadow2]}>
-            <View style={{flexDirection: 'row', width: '90%'}}>
+          <View style={{flex: 0.25, backgroundColor: colors.purple}}>
+            <View style={{flexDirection: "row", width: "90%"}}>
               <SearchBar
                 round
-                searchIcon={{ size: 24 }}
+                searchIcon={{ size:24 }}
                 onChangeText={(text) => {
                   searchFilterFunction(text);
                 }}
@@ -384,13 +386,13 @@ function LightMapScreen(props) {
                 lightTheme={true}
                 containerStyle={{
                   backgroundColor: colors.purple,
-                  borderBottomColor: "transparent",
                   borderTopColor: "transparent",
-                  width: '100%'
+                  borderBottomColor: "transparent",
+                  width: "100%",
                 }}
                 inputContainerStyle={{
-                  borderRadius: 50,
                   backgroundColor: colors.white,
+                  borderRadius: 50,
                   borderWidth: 0,
                 }}
                 inputStyle={{ fontSize: 18 }}
@@ -399,21 +401,21 @@ function LightMapScreen(props) {
                 value={search}
               />
               <TouchableWithoutFeedback onPress={() => setShowDrawer(true)}>
-                <View style={{justifyContent: 'center', alignItems: 'center', width: '10%'}}>
+                <View style={{justifyContent: "center", alignItems: "center", width: "10%"}}>
                   <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
                 </View>
-              </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
             </View>
             <HideKeyboard>
               <View
                 style={[{
                   flexDirection: "row",
-                  alignItems: "center",
                   justifyContent: "space-evenly",
+                  alignItems: "center",
                   paddingBottom: 10,
                   paddingRight: 15,
                   backgroundColor: colors.purple,
-                }]}
+                }, styles.shadow2]}
               >
                 <TouchableOpacity
                   style={
@@ -433,8 +435,8 @@ function LightMapScreen(props) {
                 <TouchableOpacity
                   style={
                     selectedButton === 1
-                      ? styles.HeaderButtonStyle
-                      : styles.UnselectedHeaderButtonStyle
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
                   }
                   activeOpacity={0.5}
                   //onPress={(() => setSelectedCategoryButton(1))}
@@ -476,11 +478,12 @@ function LightMapScreen(props) {
                   <Text style={styles.TextStyle}>resources</Text>
                 </TouchableOpacity>
               </View>
-          </HideKeyboard>
+            </HideKeyboard>
           </View>
 
           {showSearchResults ? (
             <FlatList
+              style={{ flex: 1, backgroundColor: "white", marginTop: 15, height: "100%"}}
               data={filteredDataSource}
               //data={filteredDataSource.slice(0,5)}
               keyExtractor={(item, index) => index.toString()}
@@ -490,38 +493,40 @@ function LightMapScreen(props) {
               renderItem={ItemView}
             />
           ) : null}
-        </View>
 
-        {props.isLoading ? (
-          <ActivityIndicator style={styles.mapStyle} />
-        ) : (
-          <MapView
-            style={styles.mapStyle}
-            provider={PROVIDER_DEFAULT}
-            mapType={MAP_TYPES.NONE}
-            initialRegion={INITIAL_REGION}
-            rotateEnabled={false}
-            clusterColor={"#FFA500"}
-            clusterTextColor={"#000000"}
-            maxZoomLevel={21}
-            minZoomLevel={1}
-            minZoom={0}
-            maxZoom={19}
-            minPoints={5}
-            flex={1}
-          >
-            <UrlTile
-              urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate}
-              shouldReplaceMapContent={true}
-              maximumZ={19}
-              minimumZ={0}
-              maxZoomLevel={19}
-              minZoomLevel={0}
-              zIndex={1}
-            />
-            {renderPins()}
-          </MapView>
-        )}
+          <View style={{flex: 1, backgroundColor: "white"}}>
+            {props.isLoading ? (
+              <ActivityIndicator style={styles.mapStyle} />
+            ) : (
+              <MapView
+                style={styles.mapStyle}
+                provider={PROVIDER_GOOGLE}
+                mapType={MAP_TYPES.NONE}
+                initialRegion={INITIAL_REGION}
+                rotateEnabled={false}
+                clusterColor={"#FFA500"}
+                clusterTextColor={"#000000"}
+                maxZoomLevel={21}
+                minZoomLevel={1}
+                maxZoom={19}
+                minZoom={0}
+                minPoints={5}
+                flex={1}
+              >
+                <UrlTile
+                  urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
+                  shouldReplaceMapContent={true}
+                  maximumZ={19}
+                  minimumZ={0}
+                  maxZoomLevel={19}
+                  minZoomLevel={0}
+                  zIndex={1}
+                />
+                {renderPins()}
+              </MapView>
+            )}
+          </View>
+        </View>
       </SafeAreaView>
     </SideMenu>
   );
@@ -537,18 +542,25 @@ function elevationShadowStyle(elevation) {
   };
 }
 
+function elevationShadowStyleEdit(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
   shadow2: elevationShadowStyle(20),
-  containerStyle: {
-    backgroundColor: colors.purple,
-    alignItems: "stretch",
-  },
+  shadow3: elevationShadowStyleEdit(20),
   itemStyle: {
     padding: 5,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.purple,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -556,108 +568,37 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: colors.white,
-    elevation: 0
-  },
-  navStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "dodgerblue",
-    width: Dimensions.get("window").width,
-    height: "5%",
-  },
-  navButton: {
-    flexGrow: 1,
-    textAlign: "center",
-  },
-  screenContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomColor: "black",
-  },
-  containerPicker: {
-    flex: 1,
-    //backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fixToText: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "95%",
-  },
-  SubmitButtonStyle: {
-    marginTop: 10,
-    marginBottom: 20,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 25,
-    marginRight: 25,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 50,
-    width: 80,
-  },
-  OptionButtonStyle: {
-    marginTop: 5,
-    marginBottom: 5,
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 60,
-    width: 140,
-  },
-  UnselectedHeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    //marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    //marginRight: 5,
-    backgroundColor: colors.purple,
-    height: 30,
-    width: 75,
   },
   HeaderButtonStyle: {
     marginTop: 1,
     marginBottom: 1,
-    //marginLeft: 5,
+    marginLeft: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    //marginRight: 5,
+    marginRight: 5,
     backgroundColor: colors.purple,
     borderBottomWidth: 5,
     borderColor: colors.orange,
     height: 30,
     width: 75,
   },
+  UnselectedHeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginRight: 5,
+    backgroundColor: colors.purple,
+    height: 30,
+    width: 75,
+  },
   TextStyle: {
+    textAlign: "center",
     color: colors.white,
-    textAlign: "center",
-  },
-  TextStyleSortInner: {
-    color: colors.black,
-    textAlign: "center",
-  },
-  SortTextStyle: {
-    marginTop: 10,
-    marginLeft: 25,
-    fontSize: 20,
-    flex: 1,
-  },
-  appButtonText: {
-    fontSize: 12,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
   },
 });
+
 //Personal, Historical, Resources
 const mapStateToProps = (state) => {
   let personalCategorical = state.storyReducer.storyList.filter(
@@ -669,6 +610,7 @@ const mapStateToProps = (state) => {
   let resourcesCategorical = state.storyReducer.storyList.filter(
     (story) => story.category === 2
   );
+
   return {
     isAuthenticated: true,
     personalStories: personalCategorical,
@@ -684,6 +626,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadStories: () => dispatch(loadStories()),
+    reloadUser: () => dispatch(reloadUser()),
   };
 };
 
