@@ -163,6 +163,7 @@ function StoryPostScreen(props) {
       props.loadStories();
       if (props.isLoggedIn) {
         props.navigation.navigate('Map');
+        props.reloadUser(props.userName);
       } else {
         props.navigation.navigate('Maps');
       }
@@ -600,7 +601,7 @@ const mapStateToProps = (state) => {
   const userId =
     state.authReducer.isLoggedIn === true ? state.authReducer.user.id : "";
   const userName =
-    state.authReducer.isLoggedIn === true ? state.authReducer.username : "";
+    state.authReducer.isLoggedIn === true ? state.authReducer.user.username : "";
   return {
     userId: userId,
     userName: userName,
