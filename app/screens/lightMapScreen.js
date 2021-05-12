@@ -34,6 +34,7 @@ import SideMenu from 'react-native-side-menu-updated';
 
 import Text from "../components/text";
 import DrawerMenuSignedIn from "../components/drawerSignedIn";
+import PlainStoryList from "../components/plainStoryList";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -121,13 +122,26 @@ function LightMapScreen(props) {
   );
 
   const searchFilterFunction = (text) => {
+    let selectedStories = props.stories;
+    switch (selectedButton) {
+      case 1:
+        selectedStories = props.personalStories;
+        break;
+      case 2:
+        selectedStories = props.resourcesStories;
+        break;
+      case 3:
+        selectedStories = props.historicalStories;
+        break;
+    }
+
     if (text.length > 0) {
       setShowSearchResults(true);
     } else {
       setShowSearchResults(false);
     }
     if (text) {
-      const newData = masterDataSource.filter(function (item) {
+      const newData = selectedStories.filter(function (item) {
         const itemData = item.title
           ? item.title.toUpperCase()
           : "".toUpperCase();
@@ -137,26 +151,30 @@ function LightMapScreen(props) {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      setFilteredDataSource(masterDataSource);
+      setFilteredDataSource(selectedStories);
       setSearch(text);
     }
   };
 
   const ItemView = ({ item }) => {
     return (
-      <Text
-        style={styles.itemStyle}
-        onPress={() => {
-          //Need to send user to the searched post on the map
-          // props.navigation.navigate("Story", {
-          //   title: item.title,
-          //   description: item.description,
-          // });
-          Alert.alert("Should display search item");
-        }}
+      <TouchableWithoutFeedback
+      onPress={() => {
+        //Need to send user to the searched post on the map
+         props.navigation.navigate("Story", {
+           title: item.title,
+           description: item.description,
+           id: item.id
+        });
+
+      }}
       >
-        {item.title.toUpperCase()}
-      </Text>
+        <Text
+          style={styles.itemStyle}
+        >
+          {item.title.toUpperCase()}
+        </Text>
+      </TouchableWithoutFeedback>
     );
   };
 
@@ -374,7 +392,7 @@ function LightMapScreen(props) {
             </View>
           </Modal>
 
-          <View style={{flex: 0.25, backgroundColor: colors.purple}}>
+          <View style={{backgroundColor: colors.purple}}>
             <View style={{flexDirection: "row", width: "90%"}}>
               <SearchBar
                 round
@@ -409,12 +427,11 @@ function LightMapScreen(props) {
             <HideKeyboard>
               <View
                 style={[{
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                  paddingBottom: 10,
-                  paddingRight: 15,
+                  width: Dimensions.get("window").width,
                   backgroundColor: colors.purple,
+                  paddingTop: 15,
+                  flexDirection: "row",
+                  justifyContent: "space-around",
                 }, styles.shadow2]}
               >
                 <TouchableOpacity
@@ -482,50 +499,44 @@ function LightMapScreen(props) {
           </View>
 
           {showSearchResults ? (
-            <FlatList
-              style={{ flex: 1, backgroundColor: "white", marginTop: 15, height: "100%"}}
-              data={filteredDataSource}
-              //data={filteredDataSource.slice(0,5)}
-              keyExtractor={(item, index) => index.toString()}
-              ItemSeparatorComponent={ItemSeparatorView}
-              maxToRenderPerBatch={15}
-              //windowSize={5}
-              renderItem={ItemView}
-            />
-          ) : null}
+            <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height, marginTop: 15}}>
+              <PlainStoryList stories={filteredDataSource} />
+            </View>
+          ) :  <View style={{flex: 1, backgroundColor: "white"}}>
+                      {props.isLoading ? (
+                        <ActivityIndicator style={styles.mapStyle} />
+                      ) : (
+                        <MapView
+                          style={styles.mapStyle}
+                          provider={PROVIDER_GOOGLE}
+                          mapType={MAP_TYPES.NONE}
+                          initialRegion={INITIAL_REGION}
+                          rotateEnabled={false}
+                          clusterColor={"#FFA500"}
+                          clusterTextColor={"#000000"}
+                          maxZoomLevel={21}
+                          minZoomLevel={1}
+                          maxZoom={19}
+                          minZoom={0}
+                          minPoints={5}
+                          flex={1}
+                        >
+                          <UrlTile
+                            urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
+                            shouldReplaceMapContent={true}
+                            maximumZ={19}
+                            minimumZ={0}
+                            maxZoomLevel={19}
+                            minZoomLevel={0}
+                            zIndex={1}
+                          />
+                          {renderPins()}
+                        </MapView>
+                      )}
+                    </View>
+                  }
 
-          <View style={{flex: 1, backgroundColor: "white"}}>
-            {props.isLoading ? (
-              <ActivityIndicator style={styles.mapStyle} />
-            ) : (
-              <MapView
-                style={styles.mapStyle}
-                provider={PROVIDER_GOOGLE}
-                mapType={MAP_TYPES.NONE}
-                initialRegion={INITIAL_REGION}
-                rotateEnabled={false}
-                clusterColor={"#FFA500"}
-                clusterTextColor={"#000000"}
-                maxZoomLevel={21}
-                minZoomLevel={1}
-                maxZoom={19}
-                minZoom={0}
-                minPoints={5}
-                flex={1}
-              >
-                <UrlTile
-                  urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
-                  shouldReplaceMapContent={true}
-                  maximumZ={19}
-                  minimumZ={0}
-                  maxZoomLevel={19}
-                  minZoomLevel={0}
-                  zIndex={1}
-                />
-                {renderPins()}
-              </MapView>
-            )}
-          </View>
+
         </View>
       </SafeAreaView>
     </SideMenu>
@@ -570,31 +581,24 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   HeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
+    alignItems: "center",
     backgroundColor: colors.purple,
-    borderBottomWidth: 5,
+    borderBottomWidth: 2,
     borderColor: colors.orange,
     height: 30,
     width: 75,
+    flexGrow: 1,
   },
   UnselectedHeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
+    alignItems: "center",
     backgroundColor: colors.purple,
     height: 30,
     width: 75,
+    flexGrow: 1,
   },
   TextStyle: {
     textAlign: "center",
+    fontSize: 16,
     color: colors.white,
   },
 });
