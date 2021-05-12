@@ -45,7 +45,7 @@ export default function App() {
     ArialBold: require("./app/assets/fonts/arialBold.ttf"),
   });
 
-  {/*useEffect(() => {
+  useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
       setExpoPushToken(token)
     );
@@ -70,7 +70,7 @@ export default function App() {
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);*/}
+  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
