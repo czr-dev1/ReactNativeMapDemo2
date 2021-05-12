@@ -54,7 +54,7 @@ function LoginRegisterOption() {
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
 				<Image
-					style={{ height: 110, width: 350, marginBottom: 75 }}
+					style={{ height: 103, width: '80%', marginBottom: 75 }}
 					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
 			</View>
 
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 });

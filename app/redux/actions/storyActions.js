@@ -86,3 +86,13 @@ export const getStory = (id) => {
     console.log(err);
   });
 };
+
+export const deleteComment = (id) => (dispatch) => {
+  axios.delete(`https://globaltraqsdev.com/api/commentStory/${id}/`, config)
+  .then((res) => {
+    dispatch({ type: 'DELETE_COMMENT', payload: id });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};

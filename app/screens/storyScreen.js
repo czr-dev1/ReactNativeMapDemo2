@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
   Alert,
+  Clipboard,
   Dimensions,
+  ImageBackground,
   Platform,
   SafeAreaView,
-  StatusBar,
+  ScrollView,
   StyleSheet,
+  Text as DefaultText,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TextInput,
   View,
-  ScrollView,
-  Button,
-  Image,
-  ImageBackground,
-  Clipboard,
-  Text as DefaultText,
 } from "react-native";
 import MapView from "react-native-map-clustering";
 import { connect } from "react-redux";
@@ -25,6 +22,7 @@ import Modal from "react-native-modal";
 import RadioButtonRN from "radio-buttons-react-native";
 import { WebView } from "react-native-webview";
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/authActions";
@@ -221,6 +219,17 @@ function storyScreen(props) {
       });
   };
 
+  const confirmFlag = () => {
+    Alert.alert('', 'you have successfully flagged this post!', [
+      {
+        text: 'ok',
+        onPress: () => {
+          setShowOptionsModal(false);
+        }
+      }
+    ])
+  };
+
   const comment = () => {
     const config = {
       headers: {
@@ -233,16 +242,15 @@ function storyScreen(props) {
       is_anonymous_pin: props.isPrivacyMode,
       pin: id,
     };
-    axios
-      .post("https://globaltraqsdev.com/api/commentStory/", data, config)
-      .then((res) => {
-        getStory();
-        props.loadStories();
-        setUserComment("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios.post("https://globaltraqsdev.com/api/commentStory/", data, config)
+    .then((res) => {
+      getStory();
+      props.loadStories();
+      setUserComment("");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 
   const bookmark = () => {
@@ -302,6 +310,8 @@ function storyScreen(props) {
     ])
   };
 
+  
+
   const modalOptions = [
     {
       label: "suspicious or spam",
@@ -320,69 +330,67 @@ function storyScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <Modal
-        isVisible={showFlagModal}
-        onBackdropPress={() => setShowFlagModal(false)}
-        onBackButtonPress={() => {
-          setShowFlagModal(false);
-          setShowOptionsModal(true);
-        }}
-        style={{ justifyContent: "flex-end", margin: 0 }}
-      >
-        <View
-          style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}
-        >
-          <View>
-            <RadioButtonRN
-              data={modalOptions}
-              selectedBtn={(e) => setFlagType(e)}
-              icon={<FontAwesome name="check" size={24} color="black" />}
-              boxStyle={{ borderWidth: 0 }}
-            />
-            <TextInput
-              style={styles.box}
-              placeholder="explain your reason"
-              multiline
-              onChangeText={(val) => {
-                setFlagReason(val);
-              }}
-            />
-            <View style={{ flexDirection: "row-reverse" }}>
-              <TouchableOpacity
-                style={{ borderRadius: 5, borderColor: "#ddd", borderWidth: 2 }}
-                onPress={() => {
-                  flagStory();
-                  setShowFlagModal(false);
-                }}
-              >
-                <Text
-                  style={{
-                    paddingTop: 9,
-                    paddingBottom: 9,
-                    paddingLeft: 18,
-                    paddingRight: 18,
-                    color: "#919191",
-                  }}
-                >
-                  submit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
+        onModalHide={() => setShowFlagModal(true)}
         isVisible={showOptionsModal}
         onBackdropPress={() => setShowOptionsModal(false)}
         onBackButtonPress={() => setShowOptionsModal(false)}
         style={{ justifyContent: "flex-end", margin: 0 }}
       >
-        <View
-          style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}
+        <Modal
+          isVisible={showFlagModal}
+          backdropColor={'transparent'}
+          onBackdropPress={() => setShowFlagModal(false)}
+          onBackButtonPress={() => {
+            setShowFlagModal(false);
+            setShowOptionsModal(true);
+          }}
+          avoidKeyboard={true}
+          style={{ justifyContent: "flex-end", margin: 0 }}
         >
+          <View style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}>
+            <View>
+              <RadioButtonRN
+                data={modalOptions}
+                selectedBtn={(e) => setFlagType(e)}
+                icon={<FontAwesome name="check" size={24} color="black" />}
+                boxStyle={{ borderWidth: 0 }}
+              />
+              <TextInput
+                style={styles.box}
+                placeholder="explain your reason"
+                multiline
+                onChangeText={(val) => {
+                  setFlagReason(val);
+                }}
+              />
+              <View style={{ flexDirection: "row-reverse" }}>
+                <TouchableOpacity
+                  style={{ borderRadius: 5, borderColor: "#ddd", borderWidth: 2 }}
+                  onPress={() => {
+                    flagStory();
+                    confirmFlag();
+                  }}
+                >
+                  <Text
+                    style={{
+                      paddingTop: 9,
+                      paddingBottom: 9,
+                      paddingLeft: 18,
+                      paddingRight: 18,
+                      color: "#919191",
+                    }}
+                  >
+                    submit
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+        <View style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}>
           <View>
-            {
-              story.is_anonymous_pin || props.username === story.username ? null
+            { story.is_anonymous_pin || props.username === story.username 
+              ? null
               : (
                 <TouchableOpacity
                   style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
@@ -394,29 +402,35 @@ function storyScreen(props) {
                   <FontAwesome name="user-plus" size={24} color={colors.purple} style={{ paddingRight: 14 }}/>
                   <Text style={{ fontSize: 18, color: colors.purple }}>follow user</Text>
                 </TouchableOpacity>
-              )}
+              )
+            }
+			      
+            { !props.isLoggedIn || props.username === story.username 
+              ? null
+              : (
+                <TouchableOpacity
+                  style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
+                  onPress={() => {
+                    setShowOptionsModal(false);
+                    bookmark();
+                  }}
+                >
+                  <FontAwesome
+                    name="bookmark"
+                    size={24}
+                    color={ colors.purple }
+                    style={{ paddingRight: 14 }}
+                  />
+                  <Text style={{ fontSize: 18, color: colors.purple }}>bookmark post</Text>
+                </TouchableOpacity>
+              )
+            }
 
             <TouchableOpacity
               style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
-                setShowOptionsModal(false);
-                bookmark();
-              }}
-            >
-              <FontAwesome
-                name="bookmark"
-                size={24}
-                color={ colors.purple }
-                style={{ paddingRight: 14 }}
-              />
-              <Text style={{ fontSize: 18, color: colors.purple }}>bookmark post</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
-              onPress={() => {
-                setShowOptionsModal(false);
                 setShowFlagModal(true);
+                console.log(showFlagModal);
               }}
             >
               <FontAwesome
@@ -427,8 +441,38 @@ function storyScreen(props) {
               />
               <Text style={{ fontSize: 18, color: colors.purple }}>flag post</Text>
             </TouchableOpacity>
+            
+            { story.owner !== undefined && story.owner !== null && !(props.username === story.username) ? (
+              <TouchableOpacity
+                style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
+                onPress={() => {
+                  setShowOptionsModal(false);
+                  setShowFlagModal(false);
+                  return AsyncStorage.getItem("@blockedUsers").then(s => {
+                    const blockedUsers = (s ? s.split(",") : []);
+        
+                    if (blockedUsers.includes(story.owner.toString())) {
+                      return;
+                    }
 
-            {props.isAuthenticated && (props.username === story.username) ? (
+                    blockedUsers.push(story.owner);
+                    
+                    return AsyncStorage.setItem("@blockedUsers", blockedUsers.join(","));
+                  }).catch(console.error);
+                }}
+              >
+                <FontAwesome
+                  name="ban"
+                  size={24}
+                  color={ colors.purple }
+                  style={{ paddingRight: 14 }}
+                />
+                <Text style={{ fontSize: 18, color: colors.purple }}>block user</Text>
+              </TouchableOpacity>
+              ) : null
+			      }
+
+            { props.isAuthenticated && (props.username === story.username) ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
                 onPress={() => {
@@ -455,7 +499,7 @@ function storyScreen(props) {
             ) : null
             }
             
-            {props.isAuthenticated && (props.username === story.username) ? (
+            { props.isAuthenticated && props.username === story.username ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
                 onPress={() => {
@@ -482,15 +526,15 @@ function storyScreen(props) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-      <ImageBackground source={{uri: imageLink}} style={{flex: 1, resizeMode: 'cover', justifyContent: 'center'}}>
+      <ImageBackground source={{uri: imageLink}} style={{flex: 1, resizeMode: 'cover', justifyContent: 'center', backgroundColor: colors.white}}>
         <View
-          style={{
+          style={[{
             paddingTop: "40%",
-
-          }}
+            backgroundColor: 'transparent'
+          }]}
         >
           <View
-            style={{
+            style={[{
               position: "relative",
               backgroundColor:
                 story.category === 1
@@ -501,11 +545,11 @@ function storyScreen(props) {
               paddingTop: "10%",
               borderTopLeftRadius: 30,
               borderTopRightRadius: 30,
-            }}
+            }]}
           >
           </View>
           <View
-            style={{
+            style={[{
               position: "relative",
               bottom: "30%",
               paddingBottom: "-30%",
@@ -513,20 +557,20 @@ function storyScreen(props) {
               borderTopRightRadius: 10,
               backgroundColor: colors.white,
               paddingTop: "10%"
-            }}
+            }, styles.shadow2]}
           >
 
           </View>
         </View>
 
         <View
-          style={{
+          style={[{
             width: "100%",
             marginTop: "-10%",
             paddingLeft: "10%",
             paddingRight: "10%",
             backgroundColor: "white",
-          }}
+          }]}
         >
           <View
             style={{
@@ -559,7 +603,7 @@ function storyScreen(props) {
                 </DefaultText>
               </TouchableWithoutFeedback>
             </View>
-            {props.isLoggedIn === true ? (
+            {/*props.isLoggedIn === true*/ true ? (
               <TouchableWithoutFeedback
                 onPress={() => setShowOptionsModal(true)}>
                 <FontAwesome5
@@ -614,12 +658,12 @@ function storyScreen(props) {
         </View>
 
         <View
-          style={{
+          style={[{
             width: "100%",
             paddingLeft: "7%",
             paddingRight: "10%",
             backgroundColor: "white",
-          }}
+          }]}
         >
 
           <View style={{ padding: 18 }}></View>
@@ -654,7 +698,7 @@ function storyScreen(props) {
                       }}
                     >
                       <TouchableOpacity>
-                        <FontAwesome5 name="ellipsis-v" size={24} color={colors.purple} />
+                        {/*<FontAwesome5 name="ellipsis-v" size={24} color={colors.purple} />*/}
                       </TouchableOpacity>
                     </View>
                   ) : null}
@@ -676,34 +720,41 @@ function storyScreen(props) {
             borderColor: colors.border,
         }}>
           <View style={{flexDirection: 'row', backgroundColor: colors.background}}>
-
-          <TextInput
-            style={styles.box}
-            multiline
-            placeholder="comment"
-            placeholderTextColor={colors.purple}
-            defaultValue={userComment}
-            onChangeText={(val) => {
-              setUserComment(val);
-            }}
-          />
-          <TouchableOpacity style={{alignItems:"center", justifyContent: "center"}}
-          onPress={() => {
-            comment();
-          }}>
-            <FontAwesome name="send" size={24} color={colors.purple} />
-          </TouchableOpacity>
+            <TextInput
+              style={styles.box}
+              multiline
+              placeholder="comment"
+              placeholderTextColor={colors.purple}
+              defaultValue={userComment}
+              onChangeText={(val) => {
+                setUserComment(val);
+              }}
+            />
+            <TouchableOpacity style={{alignItems:"center", justifyContent: "center"}}
+              onPress={() => {
+              comment();
+            }}>
+              <FontAwesome name="send" size={24} color={colors.purple} />
+            </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity>
-
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
 
+function elevationShadowStyle(elevation) {
+  return {
+    elevation: 20,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
+  shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
     backgroundColor: colors.white,

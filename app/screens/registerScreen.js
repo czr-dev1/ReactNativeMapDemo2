@@ -323,7 +323,7 @@ function RegisterScreen(props) {
 					<Text
 						style={{
 							fontFamily: 'Arial',
-							fontSize: 12,
+							fontSize: 14,
 							color: colors.gray,
 						}}
 					>
@@ -337,7 +337,7 @@ function RegisterScreen(props) {
 						<Text
 							style={{
 								fontFamily: 'Arial',
-								fontSize: 12,
+								fontSize: 14,
 								fontWeight: 'bold',
 								color: colors.purple,
 							}}
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		marginBottom: 15,
 		paddingLeft: 10,
-		height: 40,
+		height: 45,
 		width: '85%',
 	},
 	bottomContainer: {
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 14,
-		color: '#008BBC',
+		color: colors.forgotDetails,
 		marginBottom: 50,
 	},
 	errorMsg: {

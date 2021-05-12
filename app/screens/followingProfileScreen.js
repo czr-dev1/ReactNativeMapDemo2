@@ -101,10 +101,8 @@ function FollowingProfileScreen(props) {
     return <ActivityIndicator />;
   } else {
     return (
-      <SafeAreaView
-        style={{ backgroundColor: "white" }}
-      >
-        <View style={[{paddingTop: insets.top}, styles.profileBar]}>
+      <SafeAreaView style={{ backgroundColor: "white" }}>
+        <View style={styles.profileBar}>
           <View style={styles.nicknameContainer}>
             <Text style={styles.nicknameText}>{user}</Text>
           </View>
@@ -146,7 +144,18 @@ function FollowingProfileScreen(props) {
                   : styles.profileStoryUnselectedButton
               ]}
             >
-              <Text style={{fontWeight: "bold", color: colors.purple, paddingTop: 12, marginBottom: -8, borderBottomWidth: 2, borderColor: colors.orange, fontSize: 16}}>stories</Text>
+              <Text 
+                style={{
+                  fontWeight: "bold", 
+                  color: colors.purple, 
+                  paddingTop: 12, 
+                  marginBottom: -8, 
+                  borderBottomWidth: 2, 
+                  borderColor: colors.orange, 
+                  fontSize: 16
+                }}>
+                  stories
+                </Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

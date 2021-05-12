@@ -2,15 +2,9 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Button,
   Dimensions,
   FlatList,
-  PixelRatio,
-  Platform,
-  StatusBar,
   StyleSheet,
-  ScrollView,
-  TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -21,7 +15,7 @@ import MapView from "react-native-map-clustering";
 import {
   Marker,
   MAP_TYPES,
-  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
   UrlTile,
 } from "react-native-maps";
 import * as Location from "expo-location";
@@ -34,10 +28,12 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import { Thumbnail } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
 import Text from "../components/text";
+import SideMenu from 'react-native-side-menu-updated';
+import DrawerMenu from "../components/drawerMenu";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -64,6 +60,7 @@ function DarkMapScreen(props) {
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const urlTemplate = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+  // const urlTemplate = "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
@@ -71,6 +68,7 @@ function DarkMapScreen(props) {
     longitudeDelta: 0.5,
   };
   const [showModal, setShowModal] = useState(false);
+  const [showDrawer, setShowDrawer] = useState(false);
   const [modalData, setModalData] = useState({});
   const [selectedButton, setSelectedButton] = useState(0);
 
@@ -210,6 +208,7 @@ function DarkMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderResources = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -219,6 +218,7 @@ function DarkMapScreen(props) {
     });
     //console.log(filteredDataSource);
   };
+
   const renderHistorical = () => {
     return props.stories.map((item, i) => {
       //console.log(item.category);
@@ -262,7 +262,7 @@ function DarkMapScreen(props) {
           break;
         default:
           pinType = HISTORICAL_PIN;
-        //pinType = '#0000FF';
+          //pinType = '#0000FF';
       }
       return (
         <Marker
@@ -294,207 +294,239 @@ function DarkMapScreen(props) {
     });
   };
 
+  const menu = (
+    <DrawerMenu {...props}/>
+  );
+
   return (
-    <SafeAreaView style={(styles.container, { flex: 1 })}>
-      <View style={styles.containerStyle}>
-        <Modal
-          isVisible={showModal}
-          onBackdropPress={() => setShowModal(false)}
-          onBackButtonPress={() => setShowModal(false)}
-          hasBackdrop={true}
-          backdropOpacity={0}
-          style={{ justifyContent: "flex-end", marginBottom: "25%" }}
-        >
-          <View
-            style={[{
-              backgroundColor:
-                modalData.category === 1
-                  ? colors.personal
-                  : modalData.category === 2
-                  ? colors.community
-                  : colors.historical,
-              borderTopLeftRadius: 30,
-              borderTopRightRadius: 30,
-              height: 15,
-            }]}
-          ></View>
-          <View
-            style={[styles.shadow2, {
-              backgroundColor: "white",
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              height: "10%",
-            }]}
+    <SideMenu
+      menu={menu}
+      bounceBackOnOverdraw={false}
+      openMenuOffset={Dimensions.get("window").width * .80}
+      isOpen={showDrawer}
+      overlayColor={'hsla(0, 0%, 0%, 0.7)'}
+      onChange={isOpen => setShowDrawer(isOpen)}
+      menuPosition={'right'}
+    >
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Modal
+            isVisible={showModal}
+            onBackdropPress={() => setShowModal(false)}
+            onBackButtonPress={() => setShowModal(false)}
+            hasBackdrop={true}
+            backdropOpacity={0}
+            style={{justifyContent: "flex-end", marginBottom: "30%"}}
           >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                props.navigation.navigate("Story", {
-                  title: modalData.title,
-                  description: modalData.description,
-                  id: modalData.id,
-                });
-                setShowModal(false);
+            <View
+              style={{
+                backgroundColor:
+                  modalData.category === 1
+                    ? colors.personal
+                    : modalData.category === 2
+                    ? colors.community
+                    : colors.historical,
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+                height: 15,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  padding: 10,
-                  height: "100%",
+            </View>
+            <View
+              style={{
+                backgroundColor: "white",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                height: "12%",
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  props.navigation.navigate("Story", {
+                    id: modalData.id,
+                    title: modalData.title,
+                    description: modalData.description,
+                  });
+                  setShowModal(false);
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                  {modalData.title}
-                </Text>
-                <Text style={{ fontSize: 12 }}>
-                  posted on {modalData.postDate}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    height: "100%",
+                  }}
+                >
+                  <Text style={{fontSize: 16, fontWeight: "bold"}}>
+                    {modalData.title}
+                  </Text>
+                  <Text style={{fontSize: 12}}>
+                    posted on {modalData.postDate}
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </Modal>
+
+          <View style={{flex: 0.25, backgroundColor: colors.purple}}>
+            <View style={{flexDirection: "row", width: "90%"}}>
+              <SearchBar
+                round
+                searchIcon={{ size:24 }}
+                onChangeText={(text) => {
+                  searchFilterFunction(text);
+                }}
+                onClear={(text) => searchFilterFunction("")}
+                lightTheme={true}
+                containerStyle={{
+                  backgroundColor: colors.purple,
+                  borderTopColor: "transparent",
+                  borderBottomColor: "transparent",
+                  width: "100%",
+                }}
+                inputContainerStyle={{
+                  backgroundColor: colors.white,
+                  borderRadius: 50,
+                  borderWidth: 0,
+                }}
+                inputStyle={{ fontSize: 18 }}
+                placeholder="search"
+                placeholderTextColor={colors.purple}
+                value={search}
+              />
+              <TouchableWithoutFeedback onPress={() => setShowDrawer(true)}>
+                <View style={{justifyContent: "center", alignItems: "center", width: "10%"}}>
+                  <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <HideKeyboard>
+              <View
+                style={[{
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  paddingBottom: 10,
+                  paddingRight: 15,
+                  backgroundColor: colors.purple,
+                }, styles.shadow2]}
+              >
+                <TouchableOpacity
+                  style={
+                    selectedButton === 0
+                      ? styles.HeaderButtonStyle
+                      : styles.UnselectedHeaderButtonStyle
+                  }
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    //render all stories list
+                    setSelectedButton(0);
+                  }}
+                >
+                  <Text style={styles.TextStyle}>all</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={
+                    selectedButton === 1
+                    ? styles.HeaderButtonStyle
+                    : styles.UnselectedHeaderButtonStyle
+                  }
+                  activeOpacity={0.5}
+                  //onPress={(() => setSelectedCategoryButton(1))}
+                  onPress={() => {
+                    renderPersonal();
+                    setSelectedButton(1);
+                  }}
+                >
+                  <Text style={styles.TextStyle}>personal</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={
+                    selectedButton === 3
+                      ? styles.HeaderButtonStyle
+                      : styles.UnselectedHeaderButtonStyle
+                  }
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    renderHistorical();
+                    setSelectedButton(3);
+                  }}
+                >
+                  <Text style={styles.TextStyle}>historical</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={
+                    selectedButton === 2
+                      ? styles.HeaderButtonStyle
+                      : styles.UnselectedHeaderButtonStyle
+                  }
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    renderResources();
+                    setSelectedButton(2);
+                  }}
+                >
+                  <Text style={styles.TextStyle}>resources</Text>
+                </TouchableOpacity>
               </View>
-            </TouchableWithoutFeedback>
+            </HideKeyboard>
           </View>
-        </Modal>
-        <SearchBar
-          round
-          searchIcon={{ size: 24 }}
-          onChangeText={(text) => {
-            searchFilterFunction(text);
-          }}
-          onClear={(text) => searchFilterFunction("")}
-          lightTheme={true}
-          containerStyle={{
-            backgroundColor: colors.purple,
-            borderBottomColor: "transparent",
-            borderTopColor: "transparent",
-          }}
-          inputContainerStyle={{
-            borderRadius: 50,
-            backgroundColor: colors.white,
-            borderWidth: 0,
-          }}
-          inputStyle={{ fontSize: 18 }}
-          placeholder="search"
-          placeholderTextColor={colors.purple}
-          value={search}
-        />
-        <HideKeyboard>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-evenly",
-              paddingBottom: 10,
-              paddingRight: 15,
-              backgroundColor: colors.purple,
-            }}
-          >
-            <TouchableOpacity
-              style={
-                selectedButton === 0
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                //render all stories list
-                setSelectedButton(0);
-              }}
-            >
-              <Text style={styles.TextStyle}>all</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={
-                selectedButton === 1
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              //onPress={(() => setSelectedCategoryButton(1))}
-              onPress={() => {
-                renderPersonal();
-                setSelectedButton(1);
-              }}
-            >
-              <Text style={styles.TextStyle}>personal</Text>
-            </TouchableOpacity>
+          {showSearchResults ? (
+            <FlatList 
+              style={{ flex: 1, backgroundColor: "white", marginTop: 30}}
+              data={filteredDataSource}
+              //data={filteredDataSource.slice(0,5)}
+              keyExtractor={(item, index) => index.toString()}
+              ItemSeparatorComponent={ItemSeparatorView}
+              maxToRenderPerBatch={15}
+              //windowSize={5}
+              renderItem={ItemView}
+            />
+          ) : null}
 
-            <TouchableOpacity
-              style={
-                selectedButton === 3
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderHistorical();
-                setSelectedButton(3);
-              }}
-            >
-              <Text style={styles.TextStyle}>historical</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={
-                selectedButton === 2
-                  ? styles.HeaderButtonStyle
-                  : styles.UnselectedHeaderButtonStyle
-              }
-              activeOpacity={0.5}
-              onPress={() => {
-                renderResources();
-                setSelectedButton(2);
-              }}
-            >
-              <Text style={styles.TextStyle}>resources</Text>
-            </TouchableOpacity>
+          <View style={{flex: 1, backgroundColor: "white"}}>
+            {props.isLoading ? (
+              <ActivityIndicator style={styles.mapStyle} />
+            ) : (
+              <MapView
+                style={styles.mapStyle}
+                provider={PROVIDER_GOOGLE}
+                mapType={MAP_TYPES.NONE}
+                initialRegion={INITIAL_REGION}
+                rotateEnabled={false}
+                clusterColor={"#FFA500"}
+                clusterTextColor={"#000000"}
+                maxZoomLevel={21}
+                minZoomLevel={1}
+                maxZoom={19}
+                minZoom={0}
+                minPoints={5}
+                flex={1}
+              >
+                <UrlTile
+                  urlTemplate={urlTemplate}
+                  shouldReplaceMapContent={true}
+                  maximumZ={19}
+                  minimumZ={0}
+                  maxZoomLevel={19}
+                  minZoomLevel={0}
+                  zIndex={1}
+                />
+                {renderPins()}
+              </MapView>
+            )}
           </View>
-        </HideKeyboard>
-
-        {showSearchResults ? (
-          <FlatList
-            data={filteredDataSource}
-            //data={filteredDataSource.slice(0,5)}
-            keyExtractor={(item, index) => index.toString()}
-            ItemSeparatorComponent={ItemSeparatorView}
-            maxToRenderPerBatch={15}
-            //windowSize={5}
-            renderItem={ItemView}
-          />
-        ) : null}
-      </View>
-
-      {props.isLoading ? (
-        <ActivityIndicator style={styles.mapStyle} />
-      ) : (
-        <MapView
-          style={styles.mapStyle}
-          provider={PROVIDER_DEFAULT}
-          mapType={MAP_TYPES.NONE}
-          initialRegion={INITIAL_REGION}
-          rotateEnabled={false}
-          clusterColor={"#FFA500"}
-          clusterTextColor={"#000000"}
-          maxZoomLevel={21}
-          minZoomLevel={1}
-          minZoom={0}
-          maxZoom={19}
-          minPoints={5}
-          flex={1}
-        >
-          <UrlTile
-            urlTemplate={urlTemplate}
-            shouldReplaceMapContent={true}
-            maximumZ={19}
-            minimumZ={0}
-            maxZoomLevel={19}
-            minZoomLevel={0}
-            zIndex={1}
-          />
-          {renderPins()}
-        </MapView>
-      )}
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
+    </SideMenu>
   );
 }
 
@@ -508,89 +540,32 @@ function elevationShadowStyle(elevation) {
   };
 }
 
+function elevationShadowStyleEdit(elevation) {
+  return {
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0.5 * elevation },
+    shadowOpacity: 0.3,
+    shadowRadius: 0.8 * elevation
+  };
+}
+
 const styles = StyleSheet.create({
   shadow2: elevationShadowStyle(20),
-  containerStyle: {
-    backgroundColor: "white",
-    alignItems: "stretch",
-  },
+  shadow3: elevationShadowStyleEdit(20),
   itemStyle: {
     padding: 5,
   },
   container: {
     flex: 1,
-    backgroundColor: colors.black,
+    backgroundColor: colors.purple,
     alignItems: "center",
     justifyContent: "center",
   },
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
-  },
-  navStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "dodgerblue",
-    width: Dimensions.get("window").width,
-    height: "5%",
-  },
-  navButton: {
-    flexGrow: 1,
-    textAlign: "center",
-  },
-  screenContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomColor: "black",
-  },
-  containerPicker: {
-    flex: 1,
-    //backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  fixToText: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "95%",
-  },
-  SubmitButtonStyle: {
-    marginTop: 10,
-    marginBottom: 20,
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 25,
-    marginRight: 25,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 50,
-    width: 80,
-  },
-  OptionButtonStyle: {
-    marginTop: 5,
-    marginBottom: 5,
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#FFFFFF",
-    height: 60,
-    width: 140,
-  },
-  UnselectedHeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
-    backgroundColor: colors.purple,
-    height: 30,
-    width: 75,
+    backgroundColor: colors.white,
   },
   HeaderButtonStyle: {
     marginTop: 1,
@@ -605,28 +580,23 @@ const styles = StyleSheet.create({
     height: 30,
     width: 75,
   },
+  UnselectedHeaderButtonStyle: {
+    marginTop: 1,
+    marginBottom: 1,
+    marginLeft: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    marginRight: 5,
+    backgroundColor: colors.purple,
+    height: 30,
+    width: 75,
+  },
   TextStyle: {
     color: colors.white,
     textAlign: "center",
   },
-  TextStyleSortInner: {
-    color: colors.black,
-    textAlign: "center",
-  },
-  SortTextStyle: {
-    marginTop: 10,
-    marginLeft: 25,
-    fontSize: 20,
-    flex: 1,
-  },
-  appButtonText: {
-    fontSize: 12,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
-  },
 });
+
 //Personal, Historical, Resources
 const mapStateToProps = (state) => {
   let personalCategorical = state.storyReducer.storyList.filter(
@@ -638,7 +608,9 @@ const mapStateToProps = (state) => {
   let resourcesCategorical = state.storyReducer.storyList.filter(
     (story) => story.category === 2
   );
+  
   return {
+    isAuthenticated: false,
     personalStories: personalCategorical,
     historicalStories: historicalCategorical,
     resourcesStories: resourcesCategorical,

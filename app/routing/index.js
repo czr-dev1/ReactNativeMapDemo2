@@ -35,22 +35,22 @@ import NotificationScreen from "../screens/notificationScreen";
 
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
+import ProfileHeader from "../components/profile/profileHeader";
 
 import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
 
-import ProfileHeader from "../components/profile/profileHeader";
-
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+
 const Icon = createIconSetFromIcoMoon(
   require('../assets/fonts/selection.json'),
   'IcoMoon',
   'icomoon.ttf'
 );
-
 
 import colors from "../config/colors.js";
 
@@ -114,6 +114,7 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: 'Arial',
+          marginTop: 30,
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -143,10 +144,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
       <LoginStack.Screen name="EULA" component={EULAScreen} />
-      <LoginStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScreen}
-      />
+      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </LoginStack.Navigator>
   );
@@ -161,13 +159,13 @@ function ProfileStackScreen({ navigation }) {
         name="Profile"
         options={{
           headerLeft: () => (
-            <MaterialIcons name="menu" size={24} color="white" />
+            <FontAwesome5 name="ellipsis-v" size={24} color="white" />
           ),
           headerTitle: () => <ProfileHeader />,
           headerRight: () => (
-            <MaterialIcons
-              name="menu"
-              style={{ paddingRight: 10 }}
+            <FontAwesome5
+              name="ellipsis-v"
+              style={{ paddingRight: 20 }}
               size={24}
               color={colors.purple}
               onPress={() => navigation.openDrawer()}
@@ -195,28 +193,40 @@ function ProfileDrawerScreen() {
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
-            <View style={{justifyContent: "space-between", flex: 1}}>
-              <View>
+            <View style={{justifyContent: "space-evenly", flex: 1, backgroundColor: colors.purple}}>
                 <ModalOpener
                   {...props}
                   name="help & hotline"
+                  icon="phone"
                   navigateTo="HelpAndHotlineModal"
                 />
                 <ModalOpener
                   {...props}
                   name="support us"
+                  icon="support"
                   navigateTo="SupportUsModal"
                 />
                 <ModalOpener
                   {...props}
                   name="contact us"
+                  icon="contact"
                   navigateTo="ContactUsModal"
                 />
-                <AnonToggleSwitch {...props} />
-              </View>
-              <View>
-                <ModalOpener {...props} name="log out" />
-              </View>
+                <ModalOpener
+                  {...props}
+                  name="faqs"
+                  icon="faqs"
+                  navigateTo="FaqsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="accessibility"
+                  icon="accessibility"
+                  navigateTo="ContactUsModal"
+                />
+                <ModalOpener
+                  {...props}
+                  name="log out" />
             </View>
           </DrawerContentScrollView>
         );
@@ -262,8 +272,6 @@ function NeedAuthTabScreen() {
             }
           }
 
-
-
           if (focused) {
             iconColor = colors.white;
           } else {
@@ -290,16 +298,10 @@ function NeedAuthStackScreen() {
   return (
     <NeedAuthStack.Navigator screenOptions={{ headerShown: false }}>
       <NeedAuthStack.Screen name="Main" component={NeedAuthTabScreen} />
-      <NeedAuthStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <NeedAuthStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
-      <NeedAuthStack.Screen
-        name="EditProfileModal"
-        component={EditProfileModal}
-      />
+      <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
     </NeedAuthStack.Navigator>
   );
 }
@@ -380,8 +382,9 @@ function AppStackScreen() {
       <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
-      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
-      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="FaqsModal" component={FaqsModal} />
+      <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
     </AppStack.Navigator>
   );
 }

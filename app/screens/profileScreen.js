@@ -81,7 +81,7 @@ function ProfileScreen(props) {
   // https://reactnavigation.org/docs/handling-safe-area/
   return (
     <View style={(styles.container, { paddingTop: insets.top - insets.top })}>
-      <ScrollView style={{backgroundColor: colors.background, height: '100%'}}>
+      
         <View style={styles.profileBar}>
           <View
             style={{
@@ -106,14 +106,14 @@ function ProfileScreen(props) {
                     is_profile_private: val,
                   };
                   axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
-                    .then((res) => {
-                      console.log(res.data.is_profile_private);
-                      setprivacy(res.data.is_profile_private);
-                      props.reloadUser(props.user);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
+                  .then((res) => {
+                    console.log(res.data.is_profile_private);
+                    setprivacy(res.data.is_profile_private);
+                    props.reloadUser(props.user);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
                 }}
                 activeText={"on"}
                 inActiveText={"off"}
@@ -201,7 +201,8 @@ function ProfileScreen(props) {
             </TouchableWithoutFeedback>
           </View>
         </View>
-        <View style={styles.storyList}>{renderStoriesByType()}</View>
+        <ScrollView style={{backgroundColor: colors.background, height: '100%'}}>
+          <View style={styles.storyList}>{renderStoriesByType()}</View>
       </ScrollView>
     </View>
   );

@@ -120,7 +120,7 @@ function HelpAndHotlineModal(props) {
                 <Text style={styles.number}>{item.number}</Text>
               </TouchableOpacity>
               <Text style={styles.description}>
-                {item.description.toLowerCase()}
+                {item.description}
               </Text>
             </View>
           );
