@@ -81,6 +81,10 @@ function LightMapScreen(props) {
     searchData();
   }, []);
 
+  useEffect(() => {
+
+  }, [selectedButton])
+
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
@@ -121,9 +125,9 @@ function LightMapScreen(props) {
     </TouchableWithoutFeedback>
   );
 
-  const searchFilterFunction = (text) => {
+  const searchFilterFunction = (text, selButton) => {
     let selectedStories = props.stories;
-    switch (selectedButton) {
+    switch (selButton) {
       case 1:
         selectedStories = props.personalStories;
         break;
@@ -398,9 +402,12 @@ function LightMapScreen(props) {
                 round
                 searchIcon={{ size:24 }}
                 onChangeText={(text) => {
-                  searchFilterFunction(text);
+                  searchFilterFunction(text, selectedButton);
                 }}
-                onClear={(text) => searchFilterFunction("")}
+                onClear={(text) => {
+                  searchFilterFunction("");
+                  Keyboard.dismiss();
+                }}
                 lightTheme={true}
                 containerStyle={{
                   backgroundColor: colors.purple,
@@ -444,9 +451,10 @@ function LightMapScreen(props) {
                   onPress={() => {
                     //render all stories list
                     setSelectedButton(0);
+                    searchFilterFunction(search, 0);
                   }}
                 >
-                  <Text style={styles.TextStyle}>all</Text>
+                  <Text style={selectedButton === 0 ? styles.selectedTextStyle : styles.TextStyle}>all stories</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -458,11 +466,11 @@ function LightMapScreen(props) {
                   activeOpacity={0.5}
                   //onPress={(() => setSelectedCategoryButton(1))}
                   onPress={() => {
-                    renderPersonal();
                     setSelectedButton(1);
+                    searchFilterFunction(search, 1);
                   }}
                 >
-                  <Text style={styles.TextStyle}>personal</Text>
+                  <Text style={selectedButton === 1 ? styles.selectedTextStyle : styles.TextStyle}>personal</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -473,11 +481,11 @@ function LightMapScreen(props) {
                   }
                   activeOpacity={0.5}
                   onPress={() => {
-                    renderHistorical();
                     setSelectedButton(3);
+                    searchFilterFunction(search, 3);
                   }}
                 >
-                  <Text style={styles.TextStyle}>historical</Text>
+                  <Text style={selectedButton === 3 ? styles.selectedTextStyle : styles.TextStyle}>historical</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -488,18 +496,18 @@ function LightMapScreen(props) {
                   }
                   activeOpacity={0.5}
                   onPress={() => {
-                    renderResources();
                     setSelectedButton(2);
+                    searchFilterFunction(search, 2);
                   }}
                 >
-                  <Text style={styles.TextStyle}>resources</Text>
+                  <Text style={selectedButton === 2 ? styles.selectedTextStyle : styles.TextStyle}>resources</Text>
                 </TouchableOpacity>
               </View>
             </HideKeyboard>
           </View>
 
           {showSearchResults ? (
-            <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height, marginTop: 15}}>
+            <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height}}>
               <PlainStoryList stories={filteredDataSource} />
             </View>
           ) :  <View style={{flex: 1, backgroundColor: "white"}}>
@@ -601,6 +609,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.white,
   },
+  selectedTextStyle: {
+    textAlign: "center",
+    fontSize: 16,
+    color: colors.white,
+    fontWeight: "bold",
+  }
 });
 
 //Personal, Historical, Resources
