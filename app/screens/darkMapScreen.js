@@ -34,6 +34,7 @@ import Modal from "react-native-modal";
 import Text from "../components/text";
 import SideMenu from 'react-native-side-menu-updated';
 import DrawerMenu from "../components/drawerMenu";
+import PlainStoryList from "../components/plainStoryList";
 
 import colors from "../config/colors";
 import { loadStories } from "../redux/actions/storyActions";
@@ -78,6 +79,10 @@ function DarkMapScreen(props) {
     searchData();
   }, []);
 
+  useEffect(() => {
+
+  }, [selectedButton])
+
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
@@ -118,14 +123,27 @@ function DarkMapScreen(props) {
     </TouchableWithoutFeedback>
   );
 
-  const searchFilterFunction = (text) => {
+  const searchFilterFunction = (text, selButton) => {
+    let selectedStories = props.stories;
+    switch (selButton) {
+      case 1:
+        selectedStories = props.personalStories;
+        break;
+      case 2:
+        selectedStories = props.resourcesStories;
+        break;
+      case 3:
+        selectedStories = props.historicalStories;
+        break;
+    }
+
     if (text.length > 0) {
       setShowSearchResults(true);
     } else {
       setShowSearchResults(false);
     }
     if (text) {
-      const newData = masterDataSource.filter(function (item) {
+      const newData = selectedStories.filter(function (item) {
         const itemData = item.title
           ? item.title.toUpperCase()
           : "".toUpperCase();
@@ -135,7 +153,7 @@ function DarkMapScreen(props) {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      setFilteredDataSource(masterDataSource);
+      setFilteredDataSource(selectedStories);
       setSearch(text);
     }
   };
@@ -316,7 +334,7 @@ function DarkMapScreen(props) {
             onBackButtonPress={() => setShowModal(false)}
             hasBackdrop={true}
             backdropOpacity={0}
-            style={{justifyContent: "flex-end", marginBottom: "30%"}}
+            style={{justifyContent: "flex-end", marginBottom: "17%"}}
           >
             <View
               style={{
@@ -372,15 +390,18 @@ function DarkMapScreen(props) {
             </View>
           </Modal>
 
-          <View style={{flex: 0.25, backgroundColor: colors.purple}}>
+          <View style={{backgroundColor: colors.purple}}>
             <View style={{flexDirection: "row", width: "90%"}}>
               <SearchBar
                 round
                 searchIcon={{ size:24 }}
                 onChangeText={(text) => {
-                  searchFilterFunction(text);
+                  searchFilterFunction(text, selectedButton);
                 }}
-                onClear={(text) => searchFilterFunction("")}
+                onClear={(text) => {
+                  searchFilterFunction("");
+                  Keyboard.dismiss();
+                }}
                 lightTheme={true}
                 containerStyle={{
                   backgroundColor: colors.purple,
@@ -402,17 +423,16 @@ function DarkMapScreen(props) {
                 <View style={{justifyContent: "center", alignItems: "center", width: "10%"}}>
                   <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
                 </View>
-              </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback>
             </View>
             <HideKeyboard>
               <View
                 style={[{
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                  paddingBottom: 10,
-                  paddingRight: 15,
+                  width: Dimensions.get("window").width,
                   backgroundColor: colors.purple,
+                  paddingTop: 15,
+                  flexDirection: "row",
+                  justifyContent: "space-around",
                 }, styles.shadow2]}
               >
                 <TouchableOpacity
@@ -425,9 +445,10 @@ function DarkMapScreen(props) {
                   onPress={() => {
                     //render all stories list
                     setSelectedButton(0);
+                    searchFilterFunction(search, 0);
                   }}
                 >
-                  <Text style={styles.TextStyle}>all</Text>
+                  <Text style={selectedButton === 0 ? styles.selectedTextStyle : styles.TextStyle}>all stories</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -439,11 +460,11 @@ function DarkMapScreen(props) {
                   activeOpacity={0.5}
                   //onPress={(() => setSelectedCategoryButton(1))}
                   onPress={() => {
-                    renderPersonal();
                     setSelectedButton(1);
+                    searchFilterFunction(search, 1);
                   }}
                 >
-                  <Text style={styles.TextStyle}>personal</Text>
+                  <Text style={selectedButton === 1 ? styles.selectedTextStyle : styles.TextStyle}>personal</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -454,11 +475,11 @@ function DarkMapScreen(props) {
                   }
                   activeOpacity={0.5}
                   onPress={() => {
-                    renderHistorical();
                     setSelectedButton(3);
+                    searchFilterFunction(search, 3);
                   }}
                 >
-                  <Text style={styles.TextStyle}>historical</Text>
+                  <Text style={selectedButton === 3 ? styles.selectedTextStyle : styles.TextStyle}>historical</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -469,61 +490,55 @@ function DarkMapScreen(props) {
                   }
                   activeOpacity={0.5}
                   onPress={() => {
-                    renderResources();
                     setSelectedButton(2);
+                    searchFilterFunction(search, 2);
                   }}
                 >
-                  <Text style={styles.TextStyle}>resources</Text>
+                  <Text style={selectedButton === 2 ? styles.selectedTextStyle : styles.TextStyle}>resources</Text>
                 </TouchableOpacity>
               </View>
             </HideKeyboard>
           </View>
 
           {showSearchResults ? (
-            <FlatList
-              style={{ flex: 1, backgroundColor: "white", marginTop: 30}}
-              data={filteredDataSource}
-              //data={filteredDataSource.slice(0,5)}
-              keyExtractor={(item, index) => index.toString()}
-              ItemSeparatorComponent={ItemSeparatorView}
-              maxToRenderPerBatch={15}
-              //windowSize={5}
-              renderItem={ItemView}
-            />
-          ) : null}
+            <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height}}>
+              <PlainStoryList stories={filteredDataSource} />
+            </View>
+          ) :  <View style={{flex: 1, backgroundColor: "white"}}>
+                      {props.isLoading ? (
+                        <ActivityIndicator style={styles.mapStyle} />
+                      ) : (
+                        <MapView
+                          style={styles.mapStyle}
+                          provider={PROVIDER_GOOGLE}
+                          mapType={MAP_TYPES.NONE}
+                          initialRegion={INITIAL_REGION}
+                          rotateEnabled={false}
+                          clusterColor={"#FFA500"}
+                          clusterTextColor={"#000000"}
+                          maxZoomLevel={21}
+                          minZoomLevel={1}
+                          maxZoom={19}
+                          minZoom={0}
+                          minPoints={5}
+                          flex={1}
+                        >
+                          <UrlTile
+                            urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
+                            shouldReplaceMapContent={true}
+                            maximumZ={19}
+                            minimumZ={0}
+                            maxZoomLevel={19}
+                            minZoomLevel={0}
+                            zIndex={1}
+                          />
+                          {renderPins()}
+                        </MapView>
+                      )}
+                    </View>
+                  }
 
-          <View style={{flex: 1, backgroundColor: "white"}}>
-            {props.isLoading ? (
-              <ActivityIndicator style={styles.mapStyle} />
-            ) : (
-              <MapView
-                style={styles.mapStyle}
-                provider={PROVIDER_GOOGLE}
-                mapType={MAP_TYPES.NONE}
-                initialRegion={INITIAL_REGION}
-                rotateEnabled={false}
-                clusterColor={"#FFA500"}
-                clusterTextColor={"#000000"}
-                maxZoomLevel={21}
-                minZoomLevel={1}
-                maxZoom={19}
-                minZoom={0}
-                minPoints={5}
-                flex={1}
-              >
-                <UrlTile
-                  urlTemplate={urlTemplate}
-                  shouldReplaceMapContent={true}
-                  maximumZ={19}
-                  minimumZ={0}
-                  maxZoomLevel={19}
-                  minZoomLevel={0}
-                  zIndex={1}
-                />
-                {renderPins()}
-              </MapView>
-            )}
-          </View>
+
         </View>
       </SafeAreaView>
     </SideMenu>
@@ -595,6 +610,12 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: "center",
   },
+  selectedTextStyle: {
+    textAlign: "center",
+    fontSize: 16,
+    color: colors.white,
+    fontWeight: "bold",
+  }
 });
 
 //Personal, Historical, Resources
