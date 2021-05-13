@@ -37,7 +37,7 @@ function BookmarkUserScreen(props) {
   useEffect(() => {
     getUsers();
     console.log(props.followingList);
-  }, []);
+  }, [props.followingList]);
 
   const getUsers = async () => {
     const config = {
