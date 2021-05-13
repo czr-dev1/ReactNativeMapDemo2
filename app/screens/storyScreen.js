@@ -247,6 +247,22 @@ function storyScreen(props) {
       getStory();
       props.loadStories();
       setUserComment("");
+      const notifData = {
+          id: story.owner,
+          username: props.username,
+          storyId: story.id,
+          isAnonNotif: props.isPrivacyMode
+      };
+      console.log(notifData);
+
+      axios.post("http://192.81.130.223:8012/api/user/notify", notifData)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
     })
     .catch((err) => {
       console.log(err);

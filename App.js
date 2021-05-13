@@ -43,6 +43,8 @@ export default function App() {
     IcoMoon: require("./app/assets/fonts/icomoon.ttf"),
     Arial: require("./app/assets/fonts/arial.ttf"),
     ArialBold: require("./app/assets/fonts/arialBold.ttf"),
+    //Arial: require("./app/assets/fonts/OpenDyslexicRegular.ttf"),
+    //ArialBold: require("./app/assets/fonts/OpenDyslexicBold.ttf"),
   });
 
   useEffect(() => {
