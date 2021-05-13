@@ -13,7 +13,8 @@ import {
   ScrollView,
   Image,
   Linking,
-  Text as DefaultText
+  Text as DefaultText,
+  Platform
 } from "react-native";
 // Changed Text to DefaultText because there is a bug that prevents fontFamily
 // from making a TouchableOpacity work in this case
@@ -26,6 +27,7 @@ import axios from "axios";
 import { Switch } from "react-native-switch";
 import { reloadUser } from "../redux/actions/auth";
 import { userSelfDelete } from "../redux/actions/authActions";
+import * as ImagePicker from 'expo-image-picker';
 
 import Text from "../components/text";
 import colors from "../config/colors";
@@ -36,7 +38,49 @@ function EditProfileModal(props) {
   const [username, setUsername] = useState(props.username);
   const [bio, setBio] = useState(props.bio);
   const [privacy, setprivacy] = useState(props.is_profile_private);
+  const [image, setImage] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      base64: true,
+      quality: 1,
+    });
+
+    // console.log(result);
+
+    let formData = new FormData();
+    formData.append("upload_preset", "theArQive");
+    formData.append("file", `data:image/png;base64,${result.base64}`);
+
+    if (!result.cancelled) {
+      setImage(result.base64);
+      axios.post("https://api.cloudinary.com/v1_1/thearqive/image/upload", formData)
+        .then((res) => {
+          console.log(res.data);
+          console.log(res.data.secure_url);
+          setImageURL(res.data.secure_url);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   const onSubmit = (e) => {
     const config = {
@@ -51,6 +95,10 @@ function EditProfileModal(props) {
       bio: bio,
       is_profile_private: privacy,
     };
+
+    if (imageURL !== null) {
+      data.profileurl = imageURL;
+    }
 
     axios
       .patch(
@@ -111,8 +159,8 @@ function EditProfileModal(props) {
             edit profile
           </Text>
           <TouchableWithoutFeedback onPress={() => {
-            console.log('submit');
             onSubmit();
+            console.log(props.is_profile_private);
           }}>
             <DefaultText style={{fontSize: 16, color: colors.purple, padding: 24}}>done</DefaultText>
           </TouchableWithoutFeedback>
@@ -126,20 +174,24 @@ function EditProfileModal(props) {
         >
           <Image
             style={styles.profileImage}
-            source={{ uri: props.profileImage }}
+            source={(image === null) ? { uri: props.profileImage } : {uri: `data:image/png;base64,${image}`}}
           />
-          <Text
-            style={{ fontSize: 16, fontWeight: "bold", color: colors.gray }}
+          <TouchableWithoutFeedback
+            onPress={() => pickImage()}
           >
-            change profile image
-          </Text>
+            <DefaultText
+              style={{ fontSize: 16, fontWeight: "bold", color: colors.gray }}
+            >
+              change profile image
+            </DefaultText>
+          </TouchableWithoutFeedback>
         </View>
         <View style={styles.box}>
           <View
             style={{
               flexDirection: "row",
               borderBottomWidth: 3,
-              borderColor: "#ddd",
+              borderColor: colors.forgotDetails,
               alignItems: "center",
               paddingBottom: 10,
               paddingLeft: 7,
@@ -190,6 +242,7 @@ function EditProfileModal(props) {
               fontSize: 16,
               color: colors.gray,
               paddingLeft: 8,
+              marginBottom: 3,
             }}
           >
             bio
@@ -207,7 +260,12 @@ function EditProfileModal(props) {
             onPress={() => deleteConfirm()}
           >
             <Text
-              style={{ fontSize: 16, fontWeight: "bold", color: colors.gray }}
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                color: colors.forgotDetails,
+                marginTop: 200
+              }}
             >
               delete profile
             </Text>
@@ -236,7 +294,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Arial",
     borderBottomWidth: 3,
-    borderColor: "#ddd",
+    borderColor: colors.forgotDetails,
     padding: 10,
     fontSize: 14,
     width: "100%",
@@ -251,7 +309,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     paddingTop: -20,
-    borderRadius: 200,
+    borderRadius: 2000,
     resizeMode: "center",
     height: 128,
     width: 128,

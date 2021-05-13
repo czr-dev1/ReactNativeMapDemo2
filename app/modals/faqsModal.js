@@ -91,7 +91,6 @@ const SELECTORS = [
 
 export default class App extends Component {
   backAction = () => {
-    console.log(this.props.route.params.isMapScreen);
     if (this.props.route.params.isMapScreen) {
       this.props.navigation.navigate("Map");
     } else {
@@ -102,7 +101,6 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props.route.params);
   }
 
   componentDidMount(props) {
@@ -128,8 +126,6 @@ export default class App extends Component {
   setSections = (sections) => {
     this.setState({
       activeSections: sections.includes(undefined) ? [] : sections,
-    }, () => {
-      console.log(this.state.activeSections);
     });
   };
 
@@ -159,7 +155,7 @@ export default class App extends Component {
         transition="backgroundColor"
       >
         <Animatable.Text animation={isActive ? 'fadeIn' : undefined}>
-          {section.faqAnswerDesc.toLowerCase()}
+          {section.faqAnswerDesc}
         </Animatable.Text>
       </Animatable.View>
     );
@@ -253,6 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 24,
     paddingRight: 24,
+    color: colors.purple,
     fontWeight: 'bold',
   },
   content: {
@@ -269,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   inactive: {
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 20,
   },

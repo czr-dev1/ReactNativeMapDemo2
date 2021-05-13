@@ -37,13 +37,6 @@ function DrawerMenuSignedIn(props) {
           isMapScreen={true}
           navigateTo="FaqsModal"
         />
-        <ModalOpener
-          {...props}
-          name="accessibility"
-          icon="accessibility"
-          isMapScreen={true}
-          navigateTo="ContactUsModal"
-        />
         <ModalOpener {...props} name="log out" />
 
     </View>

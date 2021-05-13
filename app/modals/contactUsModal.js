@@ -13,8 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { FontAwesome5,MaterialCommunityIcons, Entypo, MaterialIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 import Text from "../components/text";
@@ -109,7 +108,7 @@ function ContactUsModal(props) {
               props.navigation.goBack();
             }}
             style={{ padding: 24 }}
-            name="cross"
+            name="chevron-left"
             size={28}
             color={colors.white}
           />
@@ -122,12 +121,8 @@ function ContactUsModal(props) {
           >
             contact us
           </Text>
-          <TouchableWithoutFeedback
-            onPress={(e) => {
-              onSubmit(e);
-            }}
-          >
-            <DefaultText style={{color: colors.white, padding: 24}}>done</DefaultText>
+          <TouchableWithoutFeedback>
+            <DefaultText style={{color: colors.purple, padding: 24}}>done</DefaultText>
           </TouchableWithoutFeedback>
         </View>
 
@@ -144,6 +139,14 @@ function ContactUsModal(props) {
             >
               what's on your mind?
             </Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+              <MaterialIcons name="send" size={24} color={colors.white} />
+              <MaterialIcons name="send" size={28} color={colors.purple}
+                onPress={(e) => {
+                  onSubmit(e);
+                }}
+              />
+            </View>
             <TextInput style={styles.input} placeholder="email (optional)" placeholderTextColor={colors.emailInput}/>
             <TextInput style={styles.input} placeholder="subject" placeholderTextColor={colors.emailInput}/>
             <TextInput

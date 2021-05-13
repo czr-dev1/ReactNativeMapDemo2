@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		marginBottom: 15,
 		paddingLeft: 10,
-		height: 40,
+		height: 45,
 		width: '85%',
 	},
 	bottomContainer: {

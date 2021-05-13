@@ -33,8 +33,12 @@ import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
 import NotificationScreen from "../screens/notificationScreen";
 
+import StorySearchScreen from '../screens/storySearchScreen';
+import UserSearchScreen from '../screens/userSearchScreen';
+
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
+import ProfileHeader from "../components/profile/profileHeader";
 
 import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
@@ -44,15 +48,13 @@ import EditProfileModal from "../modals/editProfileModal";
 import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
 
-import ProfileHeader from "../components/profile/profileHeader";
-
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+
 const Icon = createIconSetFromIcoMoon(
   require('../assets/fonts/selection.json'),
   'IcoMoon',
   'icomoon.ttf'
 );
-
 
 import colors from "../config/colors.js";
 
@@ -144,10 +146,7 @@ function LoginStackScreen() {
       <LoginStack.Screen name="Login" component={LoginScreen} />
       <LoginStack.Screen name="Register" component={RegisterScreen} />
       <LoginStack.Screen name="EULA" component={EULAScreen} />
-      <LoginStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScreen}
-      />
+      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </LoginStack.Navigator>
   );
@@ -162,13 +161,13 @@ function ProfileStackScreen({ navigation }) {
         name="Profile"
         options={{
           headerLeft: () => (
-            <MaterialIcons name="menu" size={24} color="white" />
+            <FontAwesome5 name="ellipsis-v" style={{ padding: 15 }} size={24} color="white" />
           ),
           headerTitle: () => <ProfileHeader />,
           headerRight: () => (
-            <MaterialIcons
-              name="menu"
-              style={{ paddingRight: 10 }}
+            <FontAwesome5
+              name="ellipsis-v"
+              style={{ padding: 15 }}
               size={24}
               color={colors.purple}
               onPress={() => navigation.openDrawer()}
@@ -193,6 +192,16 @@ function ProfileDrawerScreen() {
       drawerPosition="right"
       drawerType="slide"
       drawerStyle={{ width: "80%" }}
+      options={{
+        drawerIcon: ({focused, size}) => (
+          <FontAwesome5
+            name="ellipsis-v"
+            size={24}
+            style={{padding: 4}}
+            color={colors.purple}
+          />
+        )
+      }}
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
@@ -221,12 +230,7 @@ function ProfileDrawerScreen() {
                   icon="faqs"
                   navigateTo="FaqsModal"
                 />
-                <ModalOpener
-                  {...props}
-                  name="accessibility"
-                  icon="accessibility"
-                  navigateTo="ContactUsModal"
-                />
+
                 <ModalOpener
                   {...props}
                   name="log out" />
@@ -260,23 +264,21 @@ function NeedAuthTabScreen() {
 
           if (focused) {
             if (route.name === "Map") {
-              iconName = "map_icon_active";
+              iconName = "home_icon_highlighted";
             } else if (route.name === "Post") {
-              iconName = "add_story_icon";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_icon_active";
+              iconName = "profile_icon_highlighted";
             }
           } else {
             if (route.name === "Map") {
-              iconName = "map_outline";
+              iconName = "home_icon_inactive";
             } else if (route.name === "Post") {
-              iconName = "add_story_outline";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_outline";
+              iconName = "profile_icon_inactive";
             }
           }
-
-
 
           if (focused) {
             iconColor = colors.white;
@@ -299,22 +301,53 @@ function NeedAuthTabScreen() {
   );
 }
 
+const SearchTopTab = createMaterialTopTabNavigator();
+function SearchTopTabScreen() {
+  // Odd glitch with names where it wouldn't display the full name
+  // fixed by adding extra s at the end
+  return (
+    <SearchTopTab.Navigator
+      style={{elevation: 0}}
+      tabBarOptions={{
+        labelStyle: {
+          textTransform: "lowercase",
+          fontSize: 20,
+          fontWeight: "bold",
+          fontFamily: 'Arial',
+        },
+        tabStyle: {
+          backgroundColor: colors.purple,
+          shadowOpacity: 0,
+          shadowRadius: 0,
+        },
+        activeTintColor: colors.white,
+        inactiveTintColor: colors.border,
+        backgroundColor: colors.purple,
+        style: {
+          shadowOpacity: 0
+        }
+      }}
+    >
+      <SearchTopTab.Screen name="SearchStories" component={StorySearchScreen} options={{title: 'stories'}}/>
+      <SearchTopTab.Screen name="SearchUsers" component={UserSearchScreen} options={{title: 'users'}}/>
+    </SearchTopTab.Navigator>
+  );
+}
+
+// <NeedAuthStack.Screen name="StorySearchScreen" component={StorySearchScreen} />
+// <NeedAuthStack.Screen name="UserSearchScreen" component={UserSearchScreen} />
 const NeedAuthStack = createStackNavigator();
 function NeedAuthStackScreen() {
   return (
     <NeedAuthStack.Navigator screenOptions={{ headerShown: false }}>
       <NeedAuthStack.Screen name="Main" component={NeedAuthTabScreen} />
-      <NeedAuthStack.Screen
-        name="HelpAndHotlineModal"
-        component={HelpAndHotlineModal}
-      />
+      <NeedAuthStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
-      <NeedAuthStack.Screen
-        name="EditProfileModal"
-        component={EditProfileModal}
-      />
+      <NeedAuthStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <NeedAuthStack.Screen name="Story" component={StoryScreen} />
+      <NeedAuthStack.Screen name="Searching" component={SearchTopTabScreen} />
     </NeedAuthStack.Navigator>
   );
 }
@@ -339,27 +372,27 @@ function AppTabScreen() {
 
           if (focused) {
             if (route.name === "Map") {
-              iconName = "map_icon_active";
+              iconName = "home_icon_highlighted";
             } else if (route.name === "Bookmarks") {
-              iconName = "bookmark_icon_active";
+              iconName = "bookmark_icon_highlighted";
             } else if (route.name === "Post") {
-              iconName = "add_story_icon";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Notifications") {
-              iconName = "notification_icon_active";
+              iconName = "notification_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_icon_active";
+              iconName = "profile_icon_highlighted";
             }
           } else {
             if (route.name === "Map") {
-              iconName = "map_outline";
+              iconName = "home_icon_inactive";
             } else if (route.name === "Bookmarks") {
-              iconName = "bookmark_outline";
+              iconName = "bookmark_icon_Inactive";
             } else if (route.name === "Post") {
-              iconName = "add_story_outline";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Notifications") {
-              iconName = "notifications_outline";
+              iconName = "notification_icon_inactive";
             } else if (route.name === "Profile") {
-              iconName = "profile_outline";
+              iconName = "profile_icon_inactive";
             }
           }
 
@@ -397,8 +430,9 @@ function AppStackScreen() {
       <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
       <AppStack.Screen name="FaqsModal" component={FaqsModal} />
-      <Stack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
-      <Stack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
+      <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <AppStack.Screen name="Searching" component={SearchTopTabScreen} />
     </AppStack.Navigator>
   );
 }

@@ -108,7 +108,7 @@ function BookmarkedPostsScreen(props) {
                   : styles.profileStoryUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>all</Text>
+              <Text style={selectedButton === 0 ? styles.selectedTextStyle : styles.textStyle}>all stories</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
@@ -119,7 +119,7 @@ function BookmarkedPostsScreen(props) {
                   : styles.profileStoryUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>personal</Text>
+              <Text style={selectedButton === 1 ? styles.selectedTextStyle : styles.textStyle}>personal</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
@@ -130,7 +130,7 @@ function BookmarkedPostsScreen(props) {
                   : styles.profileStoryUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>historical</Text>
+              <Text style={selectedButton === 2 ? styles.selectedTextStyle : styles.textStyle}>historical</Text>
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
@@ -141,7 +141,7 @@ function BookmarkedPostsScreen(props) {
                   : styles.profileStoryUnselectedButton
               }
             >
-              <Text style={styles.textStyle}>resource</Text>
+              <Text style={selectedButton === 3 ? styles.selectedTextStyle : styles.textStyle}>resource</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -213,8 +213,13 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: colors.white,
-    fontSize: 18,
+    fontSize: 16,
   },
+  selectedTextStyle: {
+    color: colors.white,
+    fontSize: 16,
+    fontWeight: "bold"
+  }
 });
 
 const mapStateToProps = (state) => {
