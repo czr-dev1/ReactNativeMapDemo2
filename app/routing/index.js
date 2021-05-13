@@ -269,19 +269,19 @@ function NeedAuthTabScreen() {
 
           if (focused) {
             if (route.name === "Map") {
-              iconName = "map_icon_active";
+              iconName = "home_icon_highlighted";
             } else if (route.name === "Post") {
-              iconName = "add_story_icon";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_icon_active";
+              iconName = "profile_icon_highlighted";
             }
           } else {
             if (route.name === "Map") {
-              iconName = "map_outline";
+              iconName = "home_icon_inactive";
             } else if (route.name === "Post") {
-              iconName = "add_story_outline";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_outline";
+              iconName = "profile_icon_inactive";
             }
           }
 
@@ -377,27 +377,27 @@ function AppTabScreen() {
 
           if (focused) {
             if (route.name === "Map") {
-              iconName = "map_icon_active";
+              iconName = "home_icon_highlighted";
             } else if (route.name === "Bookmarks") {
-              iconName = "bookmark_icon_active";
+              iconName = "bookmark_icon_highlighted";
             } else if (route.name === "Post") {
-              iconName = "add_story_icon";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Notifications") {
-              iconName = "notification_icon_active";
+              iconName = "notification_icon_highlighted";
             } else if (route.name === "Profile") {
-              iconName = "profile_icon_active";
+              iconName = "profile_icon_highlighted";
             }
           } else {
             if (route.name === "Map") {
-              iconName = "map_outline";
+              iconName = "home_icon_inactive";
             } else if (route.name === "Bookmarks") {
-              iconName = "bookmark_outline";
+              iconName = "bookmark_icon_Inactive";
             } else if (route.name === "Post") {
-              iconName = "add_story_outline";
+              iconName = "add_story_icon_highlighted";
             } else if (route.name === "Notifications") {
-              iconName = "notifications_outline";
+              iconName = "notification_icon_inactive";
             } else if (route.name === "Profile") {
-              iconName = "profile_outline";
+              iconName = "profile_icon_inactive";
             }
           }
 
