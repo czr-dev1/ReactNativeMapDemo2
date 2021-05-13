@@ -4,6 +4,7 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  ScrollView,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -42,7 +43,7 @@ function FollowingProfileScreen(props) {
       case 1:
         return <BadgeList />;
       default:
-        return <PlainStoryList stories={data.userStories} />;
+        return <PlainStoryList stories={data.userStories.filter(item => !item.is_anonymous_pin)} />;
     }
   };
 
@@ -101,65 +102,70 @@ function FollowingProfileScreen(props) {
     return <ActivityIndicator />;
   } else {
     return (
-      <SafeAreaView style={{ backgroundColor: "white" }}>
-        <View style={styles.profileBar}>
-          <View style={styles.nicknameContainer}>
-            <Text style={styles.nicknameText}>{user}</Text>
-          </View>
-          <View style={styles.profileImageContainer}>
-            <FontAwesome name="bookmark-o" size={24} color="white" />
-            <Image
-              style={styles.profileImage}
-              source={
-                data.profileurl !== null
-                  ? { uri: data.profileurl }
-                  : PROFILE_PIC
-              }
-            />
-            {props.followingList.includes(data.id) ? (
-              <TouchableWithoutFeedback onPress={() => unfollow()}>
-                <FontAwesome name="bookmark" size={32} color={colors.purple} />
-              </TouchableWithoutFeedback>
-            ) : (
-              <TouchableWithoutFeedback onPress={() => follow()}>
-                <FontAwesome
-                  name="bookmark-o"
-                  size={32}
-                  color={colors.purple}
-                />
-              </TouchableWithoutFeedback>
-            )}
-          </View>
-          <View style={styles.bioContainter}>
-            <Text style={{ fontWeight: "bold", color: colors.gray }}>bio</Text>
-            <Text style={{}}>{data.bio}</Text>
-          </View>
-        </View>
-        <View style={[styles.profileStoryButtons]}>
-          <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-            <View
-              style={[styles.shadow2,
-                selectedButton === 0
-                  ? styles.profileStorySelectedButton
-                  : styles.profileStoryUnselectedButton
-              ]}
-            >
-              <Text 
-                style={{
-                  fontWeight: "bold", 
-                  color: colors.purple, 
-                  paddingTop: 12, 
-                  marginBottom: -8, 
-                  borderBottomWidth: 2, 
-                  borderColor: colors.orange, 
-                  fontSize: 16
-                }}>
-                  stories
-                </Text>
+      <SafeAreaView style={{ backgroundColor: "white", flexGrow: 1}}>
+        <ScrollView style={{backgroundColor: colors.background}}>
+          <View style={[styles.profileBar, {backgroundColor: colors.white}]}>
+            <View style={styles.nicknameContainer}>
+              <Text style={styles.nicknameText}>{user}</Text>
             </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.storyList}>{renderStoriesByType()}</View>
+            <View style={styles.profileImageContainer}>
+              <FontAwesome name="bookmark-o" size={24} color="white" />
+              <Image
+                style={styles.profileImage}
+                source={
+                  data.profileurl !== null
+                    ? { uri: data.profileurl }
+                    : PROFILE_PIC
+                }
+              />
+              {props.followingList.includes(data.id) ? (
+                <TouchableWithoutFeedback onPress={() => unfollow()}>
+                  <FontAwesome name="bookmark"
+                    size={32}
+                    color={(props.userId > 0) ? colors.purple : colors.white}
+                  />
+                </TouchableWithoutFeedback>
+              ) : (
+                <TouchableWithoutFeedback onPress={() => follow()}>
+                  <FontAwesome
+                    name="bookmark-o"
+                    size={32}
+                    color={(props.userId > 0) ? colors.purple : colors.white}
+                  />
+                </TouchableWithoutFeedback>
+              )}
+            </View>
+            <View style={styles.bioContainter}>
+              <Text style={{ fontWeight: "bold", color: colors.gray }}>bio</Text>
+              <Text style={{}}>{data.bio}</Text>
+            </View>
+          </View>
+          <View style={[styles.profileStoryButtons, {backgroundColor: colors.white}]}>
+            <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+              <View
+                style={[styles.shadow2,
+                  selectedButton === 0
+                    ? styles.profileStorySelectedButton
+                    : styles.profileStoryUnselectedButton
+                ]}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: colors.purple,
+                    paddingTop: 12,
+                    marginBottom: -8,
+                    borderBottomWidth: 2,
+                    borderColor: colors.orange,
+                    fontSize: 16
+                  }}>
+                    stories
+                  </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.storyList}>{renderStoriesByType()}</View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -233,7 +239,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.background,
     width: Dimensions.get("window").width,
-    height: "80%",
+
+    flex: 1,
+    flexGrow: 1,
   },
   navButton: {
     flexGrow: 1,
@@ -254,6 +262,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   console.log("followingList fp: ", state.authReducer.followingList);
+  console.log(state.authReducer.user.id);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,

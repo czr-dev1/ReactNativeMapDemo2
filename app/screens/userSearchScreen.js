@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Keyboard,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
@@ -15,6 +16,7 @@ import { Card } from "react-native-elements";
 import { connect } from "react-redux";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
+import { SearchBar } from "react-native-elements";
 
 //Icons
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -23,20 +25,19 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import Text from "../components/text";
 import colors from "../config/colors";
-const PROFILE_PIC = require("../assets/profile_blank.png");
+import profPic from "../assets/profile_blank.png";
 
 //Custom story component
 import StoryList from "../components/storyList";
 
 function BookmarkUserScreen(props) {
-  const navigation = useNavigation();
-
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getUsers();
-    console.log(props.followingList);
   }, []);
 
   const getUsers = async () => {
@@ -51,18 +52,10 @@ function BookmarkUserScreen(props) {
       .get(`https://globaltraqsdev.com/api/profile/users/`, config)
       .then((res) => {
         console.log(res);
-        let temp = res.data;
-
-        temp = temp.filter((item) => {
-          if (props.followingList.includes(item.id)) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-
-        console.log("following user list: ", temp);
+        let temp = res.data.reverse();
+        temp = temp.filter(item => !item.is_profile_private);
         setData(temp);
+        setFilteredDataSource(temp);
         setLoading(false);
       })
       .catch((err) => {
@@ -70,13 +63,110 @@ function BookmarkUserScreen(props) {
       });
   };
 
+  const searchFilterFunction = (text) => {
+    if(text) {
+      const newData = data.filter((item) => {
+        const itemData = item.username ? item.username.toUpperCase() : "".toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      })
+      setFilteredDataSource(newData);
+      setSearch(text);
+    } else {
+      setFilteredDataSource(data)
+      setSearch(text);
+    }
+  }
+
+  /*const renderUsers = () => {
+    {setFilteredDataSource.map((item, i) => {
+      let temp = item.bio;
+      if (temp.length > 42) {
+        temp = temp.substring(0, 42) + "...";
+      }
+      return (
+        <TouchableWithoutFeedback
+          key={i}
+          onPress={() => {
+            props.navigation.navigate("UserProfileModal", {
+              user: item.username,
+            });
+          }}
+        >
+          <Card containerStyle={[{ borderRadius: 25, marginBottom: 10, borderWidth: 0 }, styles.shadow2]}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                <Image
+                  style={{ borderRadius: 200, height: 48, width: 48 }}
+                  source={
+                    item.profileurl !== null
+                      ? { uri: item.profileurl }
+                      : profPic
+                  }
+                />
+                <View
+                  style={{ flexDirection: "column", paddingLeft: 12 }}
+                >
+                  <Text style={{ fontSize: 18 }}>{item.username}</Text>
+                  <Text style={{}}>{temp}</Text>
+                </View>
+              </View>
+              <View>
+                <FontAwesome
+                  name="bookmark"
+                  size={24}
+                  color={colors.white}
+                />
+              </View>
+            </View>
+          </Card>
+        </TouchableWithoutFeedback>
+      );
+    })}
+  }*/
+
   if (isLoading) {
     return <ActivityIndicator style={{ marginTop: 330 }} />;
   } else {
     return (
       <View style={{ backgroundColor: colors.background, height: "100%" }}>
+        <SearchBar
+          round
+          searchIcon={{ size: 24 }}
+          onChangeText={(text) => {
+            searchFilterFunction(text);
+          }}
+          onClear={(text) => {
+            searchFilterFunction("");
+            Keyboard.dismiss();
+          }}
+          lightTheme={true}
+          containerStyle={{
+            backgroundColor: colors.purple,
+            borderTopColor: "transparent",
+            borderBottomColor: "transparent",
+            width: "100%",
+          }}
+          inputContainerStyle={{
+            backgroundColor: colors.white,
+            borderRadius: 50,
+            borderWidth: 0,
+          }}
+          inputStyle={{ fontSize: 18 }}
+          placeholder="search"
+          placeholderTextColor={colors.purple}
+          value={search}
+        />
         <ScrollView style={{}}>
-          {data.map((item, i) => {
+          {filteredDataSource.map((item, i) => {
             let temp = item.bio;
             if (temp.length > 42) {
               temp = temp.substring(0, 42) + "...";
@@ -85,7 +175,7 @@ function BookmarkUserScreen(props) {
               <TouchableWithoutFeedback
                 key={i}
                 onPress={() => {
-                  navigation.navigate("UserProfile", {
+                  props.navigation.navigate("UserProfileModal", {
                     user: item.username,
                   });
                 }}
@@ -106,7 +196,7 @@ function BookmarkUserScreen(props) {
                         source={
                           item.profileurl !== null
                             ? { uri: item.profileurl }
-                            : PROFILE_PIC
+                            : profPic
                         }
                       />
                       <View
@@ -120,7 +210,7 @@ function BookmarkUserScreen(props) {
                       <FontAwesome
                         name="bookmark"
                         size={24}
-                        color={colors.purple}
+                        color={colors.white}
                       />
                     </View>
                   </View>
@@ -196,13 +286,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("BM: ", state.authReducer.followingList);
   return {
-    isLoading: state.storyReducer.isLoading,
-    users: state.authReducer.users,
-    stories: state.storyReducer.storyList,
-    error: state.storyReducer.error,
-    followingList: state.authReducer.followingList,
+
   };
 };
 

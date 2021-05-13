@@ -508,32 +508,42 @@ function DarkMapScreen(props) {
                       {props.isLoading ? (
                         <ActivityIndicator style={styles.mapStyle} />
                       ) : (
-                        <MapView
-                          style={styles.mapStyle}
-                          provider={PROVIDER_GOOGLE}
-                          mapType={MAP_TYPES.NONE}
-                          initialRegion={INITIAL_REGION}
-                          rotateEnabled={false}
-                          clusterColor={"#FFA500"}
-                          clusterTextColor={"#000000"}
-                          maxZoomLevel={21}
-                          minZoomLevel={1}
-                          maxZoom={19}
-                          minZoom={0}
-                          minPoints={5}
-                          flex={1}
-                        >
-                          <UrlTile
-                            urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
-                            shouldReplaceMapContent={true}
-                            maximumZ={19}
-                            minimumZ={0}
-                            maxZoomLevel={19}
-                            minZoomLevel={0}
-                            zIndex={1}
-                          />
-                          {renderPins()}
-                        </MapView>
+                        <View style={{width: '100%', height: '100%'}}>
+                          <MapView
+                            style={styles.mapStyle}
+                            provider={PROVIDER_GOOGLE}
+                            mapType={MAP_TYPES.NONE}
+                            initialRegion={INITIAL_REGION}
+                            rotateEnabled={false}
+                            clusterColor={"#FFA500"}
+                            clusterTextColor={"#000000"}
+                            maxZoomLevel={21}
+                            minZoomLevel={1}
+                            maxZoom={19}
+                            minZoom={0}
+                            minPoints={5}
+                            flex={1}
+                          >
+                            <UrlTile
+                              urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
+                              shouldReplaceMapContent={true}
+                              maximumZ={19}
+                              minimumZ={0}
+                              maxZoomLevel={19}
+                              minZoomLevel={0}
+                              zIndex={1}
+                            />
+                            {renderPins()}
+                          </MapView>
+                          <TouchableOpacity
+                            onPress={() => {
+                              props.navigation.navigate('Searching');
+                            }}
+                            style={styles.touchableOpacityStyle}
+                          >
+                            <FontAwesome5 name="list" size={24} style={styles.floatingButtonStyle} color={colors.white} />
+                          </TouchableOpacity>
+                        </View>
                       )}
                     </View>
                   }
@@ -583,39 +593,47 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   HeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
+    alignItems: "center",
     backgroundColor: colors.purple,
-    borderBottomWidth: 5,
+    borderBottomWidth: 2,
     borderColor: colors.orange,
     height: 30,
     width: 75,
+    flexGrow: 1,
   },
   UnselectedHeaderButtonStyle: {
-    marginTop: 1,
-    marginBottom: 1,
-    marginLeft: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginRight: 5,
+    alignItems: "center",
     backgroundColor: colors.purple,
     height: 30,
     width: 75,
+    flexGrow: 1,
   },
   TextStyle: {
-    color: colors.white,
     textAlign: "center",
+    fontSize: 16,
+    color: colors.white,
   },
   selectedTextStyle: {
     textAlign: "center",
     fontSize: 16,
     color: colors.white,
     fontWeight: "bold",
-  }
+  },
+  touchableOpacityStyle: {
+    position: 'absolute',
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    backgroundColor: colors.purple,
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30,
+    borderRadius: 200
+  },
+  floatingButtonStyle: {
+    alignItems: 'center',
+    borderRadius: 200
+  },
 });
 
 //Personal, Historical, Resources

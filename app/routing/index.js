@@ -33,6 +33,9 @@ import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
 import NotificationScreen from "../screens/notificationScreen";
 
+import StorySearchScreen from '../screens/storySearchScreen';
+import UserSearchScreen from '../screens/userSearchScreen';
+
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
 import ProfileHeader from "../components/profile/profileHeader";
@@ -115,7 +118,6 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: 'Arial',
-          marginTop: 30,
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -304,6 +306,41 @@ function NeedAuthTabScreen() {
   );
 }
 
+const SearchTopTab = createMaterialTopTabNavigator();
+function SearchTopTabScreen() {
+  // Odd glitch with names where it wouldn't display the full name
+  // fixed by adding extra s at the end
+  return (
+    <SearchTopTab.Navigator
+      style={{elevation: 0}}
+      tabBarOptions={{
+        labelStyle: {
+          textTransform: "lowercase",
+          fontSize: 20,
+          fontWeight: "bold",
+          fontFamily: 'Arial',
+        },
+        tabStyle: {
+          backgroundColor: colors.purple,
+          shadowOpacity: 0,
+          shadowRadius: 0,
+        },
+        activeTintColor: colors.white,
+        inactiveTintColor: colors.border,
+        backgroundColor: colors.purple,
+        style: {
+          shadowOpacity: 0
+        }
+      }}
+    >
+      <SearchTopTab.Screen name="SearchStories" component={StorySearchScreen} options={{title: 'stories'}}/>
+      <SearchTopTab.Screen name="SearchUsers" component={UserSearchScreen} options={{title: 'users'}}/>
+    </SearchTopTab.Navigator>
+  );
+}
+
+// <NeedAuthStack.Screen name="StorySearchScreen" component={StorySearchScreen} />
+// <NeedAuthStack.Screen name="UserSearchScreen" component={UserSearchScreen} />
 const NeedAuthStack = createStackNavigator();
 function NeedAuthStackScreen() {
   return (
@@ -313,6 +350,9 @@ function NeedAuthStackScreen() {
       <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
       <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
       <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
+      <NeedAuthStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <NeedAuthStack.Screen name="Story" component={StoryScreen} />
+      <NeedAuthStack.Screen name="Searching" component={SearchTopTabScreen} />
     </NeedAuthStack.Navigator>
   );
 }
@@ -397,6 +437,7 @@ function AppStackScreen() {
       <AppStack.Screen name="FaqsModal" component={FaqsModal} />
       <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
       <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
+      <AppStack.Screen name="Searching" component={SearchTopTabScreen} />
     </AppStack.Navigator>
   );
 }
