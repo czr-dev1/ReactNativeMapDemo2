@@ -230,12 +230,7 @@ function ProfileDrawerScreen() {
                   icon="faqs"
                   navigateTo="FaqsModal"
                 />
-                <ModalOpener
-                  {...props}
-                  name="accessibility"
-                  icon="accessibility"
-                  navigateTo="ContactUsModal"
-                />
+
                 <ModalOpener
                   {...props}
                   name="log out" />

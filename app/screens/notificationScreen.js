@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Dimensions,
 	FlatList,
@@ -9,7 +9,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from 'react-native-elements';
+import { useNavigation } from "@react-navigation/native";
 import { connect } from 'react-redux';
+import * as Notifications from 'expo-notifications';
 
 // Icons
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -17,11 +19,16 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Text from "../components/text";
 import colors from '../config/colors';
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item }, props) => {
+	const navigation = useNavigation();
 	console.log(item);
 	let d = new Date(item.time * 1);
 	return (
-		<TouchableWithoutFeedback>
+		<TouchableWithoutFeedback
+			onPress={() => {
+				navigation.navigate("Story", {id: item.storyId})
+			}}
+		>
 			<Card containerStyle={[{ borderRadius: 14, marginBottom: 12 }, styles.shadow2]}>
 				<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 					<View style={{ padding: 12 }}>
@@ -41,7 +48,7 @@ const ItemCard = ({ item }) => {
 								color: colors.black
 							}}
 						>
-							{item.username}
+							{item.isAnonNotif ? "anonymous" : item.username}
 						</Text>
 						<Text style={{}}>
 							{d.getMonth() + 1}/{d.getDate()}/{d.getFullYear()}
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	// console.log(state.authReducer.notificationList);
 	return {
-		notificationList: state.authReducer.notificationList,
+		notificationList: state.authReducer.notificationList.reverse(),
 	};
 };
 

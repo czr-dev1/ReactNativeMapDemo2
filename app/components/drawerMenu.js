@@ -35,15 +35,8 @@ function DrawerMenu(props) {
           name="faqs"
           icon="faqs"
           isMapScreen={true}
-          navigateTo="FaqsModal"
-        />
-        <ModalOpener
-          {...props}
-          name="accessibility"
-          icon="accessibility"
           bottomBorder={true}
-          isMapScreen={true}
-          navigateTo="ContactUsModal"
+          navigateTo="FaqsModal"
         />
     </View>
   )
