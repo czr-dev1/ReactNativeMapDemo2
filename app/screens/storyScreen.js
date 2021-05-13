@@ -239,7 +239,7 @@ function storyScreen(props) {
     let data = {
       commenter: props.userId,
       description: userComment,
-      is_anonymous_pin: props.isPrivacyMode,
+      is_anonymous_comment: props.isPrivacyMode,
       pin: id,
     };
     axios.post("https://globaltraqsdev.com/api/commentStory/", data, config)
@@ -687,7 +687,7 @@ function storyScreen(props) {
                     }
                   >
                     <Text style={{ fontWeight: "bold", paddingBottom: 12 }}>
-                      {comment.username}
+                      {comment.is_anonymous_comment ? "anonymous" : comment.username}
                     </Text>
                   </TouchableOpacity>
                   {/*props.isLoggedIn === true*/ true ? (
@@ -711,34 +711,41 @@ function storyScreen(props) {
         </ImageBackground>
       </ScrollView>
 
-      <View style={{ flexDirection: "column", flex: 1, width: '100%'}}>
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: '100%',
-            borderColor: colors.border,
-        }}>
-          <View style={{flexDirection: 'row', backgroundColor: colors.background}}>
-            <TextInput
-              style={styles.box}
-              multiline
-              placeholder="comment"
-              placeholderTextColor={colors.purple}
-              defaultValue={userComment}
-              onChangeText={(val) => {
-                setUserComment(val);
-              }}
-            />
-            <TouchableOpacity style={{alignItems:"center", justifyContent: "center"}}
-              onPress={() => {
-              comment();
+      {
+        props.isLoggedIn ?
+        (
+          <View style={{ flexDirection: "column", flex: 1, width: '100%'}}>
+            <View
+              style={{
+                position: "absolute",
+                bottom: 0,
+                width: '100%',
+                borderColor: colors.border,
             }}>
-              <FontAwesome name="send" size={24} color={colors.purple} />
-            </TouchableOpacity>
+              <View style={{flexDirection: 'row', backgroundColor: colors.background}}>
+                <TextInput
+                  style={styles.box}
+                  multiline
+                  placeholder="comment"
+                  placeholderTextColor={colors.purple}
+                  defaultValue={userComment}
+                  onChangeText={(val) => {
+                    setUserComment(val);
+                  }}
+                />
+                <TouchableOpacity style={{alignItems:"center", justifyContent: "center"}}
+                  onPress={() => {
+                  comment();
+                }}>
+                  <FontAwesome name="send" size={24} color={colors.purple} />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
+        )
+        : null
+      }
+
     </SafeAreaView>
   );
 }
@@ -809,7 +816,7 @@ const mapStateToProps = (state) => {
     stories: state.storyReducer.storyList,
     error: state.storyReducer.error,
     isLoggedIn: state.authReducer.isLoggedIn,
-    isPrivacyMode: state.authReducer.isPrivacyMode,
+    isPrivacyMode: state.authReducer.user.is_profile_private,
     userId: userId,
     profileImage: state.authReducer.user.profileurl,
     userBookmarks: state.authReducer.user.user_upvoted_stories,

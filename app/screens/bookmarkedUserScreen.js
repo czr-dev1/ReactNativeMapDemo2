@@ -79,7 +79,7 @@ function BookmarkUserScreen(props) {
           {data.map((item, i) => {
             let temp = item.bio;
             if (temp.length > 42) {
-              temp = temp.substring(0, 42) + "...";
+              temp = temp.substring(0, 36) + "...";
             }
             return (
               <TouchableWithoutFeedback
