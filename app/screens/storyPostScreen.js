@@ -152,7 +152,6 @@ function StoryPostScreen(props) {
       setAnonymous(true);
       setLastEditDate({});
       setLastPersonEdit("");
-      setLocation("");
       setLocality("");
       setPostCode("");
       setPostDate("");
@@ -165,7 +164,7 @@ function StoryPostScreen(props) {
         props.navigation.navigate('Map');
         props.reloadUser(props.userName);
       } else {
-        props.navigation.navigate('Maps');
+        props.navigation.navigate('Map');
       }
     })
     .catch((err) => {
