@@ -106,8 +106,20 @@ function StoryPostScreen(props) {
   }
 
   const submitNewStory = async () => {
-    const latSplit = location.latitude.toString().split(".");
-    const lonSplit = location.longitude.toString().split(".");
+    let tempLat = location.latitude;
+    let tempLon = location.longitude;
+    const findAddress = `${address} ${locality} ${region} ${postCode} ${country}`;
+
+    if(findAddress){
+      console.log(findAddress);
+      let res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q= ${findAddress}`);
+      console.log(res.data[0]);
+      tempLat = Number (res.data[0].lat);
+      tempLon = Number (res.data[0].lon);
+    }
+
+    const latSplit = tempLat.toString().split(".");
+    const lonSplit = tempLon.toString().split(".");
     const latitude = latSplit[0] + "." + latSplit[1].substring(0, 6);
     const longitude = lonSplit[0] + "." + lonSplit[1].substring(0, 6);
 
@@ -328,7 +340,7 @@ function StoryPostScreen(props) {
                 placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
-                  setRegion(val);
+                  setLocality(val);
                 }}
               />
               <TextInput
