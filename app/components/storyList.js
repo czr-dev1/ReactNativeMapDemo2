@@ -71,7 +71,7 @@ const Item = ({ item }, props) => {
               {item.title.toLowerCase()}
             </Text>
             <Text style={{ color: "#919191" }}>
-              posted on {item.startDatez}
+              posted on {item.startDate}
             </Text>
           </View>
           <View

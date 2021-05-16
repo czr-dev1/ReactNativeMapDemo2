@@ -105,15 +105,31 @@ function StoryPostScreen(props) {
     }
   }
 
+  const fixBlanks = (toFix) => {
+    let temp = toFix.trim()
+    if ( temp.length === 0 ) {
+      return "";
+    }
+    return toFix;
+  };
+
   const submitNewStory = async () => {
     let tempLat = location.latitude;
     let tempLon = location.longitude;
-    const findAddress = `${address} ${locality} ${region} ${postCode} ${country}`;
 
-    if(findAddress){
-      console.log(findAddress);
+    let tempAddr = fixBlanks(address);
+    let tempLoc = fixBlanks(locality);
+    let tempReg = fixBlanks(region);
+    let tempPost = fixBlanks(postCode);
+    let tempCountry = fixBlanks(country);
+
+
+
+    const findAddress = `${tempAddr} ${tempLoc} ${tempReg} ${tempPost} ${tempCountry}`;
+
+    if(findAddress.length > 4){ //because if they're all empty then theres 4 sapces
+      console.log(findAddress.length);
       let res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q= ${findAddress}`);
-      console.log(res.data[0]);
       tempLat = Number (res.data[0].lat);
       tempLon = Number (res.data[0].lon);
     }
@@ -298,7 +314,11 @@ function StoryPostScreen(props) {
             <View style={{}}>
               <Switch
                 value={isAnonymous}
-                onValueChange={(val) => setAnonymous(val)}
+                onValueChange={(val) => {
+                  if (props.isLoggedIn) {
+                    setAnonymous(val);
+                  }
+                }}
                 activeText={"on"}
                 inActiveText={"off"}
                 backgroundActive={colors.purple}
