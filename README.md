@@ -65,7 +65,7 @@ It is not a replacement or something entirely different, it is in addition you c
   * Once you are logged into App Store Connect
   1. Click on My Apps -> The arqive -> TestFlight
   2. Find the correct version and current build number
-  3. Manage Compliance and select no
+  3. When processing is complete, manage `Missing Compliance` and select no
   4. Go back to App Store, scroll down to `Build` section, remove old version and select newest build
   5. It is required to fill in the `What's New in This Version` section
   6. Save and it should be ready to `Submit for Review`
