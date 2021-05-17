@@ -55,6 +55,9 @@ function storyScreen(props) {
     },
   ]);
 
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showFlagCommentModal, setShowFlagCommentModal] = useState(false);
+
   useEffect(() => {
     console.log("Story Screen: ", id);
     getStory();
@@ -239,7 +242,7 @@ function storyScreen(props) {
     let data = {
       commenter: props.userId,
       description: userComment,
-      is_anonymous_comment: props.isPrivacyMode,
+      is_anonymous_pin: props.isPrivacyMode,
       pin: id,
     };
     axios.post("https://globaltraqsdev.com/api/commentStory/", data, config)
@@ -247,22 +250,6 @@ function storyScreen(props) {
       getStory();
       props.loadStories();
       setUserComment("");
-      const notifData = {
-          id: story.owner,
-          username: props.username,
-          storyId: story.id,
-          isAnonNotif: props.isPrivacyMode
-      };
-      console.log(notifData);
-
-      axios.post("http://192.81.130.223:8012/api/user/notify", notifData)
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
     })
     .catch((err) => {
       console.log(err);
@@ -326,8 +313,6 @@ function storyScreen(props) {
     ])
   };
 
-
-
   const modalOptions = [
     {
       label: "suspicious or spam",
@@ -346,7 +331,7 @@ function storyScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <Modal
-        onModalHide={() => setShowFlagModal(true)}
+        onModalHide={() => setShowFlagModal(false)}
         isVisible={showOptionsModal}
         onBackdropPress={() => setShowOptionsModal(false)}
         onBackButtonPress={() => setShowOptionsModal(false)}
@@ -403,6 +388,7 @@ function storyScreen(props) {
             </View>
           </View>
         </Modal>
+
         <View style={{ backgroundColor: "white", borderTopLeftRadius: 10, borderTopRightRadius: 10, padding: 14 }}>
           <View>
             { story.is_anonymous_pin || props.username === story.username
@@ -446,7 +432,7 @@ function storyScreen(props) {
               style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
               onPress={() => {
                 setShowFlagModal(true);
-                console.log(showFlagModal);
+                // setShowOptionsModal(false);
               }}
             >
               <FontAwesome
@@ -458,7 +444,9 @@ function storyScreen(props) {
               <Text style={{ fontSize: 18, color: colors.purple }}>flag post</Text>
             </TouchableOpacity>
 
-            { story.owner !== undefined && story.owner !== null && !(props.username === story.username) ? (
+            { story.owner !== undefined && story.owner !== null
+              && !(props.username === story.username)
+              && (story.unsername !== 'anonymous') ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
                 onPress={() => {
@@ -515,7 +503,7 @@ function storyScreen(props) {
             ) : null
             }
 
-            { props.isAuthenticated && props.username === story.username ? (
+            { props.is_administrator || props.isAuthenticated && props.username === story.username ? (
               <TouchableOpacity
                 style={{ flexDirection: "row", padding: 18 , borderBottomWidth: 1, borderColor: colors.border }}
                 onPress={() => {
@@ -697,7 +685,7 @@ function storyScreen(props) {
                 <View style={{justifyContent: "space-between", flexDirection: "row"}}>
                   <TouchableOpacity
                     onPress={() =>
-                      props.navigation.navigate("userprofilemodal", {
+                      props.navigation.navigate("UserProfileModal", {
                         user: comment.username,
                       })
                     }
@@ -706,14 +694,19 @@ function storyScreen(props) {
                       {comment.is_anonymous_comment ? "anonymous" : comment.username}
                     </Text>
                   </TouchableOpacity>
-                  {/*props.isLoggedIn === true*/ true ? (
+                  {props.isLoggedIn === true ? (
                     <View
                       style={{
                         flexDirection: "row-reverse",
                         alignItems: "center",
                       }}
                     >
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setShowOptionsModal(true);
+                          setShowFlagModal(false);
+                        }}
+                      >
                         {/*<FontAwesome5 name="ellipsis-v" size={24} color={colors.purple} />*/}
                       </TouchableOpacity>
                     </View>
@@ -761,7 +754,6 @@ function storyScreen(props) {
         )
         : null
       }
-
     </SafeAreaView>
   );
 }
@@ -826,6 +818,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   let userId =
     state.authReducer.isLoggedIn === true ? state.authReducer.user.id : -1;
+    console.log("isAdmin: ", state.authReducer.user.is_administrator);
   // causes issues if you're logged out, logged out users cannot set privacy settings
   return {
     isLoading: state.storyReducer.isLoading,
@@ -839,6 +832,7 @@ const mapStateToProps = (state) => {
     followingList: state.authReducer.followingList,
     username: state.authReducer.user.username,
     isAuthenticated: state.authReducer.isAuthenticated,
+    is_administrator: state.authReducer.user.is_administrator,
   };
 };
 
