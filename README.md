@@ -58,7 +58,7 @@ It is not a replacement or something entirely different, it is in addition you c
   * Run `expo build:ios` then select the `archive` option OR run `expo build:ios -t archive`
   * (Note: For first time build, you will be prompted to log into an Expo account)
   * You will then be prompted to log into the Apple Developer account
-  * It will give you a link to track the progress, download the file from there when it is done building
+  * It will give you a link to track the progress, download the `.ipa` file from there when it is done building
 * Submit to Apple App Store 
   * Download `Transporter` app and log in using Apple Developer account
   * Drag/Upload `.ipa` file to Transporter, then deliver
