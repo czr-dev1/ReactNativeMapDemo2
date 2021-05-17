@@ -530,6 +530,9 @@ function LightMapScreen(props) {
                             minZoom={0}
                             minPoints={5}
                             flex={1}
+                            onLongPress={(event) => {
+                              props.navigation.navigate("SubmitStoryModal", {latitude: event.nativeEvent.coordinate.latitude, longitude: event.nativeEvent.coordinate.longitude});
+                            }}
                           >
                             <UrlTile
                               urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }

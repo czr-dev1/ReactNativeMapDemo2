@@ -44,6 +44,7 @@ import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
+import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
 
 import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
@@ -348,6 +349,7 @@ function NeedAuthStackScreen() {
       <NeedAuthStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
       <NeedAuthStack.Screen name="Story" component={StoryScreen} />
       <NeedAuthStack.Screen name="Searching" component={SearchTopTabScreen} />
+      <NeedAuthStack.Screen name="SubmitStoryModal" component={LongPressStoryPostModal} />
     </NeedAuthStack.Navigator>
   );
 }
@@ -433,6 +435,7 @@ function AppStackScreen() {
       <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
       <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
       <AppStack.Screen name="Searching" component={SearchTopTabScreen} />
+      <AppStack.Screen name="SubmitStoryModal" component={LongPressStoryPostModal} />
     </AppStack.Navigator>
   );
 }
