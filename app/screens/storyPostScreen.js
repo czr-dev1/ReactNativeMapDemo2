@@ -105,9 +105,37 @@ function StoryPostScreen(props) {
     }
   }
 
+  const fixBlanks = (toFix) => {
+    let temp = toFix.trim()
+    if ( temp.length === 0 ) {
+      return "";
+    }
+    return toFix;
+  };
+
   const submitNewStory = async () => {
-    const latSplit = location.latitude.toString().split(".");
-    const lonSplit = location.longitude.toString().split(".");
+    let tempLat = location.latitude;
+    let tempLon = location.longitude;
+
+    let tempAddr = fixBlanks(address);
+    let tempLoc = fixBlanks(locality);
+    let tempReg = fixBlanks(region);
+    let tempPost = fixBlanks(postCode);
+    let tempCountry = fixBlanks(country);
+
+
+
+    const findAddress = `${tempAddr} ${tempLoc} ${tempReg} ${tempPost} ${tempCountry}`;
+
+    if(findAddress.length > 4){ //because if they're all empty then theres 4 sapces
+      console.log(findAddress.length);
+      let res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q= ${findAddress}`);
+      tempLat = Number (res.data[0].lat);
+      tempLon = Number (res.data[0].lon);
+    }
+
+    const latSplit = tempLat.toString().split(".");
+    const lonSplit = tempLon.toString().split(".");
     const latitude = latSplit[0] + "." + latSplit[1].substring(0, 6);
     const longitude = lonSplit[0] + "." + lonSplit[1].substring(0, 6);
 
@@ -286,7 +314,11 @@ function StoryPostScreen(props) {
             <View style={{}}>
               <Switch
                 value={isAnonymous}
-                onValueChange={(val) => setAnonymous(val)}
+                onValueChange={(val) => {
+                  if (props.isLoggedIn) {
+                    setAnonymous(val);
+                  }
+                }}
                 activeText={"on"}
                 inActiveText={"off"}
                 backgroundActive={colors.purple}
@@ -328,7 +360,7 @@ function StoryPostScreen(props) {
                 placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
-                  setRegion(val);
+                  setLocality(val);
                 }}
               />
               <TextInput
