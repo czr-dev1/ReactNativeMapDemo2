@@ -51,3 +51,25 @@ It is not a replacement or something entirely different, it is in addition you c
 * Rolling out into production can take longer, there is no real set time for either however
 * [I found this video to be super helpful](https://youtu.be/2Y-8XVdhuCA?t=709)
 * VERY IMPORTANT NOTE in app.json there is a version code in `expo.android.versionCode` make sure you BUMP it up a number otherwise the Play Store WILL complain and you'll have to recompile, the `expo.version` code isn't really all that useful in the case for android
+
+### Deploying to Apple App Store
+* Compile Application
+  * In Terminal, make sure you are in the root directory of the project
+  * Run `expo build:ios`
+  * (Note: For first time build, you will be prompted to log into an Expo account.)
+  * Select the `archive` option 
+  * You will then be prompted to log into the Apple Developer account
+  * It will give you a link to track the progress, download the file from there when it is done building
+* Submit to Apple App Store 
+  * Download `Transporter` app and log in using Apple Developer account
+  * Drag/Upload `.ipa` file to Transporter, then deliver
+  * Once you are logged into App Store Connect
+  1. Click on My Apps -> The arqive -> TestFlight
+  2. Find the correct version and current build number
+  3. Manage Compliance and select no
+  4. Go back to App Store, scroll down to `Build` section, remove old version and select newest build
+  5. It is required to fill in the `What's New in This Version` section
+  6. Save and it should be ready to `Submit for Review`
+* Note: you can test the beta version of the app in TestFlight before submitting to the App Store
+* Rolling out into production can take longer, there is no real set time for either however
+* VERY IMPORTANT NOTE in app.json there is a version code in `expo.ios.buildNumber` make sure you BUMP it up a number otherwise the App Store WILL complain and you'll have to recompile, the `expo.version` code isn't really all that useful in the case for android
