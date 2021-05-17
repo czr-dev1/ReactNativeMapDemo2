@@ -55,8 +55,7 @@ It is not a replacement or something entirely different, it is in addition you c
 ### Deploying to Apple App Store
 * Compile Application
   * In Terminal, make sure you are in the root directory of the project
-  * Run `expo build:ios`
-  * (Note: For first time build, you will be prompted to log into an Expo account.)
+  * Run `expo build:ios` (Note: For first time build, you will be prompted to log into an Expo account)
   * Select the `archive` option 
   * You will then be prompted to log into the Apple Developer account
   * It will give you a link to track the progress, download the file from there when it is done building
