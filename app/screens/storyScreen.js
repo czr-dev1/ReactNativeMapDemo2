@@ -691,7 +691,7 @@ function storyScreen(props) {
                     }
                   >
                     <Text style={{ fontWeight: "bold", paddingBottom: 12 }}>
-                      {comment.username}
+                      {comment.is_anonymous_comment ? "anonymous" : comment.username}
                     </Text>
                   </TouchableOpacity>
                   {props.isLoggedIn === true ? (
