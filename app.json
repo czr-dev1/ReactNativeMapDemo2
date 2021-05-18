@@ -29,7 +29,7 @@
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.thearqive.mobile",
       "useNextNotificationsApi": true,
-      "versionCode": 11,
+      "versionCode": 12,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
