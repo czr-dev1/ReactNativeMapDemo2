@@ -7,6 +7,8 @@ export default {
   border: "#B6ADCC",
   forgotDetails: "#998DB8",
   alert: "#E63F52",
+  success: "#69C779",
+  info: "#87CEFA",
   black: "#000",
   white: "#fff",
   orange: "#F0A055",

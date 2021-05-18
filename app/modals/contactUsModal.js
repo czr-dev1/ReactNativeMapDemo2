@@ -15,12 +15,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { FontAwesome5,MaterialCommunityIcons, Entypo, MaterialIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
+import Toast from 'react-native-toast-message';
 
 import Text from "../components/text";
 import colors from "../config/colors";
 
 function ContactUsModal(props) {
   const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [showModal, setShowModal] = useState(true);
 
@@ -42,51 +44,107 @@ function ContactUsModal(props) {
     return () => backHandler.remove();
   }, [])
 
-  const onSubmit = (e) => {
-    if (email !== "") {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-        },
-      };
-      // Request Body
-      // const body = JSON.stringify({ username, email, password });
-      let data = JSON.stringify({ email: email, message: message });
-      axios
-        .post("https://globaltraqsdev.com/api/contactUs/", data, config)
-        .then((response) => {
-          setEmail("");
-          setMessage("");
-          props.navigation.goBack();
-        })
-        .catch((err) => {
-          console.log(err);
+  const showToast = (val) => {
+    if (val) {
+      Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Successfully Sent',
+          text2: 'Your message has been sent!',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
         });
     } else {
-      const config = {
-        headers: {
-          "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-        },
-      };
-      setEmail(`Anonymous@anon.com`);
+      Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error Sending',
+          text2: 'There was an error sending',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+    }
+  }
 
-      axios
-        .post(
-          "https://globaltraqsdev.com/api/contactUs/",
-          {
-            email: email,
-            message: message,
+  const onSubmit = (e) => {
+    if(message.trim().length > 1){
+      let success = false;
+      console.log(message);
+      Toast.show({
+          type: 'info',
+          position: 'top',
+          text1: 'Sending Message',
+          text2: 'Sit tight while your message sends!',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      if (email !== "") {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
           },
-          config
-        )
-        .then((response) => {
-          setEmail("");
-          setMessage("");
-          props.navigation.goBack();
-        })
-        .catch((err) => {
-          console.log(err);
+        };
+        // Request Body
+        // const body = JSON.stringify({ username, email, password });
+        let data = JSON.stringify({ email: email, message: message });
+        axios
+          .post("https://globaltraqsdev.com/api/contactUs/", data, config)
+          .then((response) => {
+            setEmail("");
+            setMessage("");
+            console.log(response);
+            showToast(true);
+            props.navigation.goBack();
+          })
+          .catch((err) => {
+            showToast(false);
+            console.log(err);
+          });
+      } else {
+        const config = {
+          headers: {
+            "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+          },
+        };
+        setEmail(`Anonymous@anon.com`);
+
+        axios
+          .post(
+            "https://globaltraqsdev.com/api/contactUs/",
+            {
+              email: email,
+              message: message,
+            },
+            config
+          )
+          .then((response) => {
+            setEmail("");
+            setMessage("");
+            showToast(true);
+            props.navigation.goBack();
+          })
+          .catch((err) => {
+            showToast(false);
+            console.log(err);
+          });
+      }
+    } else {
+      Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error Submitting',
+          text2: 'Please include a message',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
         });
     }
   };
@@ -143,17 +201,24 @@ function ContactUsModal(props) {
               <MaterialIcons name="send" size={24} color={colors.white} />
               <MaterialIcons name="send" size={28} color={colors.purple}
                 onPress={(e) => {
+                  console.log("press");
                   onSubmit(e);
                 }}
               />
             </View>
-            <TextInput style={styles.input} placeholder="email (optional)" placeholderTextColor={colors.emailInput}/>
+            <TextInput
+              style={styles.input}
+              placeholder="email (optional)"
+              placeholderTextColor={colors.emailInput}
+              onChangeText={(val) => setEmail(val)}
+            />
             <TextInput style={styles.input} placeholder="subject" placeholderTextColor={colors.emailInput}/>
             <TextInput
               style={styles.inputBorderless}
               multiline
               placeholderTextColor={colors.emailInput}
               placeholder="message"
+              onChangeText={(val) => setMessage(val)}
             />
           </View>
         </View>
@@ -199,7 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: "100%",
     fontFamily: "Arial",
-    color: colors.emailInput
+    color: colors.black
   },
   inputBorderless: {
     borderColor: "#ddd",

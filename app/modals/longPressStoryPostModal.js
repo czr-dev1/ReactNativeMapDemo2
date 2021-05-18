@@ -26,6 +26,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+import Toast from 'react-native-toast-message';
 
 
 import colors from "../config/colors";
@@ -158,6 +159,17 @@ function LongPressStoryPostModal(props) {
       setStartDate(new Date());
       setTitle("");
 
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Successfully Posted',
+        text2: 'Sit tight while we update',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+
       props.loadStories();
       if (props.isLoggedIn) {
         props.navigation.navigate('Map');
@@ -167,6 +179,16 @@ function LongPressStoryPostModal(props) {
       }
     })
     .catch((err) => {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error Posting',
+        text2: 'Please include a title and story body',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
       console.log(err);
     });
   };
