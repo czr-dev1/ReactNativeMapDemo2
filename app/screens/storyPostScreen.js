@@ -450,7 +450,7 @@ function StoryPostScreen(props) {
               />
               <TextInput
                 name="postcode"
-                placeholder="postcode"
+                placeholder="*postcode"
                 placeholderTextColor={colors.forgotDetails}
                 style={styles.input}
                 onChangeText={(val) => {
