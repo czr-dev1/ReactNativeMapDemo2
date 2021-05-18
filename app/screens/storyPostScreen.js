@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Button,
   Dimensions,
+  Keyboard,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -26,6 +27,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+import Toast from 'react-native-toast-message';
 
 
 import colors from "../config/colors";
@@ -98,6 +100,7 @@ function StoryPostScreen(props) {
     setStartDate(new Date());
     setTitle("");
 
+    Keyboard.dismiss();
     if (props.isLoggedIn) {
       props.navigation.navigate('Map');
     } else {
@@ -123,16 +126,56 @@ function StoryPostScreen(props) {
     let tempPost = fixBlanks(postCode);
     let tempCountry = fixBlanks(country);
 
+    let canPost = false;
+    let canTestAddress = false;
+
+    const testingAddr = `${tempAddr}${tempLoc}${tempReg}${tempCountry}`;
+    if (testingAddr.length > 0 && tempPost.length === 0) {
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Missing Postal Code',
+        text2: 'Add a Postal Code to post with Address!',
+        visibilityTime: 4000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
+    } else {
+      canTestAddress = true;
+    }
 
 
     const findAddress = `${tempAddr} ${tempLoc} ${tempReg} ${tempPost} ${tempCountry}`;
 
-    if(findAddress.length > 4){ //because if they're all empty then theres 4 sapces
-      console.log(findAddress.length);
-      let res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q= ${findAddress}`);
-      tempLat = Number (res.data[0].lat);
-      tempLon = Number (res.data[0].lon);
+    if (canTestAddress) {
+      if(findAddress.length > 4){ //because if they're all empty then theres 4 sapces
+        console.log(findAddress.length);
+        let res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q= ${findAddress}`);
+
+        try {
+          tempLat = Number (res.data[0].lat);
+          tempLon = Number (res.data[0].lon);
+          canPost = true;
+        } catch (e) {
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Invalid Address',
+            text2: 'Try checking it',
+            visibilityTime: 4000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }
+      }
     }
+
+    if (findAddress.length === 4) {
+      canPost = true;
+    }
+
 
     const latSplit = tempLat.toString().split(".");
     const lonSplit = tempLon.toString().split(".");
@@ -167,37 +210,61 @@ function StoryPostScreen(props) {
       },
     };
 
-    axios.post("http://www.globaltraqsdev.com/api/pins/", pin, config)
-    .then((res) => {
-      console.log(res.data);
+    if (canPost) {
+      axios.post("http://www.globaltraqsdev.com/api/pins/", pin, config)
+      .then((res) => {
+        console.log(res.data);
 
-      setAddress("");
-      setAnonRadius(1);
-      setCategory(1);
-      setCountry("");
-      setDescription("");
-      setEndDate(new Date());
-      setAnonymous(true);
-      setLastEditDate({});
-      setLastPersonEdit("");
-      setLocality("");
-      setPostCode("");
-      setPostDate("");
-      setRegion("");
-      setStartDate(new Date());
-      setTitle("");
+        setAddress("");
+        setAnonRadius(1);
+        setCategory(1);
+        setCountry("");
+        setDescription("");
+        setEndDate(new Date());
+        setAnonymous(true);
+        setLastEditDate({});
+        setLastPersonEdit("");
+        setLocality("");
+        setPostCode("");
+        setPostDate("");
+        setRegion("");
+        setStartDate(new Date());
+        setTitle("");
 
-      props.loadStories();
-      if (props.isLoggedIn) {
-        props.navigation.navigate('Map');
-        props.reloadUser(props.userName);
-      } else {
-        props.navigation.navigate('Map');
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Successfully Posted',
+          text2: 'Sit tight while we update',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+
+        props.loadStories();
+        Keyboard.dismiss();
+        if (props.isLoggedIn) {
+          props.navigation.navigate('Map');
+          props.reloadUser(props.userName);
+        } else {
+          props.navigation.navigate('Map');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error Posting',
+          text2: 'Please include a title and story body',
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      });
+    }
   };
 
   return (

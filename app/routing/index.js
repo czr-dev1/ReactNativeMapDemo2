@@ -50,6 +50,7 @@ import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from '../modals/editStoryModal';
 
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
+import Toast, { BaseToast } from 'react-native-toast-message'
 
 const Icon = createIconSetFromIcoMoon(
   require('../assets/fonts/selection.json'),
@@ -440,6 +441,69 @@ function AppStackScreen() {
   );
 }
 
+const toastConfig = {
+  error: ({text1, text2, props, ...rest}) => (
+      <BaseToast
+      {...rest}
+      style={{ borderLeftColor: colors.alert, borderLeftWidth: 10 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        color: colors.black
+      }}
+      text2Style={{
+        fontSize: 14,
+        fontFamily: 'Arial'
+      }}
+      text1={text1}
+      text2={text2}
+      onTrailingIconPress={() => Toast.hide()}
+    />
+  ),
+  success: ({text1, text2, props, ...rest}) => (
+      <BaseToast
+      {...rest}
+      style={{ borderLeftColor: colors.success, borderLeftWidth: 10 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        color: colors.black
+      }}
+      text2Style={{
+        fontSize: 14,
+        fontFamily: 'Arial'
+      }}
+      text1={text1}
+      text2={text2}
+      onTrailingIconPress={() => Toast.hide()}
+    />
+  ),
+  info: ({text1, text2, props, ...rest}) => (
+      <BaseToast
+      {...rest}
+      style={{ borderLeftColor: colors.info, borderLeftWidth: 10 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: 'Arial',
+        color: colors.black
+      }}
+      text2Style={{
+        fontSize: 14,
+        fontFamily: 'Arial'
+      }}
+      text1={text1}
+      text2={text2}
+      onTrailingIconPress={() => Toast.hide()}
+    />
+  )
+}
+
 const Stack = createStackNavigator();
 function StackScreen({ hasAuth }) {
   return (
@@ -454,6 +518,7 @@ function StackScreen({ hasAuth }) {
           <Stack.Screen name="App" component={AppStackScreen} />
         )}
       </Stack.Navigator>
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 }
