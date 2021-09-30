@@ -4,6 +4,7 @@ import {
   Alert,
   Dimensions,
   FlatList,
+  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -511,52 +512,56 @@ function LightMapScreen(props) {
             <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height}}>
               <PlainStoryList stories={filteredDataSource} />
             </View>
-          ) :  <View style={{flex: 1, backgroundColor: "white"}}>
-                      {props.isLoading ? (
-                        <ActivityIndicator style={styles.mapStyle} />
-                      ) : (
-                        <View style={{width: '100%', height: '100%'}}>
-                          <MapView
-                            style={styles.mapStyle}
-                            provider={PROVIDER_GOOGLE}
-                            mapType={MAP_TYPES.NONE}
-                            initialRegion={INITIAL_REGION}
-                            rotateEnabled={false}
-                            clusterColor={"#FFA500"}
-                            clusterTextColor={"#000000"}
-                            maxZoomLevel={21}
-                            minZoomLevel={1}
-                            maxZoom={19}
-                            minZoom={0}
-                            minPoints={5}
-                            flex={1}
-                            onLongPress={(event) => {
-                              props.navigation.navigate("SubmitStoryModal", {latitude: event.nativeEvent.coordinate.latitude, longitude: event.nativeEvent.coordinate.longitude});
-                            }}
-                          >
-                            <UrlTile
-                              urlTemplate={ props.is_anonymous_active ? urlTemplateDark : urlTemplate }
-                              shouldReplaceMapContent={true}
-                              maximumZ={19}
-                              minimumZ={0}
-                              maxZoomLevel={19}
-                              minZoomLevel={0}
-                              zIndex={1}
-                            />
-                            {renderPins()}
-                          </MapView>
-                          <TouchableOpacity
-                            onPress={() => {
-                              props.navigation.navigate('Searching');
-                            }}
-                            style={styles.touchableOpacityStyle}
-                          >
-                            <FontAwesome5 name="list" size={24} style={styles.floatingButtonStyle} color={colors.white} />
-                          </TouchableOpacity>
-                        </View>
-                      )}
-                    </View>
-                  }
+          ) : <View style={{ flex: 1, backgroundColor: "white" }}>
+            {props.isLoading ? (
+              <View style={styles.mapStyle}>
+                <Image source={require('../assets/02_thearqive_loading_screen_.gif')}
+                  style={styles.loadingIcon}/>
+                <Text style={styles.loadingText}>fetching stories... placing pins...</Text>
+              </View>
+            ) : (
+              <View style={{ width: '100%', height: '100%' }}>
+                <MapView
+                  style={styles.mapStyle}
+                  provider={PROVIDER_GOOGLE}
+                  mapType={MAP_TYPES.NONE}
+                  initialRegion={INITIAL_REGION}
+                  rotateEnabled={false}
+                  clusterColor={"#FFA500"}
+                  clusterTextColor={"#000000"}
+                  maxZoomLevel={21}
+                  minZoomLevel={1}
+                  maxZoom={19}
+                  minZoom={0}
+                  minPoints={5}
+                  flex={1}
+                  onLongPress={(event) => {
+                    props.navigation.navigate("SubmitStoryModal", { latitude: event.nativeEvent.coordinate.latitude, longitude: event.nativeEvent.coordinate.longitude });
+                  }}
+                >
+                  <UrlTile
+                    urlTemplate={props.is_anonymous_active ? urlTemplateDark : urlTemplate}
+                    shouldReplaceMapContent={true}
+                    maximumZ={19}
+                    minimumZ={0}
+                    maxZoomLevel={19}
+                    minZoomLevel={0}
+                    zIndex={1}
+                  />
+                  {renderPins()}
+                </MapView>
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate('Searching');
+                  }}
+                  style={styles.touchableOpacityStyle}
+                >
+                  <FontAwesome5 name="list" size={24} style={styles.floatingButtonStyle} color={colors.white} />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+          }
 
 
         </View>
@@ -586,6 +591,15 @@ function elevationShadowStyleEdit(elevation) {
 }
 
 const styles = StyleSheet.create({
+  loadingText: {
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  loadingIcon: {
+    height: 50,
+    width: 60,
+    resizeMode: 'contain'
+  },
   shadow2: elevationShadowStyle(20),
   shadow3: elevationShadowStyleEdit(20),
   itemStyle: {
@@ -598,6 +612,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   mapStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: colors.white,

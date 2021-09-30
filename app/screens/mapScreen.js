@@ -5,6 +5,7 @@ import {
   Button,
   Dimensions,
   FlatList,
+  Image,
   PixelRatio,
   Platform,
   StatusBar,
@@ -584,7 +585,11 @@ function MapScreen(props) {
       </View>
 
       {props.isLoading ? (
-        <ActivityIndicator style={styles.mapStyle} />
+        <View style={styles.mapStyle}>
+          <Image source={require('../assets/02_thearqive_loading_screen_.gif')}
+            style={styles.loadingIcon} />
+          <Text style={styles.loadingText}>fetching stories... placing pins...</Text>
+      </View>
       ) : (
         <MapView
           style={styles.mapStyle}
@@ -647,6 +652,15 @@ function MapScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  loadingText: {
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  loadingIcon: {
+    height: 50,
+    width: 60,
+    resizeMode: 'contain'
+  },
   containerStyle: {
     backgroundColor: "white",
     alignItems: "stretch",
@@ -661,6 +675,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   mapStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     width: Dimensions.get("window").width,
     height: "125%",
   },
