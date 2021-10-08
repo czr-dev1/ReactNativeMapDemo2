@@ -5,7 +5,7 @@
     "slug": "thearqive",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./app/assets/color_icon.png",
+    "icon": "./app/assets/arqive_app_icon-01.png",
     "splash": {
       "image": "./app/assets/color_splash.png",
       "resizeMode": "contain",
