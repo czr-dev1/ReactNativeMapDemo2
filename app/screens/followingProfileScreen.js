@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   console.log("followingList fp: ", state.authReducer.followingList);
-  console.log(state.authReducer.user.id);
+  // console.log(state.authReducer.user.id);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.storyReducer.storyList,

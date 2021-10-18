@@ -33,7 +33,7 @@ export const login = ({ username, password }) => {
             config
           )
           .then((userInfo) => {
-            console.log(userInfo);
+            // console.log(userInfo);
             dispatch({
               type: "LOGIN_USER_SUCCESS",
               payload: res.data,
@@ -63,7 +63,7 @@ export const reloadUser = (username) => {
         config
       )
       .then((res) => {
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
         dispatch({ type: "USER_PROFILE_RELOADED", extra: res.data[0] });
       })
       .catch((err) => {

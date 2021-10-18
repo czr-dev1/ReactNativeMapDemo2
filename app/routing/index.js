@@ -33,8 +33,8 @@ import BadgeScreen from "../screens/badgeScreen";
 import FollowingProfileScreen from "../screens/followingProfileScreen";
 import NotificationScreen from "../screens/notificationScreen";
 
-import StorySearchScreen from '../screens/storySearchScreen';
-import UserSearchScreen from '../screens/userSearchScreen';
+import StorySearchScreen from "../screens/storySearchScreen";
+import UserSearchScreen from "../screens/userSearchScreen";
 
 import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
@@ -47,15 +47,15 @@ import EditProfileModal from "../modals/editProfileModal";
 import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
 
 import FaqsModal from "../modals/faqsModal";
-import EditStoryModal from '../modals/editStoryModal';
+import EditStoryModal from "../modals/editStoryModal";
 
-import { createIconSetFromIcoMoon } from '@expo/vector-icons';
-import Toast, { BaseToast } from 'react-native-toast-message'
+import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+import Toast, { BaseToast } from "react-native-toast-message";
 
 const Icon = createIconSetFromIcoMoon(
-  require('../assets/fonts/selection.json'),
-  'IcoMoon',
-  'icomoon.ttf'
+  require("../assets/fonts/selection.json"),
+  "IcoMoon",
+  "icomoon.ttf",
 );
 
 import colors from "../config/colors.js";
@@ -64,8 +64,8 @@ const AnonMapStack = createStackNavigator();
 function AnonMapStackScreen() {
   return (
     <AnonMapStack.Navigator screenOptions={{ headerShown: false }}>
-      <AnonMapStack.Screen name="Map" component={DarkMapScreen} />
-      <AnonMapStack.Screen name="Story" component={StoryScreen} />
+      <AnonMapStack.Screen name='Map' component={DarkMapScreen} />
+      <AnonMapStack.Screen name='Story' component={StoryScreen} />
     </AnonMapStack.Navigator>
   );
 }
@@ -74,7 +74,7 @@ const UserMapStack = createStackNavigator();
 function UserMapStackScreen() {
   return (
     <UserMapStack.Navigator screenOptions={{ headerShown: false }}>
-      <UserMapStack.Screen name="Map" component={LightMapScreen} />
+      <UserMapStack.Screen name='Map' component={LightMapScreen} />
     </UserMapStack.Navigator>
   );
 }
@@ -83,8 +83,8 @@ const StoriesStack = createStackNavigator();
 function StoriesStackScreen() {
   return (
     <StoriesStack.Navigator screenOptions={{ headerShown: false }}>
-      <StoriesStack.Screen name="StoryList" component={StoryListScreen} />
-      <StoriesStack.Screen name="Story" component={StoryScreen} />
+      <StoriesStack.Screen name='StoryList' component={StoryListScreen} />
+      <StoriesStack.Screen name='Story' component={StoryScreen} />
     </StoriesStack.Navigator>
   );
 }
@@ -94,12 +94,12 @@ function BookmarkedUsersStackScreen() {
   return (
     <BookmarkedUsersStack.Navigator>
       <BookmarkedUsersStack.Screen
-        name="UserList"
+        name='UserList'
         options={{ header: () => null }}
         component={BookmarkedUserScreen}
       />
       <BookmarkedUsersStack.Screen
-        name="UserProfile"
+        name='UserProfile'
         options={{ header: () => null }}
         component={FollowingProfileScreen}
       />
@@ -113,13 +113,13 @@ function BookmarkedTopTabScreen() {
   // fixed by adding extra s at the end
   return (
     <BookmarkedTopTab.Navigator
-      style={{elevation: 0}}
+      style={{ elevation: 0 }}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
-          fontFamily: 'Arial',
+          fontFamily: "Arial",
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -130,12 +130,17 @@ function BookmarkedTopTabScreen() {
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
         style: {
-          shadowOpacity: 0
-        }
-      }}
-    >
-      <BookmarkedTopTab.Screen name="stories" component={BookmarkedPostsScreen} />
-      <BookmarkedTopTab.Screen name="users" component={BookmarkedUsersStackScreen} />
+          shadowOpacity: 0,
+        },
+      }}>
+      <BookmarkedTopTab.Screen
+        name='stories'
+        component={BookmarkedPostsScreen}
+      />
+      <BookmarkedTopTab.Screen
+        name='users'
+        component={BookmarkedUsersStackScreen}
+      />
     </BookmarkedTopTab.Navigator>
   );
 }
@@ -144,12 +149,15 @@ const LoginStack = createStackNavigator();
 function LoginStackScreen() {
   return (
     <LoginStack.Navigator screenOptions={{ headerShown: false }}>
-      <LoginStack.Screen name="Initial" component={LoginRegisterScreen} />
-      <LoginStack.Screen name="Login" component={LoginScreen} />
-      <LoginStack.Screen name="Register" component={RegisterScreen} />
-      <LoginStack.Screen name="EULA" component={EULAScreen} />
-      <LoginStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-      <LoginStack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+      <LoginStack.Screen name='Initial' component={LoginRegisterScreen} />
+      <LoginStack.Screen name='Login' component={LoginScreen} />
+      <LoginStack.Screen name='Register' component={RegisterScreen} />
+      <LoginStack.Screen name='EULA' component={EULAScreen} />
+      <LoginStack.Screen
+        name='ForgotPassword'
+        component={ForgotPasswordScreen}
+      />
+      <LoginStack.Screen name='ResetPassword' component={ResetPasswordScreen} />
     </LoginStack.Navigator>
   );
 }
@@ -160,15 +168,20 @@ function ProfileStackScreen({ navigation }) {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
-        name="Profile"
+        name='Profile'
         options={{
           headerLeft: () => (
-            <FontAwesome5 name="ellipsis-v" style={{ padding: 15 }} size={24} color="white" />
+            <FontAwesome5
+              name='ellipsis-v'
+              style={{ padding: 15 }}
+              size={24}
+              color='white'
+            />
           ),
           headerTitle: () => <ProfileHeader />,
           headerRight: () => (
             <FontAwesome5
-              name="ellipsis-v"
+              name='ellipsis-v'
               style={{ padding: 15 }}
               size={24}
               color={colors.purple}
@@ -179,7 +192,7 @@ function ProfileStackScreen({ navigation }) {
         component={ProfileScreen}
       />
       <ProfileStack.Screen
-        name="Badge"
+        name='Badge'
         options={{ header: () => null }}
         component={BadgeScreen}
       />
@@ -191,57 +204,61 @@ const ProfileDrawer = createDrawerNavigator();
 function ProfileDrawerScreen() {
   return (
     <ProfileDrawer.Navigator
-      drawerPosition="right"
-      drawerType="slide"
+      drawerPosition='right'
+      drawerType='slide'
       drawerStyle={{ width: "80%" }}
       options={{
-        drawerIcon: ({focused, size}) => (
+        drawerIcon: ({ focused, size }) => (
           <FontAwesome5
-            name="ellipsis-v"
+            name='ellipsis-v'
             size={24}
-            style={{padding: 4}}
+            style={{ padding: 4 }}
             color={colors.purple}
           />
-        )
+        ),
       }}
       drawerContent={(props) => {
         return (
-          <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
-            <View style={{justifyContent: "space-evenly", flex: 1, backgroundColor: colors.purple}}>
-                <ModalOpener
-                  {...props}
-                  name="help & hotline"
-                  icon="phone"
-                  navigateTo="HelpAndHotlineModal"
-                />
-                <ModalOpener
-                  {...props}
-                  name="support us"
-                  icon="support"
-                  navigateTo="SupportUsModal"
-                />
-                <ModalOpener
-                  {...props}
-                  name="contact us"
-                  icon="contact"
-                  navigateTo="ContactUsModal"
-                />
-                <ModalOpener
-                  {...props}
-                  name="faqs"
-                  icon="faqs"
-                  navigateTo="FaqsModal"
-                />
+          <DrawerContentScrollView
+            {...props}
+            contentContainerStyle={{ flex: 1 }}>
+            <View
+              style={{
+                justifyContent: "space-evenly",
+                flex: 1,
+                backgroundColor: colors.purple,
+              }}>
+              <ModalOpener
+                {...props}
+                name='help & hotline'
+                icon='phone'
+                navigateTo='HelpAndHotlineModal'
+              />
+              <ModalOpener
+                {...props}
+                name='support us'
+                icon='support'
+                navigateTo='SupportUsModal'
+              />
+              <ModalOpener
+                {...props}
+                name='contact us'
+                icon='contact'
+                navigateTo='ContactUsModal'
+              />
+              <ModalOpener
+                {...props}
+                name='faqs'
+                icon='faqs'
+                navigateTo='FaqsModal'
+              />
 
-                <ModalOpener
-                  {...props}
-                  name="log out" />
+              <ModalOpener {...props} name='log out' />
             </View>
           </DrawerContentScrollView>
         );
-      }}
-    >
-      <ProfileDrawer.Screen name="Home" component={ProfileStackScreen} />
+      }}>
+      <ProfileDrawer.Screen name='Home' component={ProfileStackScreen} />
     </ProfileDrawer.Navigator>
   );
 }
@@ -251,12 +268,12 @@ const NeedAuthTab = createBottomTabNavigator();
 function NeedAuthTabScreen() {
   return (
     <NeedAuthTab.Navigator
-      initialRouteName="Map"
+      initialRouteName='Map'
       tabBarOptions={{
         showLabel: false,
         style: {
           backgroundColor: colors.purple,
-          elevation: 4
+          elevation: 4,
         },
       }}
       screenOptions={({ route }) => ({
@@ -290,12 +307,11 @@ function NeedAuthTabScreen() {
 
           return <Icon name={iconName} size={size} color={iconColor} />;
         },
-      })}
-    >
-      <NeedAuthTab.Screen name="Map" component={AnonMapStackScreen} />
-      <NeedAuthTab.Screen name="Post" component={StoryPostScreen} />
+      })}>
+      <NeedAuthTab.Screen name='Map' component={AnonMapStackScreen} />
+      <NeedAuthTab.Screen name='Post' component={StoryPostScreen} />
       <NeedAuthTab.Screen
-        name="Profile"
+        name='Profile'
         component={LoginStackScreen}
         options={{ tabBarVisible: false }}
       />
@@ -309,13 +325,13 @@ function SearchTopTabScreen() {
   // fixed by adding extra s at the end
   return (
     <SearchTopTab.Navigator
-      style={{elevation: 0}}
+      style={{ elevation: 0 }}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
-          fontFamily: 'Arial',
+          fontFamily: "Arial",
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -326,12 +342,19 @@ function SearchTopTabScreen() {
         inactiveTintColor: colors.border,
         backgroundColor: colors.purple,
         style: {
-          shadowOpacity: 0
-        }
-      }}
-    >
-      <SearchTopTab.Screen name="SearchStories" component={StorySearchScreen} options={{title: 'stories'}}/>
-      <SearchTopTab.Screen name="SearchUsers" component={UserSearchScreen} options={{title: 'users'}}/>
+          shadowOpacity: 0,
+        },
+      }}>
+      <SearchTopTab.Screen
+        name='SearchStories'
+        component={StorySearchScreen}
+        options={{ title: "stories" }}
+      />
+      <SearchTopTab.Screen
+        name='SearchUsers'
+        component={UserSearchScreen}
+        options={{ title: "users" }}
+      />
     </SearchTopTab.Navigator>
   );
 }
@@ -342,15 +365,24 @@ const NeedAuthStack = createStackNavigator();
 function NeedAuthStackScreen() {
   return (
     <NeedAuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <NeedAuthStack.Screen name="Main" component={NeedAuthTabScreen} />
-      <NeedAuthStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
-      <NeedAuthStack.Screen name="SupportUsModal" component={SupportUsModal} />
-      <NeedAuthStack.Screen name="ContactUsModal" component={ContactUsModal} />
-      <NeedAuthStack.Screen name="FaqsModal" component={FaqsModal} />
-      <NeedAuthStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
-      <NeedAuthStack.Screen name="Story" component={StoryScreen} />
-      <NeedAuthStack.Screen name="Searching" component={SearchTopTabScreen} />
-      <NeedAuthStack.Screen name="SubmitStoryModal" component={LongPressStoryPostModal} />
+      <NeedAuthStack.Screen name='Main' component={NeedAuthTabScreen} />
+      <NeedAuthStack.Screen
+        name='HelpAndHotlineModal'
+        component={HelpAndHotlineModal}
+      />
+      <NeedAuthStack.Screen name='SupportUsModal' component={SupportUsModal} />
+      <NeedAuthStack.Screen name='ContactUsModal' component={ContactUsModal} />
+      <NeedAuthStack.Screen name='FaqsModal' component={FaqsModal} />
+      <NeedAuthStack.Screen
+        name='UserProfileModal'
+        component={FollowingProfileScreen}
+      />
+      <NeedAuthStack.Screen name='Story' component={StoryScreen} />
+      <NeedAuthStack.Screen name='Searching' component={SearchTopTabScreen} />
+      <NeedAuthStack.Screen
+        name='SubmitStoryModal'
+        component={LongPressStoryPostModal}
+      />
     </NeedAuthStack.Navigator>
   );
 }
@@ -360,14 +392,14 @@ const AppTab = createBottomTabNavigator();
 function AppTabScreen() {
   return (
     <AppTab.Navigator
-      initialRouteName="Map"
+      initialRouteName='Map'
       tabBarOptions={{
         showLabel: false,
         style: {
           backgroundColor: colors.purple,
         },
       }}
-      style={{elevation: 20}}
+      style={{ elevation: 20 }}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -385,6 +417,7 @@ function AppTabScreen() {
             } else if (route.name === "Profile") {
               iconName = "profile_icon_highlighted";
             }
+            iconColor = colors.white;
           } else {
             if (route.name === "Map") {
               iconName = "home_icon_inactive";
@@ -397,23 +430,18 @@ function AppTabScreen() {
             } else if (route.name === "Profile") {
               iconName = "profile_icon_inactive";
             }
-          }
 
-          if (focused) {
-            iconColor = colors.white;
-          } else {
             iconColor = colors.border;
           }
 
           return <Icon name={iconName} size={size} color={iconColor} />;
         },
-      })}
-    >
-      <AppTab.Screen name="Map" component={UserMapStackScreen} />
-      <AppTab.Screen name="Bookmarks" component={BookmarkedTopTabScreen} />
-      <AppTab.Screen name="Post" component={StoryPostScreen} />
-      <AppTab.Screen name="Notifications" component={NotificationScreen} />
-      <AppTab.Screen name="Profile" component={ProfileDrawerScreen} />
+      })}>
+      <AppTab.Screen name='Map' component={UserMapStackScreen} />
+      <AppTab.Screen name='Bookmarks' component={BookmarkedTopTabScreen} />
+      <AppTab.Screen name='Post' component={StoryPostScreen} />
+      <AppTab.Screen name='Notifications' component={NotificationScreen} />
+      <AppTab.Screen name='Profile' component={ProfileDrawerScreen} />
     </AppTab.Navigator>
   );
 }
@@ -422,100 +450,108 @@ const AppStack = createStackNavigator();
 function AppStackScreen() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      <AppStack.Screen name="Home" component={AppTabScreen} />
+      <AppStack.Screen name='Home' component={AppTabScreen} />
       <AppStack.Screen
-        name="Story"
+        name='Story'
         options={{ header: () => null }}
         component={StoryScreen}
       />
-      <AppStack.Screen name="HelpAndHotlineModal" component={HelpAndHotlineModal} />
-      <AppStack.Screen name="SupportUsModal" component={SupportUsModal} />
-      <AppStack.Screen name="ContactUsModal" component={ContactUsModal} />
-      <AppStack.Screen name="EditProfileModal" component={EditProfileModal} />
-      <AppStack.Screen name="FaqsModal" component={FaqsModal} />
-      <AppStack.Screen name="EditStoryModal" component={EditStoryModal} />
-      <AppStack.Screen name="UserProfileModal" component={FollowingProfileScreen} />
-      <AppStack.Screen name="Searching" component={SearchTopTabScreen} />
-      <AppStack.Screen name="SubmitStoryModal" component={LongPressStoryPostModal} />
+      <AppStack.Screen
+        name='HelpAndHotlineModal'
+        component={HelpAndHotlineModal}
+      />
+      <AppStack.Screen name='SupportUsModal' component={SupportUsModal} />
+      <AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
+      <AppStack.Screen name='EditProfileModal' component={EditProfileModal} />
+      <AppStack.Screen name='FaqsModal' component={FaqsModal} />
+      <AppStack.Screen name='EditStoryModal' component={EditStoryModal} />
+      <AppStack.Screen
+        name='UserProfileModal'
+        component={FollowingProfileScreen}
+      />
+      <AppStack.Screen name='Searching' component={SearchTopTabScreen} />
+      <AppStack.Screen
+        name='SubmitStoryModal'
+        component={LongPressStoryPostModal}
+      />
     </AppStack.Navigator>
   );
 }
 
 const toastConfig = {
-  error: ({text1, text2, props, ...rest}) => (
-      <BaseToast
+  error: ({ text1, text2, props, ...rest }) => (
+    <BaseToast
       {...rest}
       style={{ borderLeftColor: colors.alert, borderLeftWidth: 10 }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 16,
-        fontWeight: 'bold',
-        fontFamily: 'Arial',
-        color: colors.black
+        fontWeight: "bold",
+        fontFamily: "Arial",
+        color: colors.black,
       }}
       text2Style={{
         fontSize: 14,
-        fontFamily: 'Arial'
+        fontFamily: "Arial",
       }}
       text1={text1}
       text2={text2}
       onTrailingIconPress={() => Toast.hide()}
     />
   ),
-  success: ({text1, text2, props, ...rest}) => (
-      <BaseToast
+  success: ({ text1, text2, props, ...rest }) => (
+    <BaseToast
       {...rest}
       style={{ borderLeftColor: colors.success, borderLeftWidth: 10 }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 16,
-        fontWeight: 'bold',
-        fontFamily: 'Arial',
-        color: colors.black
+        fontWeight: "bold",
+        fontFamily: "Arial",
+        color: colors.black,
       }}
       text2Style={{
         fontSize: 14,
-        fontFamily: 'Arial'
+        fontFamily: "Arial",
       }}
       text1={text1}
       text2={text2}
       onTrailingIconPress={() => Toast.hide()}
     />
   ),
-  info: ({text1, text2, props, ...rest}) => (
-      <BaseToast
+  info: ({ text1, text2, props, ...rest }) => (
+    <BaseToast
       {...rest}
       style={{ borderLeftColor: colors.info, borderLeftWidth: 10 }}
       contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 16,
-        fontWeight: 'bold',
-        fontFamily: 'Arial',
-        color: colors.black
+        fontWeight: "bold",
+        fontFamily: "Arial",
+        color: colors.black,
       }}
       text2Style={{
         fontSize: 14,
-        fontFamily: 'Arial'
+        fontFamily: "Arial",
       }}
       text1={text1}
       text2={text2}
       onTrailingIconPress={() => Toast.hide()}
     />
-  )
-}
+  ),
+};
 
 const Stack = createStackNavigator();
 function StackScreen({ hasAuth }) {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Auth"
-        screenOptions={{ headerShown: false }}
-      >
+        initialRouteName='Auth'
+        screenOptions={{ headerShown: false }}>
         {!hasAuth ? (
-          <Stack.Screen name="Auth" component={NeedAuthStackScreen} />
+          <Stack.Screen name='Auth' component={NeedAuthStackScreen} />
         ) : (
-          <Stack.Screen name="App" component={AppStackScreen} />
+          <Stack.Screen name='App' component={AppStackScreen} />
         )}
       </Stack.Navigator>
       <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
@@ -525,7 +561,7 @@ function StackScreen({ hasAuth }) {
 
 const styles = StyleSheet.create({
   container: {
-    elevation: 0
+    elevation: 0,
   },
 });
 

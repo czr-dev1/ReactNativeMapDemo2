@@ -74,7 +74,7 @@ export const getStory = (id) => {
 
   axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
   .then((res) => {
-    console.log(res.data);
+    // console.log(res.data);
     console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
     console.log(res.data.description[res.data.description.indexOf("src")]);
     createImageLink(res.data.description);

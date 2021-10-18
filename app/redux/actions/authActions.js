@@ -228,7 +228,7 @@ export const followUser = ({ id, list }) => {
     axios
       .patch(`http://192.81.130.223:8012/api/user/follow`, data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         dispatch({ type: "FOLLOW_USER", payload: list });
         // RETRIEVING: user from 2nd backend
         axios
@@ -281,7 +281,7 @@ export const unfollowUser = ({ list, id, unfollowing }) => {
     axios
       .patch(`http://192.81.130.223:8012/api/user/unfollow`, data)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({ type: "UNFOLLOW_USER", payload: list });
       })
       .catch((err) => {

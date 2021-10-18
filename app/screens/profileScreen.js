@@ -109,7 +109,7 @@ function ProfileScreen(props) {
                     };
                     axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
                       .then((res) => {
-                        console.log(res.data.is_profile_private);
+                        // console.log(res.data.is_profile_private);
                         setprivacy(res.data.is_profile_private);
                         props.reloadUser(props.user);
                       })
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("username:", state.authReducer.username);
+  // console.log("username:", state.authReducer.username);
   return {
     isLoading: state.storyReducer.isLoading,
     stories: state.authReducer.user.userStories,
