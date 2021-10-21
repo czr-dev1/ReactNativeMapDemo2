@@ -14,12 +14,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView from "react-native-map-clustering";
-import {
-  Marker,
-  MAP_TYPES,
-  PROVIDER_GOOGLE,
-  UrlTile,
-} from "react-native-maps";
+import { Marker, MAP_TYPES, PROVIDER_GOOGLE, UrlTile } from "react-native-maps";
 import * as Location from "expo-location";
 import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
@@ -32,7 +27,7 @@ import {
 import { Thumbnail } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Modal from "react-native-modal";
-import SideMenu from 'react-native-side-menu-updated';
+import SideMenu from "react-native-side-menu-updated";
 
 import Text from "../components/text";
 import DrawerMenuSignedIn from "../components/drawerSignedIn";
@@ -54,8 +49,8 @@ function LightMapScreen(props) {
   const [location, setLocation] = useState({
     latitude: 34.0522,
     longitude: -118.2437,
-    latitudeDelta: 8.5,
-    longitudeDelta: 8.5,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
   });
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -63,13 +58,15 @@ function LightMapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const urlTemplate = "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
-  const urlTemplateDark = "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+  const urlTemplate =
+    "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
+  const urlTemplateDark =
+    "https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
     latitude: 34.0522,
     longitude: -118.2437,
-    latitudeDelta: 0.5,
-    longitudeDelta: 0.5,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
   };
   const [showModal, setShowModal] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
@@ -83,9 +80,7 @@ function LightMapScreen(props) {
     searchData();
   }, []);
 
-  useEffect(() => {
-
-  }, [selectedButton])
+  useEffect(() => {}, [selectedButton]);
 
   const getLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
@@ -165,21 +160,15 @@ function LightMapScreen(props) {
   const ItemView = ({ item }) => {
     return (
       <TouchableWithoutFeedback
-      onPress={() => {
-        //Need to send user to the searched post on the map
-         props.navigation.navigate("Story", {
-           title: item.title,
-           description: item.description,
-           id: item.id
-        });
-
-      }}
-      >
-        <Text
-          style={styles.itemStyle}
-        >
-          {item.title.toUpperCase()}
-        </Text>
+        onPress={() => {
+          //Need to send user to the searched post on the map
+          props.navigation.navigate("Story", {
+            title: item.title,
+            description: item.description,
+            id: item.id,
+          });
+        }}>
+        <Text style={styles.itemStyle}>{item.title.toUpperCase()}</Text>
       </TouchableWithoutFeedback>
     );
   };
@@ -206,7 +195,7 @@ function LightMapScreen(props) {
         },
       });
       let json = await response.json();
-      console.log(json);
+      // console.log(json);
       setData(json);
       setLoading(false);
       return;
@@ -229,7 +218,7 @@ function LightMapScreen(props) {
     return props.stories.map((item, i) => {
       //console.log(item.category);
       if (item.category == 1) {
-        console.log(item.title);
+        // console.log(item.title);
       }
     });
     //console.log(filteredDataSource);
@@ -239,7 +228,7 @@ function LightMapScreen(props) {
     return props.stories.map((item, i) => {
       //console.log(item.category);
       if (item.category == 2) {
-        console.log(item.title);
+        // console.log(item.title);
       }
     });
     //console.log(filteredDataSource);
@@ -249,7 +238,7 @@ function LightMapScreen(props) {
     return props.stories.map((item, i) => {
       //console.log(item.category);
       if (item.category == 3) {
-        console.log(item.title);
+        // console.log(item.title);
       }
     });
     //console.log(filteredDataSource);
@@ -299,7 +288,7 @@ function LightMapScreen(props) {
           }}
           image={pinType}
           onPress={() => {
-            console.log(item);
+            // console.log(item);
             setModalData({
               title: item.title,
               description: item.description,
@@ -314,26 +303,22 @@ function LightMapScreen(props) {
               description: item.description,
               id: item.id
             }); */
-          }}
-        ></Marker>
+          }}></Marker>
       );
     });
   };
 
-  const menu = (
-    <DrawerMenuSignedIn />
-  );
+  const menu = <DrawerMenuSignedIn />;
 
   return (
     <SideMenu
       menu={menu}
       bounceBackOnOverdraw={false}
-      openMenuOffset={Dimensions.get("window").width * .80}
+      openMenuOffset={Dimensions.get("window").width * 0.8}
       isOpen={showDrawer}
-      overlayColor={'hsla(0, 0%, 0%, 0.7)'}
-      onChange={isOpen => setShowDrawer(isOpen)}
-      menuPosition={'right'}
-    >
+      overlayColor={"hsla(0, 0%, 0%, 0.7)"}
+      onChange={(isOpen) => setShowDrawer(isOpen)}
+      menuPosition={"right"}>
       <SafeAreaView style={styles.container}>
         <View>
           <Modal
@@ -342,8 +327,7 @@ function LightMapScreen(props) {
             onBackButtonPress={() => setShowModal(false)}
             hasBackdrop={true}
             backdropOpacity={0}
-            style={{justifyContent: "flex-end", marginBottom: "17%"}}
-          >
+            style={{ justifyContent: "flex-end", marginBottom: "17%" }}>
             <View
               style={{
                 backgroundColor:
@@ -355,17 +339,14 @@ function LightMapScreen(props) {
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
                 height: 15,
-              }}
-            >
-            </View>
+              }}></View>
             <View
               style={{
                 backgroundColor: "white",
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
                 height: "12%",
-              }}
-            >
+              }}>
               <TouchableWithoutFeedback
                 onPress={() => {
                   props.navigation.navigate("Story", {
@@ -374,8 +355,7 @@ function LightMapScreen(props) {
                     description: modalData.description,
                   });
                   setShowModal(false);
-                }}
-              >
+                }}>
                 <View
                   style={{
                     flexDirection: "column",
@@ -385,12 +365,11 @@ function LightMapScreen(props) {
                     paddingTop: 10,
                     paddingBottom: 10,
                     height: "100%",
-                  }}
-                >
-                  <Text style={{fontSize: 16, fontWeight: "bold"}}>
+                  }}>
+                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                     {modalData.title}
                   </Text>
-                  <Text style={{fontSize: 12}}>
+                  <Text style={{ fontSize: 12 }}>
                     posted on {modalData.postDate}
                   </Text>
                 </View>
@@ -398,11 +377,11 @@ function LightMapScreen(props) {
             </View>
           </Modal>
 
-          <View style={{backgroundColor: colors.purple}}>
-            <View style={{flexDirection: "row", width: "90%"}}>
+          <View style={{ backgroundColor: colors.purple }}>
+            <View style={{ flexDirection: "row", width: "90%" }}>
               <SearchBar
                 round
-                searchIcon={{ size:24 }}
+                searchIcon={{ size: 24 }}
                 onChangeText={(text) => {
                   searchFilterFunction(text, selectedButton);
                 }}
@@ -423,26 +402,37 @@ function LightMapScreen(props) {
                   borderWidth: 0,
                 }}
                 inputStyle={{ fontSize: 18 }}
-                placeholder="search"
+                placeholder='search'
                 placeholderTextColor={colors.purple}
                 value={search}
               />
               <TouchableWithoutFeedback onPress={() => setShowDrawer(true)}>
-                <View style={{justifyContent: "center", alignItems: "center", width: "10%"}}>
-                  <FontAwesome5 name="ellipsis-v" size={24} color={colors.white} />
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "10%",
+                  }}>
+                  <FontAwesome5
+                    name='ellipsis-v'
+                    size={24}
+                    color={colors.white}
+                  />
                 </View>
-                </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>
             </View>
             <HideKeyboard>
               <View
-                style={[{
-                  width: Dimensions.get("window").width,
-                  backgroundColor: colors.purple,
-                  paddingTop: 15,
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }, styles.shadow2]}
-              >
+                style={[
+                  {
+                    width: Dimensions.get("window").width,
+                    backgroundColor: colors.purple,
+                    paddingTop: 15,
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  },
+                  styles.shadow2,
+                ]}>
                 <TouchableOpacity
                   style={
                     selectedButton === 0
@@ -454,25 +444,37 @@ function LightMapScreen(props) {
                     //render all stories list
                     setSelectedButton(0);
                     searchFilterFunction(search, 0);
-                  }}
-                >
-                  <Text style={selectedButton === 0 ? styles.selectedTextStyle : styles.TextStyle}>all stories</Text>
+                  }}>
+                  <Text
+                    style={
+                      selectedButton === 0
+                        ? styles.selectedTextStyle
+                        : styles.TextStyle
+                    }>
+                    all stories
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={
                     selectedButton === 1
-                    ? styles.HeaderButtonStyle
-                    : styles.UnselectedHeaderButtonStyle
+                      ? styles.HeaderButtonStyle
+                      : styles.UnselectedHeaderButtonStyle
                   }
                   activeOpacity={0.5}
                   //onPress={(() => setSelectedCategoryButton(1))}
                   onPress={() => {
                     setSelectedButton(1);
                     searchFilterFunction(search, 1);
-                  }}
-                >
-                  <Text style={selectedButton === 1 ? styles.selectedTextStyle : styles.TextStyle}>personal</Text>
+                  }}>
+                  <Text
+                    style={
+                      selectedButton === 1
+                        ? styles.selectedTextStyle
+                        : styles.TextStyle
+                    }>
+                    personal
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -485,9 +487,15 @@ function LightMapScreen(props) {
                   onPress={() => {
                     setSelectedButton(3);
                     searchFilterFunction(search, 3);
-                  }}
-                >
-                  <Text style={selectedButton === 3 ? styles.selectedTextStyle : styles.TextStyle}>historical</Text>
+                  }}>
+                  <Text
+                    style={
+                      selectedButton === 3
+                        ? styles.selectedTextStyle
+                        : styles.TextStyle
+                    }>
+                    historical
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -500,70 +508,94 @@ function LightMapScreen(props) {
                   onPress={() => {
                     setSelectedButton(2);
                     searchFilterFunction(search, 2);
-                  }}
-                >
-                  <Text style={selectedButton === 2 ? styles.selectedTextStyle : styles.TextStyle}>resources</Text>
+                  }}>
+                  <Text
+                    style={
+                      selectedButton === 2
+                        ? styles.selectedTextStyle
+                        : styles.TextStyle
+                    }>
+                    resources
+                  </Text>
                 </TouchableOpacity>
               </View>
             </HideKeyboard>
           </View>
 
           {showSearchResults ? (
-            <View style={{flex: 1, backgroundColor: colors.background, height: Dimensions.get("window").height}}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: colors.background,
+                height: Dimensions.get("window").height,
+              }}>
               <PlainStoryList stories={filteredDataSource} />
             </View>
-          ) : <View style={{ flex: 1, backgroundColor: "white" }}>
-            {props.isLoading ? (
-              <View style={styles.mapStyle}>
-                <Image source={require('../assets/02_thearqive_loading_screen_.gif')}
-                  style={styles.loadingIcon}/>
-                <Text style={styles.loadingText}>fetching stories... placing pins...</Text>
-              </View>
-            ) : (
-              <View style={{ width: '100%', height: '100%' }}>
-                <MapView
-                  style={styles.mapStyle}
-                  provider={PROVIDER_GOOGLE}
-                  mapType={MAP_TYPES.NONE}
-                  initialRegion={INITIAL_REGION}
-                  rotateEnabled={false}
-                  clusterColor={"#FFA500"}
-                  clusterTextColor={"#000000"}
-                  maxZoomLevel={21}
-                  minZoomLevel={1}
-                  maxZoom={19}
-                  minZoom={0}
-                  minPoints={5}
-                  flex={1}
-                  onLongPress={(event) => {
-                    props.navigation.navigate("SubmitStoryModal", { latitude: event.nativeEvent.coordinate.latitude, longitude: event.nativeEvent.coordinate.longitude });
-                  }}
-                >
-                  <UrlTile
-                    urlTemplate={props.is_anonymous_active ? urlTemplateDark : urlTemplate}
-                    shouldReplaceMapContent={true}
-                    maximumZ={19}
-                    minimumZ={0}
-                    maxZoomLevel={19}
-                    minZoomLevel={0}
-                    zIndex={1}
+          ) : (
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+              {props.isLoading ? (
+                <View style={styles.mapStyle}>
+                  <Image
+                    source={require("../assets/02_thearqive_loading_screen_.gif")}
+                    style={styles.loadingIcon}
                   />
-                  {renderPins()}
-                </MapView>
-                <TouchableOpacity
-                  onPress={() => {
-                    props.navigation.navigate('Searching');
-                  }}
-                  style={styles.touchableOpacityStyle}
-                >
-                  <FontAwesome5 name="list" size={24} style={styles.floatingButtonStyle} color={colors.white} />
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-          }
-
-
+                  <Text style={styles.loadingText}>
+                    fetching stories... placing pins...
+                  </Text>
+                </View>
+              ) : (
+                <View style={{ width: "100%", height: "100%" }}>
+                  <MapView
+                    style={styles.mapStyle}
+                    provider={PROVIDER_GOOGLE}
+                    mapType={MAP_TYPES.NONE}
+                    initialRegion={INITIAL_REGION}
+                    rotateEnabled={false}
+                    clusterColor={"#FFA500"}
+                    clusterTextColor={"#000000"}
+                    maxZoomLevel={21}
+                    minZoomLevel={1}
+                    maxZoom={19}
+                    minZoom={0}
+                    minPoints={5}
+                    flex={1}
+                    onLongPress={(event) => {
+                      props.navigation.navigate("SubmitStoryModal", {
+                        latitude: event.nativeEvent.coordinate.latitude,
+                        longitude: event.nativeEvent.coordinate.longitude,
+                      });
+                    }}>
+                    <UrlTile
+                      urlTemplate={
+                        props.is_anonymous_active
+                          ? urlTemplateDark
+                          : urlTemplate
+                      }
+                      shouldReplaceMapContent={true}
+                      maximumZ={19}
+                      minimumZ={0}
+                      maxZoomLevel={19}
+                      minZoomLevel={0}
+                      zIndex={1}
+                    />
+                    {renderPins()}
+                  </MapView>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.navigation.navigate("Searching");
+                    }}
+                    style={styles.touchableOpacityStyle}>
+                    <FontAwesome5
+                      name='list'
+                      size={24}
+                      style={styles.floatingButtonStyle}
+                      color={colors.white}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </SideMenu>
@@ -573,32 +605,41 @@ function LightMapScreen(props) {
 function elevationShadowStyle(elevation) {
   return {
     elevation: 20,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 0.5 * elevation },
     shadowOpacity: 0.3,
-    shadowRadius: 0.8 * elevation
+    shadowRadius: 0.8 * elevation,
   };
 }
 
 function elevationShadowStyleEdit(elevation) {
   return {
     elevation: 4,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 0.5 * elevation },
     shadowOpacity: 0.3,
-    shadowRadius: 0.8 * elevation
+    shadowRadius: 0.8 * elevation,
   };
 }
 
 const styles = StyleSheet.create({
   loadingText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 10,
   },
   loadingIcon: {
     height: 50,
     width: 60,
-    resizeMode: 'contain'
+    resizeMode: "contain",
+  },
+  indiContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  indhorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
   shadow2: elevationShadowStyle(20),
   shadow3: elevationShadowStyleEdit(20),
@@ -613,8 +654,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
     backgroundColor: colors.white,
@@ -647,32 +688,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   touchableOpacityStyle: {
-    position: 'absolute',
+    position: "absolute",
     width: 50,
     height: 50,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.purple,
-    justifyContent: 'center',
+    justifyContent: "center",
     right: 30,
     bottom: 30,
-    borderRadius: 200
+    borderRadius: 200,
   },
   floatingButtonStyle: {
-    alignItems: 'center',
-    borderRadius: 200
+    alignItems: "center",
+    borderRadius: 200,
   },
 });
 
 //Personal, Historical, Resources
 const mapStateToProps = (state) => {
   let personalCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 1
+    (story) => story.category === 1,
   );
   let historicalCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 3
+    (story) => story.category === 3,
   );
   let resourcesCategorical = state.storyReducer.storyList.filter(
-    (story) => story.category === 2
+    (story) => story.category === 2,
   );
 
   return {

@@ -58,11 +58,10 @@ function MapScreen(props) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
-  const [showCategorySearchResults, setShowCategorySearchResults] = useState(
-    false
-  );
+  const [showCategorySearchResults, setShowCategorySearchResults] =
+    useState(false);
   const [filteredCategoryDataSource, setFilteredCategoryDataSource] = useState(
-    []
+    [],
   );
   const [searchCategory, setSearchCategory] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,10 +69,10 @@ function MapScreen(props) {
   const urlTemplate =
     "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png";
   const INITIAL_REGION = {
-    latitude: 52.5,
-    longitude: 19.2,
-    latitudeDelta: 8.5,
-    longitudeDelta: 8.5,
+    latitude: 34.0522,
+    longitude: -118.2437,
+    latitudeDelta: 0.3,
+    longitudeDelta: 0.3,
   };
 
   useEffect(() => {
@@ -177,8 +176,7 @@ function MapScreen(props) {
             description: item.description,
             id: item.id,
           });
-        }}
-      >
+        }}>
         {item.title.toUpperCase()}
       </Text>
     );
@@ -206,7 +204,7 @@ function MapScreen(props) {
         },
       });
       let json = await response.json();
-      console.log(json);
+      // console.log(json);
       setData(json);
       setLoading(false);
       return;
@@ -243,7 +241,7 @@ function MapScreen(props) {
       //console.log(item.category);
 
       if (item.category === 1) {
-        console.log(item.title);
+        // console.log(item.title);
         catArray.push({
           id: item.id,
           title: item.title,
@@ -314,7 +312,7 @@ function MapScreen(props) {
   const Icon = createIconSetFromIcoMoon(
     require("../assets/fonts/selection.json"),
     "IcoMoon",
-    "icomoon.ttf"
+    "icomoon.ttf",
   );
 
   //Custom icons
@@ -341,7 +339,7 @@ function MapScreen(props) {
             setSearchTerm("");
           }}
           lightTheme={true}
-          placeholder="search"
+          placeholder='search'
           value={search}
         />
 
@@ -352,8 +350,7 @@ function MapScreen(props) {
               alignItems: "center",
               padding: 10,
               backgroundColor: "#FFFFFF",
-            }}
-          >
+            }}>
             <View style={{ width: "15%", alignItems: "center" }}>
               {/* <Thumbnail
                 source={{
@@ -361,7 +358,7 @@ function MapScreen(props) {
                     "https://cdn.icon-icons.com/icons2/1993/PNG/512/filter_filters_funnel_list_navigation_sort_sorting_icon_123212.png",
                 }}
               /> */}
-              <MaterialIcons name="sort" size={32} color="black" />
+              <MaterialIcons name='sort' size={32} color='black' />
 
               {/* <Icon name="badges_hightlighted" size={25} color="#4D4185" /> */}
             </View>
@@ -379,24 +376,21 @@ function MapScreen(props) {
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
                 //onPress={(() => setSelectedCategoryButton(1))}
-                onPress={() => renderPersonal()}
-              >
+                onPress={() => renderPersonal()}>
                 <Text style={styles.TextStyle}> personal </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                onPress={() => renderHistorical()}
-              >
+                onPress={() => renderHistorical()}>
                 <Text style={styles.TextStyle}> historical </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={styles.HeaderButtonStyle}
                 activeOpacity={0.5}
-                onPress={() => renderResources()}
-              >
+                onPress={() => renderResources()}>
                 <Text style={styles.TextStyle}> resources </Text>
               </TouchableOpacity>
             </View>
@@ -408,8 +402,7 @@ function MapScreen(props) {
               justifyContent: "center",
               flexDirection: "column",
               backgroundColor: "#EDEDED",
-            }}
-          >
+            }}>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.SortTextStyle}> sort by </Text>
             </View>
@@ -586,16 +579,20 @@ function MapScreen(props) {
 
       {props.isLoading ? (
         <View style={styles.mapStyle}>
-          <Image source={require('../assets/02_thearqive_loading_screen_.gif')}
-            style={styles.loadingIcon} />
-          <Text style={styles.loadingText}>fetching stories... placing pins...</Text>
-      </View>
+          <Image
+            source={require("../assets/02_thearqive_loading_screen_.gif")}
+            style={styles.loadingIcon}
+          />
+          <Text style={styles.loadingText}>
+            fetching stories... placing pins...
+          </Text>
+        </View>
       ) : (
         <MapView
           style={styles.mapStyle}
           provider={PROVIDER_DEFAULT}
           mapType={MAP_TYPES.NONE}
-          initialRegion={INITIAL_REGION}
+          initialRegion={gotLocation ? location : INITIAL_REGION}
           rotateEnabled={false}
           clusterColor={"#FFA500"}
           clusterTextColor={"#000000"}
@@ -604,8 +601,7 @@ function MapScreen(props) {
           minZoom={0}
           maxZoom={17}
           minPoints={5}
-          flex={1}
-        >
+          flex={1}>
           <UrlTile
             urlTemplate={urlTemplate}
             shouldReplaceMapContent={true}
@@ -653,13 +649,22 @@ function MapScreen(props) {
 
 const styles = StyleSheet.create({
   loadingText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 10,
   },
   loadingIcon: {
     height: 50,
     width: 60,
-    resizeMode: 'contain'
+    resizeMode: "contain",
+  },
+  indiContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  indhorizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
   },
   containerStyle: {
     backgroundColor: "white",
@@ -676,8 +681,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: Dimensions.get("window").width,
     height: "125%",
   },

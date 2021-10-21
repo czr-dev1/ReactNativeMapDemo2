@@ -1,356 +1,353 @@
 import React, { useEffect, useState } from "react";
 import {
-	Alert,
-	Image,
-	SafeAreaView,
-	StyleSheet,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { connect, useDispatch } from 'react-redux';
-import * as Animatable from 'react-native-animatable';
+  Alert,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { connect, useDispatch } from "react-redux";
+import * as Animatable from "react-native-animatable";
 
 // Icons
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from "@expo/vector-icons";
 
 // Redux
-import { login, reset } from '../redux/actions/authActions';
+import { login, reset } from "../redux/actions/authActions";
 
 import Text from "../components/text";
-import colors from '../config/colors';
+import colors from "../config/colors";
 
 function LoginScreen(props) {
-	const dispatch = useDispatch();
-	const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-	const [submitted, setSubmitted] = useState(false);
-	const [failed, setFailed] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-	const [user, setUser] = useState({
-		username: '',
-		password: '',
-		isValidUser: true,
-		isValidPassword: true,
-		secureTextEntry: true,
-		errors: {},
-		expoPushToken: props.expoPushToken,
-	});
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    isValidUser: true,
+    isValidPassword: true,
+    secureTextEntry: true,
+    errors: {},
+    expoPushToken: props.expoPushToken,
+  });
 
-	const handleUsername = (val) => {
-		if (val === '') {
-			setUser({
-				...user,
-				username: val,
-				isValidUser: false,
-			});
-		} else {
-			setUser({
-				...user,
-				username: val,
-				isValidUser: true,
-			});
-		}
-	};
+  const handleUsername = (val) => {
+    if (val === "") {
+      setUser({
+        ...user,
+        username: val,
+        isValidUser: false,
+      });
+    } else {
+      setUser({
+        ...user,
+        username: val,
+        isValidUser: true,
+      });
+    }
+  };
 
-	const handlePassword = (val) => {
-		if (val.length >= 8) {
-			setUser({
-				...user,
-				password: val,
-				isValidPassword: true,
-			});
-		} else {
-			setUser({
-				...user,
-				password: val,
-				isValidPassword: false,
-			});
-		}
-	};
+  const handlePassword = (val) => {
+    if (val.length >= 8) {
+      setUser({
+        ...user,
+        password: val,
+        isValidPassword: true,
+      });
+    } else {
+      setUser({
+        ...user,
+        password: val,
+        isValidPassword: false,
+      });
+    }
+  };
 
-	const updateSecureTextEntry = () => {
-		setUser({
-			...user,
-			secureTextEntry: !user.secureTextEntry,
-		});
-	};
+  const updateSecureTextEntry = () => {
+    setUser({
+      ...user,
+      secureTextEntry: !user.secureTextEntry,
+    });
+  };
 
-	const failedLogin = () => {
-		Alert.alert(
-			'failed to log in!',
-			'incorrect username and/or password! please try again',
-			[
-				{
-					text: 'ok',
-					onPress: () => {
-						dispatch(reset());
-						setSubmitted(false);
-					}
-				}
-			]
-		);
-	};
+  const failedLogin = () => {
+    Alert.alert(
+      "failed to log in!",
+      "incorrect username and/or password! please try again",
+      [
+        {
+          text: "ok",
+          onPress: () => {
+            dispatch(reset());
+            setSubmitted(false);
+          },
+        },
+      ],
+    );
+  };
 
-	useEffect(() => {
-		if (submitted) {
-			setFailed(props.loginFail);
-		} else {
-			setFailed(false);
-		}
-	}, [props.loginFail]);
+  useEffect(() => {
+    if (submitted) {
+      setFailed(props.loginFail);
+    } else {
+      setFailed(false);
+    }
+  }, [props.loginFail]);
 
-	return (
-		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<View style={styles.logo}>
-				<Image
-					style={{ height: 150, width: 150 }}
-					source={require('../assets/color_icon.png')} />
-				<Text style={styles.title}> log in </Text>
-			</View>
+  return (
+    <SafeAreaView style={styles.container} forceInset={{ top: "always" }}>
+      <View style={styles.logo}>
+        <Image
+          style={{ height: 150, width: 150 }}
+          source={require("../assets/color_icon.png")}
+        />
+        <Text style={styles.title}> log in </Text>
+      </View>
 
-			{submitted && failed ? (
-				<View style={{ alignItems: 'center' }}>
-				{/* Made it an Alert so that I could reset props.loginFail
+      {submitted && failed ? (
+        <View style={{ alignItems: "center" }}>
+          {/* Made it an Alert so that I could reset props.loginFail
 				back to false and update useState for setSubmitted. Also had
 				to add some things to authActions and authReducer */}
-					<View>
-						<Text> {failedLogin()} </Text>
-					</View>
-				</View>
-			) : null}
+          <View>
+            <Text> {failedLogin()} </Text>
+          </View>
+        </View>
+      ) : null}
 
-			<View style={styles.inputContainer}>
-				<View style={styles.input}>
-					<TextInput
-						style={{
-							fontFamily: 'Arial',
-							fontSize: 16,
-							color: colors.purple,
-							width: '90%',
-						}}
-						value={user.username}
-						placeholder='username'
-						placeholderTextColor={colors.forgotDetails}
-						autoCapitalize='none'
-						autoCorrect={false}
-						onChangeText={(val) => handleUsername(val)}
-					/>
-					{user.isValidUser || user.username === '' ? null : (
-						<Animatable.View animation='fadeInLeft' duration={500}>
-							<Text style={styles.errorMsg}>please enter your username</Text>
-						</Animatable.View>
-					)}
-				</View>
+      <View style={styles.inputContainer}>
+        <View style={styles.input}>
+          <TextInput
+            style={{
+              fontFamily: "Arial",
+              fontSize: 16,
+              color: colors.purple,
+              width: "90%",
+            }}
+            value={user.username}
+            placeholder='username'
+            placeholderTextColor={colors.forgotDetails}
+            autoCapitalize='none'
+            autoCorrect={false}
+            onChangeText={(val) => handleUsername(val)}
+          />
+          {user.isValidUser || user.username === "" ? null : (
+            <Animatable.View animation='fadeInLeft' duration={500}>
+              <Text style={styles.errorMsg}>please enter your username</Text>
+            </Animatable.View>
+          )}
+        </View>
 
-				<View style={styles.input}>
-					<TouchableOpacity style={{ marginTop: 18 }} onPress={updateSecureTextEntry}>
-						{user.secureTextEntry ? (
-							<FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
-						) : (
-							<FontAwesome5 name='eye' color={colors.purple} size={20} />
-						)}
-					</TouchableOpacity>
-					<TextInput
-						style={{
-							fontFamily: 'Arial',
-							fontSize: 16,
-							color: colors.purple,
-							marginLeft: 10,
-							width: '90%',
-						}}
-						value={user.password}
-						placeholder='password'
-						placeholderTextColor={colors.forgotDetails}
-						autoCapitalize='none'
-						autoCorrect={false}
-						secureTextEntry={user.secureTextEntry ? true : false}
-						onChangeText={(val) => handlePassword(val)}
-					/>
-				</View>
-				{user.isValidPassword || user.password === '' ? null : (
-					<Animatable.View animation='fadeInLeft' duration={500}>
-						<Text style={styles.errorMsg}>password must be at least 8 characters long</Text>
-					</Animatable.View>
-				)}
+        <View style={styles.input}>
+          <TouchableOpacity
+            style={{ marginTop: 18 }}
+            onPress={updateSecureTextEntry}>
+            {user.secureTextEntry ? (
+              <FontAwesome5 name='eye-slash' color={colors.purple} size={20} />
+            ) : (
+              <FontAwesome5 name='eye' color={colors.purple} size={20} />
+            )}
+          </TouchableOpacity>
+          <TextInput
+            style={{
+              fontFamily: "Arial",
+              fontSize: 16,
+              color: colors.purple,
+              marginLeft: 10,
+              width: "90%",
+            }}
+            value={user.password}
+            placeholder='password'
+            placeholderTextColor={colors.forgotDetails}
+            autoCapitalize='none'
+            autoCorrect={false}
+            secureTextEntry={user.secureTextEntry ? true : false}
+            onChangeText={(val) => handlePassword(val)}
+          />
+        </View>
+        {user.isValidPassword || user.password === "" ? null : (
+          <Animatable.View animation='fadeInLeft' duration={500}>
+            <Text style={styles.errorMsg}>
+              password must be at least 8 characters long
+            </Text>
+          </Animatable.View>
+        )}
 
-				<View style={styles.links}>
-					<Text style={styles.forgotDetails}>
-						forgot your log in details? get help{' '}
-					</Text>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate('ForgotPassword');
-						}}
-					>
-						<Text
-							style={{
-								fontFamily: 'Arial',
-								fontSize: 14,
-								fontWeight: 'bold',
-								color: colors.forgotDetails,
-								marginTop: 10,
-								paddingRight: 13
-							}}
-						>
-							signing in
-						</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
+        <View style={styles.links}>
+          <Text style={styles.forgotDetails}>
+            forgot your log in details? get help{" "}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("ForgotPassword");
+            }}>
+            <Text
+              style={{
+                fontFamily: "Arial",
+                fontSize: 14,
+                fontWeight: "bold",
+                color: colors.forgotDetails,
+                marginTop: 10,
+                paddingRight: 13,
+              }}>
+              signing in
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-			<View style={styles.bottomContainer}>
-				<View style={[styles.submitBtn, styles.shadow2]}>
-					<TouchableOpacity
-						onPress={() => {
-							dispatch(login(user));
-							setSubmitted(!submitted);
-						}}
-					>
-						<Text
-							style={{
-								color: 'white',
-								alignSelf: 'center',
-								fontFamily: 'Arial',
-								fontSize: 24,
-							}}
-						>
-							log in
-						</Text>
-					</TouchableOpacity>
-				</View>
+      <View style={styles.bottomContainer}>
+        <View style={[styles.submitBtn, styles.shadow2]}>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(login(user));
+              setSubmitted(!submitted);
+            }}>
+            <Text
+              style={{
+                color: "white",
+                alignSelf: "center",
+                fontFamily: "Arial",
+                fontSize: 24,
+              }}>
+              log in
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-				<View style={styles.links}>
-					<Text
-						style={{
-							fontFamily: 'Arial',
-							fontSize: 14,
-							color: colors.forgotDetails,
-						}}
-					>
-						{/* Put into brackets b/c of apostrophe */}
-						{`don't have an account? register `}
-					</Text>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate('EULA');
-						}}
-					>
-						<Text
-							style={{
-								fontFamily: 'Arial',
-								fontSize: 14,
-								fontWeight: 'bold',
-								color: colors.purple,
-							}}
-						>
-							here
-						</Text>
-					</TouchableOpacity>
-				</View>
+        <View style={styles.links}>
+          <Text
+            style={{
+              fontFamily: "Arial",
+              fontSize: 14,
+              color: colors.forgotDetails,
+            }}>
+            {/* Put into brackets b/c of apostrophe */}
+            {`don't have an account? register `}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("EULA");
+            }}>
+            <Text
+              style={{
+                fontFamily: "Arial",
+                fontSize: 14,
+                fontWeight: "bold",
+                color: colors.purple,
+              }}>
+              here
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-				<View>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate('Map');
-						}}
-					>
-						<Text style={styles.text}> continue </Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		</SafeAreaView>
-	);
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Map");
+            }}>
+            <Text style={styles.text}> continue </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
 }
 
 function elevationShadowStyle(elevation) {
   return {
     elevation: 4,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 0.5 * elevation },
     shadowOpacity: 0.3,
-    shadowRadius: 0.8 * elevation
+    shadowRadius: 0.8 * elevation,
   };
 }
 
 const styles = StyleSheet.create({
-	shadow2: elevationShadowStyle(20),
-	container: {
-		flex: 1,
-		backgroundColor: colors.white,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	logo: {
-		flex:  0.5,
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		alignContent: 'center',
-		marginTop: 10,
-		width: '100%'
-	},
-	title: {
-		fontFamily: 'Arial',
-		fontSize: 24,
-		color: colors.purple, // Hex is '#4D4185'
-	},
-	inputContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-	},
-	input: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		borderWidth: 2,
-		borderColor: colors.purple, // Hex is '#B6ADCC'
-		fontFamily: 'Arial',
-		fontSize: 16,
-		color: colors.purple,
-		marginTop: 30,
-		paddingLeft: 15,
-		height: 60,
-		width: '85%',
-	},
-	bottomContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignContent: 'flex-start',
-		alignItems: 'center',
-		width: '100%'
-	},
-	submitBtn: {
-		backgroundColor: '#4D4185',
-		justifyContent: 'center',
-		borderRadius: 15,
-		height: 60,
-		width: '80%',
-	},
-	links: {
-		flexDirection: 'row',
-	},
-	forgotDetails: {
-		fontFamily: 'Arial',
-		fontSize: 14,
-		color: colors.forgotDetails,
-		marginTop: 10,
-		marginLeft: 70,
-	},
-	text: {
-		fontSize: 14,
-		color: colors.forgotDetails,
-		marginBottom: 50,
-	},
-	errorMsg: {
-		fontSize: 12,
-		color: colors.alert,
-		padding: 5,
-	},
+  shadow2: elevationShadowStyle(20),
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logo: {
+    flex: 0.5,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignContent: "center",
+    marginTop: 10,
+    width: "100%",
+  },
+  title: {
+    fontFamily: "Arial",
+    fontSize: 24,
+    color: colors.purple, // Hex is '#4D4185'
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  input: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    borderWidth: 2,
+    borderColor: colors.purple, // Hex is '#B6ADCC'
+    fontFamily: "Arial",
+    fontSize: 16,
+    color: colors.purple,
+    marginTop: 30,
+    paddingLeft: 15,
+    height: 60,
+    width: "85%",
+  },
+  bottomContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+  },
+  submitBtn: {
+    backgroundColor: "#4D4185",
+    justifyContent: "center",
+    borderRadius: 15,
+    height: 60,
+    width: "80%",
+  },
+  links: {
+    flexDirection: "row",
+  },
+  forgotDetails: {
+    fontFamily: "Arial",
+    fontSize: 14,
+    color: colors.forgotDetails,
+    marginTop: 10,
+    marginLeft: 70,
+  },
+  text: {
+    fontSize: 14,
+    color: colors.forgotDetails,
+    marginBottom: 50,
+  },
+  errorMsg: {
+    fontSize: 12,
+    color: colors.alert,
+    padding: 5,
+  },
 });
 
 const mapStateToProps = (state) => {
