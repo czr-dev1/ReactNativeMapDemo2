@@ -67,7 +67,7 @@ function StoryPostScreen(props) {
   }, []);
 
   const getLocation = async () => {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       //handle error here
     }

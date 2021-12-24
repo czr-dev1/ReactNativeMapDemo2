@@ -78,7 +78,7 @@ function DarkMapScreen(props) {
   useEffect(() => {}, [selectedButton]);
 
   const getLocation = async () => {
-    const { status } = await Location.requestPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       //handle error here
     }
