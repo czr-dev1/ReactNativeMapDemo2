@@ -45,6 +45,7 @@ import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
 import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
+import TosModal from "../modals/TosModal";
 
 import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from "../modals/editStoryModal";
@@ -252,6 +253,12 @@ function ProfileDrawerScreen() {
                 icon='faqs'
                 navigateTo='FaqsModal'
               />
+              <ModalOpener
+                {...props}
+                name='Terms of Services'
+                icon='file-text'
+                navigateTo='TosModal'
+              />
 
               <ModalOpener {...props} name='log out' />
             </View>
@@ -309,7 +316,7 @@ function NeedAuthTabScreen() {
         },
       })}>
       <NeedAuthTab.Screen name='Map' component={AnonMapStackScreen} />
-      <NeedAuthTab.Screen name='Post' component={StoryPostScreen} />
+      <NeedAuthTab.Screen name='Post' component={LoginStackScreen} />
       <NeedAuthTab.Screen
         name='Profile'
         component={LoginStackScreen}
@@ -373,6 +380,7 @@ function NeedAuthStackScreen() {
       <NeedAuthStack.Screen name='SupportUsModal' component={SupportUsModal} />
       <NeedAuthStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <NeedAuthStack.Screen name='FaqsModal' component={FaqsModal} />
+      <NeedAuthStack.Screen name='TosModal' component={TosModal} />
       <NeedAuthStack.Screen
         name='UserProfileModal'
         component={FollowingProfileScreen}
@@ -464,6 +472,7 @@ function AppStackScreen() {
       <AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <AppStack.Screen name='EditProfileModal' component={EditProfileModal} />
       <AppStack.Screen name='FaqsModal' component={FaqsModal} />
+      <NeedAuthStack.Screen name='TosModal' component={TosModal} />
       <AppStack.Screen name='EditStoryModal' component={EditStoryModal} />
       <AppStack.Screen
         name='UserProfileModal'

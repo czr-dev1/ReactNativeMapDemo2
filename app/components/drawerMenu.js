@@ -35,8 +35,15 @@ function DrawerMenu(props) {
           name="faqs"
           icon="faqs"
           isMapScreen={true}
-          bottomBorder={true}
           navigateTo="FaqsModal"
+        />
+        <ModalOpener
+          {...props}
+          name="Terms of Services"
+          icon="file-text"
+          isMapScreen={true}
+          bottomBorder={true}
+          navigateTo="TosModal"
         />
     </View>
   )
