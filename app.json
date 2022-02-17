@@ -3,7 +3,7 @@
     "privacy": "unlisted",
     "name": "thearqive",
     "slug": "thearqive",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./app/assets/arqive_app_icon-01.png",
     "splash": {
@@ -20,7 +20,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.thearqive",
+      "bundleIdentifier": "com.thearqive.thearqive",
       "config": {
         "googleMapsApiKey": "AIzaSyANOJKZ9xXEXtkmeWkqzUmUMNz5uzmdqs0"
       }
@@ -29,7 +29,7 @@
       "softwareKeyboardLayoutMode": "pan",
       "package": "com.thearqive.mobile",
       "useNextNotificationsApi": true,
-      "versionCode": 13,
+      "versionCode": 14,
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
