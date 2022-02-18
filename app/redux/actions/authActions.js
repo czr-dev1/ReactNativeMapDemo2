@@ -1,6 +1,6 @@
 import axios from "axios";
 import { returnErrors } from "./messageActions";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const config = {
   headers: {
     "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
@@ -69,7 +69,7 @@ export const login = ({ username, password, expoPushToken }) => {
               axios
                 .patch(
                   `http://192.81.130.223:8012/api/user/updatePushToken`,
-                  data
+                  data,
                 )
                 .then((res3) => {
                   console.log(res3.data);
@@ -112,13 +112,15 @@ export const logout = () => {
       .post(
         `https://www.globaltraqsdev.com/api/auth/logout/`,
         null,
-        tokenConfig(getState)
+        tokenConfig(getState),
       )
       .then(() => {
+        AsyncStorage.clear();
         delete config.headers["Authorization"];
         dispatch({ type: "LOGOUT_USER_SUCCESS" });
       })
       .catch((err) => {
+        console.log(err);
         dispatch({ type: "LOGOUT_FAIL" });
         dispatch(returnErrors(err.response.data, err.response.status));
       });
@@ -170,7 +172,7 @@ export const userSelfDelete = () => {
     axios
       .delete(
         `https://www.globaltraqsdev.com/api/auth/user`,
-        tokenConfig(getState)
+        tokenConfig(getState),
       )
       .then((res) => {
         dispatch({ type: "USER_SELF_DELETE", payload: res.data });
@@ -196,7 +198,7 @@ export const reloadUser = (username) => {
     axios
       .get(
         `https://www.globaltraqsdev.com/api/profile/users/?username=${username}`,
-        config
+        config,
       )
       .then((res) => {
         dispatch({ type: "USER_PROFILE_RELOADED", extra: res.data[0] });

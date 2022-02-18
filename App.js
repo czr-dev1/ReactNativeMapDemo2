@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from "react-native";
 
 import Navigation from "./app/routing/index";
 
@@ -16,15 +16,25 @@ import rootReducer from "./app/redux/reducers/rootReducer";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { persistReducer, persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 const Icon = createIconSetFromIcoMoon(
   require("./app/assets/fonts/selection.json"),
   "IcoMoon",
-  "icomoon.ttf"
+  "icomoon.ttf",
 );
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+};
+// const store = createStore(rootReducer, applyMiddleware(thunk));
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+const store = createStore(persistedReducer, applyMiddleware(thunk));
+let persistor = persistStore(store);
+AsyncStorage.clear();
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -49,26 +59,24 @@ export default function App() {
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
+      setExpoPushToken(token),
     );
 
     // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current = Notifications.addNotificationReceivedListener(
-      (notification) => {
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
-      }
-    );
+      });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
         console.log(response);
-      }
-    );
+      });
 
     return () => {
       Notifications.removeNotificationSubscription(
-        notificationListener.current
+        notificationListener.current,
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
@@ -77,15 +85,19 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-  return (
+    return (
       <SafeAreaProvider>
         {/* Added StatusBar for iOS to see time/battery on each
         page except where page has a black background */}
         <StatusBar
-          barStyle={(Platform.OS === "android" ? "light-content" : "dark-content")}
+          barStyle={
+            Platform.OS === "android" ? "light-content" : "dark-content"
+          }
         />
         <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
           <Navigation />
+          </PersistGate>
         </Provider>
       </SafeAreaProvider>
     );
@@ -94,12 +106,12 @@ export default function App() {
   async function registerForPushNotificationsAsync() {
     let token;
     if (Constants.isDevice) {
-      const {
-        status: existingStatus,
-      } = await Notifications.getPermissionsAsync();
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
       if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestForegroundPermissionsAsync();
+        const { status } =
+          await Notifications.requestForegroundPermissionsAsync();
         finalStatus = status;
       }
       if (finalStatus !== "granted") {
