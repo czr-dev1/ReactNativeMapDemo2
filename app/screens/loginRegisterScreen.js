@@ -53,9 +53,11 @@ function LoginRegisterOption() {
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
 			<View style={styles.logo}>
-				<Image
-					style={{ height: 106, width: '90%', marginBottom: 75 }}
-					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
+				<View style={styles.logoContainer}>
+					<Image
+						style={{ resizeMode: 'contain', height: '100%', width: '100%',  }}
+						source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
+				</View>
 			</View>
 
 			<View style={styles.loginContainer}>
@@ -106,8 +108,8 @@ function LoginRegisterOption() {
 					>
 						<Text style={styles.text}> continue </Text>
 					</TouchableOpacity>
+				</View>
 			</View>
-		</View>
 		</SafeAreaView>
 	);
 }
@@ -135,6 +137,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		width: '100%',
+	},
+	logoContainer: {
+		height: '30%',
+		width: '90%',
+		marginBottom: 70,
 	},
 	loginContainer: {
 		flex: 0.5,
