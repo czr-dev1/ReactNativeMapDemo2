@@ -30,7 +30,7 @@ export const login = ({ username, password }) => {
         axios
           .get(
             `https://www.globaltraqsdev.com/api/profile/users/?username=${res.data.user.username}`,
-            config
+            config,
           )
           .then((userInfo) => {
             // console.log(userInfo);
@@ -60,7 +60,7 @@ export const reloadUser = (username) => {
     axios
       .get(
         `https://www.globaltraqsdev.com/api/profile/users/?username=${username}`,
-        config
+        config,
       )
       .then((res) => {
         // console.log(res.data[0]);
@@ -74,12 +74,13 @@ export const reloadUser = (username) => {
 };
 
 export const logout = () => {
+  console.log("logout");
   return (dispatch, getState) => {
     axios
       .post(
         "https://www.globaltraqsdev.com/auth/logout",
         null,
-        tokenConfig(getState)
+        tokenConfig(getState),
       )
       .then((res) => {
         dispatch({ type: "LOGOUT_USER_SUCCESS" });
