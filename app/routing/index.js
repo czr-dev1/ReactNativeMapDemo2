@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar, View, Dimensions } from "react-native";
+import { StyleSheet, StatusBar, View, Dimensions, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -53,6 +53,8 @@ import EditStoryModal from "../modals/editStoryModal";
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import Toast, { BaseToast } from "react-native-toast-message";
 
+const { height } = Dimensions.get('window');
+
 const Icon = createIconSetFromIcoMoon(
   require("../assets/fonts/selection.json"),
   "IcoMoon",
@@ -74,7 +76,7 @@ function AnonMapStackScreen() {
 const UserMapStack = createStackNavigator();
 function UserMapStackScreen() {
   return (
-    <UserMapStack.Navigator screenOptions={{ headerShown: false }}>
+    <UserMapStack.Navigator screenOptions={{ headerShown: false}}>
       <UserMapStack.Screen name='Map' component={LightMapScreen} />
     </UserMapStack.Navigator>
   );
@@ -121,6 +123,7 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: "Arial",
+          marginTop: height * 0.05  // Temporary fix on iPhone 12 Pro Max and up - tabs on filter list are above the safeViewArea
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -327,18 +330,19 @@ function NeedAuthTabScreen() {
 }
 
 const SearchTopTab = createMaterialTopTabNavigator();
-function SearchTopTabScreen() {
+function SearchTopTabScreen() {  
   // Odd glitch with names where it wouldn't display the full name
   // fixed by adding extra s at the end
   return (
     <SearchTopTab.Navigator
-      style={{ elevation: 0 }}
+      style={{ elevation: 0}}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: "Arial",
+          marginTop: height * 0.05  // Temporary fix on iPhone 12 Pro Max - tabs on filter list are above the safeViewArea
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -404,10 +408,10 @@ function AppTabScreen() {
       tabBarOptions={{
         showLabel: false,
         style: {
-          backgroundColor: colors.purple,
+          backgroundColor: colors.purple
         },
       }}
-      style={{ elevation: 20 }}
+      style={{ elevation: 20}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -459,6 +463,7 @@ function AppStackScreen() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       <AppStack.Screen name='Home' component={AppTabScreen} />
+      {/* <AppStack.Screen name="Searching" component={AppTabScreen} /> */}
       <AppStack.Screen
         name='Story'
         options={{ header: () => null }}

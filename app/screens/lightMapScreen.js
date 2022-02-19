@@ -378,7 +378,7 @@ function LightMapScreen(props) {
           </Modal>
 
           <View style={{ backgroundColor: colors.purple }}>
-            <View style={{ flexDirection: "row", width: "90%" }}>
+            <View style={{ flexDirection: "row", width: "90%", paddingTop: '8.2%' }}>
               <SearchBar
                 round
                 searchIcon={{ size: 24 }}
@@ -532,9 +532,9 @@ function LightMapScreen(props) {
               <PlainStoryList stories={filteredDataSource} />
             </View>
           ) : (
-            <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ width: Dimensions.get("window").width, height: '90%', backgroundColor: "white"}}>
               {props.isLoading ? (
-                <View style={styles.mapStyle}>
+                <View style={styles.loadingPinStyle}>
                   <Image
                     source={require("../assets/02_thearqive_loading_screen_.gif")}
                     style={styles.loadingIcon}
@@ -544,7 +544,7 @@ function LightMapScreen(props) {
                   </Text>
                 </View>
               ) : (
-                <View style={{ width: "100%", height: "100%" }}>
+                <View style={{ width: "100%", height: "92%" }}>
                   <MapView
                     style={styles.mapStyle}
                     provider={PROVIDER_GOOGLE}
@@ -652,13 +652,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  loadingPinStyle: {
+    flex: 0.85,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   mapStyle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-    backgroundColor: colors.white,
+    // width: '100%',
+    // height: '100%',
+    // backgroundColor: colors.white,
   },
   HeaderButtonStyle: {
     alignItems: "center",

@@ -134,7 +134,7 @@ function BookmarkUserScreen(props) {
   }*/
 
   if (isLoading) {
-    return <ActivityIndicator style={{ marginTop: 330 }} />;
+    return <ActivityIndicator style={{ marginTop: 330}} />;
   } else {
     return (
       <View style={{ backgroundColor: colors.background, height: "100%" }}>
