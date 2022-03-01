@@ -83,7 +83,7 @@ function TosModal(props) {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
           return (
-            <View style={[styles.shadow2, styles.box]}>
+            <View style={styles.box}>
               <Text style={styles.itemTitle}>{item.name}</Text>
 
               <Text style={styles.description}>
@@ -111,29 +111,22 @@ const styles = StyleSheet.create({
   shadow2: elevationShadowStyle(20),
   container: {
     flex: 1,
-    backgroundColor: colors.border,
+    backgroundColor: colors.white,
     alignItems: "center",
     height: "100%",
   },
   box: {
-    borderRadius: 36,
     paddingTop: 18,
     paddingBottom: 18,
     paddingRight: 32,
     paddingLeft: 32,
-    marginRight: 24,
-    marginLeft: 24,
     marginBottom: 12,
-    marginTop: 12,
     backgroundColor: colors.white,
   },
   itemTitle: {
     fontSize: 16,
     fontWeight: "bold",
     color: colors.black,
-  },
-  number: {
-    padding: 8,
   },
   description: {
     color: colors.black,
