@@ -328,6 +328,7 @@ function RegisterScreen(props) {
 						}}
 					>
 						already have an account? log in{' '}
+
 					</Text>
 					<TouchableOpacity
 						onPress={() => {
@@ -346,6 +347,9 @@ function RegisterScreen(props) {
 						</Text>
 					</TouchableOpacity>
 				</View>
+				<View>
+					<Text style={styles.text}>by registering you are agreeing to the Terms of Service</Text>
+					</View>
 				<View>
 					<TouchableOpacity
 						onPress={() => {

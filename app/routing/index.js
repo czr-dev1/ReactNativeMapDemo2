@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, StatusBar, View, Dimensions } from "react-native";
+import { StyleSheet, StatusBar, View, Dimensions, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -45,12 +45,15 @@ import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
 import EditProfileModal from "../modals/editProfileModal";
 import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
+import TosModal from "../modals/TosModal";
 
 import FaqsModal from "../modals/faqsModal";
 import EditStoryModal from "../modals/editStoryModal";
 
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import Toast, { BaseToast } from "react-native-toast-message";
+
+const { height } = Dimensions.get('window');
 
 const Icon = createIconSetFromIcoMoon(
   require("../assets/fonts/selection.json"),
@@ -73,7 +76,7 @@ function AnonMapStackScreen() {
 const UserMapStack = createStackNavigator();
 function UserMapStackScreen() {
   return (
-    <UserMapStack.Navigator screenOptions={{ headerShown: false }}>
+    <UserMapStack.Navigator screenOptions={{ headerShown: false}}>
       <UserMapStack.Screen name='Map' component={LightMapScreen} />
     </UserMapStack.Navigator>
   );
@@ -120,6 +123,7 @@ function BookmarkedTopTabScreen() {
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: "Arial",
+          marginTop: height * 0.05  // Temporary fix on iPhone 12 Pro Max and up - tabs on filter list are above the safeViewArea
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -252,6 +256,12 @@ function ProfileDrawerScreen() {
                 icon='faqs'
                 navigateTo='FaqsModal'
               />
+              <ModalOpener
+                {...props}
+                name='Terms of Services'
+                icon='file-text'
+                navigateTo='TosModal'
+              />
 
               <ModalOpener {...props} name='log out' />
             </View>
@@ -309,7 +319,7 @@ function NeedAuthTabScreen() {
         },
       })}>
       <NeedAuthTab.Screen name='Map' component={AnonMapStackScreen} />
-      <NeedAuthTab.Screen name='Post' component={StoryPostScreen} />
+      <NeedAuthTab.Screen name='Post' component={LoginStackScreen} />
       <NeedAuthTab.Screen
         name='Profile'
         component={LoginStackScreen}
@@ -320,18 +330,19 @@ function NeedAuthTabScreen() {
 }
 
 const SearchTopTab = createMaterialTopTabNavigator();
-function SearchTopTabScreen() {
+function SearchTopTabScreen() {  
   // Odd glitch with names where it wouldn't display the full name
   // fixed by adding extra s at the end
   return (
     <SearchTopTab.Navigator
-      style={{ elevation: 0 }}
+      style={{ elevation: 0}}
       tabBarOptions={{
         labelStyle: {
           textTransform: "lowercase",
           fontSize: 20,
           fontWeight: "bold",
           fontFamily: "Arial",
+          marginTop: height * 0.05  // Temporary fix on iPhone 12 Pro Max - tabs on filter list are above the safeViewArea
         },
         tabStyle: {
           backgroundColor: colors.purple,
@@ -373,6 +384,7 @@ function NeedAuthStackScreen() {
       <NeedAuthStack.Screen name='SupportUsModal' component={SupportUsModal} />
       <NeedAuthStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <NeedAuthStack.Screen name='FaqsModal' component={FaqsModal} />
+      <NeedAuthStack.Screen name='TosModal' component={TosModal} />
       <NeedAuthStack.Screen
         name='UserProfileModal'
         component={FollowingProfileScreen}
@@ -396,10 +408,10 @@ function AppTabScreen() {
       tabBarOptions={{
         showLabel: false,
         style: {
-          backgroundColor: colors.purple,
+          backgroundColor: colors.purple
         },
       }}
-      style={{ elevation: 20 }}
+      style={{ elevation: 20}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -451,6 +463,7 @@ function AppStackScreen() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       <AppStack.Screen name='Home' component={AppTabScreen} />
+      {/* <AppStack.Screen name="Searching" component={AppTabScreen} /> */}
       <AppStack.Screen
         name='Story'
         options={{ header: () => null }}
@@ -464,6 +477,7 @@ function AppStackScreen() {
       <AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <AppStack.Screen name='EditProfileModal' component={EditProfileModal} />
       <AppStack.Screen name='FaqsModal' component={FaqsModal} />
+      <NeedAuthStack.Screen name='TosModal' component={TosModal} />
       <AppStack.Screen name='EditStoryModal' component={EditStoryModal} />
       <AppStack.Screen
         name='UserProfileModal'

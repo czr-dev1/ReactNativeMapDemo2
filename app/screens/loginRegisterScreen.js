@@ -52,32 +52,37 @@ function LoginRegisterOption() {
 
 	return (
 		<SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-			<View style={styles.logo}>
-				<Image
-					style={{ height: 106, width: '90%', marginBottom: 75 }}
-					source={require('../assets/thearqive_all_white_logo_lowhres.png')} />
+			<View style={styles.logoContainer}>
+				<View style={styles.imageContainer}>
+					<Image 
+						style={styles.logo}
+						source={require('../assets/thearqive_all_white_logo_lowhres.png')} 
+					/>
+				</View>
 			</View>
 
 			<View style={styles.loginContainer}>
-				<View style={[styles.loginBtn, styles.shadow2]}>
-					<TouchableOpacity
-						onPress={() => {
-							navigation.navigate('Login');
-						}}
-					>
-						<Text
-							style={{
-								color: colors.purple,
-								alignSelf: 'center',
-								fontFamily: 'Arial',
-								fontSize: 24,
+					<View style={[styles.loginBtn, styles.shadow2]}>
+						<TouchableOpacity
+							onPress={() => {
+								navigation.navigate('Login');
 							}}
 						>
-							log in
-						</Text>
-					</TouchableOpacity>
+							<Text
+								style={{
+									color: colors.purple,
+									alignSelf: 'center',
+									fontFamily: 'Arial',
+									fontSize: 24,
+								}}
+							>
+								log in
+							</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
-			</View>
+
+			
 
 			<View style={styles.registerContainer}>
 				<View style={[styles.registerBtn, styles.shadow2]}>
@@ -106,8 +111,8 @@ function LoginRegisterOption() {
 					>
 						<Text style={styles.text}> continue </Text>
 					</TouchableOpacity>
+				</View>
 			</View>
-		</View>
 		</SafeAreaView>
 	);
 }
@@ -129,18 +134,34 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.purple,
 		alignItems: 'center',
 		justifyContent: 'center',
+		// backgroundColor: 'blue'
 	},
-	logo: {
+	logoContainer: {
 		flex: 1.5,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		width: '100%',
+		// backgroundColor: 'teal'
+	},
+	imageContainer: {
+		// backgroundColor: 'red',
+		height: '30%',
+		width: '90%',
+		marginBottom: '10%',
+		justifyContent: 'center',
+    	alignItems: 'center',
+	},
+	logo: {
+		width: '100%',
+		height: '100%',
+		resizeMode: 'stretch',
 	},
 	loginContainer: {
 		flex: 0.5,
 		justifyContent: 'flex-end',
 		alignItems: 'center',
 		width: '100%',
+		// backgroundColor: 'green'
 	},
 	loginBtn: {
 		backgroundColor: 'white',
@@ -155,6 +176,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		width: '100%',
+		// backgroundColor: 'yellow'
 	},
 	registerBtn: {
 		backgroundColor: 'white',

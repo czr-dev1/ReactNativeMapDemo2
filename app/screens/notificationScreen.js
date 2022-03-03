@@ -18,6 +18,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import Text from "../components/text";
 import colors from '../config/colors';
+import { Header } from 'react-native/Libraries/NewAppScreen';
+import { Footer } from 'native-base';
 
 const ItemCard = ({ item }, props) => {
 	const navigation = useNavigation();
@@ -83,16 +85,13 @@ function NotificationScreen(props) {
 	};
 
 	return (
-		<SafeAreaView
-			style={{
-				flex: 1,
-				alignItems: 'center',
-				justifyContent: 'space-around',
-				backgroundColor: colors.border,
-			}}
-		>
-			<ScrollView>
-				<View
+		<View style={{
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'space-around',
+			backgroundColor: colors.border,
+		}}>
+		<View
 					style={[{
 						alignItems: 'center',
 						justifyContent: 'center',
@@ -103,8 +102,9 @@ function NotificationScreen(props) {
 					<Text
 						style={{
 							fontSize: 18,
-							paddingTop: 24,
-							paddingBottom: 24,
+							paddingTop: '26.3%',
+							paddingBottom: '10%',
+							// marginTop: '25%',
 							color: colors.white,
 							fontWeight: 'bold',
 						}}
@@ -112,15 +112,23 @@ function NotificationScreen(props) {
 						notifications
 					</Text>
 				</View>
+		<SafeAreaView>
+		{/* Do not remove ListHeaderComponent and Footer Component. 
+		This is the correct way to implement to make a FlatList Scrollable*/}
 				<FlatList
+				ListHeaderComponent={
+					<></>
+				}
 					ListEmptyComponent={listEmptyComponent}
-					style={{ width: Dimensions.get('window').width}}
+					style={{ width: Dimensions.get('window').width, marginTop: '9.5%', backgroundColor: colors.background}}
 					data={props.notificationList}
 					renderItem={renderItem}
 					keyExtractor={(item) => '' + item.time}
-				/>
-			</ScrollView>
+				ListFooterComponent={
+					<></>
+				}/>
 		</SafeAreaView>
+		</View>
 	);
 }
 

@@ -4,14 +4,18 @@ import {
   Keyboard,
   StyleSheet,
   View,
+  TouchableHighlight,
+  Icon
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
+import { Entypo } from "@expo/vector-icons";
 
 import Text from "../components/text";
 import colors from "../config/colors";
 import PlainStoryList from "../components/plainStoryList";
+import { Button, Right } from "native-base";
 
 function StorySearchScreen(props) {
 
@@ -33,9 +37,24 @@ function StorySearchScreen(props) {
     }
   }
 
+  const goBackToMap = () => {
+    Keyboard.dismiss();
+    props.navigation.navigate('Map');
+  }
+
   return (
-    <SafeAreaView style={{backgroundColor: colors.background, height: '100%'}}>
-      <SearchBar
+    <View style={{backgroundColor: colors.background, height: '100%'}}>
+    <View style={{flexDirection: "row", backgroundColor: colors.purple}}>
+    <Entypo
+          onPress={() => {
+            goBackToMap();
+          }}
+          style={{ padding: 18 }}
+          name="arrow-left"
+          size={28}
+          color={colors.white}
+        />
+    <SearchBar
         round
         searchIcon={{ size: 24 }}
         onChangeText={(text) => {
@@ -56,21 +75,24 @@ function StorySearchScreen(props) {
           backgroundColor: colors.white,
           borderRadius: 50,
           borderWidth: 0,
+          width: "83%",
+          // alignSelf: "flex-end"
         }}
         inputStyle={{ fontSize: 18 }}
         placeholder="search"
         placeholderTextColor={colors.purple}
         value={search}
       />
+    </View>
       <PlainStoryList stories={filteredDataSource} />
-    </SafeAreaView>
+    </View>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
     stories: state.storyReducer.storyList
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

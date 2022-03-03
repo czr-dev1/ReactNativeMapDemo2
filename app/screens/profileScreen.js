@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FlatList } from "react";
 import {
   Alert,
   Button,
@@ -19,7 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { loadStories } from "../redux/actions/storyActions";
 import { reloadUser } from "../redux/actions/auth";
 import { userSelfDelete } from "../redux/actions/authActions";
-import axios from 'axios';
+import axios from "axios";
 
 //Icons
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -81,132 +81,172 @@ function ProfileScreen(props) {
   // https://reactnavigation.org/docs/handling-safe-area/
   return (
     <View style={(styles.container, { paddingTop: insets.top - insets.top })}>
-      <ScrollView style={{backgroundColor: colors.background, height: '100%'}}>
-      <View style={[{backgroundColor: colors.white}, styles.shadow2]}>
-
-          <View style={[styles.profileBar]}>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                marginBottom: "-15%",
-                marginTop: "10%",
-              }}
-            >
-              <View style={{alignItems: "center", justifyContent: "center"}}>
-                <Text style={{color: colors.gray}}>anon</Text>
-                <Switch
-                  value={privacy}
-                  onValueChange={(val) => {
-                    const config = {
-                      headers: {
-                        "Content-Type": "application/json",
-                        "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
-                      },
-                    };
-                    let data = {
-                      is_profile_private: val,
-                    };
-                    axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
-                      .then((res) => {
-                        // console.log(res.data.is_profile_private);
-                        setprivacy(res.data.is_profile_private);
-                        props.reloadUser(props.user);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  }}
-                  activeText={"on"}
-                  inActiveText={"off"}
-                  backgroundActive={colors.purple}
-                  backgroundInActive={colors.border}
-                />
-              </View>
-            </View>
-            <View style={styles.profileImageContainer}>
-              <Image
-                style={styles.profileImage}
-                source={
-                  props.profileImage !== null
-                    ? { uri: props.profileImage }
-                    : PROFILE_PIC
-                }
+    
+      {/* Static profile features */}
+      <View style={[{ backgroundColor: colors.white }, styles.shadow2]}>
+        <View style={[styles.profileBar]}>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "100%",
+              marginBottom: "-15%",
+              marginTop: "10%",
+            }}
+          >
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              <Text style={{ color: colors.gray }}>anon</Text>
+              <Switch
+                value={privacy}
+                onValueChange={(val) => {
+                  const config = {
+                    headers: {
+                      "Content-Type": "application/json",
+                      "X-Arqive-Api-Key":
+                        "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
+                    },
+                  };
+                  let data = {
+                    is_profile_private: val,
+                  };
+                  axios
+                    .patch(
+                      `https://globaltraqsdev.com/api/auth/users/${props.id}/`,
+                      data,
+                      config
+                    )
+                    .then((res) => {
+                      // console.log(res.data.is_profile_private);
+                      setprivacy(res.data.is_profile_private);
+                      props.reloadUser(props.user);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }}
+                activeText={"on"}
+                inActiveText={"off"}
+                backgroundActive={colors.purple}
+                backgroundInActive={colors.border}
               />
-              <TouchableWithoutFeedback
-                onPress={() => props.navigation.navigate("EditProfileModal")}
-              >
-                <FontAwesome5
-                  style={{ marginTop: -25, marginLeft: 96, marginBottom: 25 }}
-                  name="pencil-alt"
-                  size={24}
-                  color={colors.purple}
-                />
-              </TouchableWithoutFeedback>
             </View>
-            <View style={[styles.bioContainter]}>
+          </View>
+          <View style={styles.profileImageContainer}>
+            <Image
+              style={styles.profileImage}
+              source={
+                props.profileImage !== null
+                  ? { uri: props.profileImage }
+                  : PROFILE_PIC
+              }
+            />
+            <TouchableWithoutFeedback
+              onPress={() => props.navigation.navigate("EditProfileModal")}
+            >
+              <FontAwesome5
+                style={{ marginTop: -25, marginLeft: 96, marginBottom: 25 }}
+                name="pencil-alt"
+                size={24}
+                color={colors.purple}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={[styles.bioContainter]}>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 16, color: colors.gray }}
+            >
+              bio
+            </Text>
+            <Text style={{ fontSize: 14, color: colors.purple }}>
+              {props.bio}
+            </Text>
+          </View>
+        </View>
+
+        <View style={[styles.storyButtons]}>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
+            <View
+              style={
+                selectedButton === 0
+                  ? styles.storySelectedButton
+                  : styles.storyUnselectedButton
+              }
+            >
               <Text
-                style={{ fontWeight: "bold", fontSize: 16, color: colors.gray }}
+                style={
+                  selectedButton === 0
+                    ? styles.selectedTextStyle
+                    : styles.textStyle
+                }
               >
-                bio
+                all stories
               </Text>
-              <Text style={{ fontSize: 14, color: colors.purple }}>
-                {props.bio}
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
+            <View
+              style={
+                selectedButton === 1
+                  ? styles.storySelectedButton
+                  : styles.storyUnselectedButton
+              }
+            >
+              <Text
+                style={
+                  selectedButton === 1
+                    ? styles.selectedTextStyle
+                    : styles.textStyle
+                }
+              >
+                personal
               </Text>
-              </View>
-          </View>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
+            <View
+              style={
+                selectedButton === 2
+                  ? styles.storySelectedButton
+                  : styles.storyUnselectedButton
+              }
+            >
+              <Text
+                style={
+                  selectedButton === 2
+                    ? styles.selectedTextStyle
+                    : styles.textStyle
+                }
+              >
+                historical
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
+            <View
+              style={
+                selectedButton === 3
+                  ? styles.storySelectedButton
+                  : styles.storyUnselectedButton
+              }
+            >
+              <Text
+                style={
+                  selectedButton === 3
+                    ? styles.selectedTextStyle
+                    : styles.textStyle
+                }
+              >
+                resource
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
 
-          <View style={[styles.storyButtons]}>
-              <TouchableWithoutFeedback onPress={() => setSelectedButton(0)}>
-                <View
-                  style={
-                    selectedButton === 0
-                      ? styles.storySelectedButton
-                      : styles.storyUnselectedButton
-                  }
-                >
-                  <Text style={ selectedButton === 0 ? styles.selectedTextStyle : styles.textStyle}>all stories</Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setSelectedButton(1)}>
-                <View
-                  style={
-                    selectedButton === 1
-                      ? styles.storySelectedButton
-                      : styles.storyUnselectedButton
-                  }
-                >
-                  <Text style={ selectedButton === 1 ? styles.selectedTextStyle : styles.textStyle}>personal</Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setSelectedButton(2)}>
-                <View
-                  style={
-                    selectedButton === 2
-                      ? styles.storySelectedButton
-                      : styles.storyUnselectedButton
-                  }
-                >
-                  <Text style={ selectedButton === 2 ? styles.selectedTextStyle : styles.textStyle}>historical</Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setSelectedButton(3)}>
-                <View
-                  style={
-                    selectedButton === 3
-                      ? styles.storySelectedButton
-                      : styles.storyUnselectedButton
-                  }
-                >
-                  <Text style={ selectedButton === 3 ? styles.selectedTextStyle : styles.textStyle}>resource</Text>
-                </View>
-              </TouchableWithoutFeedback>
-          </View>
-
+      {/* Scrollable content */}
       </View>
+        <View style={styles.storyList}>
+          {renderStoriesByType()}
+        </View>
 
-        <View style={styles.storyList}>{renderStoriesByType()}</View>
-      </ScrollView>
     </View>
   );
 }
@@ -214,10 +254,10 @@ function ProfileScreen(props) {
 function elevationShadowStyle(elevation) {
   return {
     elevation: 4,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 0.5 * elevation },
     shadowOpacity: 0.3,
-    shadowRadius: 0.8 * elevation
+    shadowRadius: 0.8 * elevation,
   };
 }
 
@@ -305,13 +345,13 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 16,
-    color: colors.purple
+    color: colors.purple,
   },
   selectedTextStyle: {
     fontSize: 16,
     color: colors.purple,
-    fontWeight: 'bold'
-  }
+    fontWeight: "bold",
+  },
 });
 
 const mapStateToProps = (state) => {
