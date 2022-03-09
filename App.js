@@ -23,30 +23,7 @@ const Icon = createIconSetFromIcoMoon(
   "icomoon.ttf"
 );
 
-
-
-//User persistance 
-//Use asyncStorage as a store for the users state
-const persistConfig = {
-  key: "root",
-  storage: AsyncStorage,
-};
-
-
-// const store = createStore(rootReducer, applyMiddleware(thunk));
-
-//Create a persistor from the root reducer that holds the apps state
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-//Use the new persistor(Really just a reducer) to manage the apps state
-const store = createStore(persistedReducer, applyMiddleware(thunk));
-let persistor = persistStore(store);
-
-//Clear Async Storage so that the apps state must be taken from our persistor
-AsyncStorage.clear();
-
-
-
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
