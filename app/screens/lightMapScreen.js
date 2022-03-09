@@ -369,6 +369,12 @@ function LightMapScreen(props) {
                   <Text style={{ fontSize: 16, fontWeight: "bold" }}>
                     {modalData.title}
                   </Text>
+                  <Text style={{ textAlign: 'right', color:
+                  modalData.category === 1
+                    ? colors.personal
+                    : modalData.category === 2
+                    ? colors.community
+                    : colors.historical, }}>Read More</Text>
                   <Text style={{ fontSize: 12 }}>
                     posted on {modalData.postDate}
                   </Text>
