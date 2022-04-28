@@ -39,11 +39,17 @@ function DrawerMenu(props) {
         />
         <ModalOpener
           {...props}
-          name="Terms of Services"
-          icon="file-text"
+          name="terms of service"
+          icon="tos"
           isMapScreen={true}
-          bottomBorder={true}
           navigateTo="TosModal"
+        />
+        <ModalOpener
+          {...props}
+          name="credits"
+          icon="credits"
+          isMapScreen={true}
+          navigateTo="CreditsModal"
         />
     </View>
   )

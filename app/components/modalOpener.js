@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableWithoutFeedback, TouchableOpacity, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 
 
 import colors from "../config/colors";
@@ -21,11 +21,13 @@ function ModalOpener(props) {
   */
 
   const icons = {
-    "phone": <FontAwesome name="phone" style={{width: "10%"}} size={24} color={iconColor} />,
-    "support": <FontAwesome name="handshake-o" style={{width: "10%"}} size={24} color={iconColor} />,
-    "contact": <FontAwesome name="id-card" style={{width: "10%"}} size={24} color={iconColor} />,
-    "faqs": <FontAwesome name="question-circle-o" style={{width: "10%"}} size={24} color={iconColor} />,
-    "accessibility": <FontAwesome name="universal-access" style={{width: "10%"}} size={24} color={iconColor} />,
+    "phone": <FontAwesome5 name="phone" style={{width: "10%"}} size={20} color={iconColor} />,
+    "support": <FontAwesome5 name="handshake" style={{width: "10%"}} size={20} color={iconColor} />,
+    "contact": <FontAwesome5 name="id-card" style={{width: "10%"}} size={20} color={iconColor} />,
+    "faqs": <FontAwesome5 name="question-circle" style={{width: "10%"}} size={20} color={iconColor} />,
+    "accessibility": <FontAwesome5 name="universal-access" style={{width: "10%"}} size={20} color={iconColor} />,
+    "tos": <FontAwesome5 name="file-alt" style={{width: "10%", paddingLeft: 3}} size={20} color={iconColor} />,
+    "credits": <FontAwesome5 name="praying-hands" style={{width: "10%"}} size={20} color={iconColor} />
   }
 
   return (
@@ -37,7 +39,7 @@ function ModalOpener(props) {
           }}
         >
           <View style={{flexDirection: "row", alignItems: "center", padding: 24}}>
-            <FontAwesome name="sign-out" style={{width: "16%"}} size={24} color={iconColor} />
+            <FontAwesome5 name="sign-out-alt" style={{width: "16%"}} size={24} color={iconColor} />
             <Text style={{ padding: 5, color: colors.white, fontSize: 16 }}>{props.name}</Text>
           </View>
         </TouchableOpacity>

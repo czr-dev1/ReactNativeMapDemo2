@@ -40,15 +40,16 @@ import AnonToggleSwitch from "../components/anonToggleSwitch";
 import ModalOpener from "../components/modalOpener";
 import ProfileHeader from "../components/profile/profileHeader";
 
+import EditProfileModal from "../modals/editProfileModal";
+import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
+import EditStoryModal from "../modals/editStoryModal";
+
 import HelpAndHotlineModal from "../modals/helpAndHotlineModal";
 import SupportUsModal from "../modals/supportUsModal";
 import ContactUsModal from "../modals/contactUsModal";
-import EditProfileModal from "../modals/editProfileModal";
-import LongPressStoryPostModal from "../modals/longPressStoryPostModal";
-import TosModal from "../modals/TosModal";
-
 import FaqsModal from "../modals/faqsModal";
-import EditStoryModal from "../modals/editStoryModal";
+import TosModal from "../modals/TosModal";
+import CreditsModal from "../modals/creditsModal";
 
 import { createIconSetFromIcoMoon } from "@expo/vector-icons";
 import Toast, { BaseToast } from "react-native-toast-message";
@@ -258,9 +259,15 @@ function ProfileDrawerScreen() {
               />
               <ModalOpener
                 {...props}
-                name='Terms of Services'
-                icon='file-text'
+                name='terms of service'
+                icon='memo-circle-info'
                 navigateTo='TosModal'
+              />
+              <ModalOpener
+                {...props}
+                name='credits'
+                icon='hands-praying'
+                navigateTo='creditsModal'
               />
 
               <ModalOpener {...props} name='log out' />
@@ -385,6 +392,7 @@ function NeedAuthStackScreen() {
       <NeedAuthStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <NeedAuthStack.Screen name='FaqsModal' component={FaqsModal} />
       <NeedAuthStack.Screen name='TosModal' component={TosModal} />
+      <NeedAuthStack.Screen name='CreditsModal' component={CreditsModal} />
       <NeedAuthStack.Screen
         name='UserProfileModal'
         component={FollowingProfileScreen}
@@ -477,6 +485,7 @@ function AppStackScreen() {
       <AppStack.Screen name='ContactUsModal' component={ContactUsModal} />
       <AppStack.Screen name='EditProfileModal' component={EditProfileModal} />
       <AppStack.Screen name='FaqsModal' component={FaqsModal} />
+      <AppStack.Screen name='CreditsModal' component={CreditsModal} />
       <NeedAuthStack.Screen name='TosModal' component={TosModal} />
       <AppStack.Screen name='EditStoryModal' component={EditStoryModal} />
       <AppStack.Screen
