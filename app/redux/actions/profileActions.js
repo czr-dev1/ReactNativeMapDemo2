@@ -17,9 +17,9 @@ export const tokenConfig = (getState) => {
 
 export const urlConfig = (getState) => {
 	if (getState.authReducer().isPrivacyMode) {
-		return 'https://thearqive.com';
+		return 'https://api.thearqive.com';
 	} else {
-		return 'http://192.81.130.223:8001';
+		return 'http://159.89.159.142:8001';
 	}
 };
 
