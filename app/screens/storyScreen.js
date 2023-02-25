@@ -123,7 +123,7 @@ function storyScreen(props) {
     setComments(tempStory[0].commentstory);
     createImageLink(tempStory[0].description);
 
-    axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+    axios.get(`https://api.thearqive.com/api/pins/${id}/`, config)
     .then((res) => {
       console.log(res.data);
       console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
@@ -175,7 +175,7 @@ function storyScreen(props) {
     //username can be changed if you want
     axios
       .get(
-        `https://globaltraqsdev.com/api/profile/users/?username=${props.username}`,
+        `https://api.thearqive.com/api/profile/users/?username=${props.username}`,
         config
       )
       .then((res) => {
@@ -213,7 +213,7 @@ function storyScreen(props) {
       },
     };
     axios
-      .post(`https://globaltraqsdev.com/api/flagStory/`, flagData, config)
+      .post(`https://api.thearqive.com/api/flagStory/`, flagData, config)
       .then((res) => {
         console.log(res.data);
       })
@@ -245,7 +245,7 @@ function storyScreen(props) {
       is_anonymous_pin: props.isPrivacyMode,
       pin: id,
     };
-    axios.post("https://globaltraqsdev.com/api/commentStory/", data, config)
+    axios.post("https://api.thearqive.com/api/commentStory/", data, config)
     .then((res) => {
       getStory();
       props.loadStories();
@@ -268,7 +268,7 @@ function storyScreen(props) {
       upVoter: props.userId,
     };
     axios
-      .post("https://globaltraqsdev.com/api/upVoteStory/", data, config)
+      .post("https://api.thearqive.com/api/upVoteStory/", data, config)
       .then((res) => {
         props.loadStories();
         props.reloadUser(props.username);
@@ -285,7 +285,7 @@ function storyScreen(props) {
       },
     };
 
-    axios.delete(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+    axios.delete(`https://api.thearqive.com/api/pins/${id}/`, config)
     .then((res) => {
       console.log(res);
       //dispatch({ type: 'DELETE_STORY', payload: id });

@@ -9,7 +9,7 @@ const config = {
 
 export const urlConfig = (getState) => {
   if (getState().authReducer.isPrivacyMode) {
-    return "https://globaltraqsdev.com";
+    return "https://thearqive.com";
   } else {
     return "http://192.81.130.223:8001";
   }
@@ -72,7 +72,7 @@ export const getStory = (id) => {
   setComments(tempStory[0].commentstory);
   createImageLink(tempStory[0].description);
 
-  axios.get(`https://globaltraqsdev.com/api/pins/${id}/`, config)
+  axios.get(`https://api.thearqive.com/api/pins/${id}/`, config)
   .then((res) => {
     // console.log(res.data);
     console.log("Location of Image Tag: ", res.data.description.indexOf("src"));
@@ -95,7 +95,7 @@ export const getStory = (id) => {
 };
 
 export const deleteComment = (id) => (dispatch) => {
-  axios.delete(`https://globaltraqsdev.com/api/commentStory/${id}/`, config)
+  axios.delete(`https://api.thearqive.com/api/commentStory/${id}/`, config)
   .then((res) => {
     dispatch({ type: 'DELETE_COMMENT', payload: id });
   })

@@ -32,7 +32,7 @@ function BookmarkedUsersScreen(props) {
     };
 
     //username can be changed if you want
-    axios.get('https://globaltraqsdev.com/api/auth/users/', config)
+    axios.get('https://api.thearqive.com/api/auth/users/', config)
     .then((res) => {
       setData(res.data.results);
       setLoading(false);

@@ -49,7 +49,7 @@ function BookmarkUserScreen(props) {
 
     //username can be changed if you want
     axios
-      .get(`https://globaltraqsdev.com/api/profile/users/`, config)
+      .get(`https://api.thearqive.com/api/profile/users/`, config)
       .then((res) => {
         console.log(res);
         let temp = res.data.reverse();

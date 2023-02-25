@@ -76,7 +76,7 @@ function BookmarkedPostsScreen(props) {
     //username can be changed if you want
     axios
       .get(
-        `https://globaltraqsdev.com/api/profile/users/?username=${props.user}`,
+        `https://api.thearqive.com/api/profile/users/?username=${props.user}`,
         config
       )
       .then((res) => {

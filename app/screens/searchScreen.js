@@ -17,7 +17,7 @@ const SearchScreen = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
 
     useEffect(() => {
-        fetch('http://www.globaltraqsdev.com/api/pins', {
+        fetch('http://api.thearqive.com/api/pins', {
             method: 'GET',
             headers: {
               'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'
@@ -159,7 +159,7 @@ export default SearchScreen;
 //   const [masterDataSource, setMasterDataSource] = useState([]);
 
 //     useEffect(() => {
-//         fetch('http://www.globaltraqsdev.com/api/pins', {
+//         fetch('http://api.thearqive.com/api/pins', {
 //             method: 'GET',
 //             headers: {
 //               'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'

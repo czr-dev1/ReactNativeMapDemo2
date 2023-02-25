@@ -102,7 +102,7 @@ function EditProfileModal(props) {
 
     axios
       .patch(
-        `https://globaltraqsdev.com/api/auth/users/${props.id}/`,
+        `https://api.thearqive.com/api/auth/users/${props.id}/`,
         data,
         config
       )

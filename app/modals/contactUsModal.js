@@ -95,7 +95,7 @@ function ContactUsModal(props) {
         // const body = JSON.stringify({ username, email, password });
         let data = JSON.stringify({ email: email, message: message });
         axios
-          .post("https://globaltraqsdev.com/api/contactUs/", data, config)
+          .post("https://api.thearqive.com/api/contactUs/", data, config)
           .then((response) => {
             setEmail("");
             setMessage("");
@@ -117,7 +117,7 @@ function ContactUsModal(props) {
 
         axios
           .post(
-            "https://globaltraqsdev.com/api/contactUs/",
+            "https://api.thearqive.com/api/contactUs/",
             {
               email: email,
               message: message,

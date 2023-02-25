@@ -31,7 +31,7 @@ function AnonToggleSwitch(props) {
           let data = {
             is_profile_private: val,
           };
-          axios.patch(`https://globaltraqsdev.com/api/auth/users/${props.id}/`, data, config)
+          axios.patch(`https://api.thearqive.com/api/auth/users/${props.id}/`, data, config)
             .then((res) => {
               setprivacy(res.data.is_profile_private);
               props.reloadUser(props.user);

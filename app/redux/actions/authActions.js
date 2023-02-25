@@ -20,7 +20,7 @@ export const tokenConfig = (getState) => {
 export const getUsers = () => {
   return (dispatch) => {
     axios
-      .get(`https://www.globaltraqsdev.com/auth/users`, config)
+      .get(`https://api.thearqive.com/auth/users`, config)
       .then((res) => {
         dispatch({ type: "GET_USERS", payload: res.data });
       })
@@ -38,7 +38,7 @@ export const login = ({ username, password, expoPushToken }) => {
     dispatch({ type: "LOAD_PROFILE_START" });
 
     axios
-      .post(`https://www.globaltraqsdev.com/api/auth/login`, user, config)
+      .post(`https://api.thearqive.com/api/auth/login`, user, config)
       .then((res) => {
         let data = {
           id: res.data.user.id,
@@ -110,7 +110,7 @@ export const logout = () => {
   return (dispatch, getState) => {
     axios
       .post(
-        `https://www.globaltraqsdev.com/api/auth/logout/`,
+        `https://api.thearqive.com/api/auth/logout/`,
         null,
         tokenConfig(getState)
       )
@@ -141,7 +141,7 @@ export const register = ({
     dispatch({ type: "LOAD_PROFILE_START" });
 
     axios
-      .post(`https://www.globaltraqsdev.com/api/auth/register`, user, config)
+      .post(`https://api.thearqive.com/api/auth/register`, user, config)
       .then((res) => {
         const data = {
           id: res.data.user.id,
@@ -169,7 +169,7 @@ export const userSelfDelete = () => {
   return (dispatch, getState) => {
     axios
       .delete(
-        `https://www.globaltraqsdev.com/api/auth/user`,
+        `https://api.thearqive.com/api/auth/user`,
         tokenConfig(getState)
       )
       .then((res) => {
@@ -195,7 +195,7 @@ export const reloadUser = (username) => {
     // If you're going to copy the URL make sure to copy it exactly w/ w/o slashes
     axios
       .get(
-        `https://www.globaltraqsdev.com/api/profile/users/?username=${username}`,
+        `https://api.thearqive.com/api/profile/users/?username=${username}`,
         config
       )
       .then((res) => {

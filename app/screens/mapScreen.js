@@ -99,7 +99,7 @@ function MapScreen(props) {
   };
 
   const searchData = async () => {
-    fetch("http://www.globaltraqsdev.com/api/pins", {
+    fetch("http://api.thearqive.com/api/pins", {
       method: "GET",
       headers: {
         "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
@@ -197,7 +197,7 @@ function MapScreen(props) {
   const loadData = async () => {
     try {
       setLoading(true);
-      let response = await fetch("http://www.globaltraqsdev.com/api/pins", {
+      let response = await fetch("http://api.thearqive.com/api/pins", {
         method: "GET",
         headers: {
           "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",

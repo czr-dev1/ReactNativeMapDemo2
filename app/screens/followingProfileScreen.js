@@ -59,7 +59,7 @@ function FollowingProfileScreen(props) {
     //username can be changed if you want
     axios
       .get(
-        `https://globaltraqsdev.com/api/profile/users/?username=${user}`,
+        `https://api.thearqive.com/api/profile/users/?username=${user}`,
         config
       )
       .then((res) => {

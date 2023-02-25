@@ -25,11 +25,11 @@ export const login = ({ username, password }) => {
     };
 
     axios
-      .post("https://www.globaltraqsdev.com/api/auth/login", user, config)
+      .post("https://api.thearqive.com/api/auth/login", user, config)
       .then((res) => {
         axios
           .get(
-            `https://www.globaltraqsdev.com/api/profile/users/?username=${res.data.user.username}`,
+            `https://api.thearqive.com/api/profile/users/?username=${res.data.user.username}`,
             config
           )
           .then((userInfo) => {
@@ -59,7 +59,7 @@ export const reloadUser = (username) => {
     // If you're going to copy the URL make sure to copy it exactly w/ w/o slashes
     axios
       .get(
-        `https://www.globaltraqsdev.com/api/profile/users/?username=${username}`,
+        `https://api.thearqive.com/api/profile/users/?username=${username}`,
         config
       )
       .then((res) => {
@@ -77,7 +77,7 @@ export const logout = () => {
   return (dispatch, getState) => {
     axios
       .post(
-        "https://www.globaltraqsdev.com/auth/logout",
+        "https://api.thearqive.com/auth/logout",
         null,
         tokenConfig(getState)
       )

@@ -58,7 +58,7 @@ function EditStoryModal(props) {
     };
 
     axios.patch(
-      `https://globaltraqsdev.com/api/pins/${id}/`,
+      `https://api.thearqive.com/api/pins/${id}/`,
       data,
       config
     )

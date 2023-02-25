@@ -42,7 +42,7 @@ function ForgotPasswordScreen() {
       },
     };
 
-    axios.get(`https://www.globaltraqsdev.com/profile/users?search=${username}`, config)
+    axios.get(`https://api.thearqive.com/profile/users?search=${username}`, config)
     .then((response) => {
       loginToggle();
       setEmail("");
@@ -76,7 +76,7 @@ function ForgotPasswordScreen() {
   const sendResetLink = () => {
     console.log(showError);
     if (!showError) {
-      axios.post("https://www.globaltraqsdev.com/api/password_reset/", {
+      axios.post("https://api.thearqive.com/api/password_reset/", {
         email: email.trim(),
       })
       .then((response) => {

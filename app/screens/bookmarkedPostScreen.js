@@ -44,7 +44,7 @@ function BookmarkPostScreen(props) {
       },
     };
 
-    axios.get(`https://globaltraqsdev.com/api/profile/users/?username=${props.user}`, config)
+    axios.get(`https://api.thearqive.com/api/profile/users/?username=${props.user}`, config)
     .then((res) => {
       setData(res.data[0])
     })

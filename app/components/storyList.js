@@ -104,7 +104,7 @@ const Item = ({ item }, props) => {
                   is_anonymous_pin: value,
                 };
                 axios.patch(
-                  `https://globaltraqsdev.com/api/pins/${item.id}/`,
+                  `https://api.thearqive.com/api/pins/${item.id}/`,
                   data,
                   config
                 );
