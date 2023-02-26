@@ -19,7 +19,7 @@ export const urlConfig = (getState) => {
 	if (getState.authReducer().isPrivacyMode) {
 		return 'https://api.thearqive.com';
 	} else {
-		return 'https://https://api.thearqive.com';
+		return 'https://api.thearqive.com';
 	}
 };
 
