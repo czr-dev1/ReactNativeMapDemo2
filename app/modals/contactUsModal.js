@@ -87,7 +87,7 @@ function ContactUsModal(props) {
       if (email !== "") {
         const config = {
           headers: {
-            "Content-Type": "application/json",
+           
             "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
           },
         };

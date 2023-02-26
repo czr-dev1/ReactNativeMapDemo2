@@ -114,7 +114,7 @@ function DarkMapScreen(props) {
   };
 
   const searchData = async () => {
-    fetch("http://api.thearqive.com/api/pins", {
+    fetch("https://api.thearqive.com/api/pins", {
       method: "GET",
       headers: {
         "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
@@ -203,7 +203,7 @@ function DarkMapScreen(props) {
   const loadData = async () => {
     try {
       setLoading(true);
-      let response = await fetch("http://api.thearqive.com/api/pins", {
+      let response = await fetch("https://api.thearqive.com/api/pins/", {
         method: "GET",
         headers: {
           "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",

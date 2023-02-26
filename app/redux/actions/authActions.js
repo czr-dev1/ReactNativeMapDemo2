@@ -46,7 +46,7 @@ export const login = ({ username, password, expoPushToken }) => {
 
         // RETRIEVING: user from 2nd backend
         axios
-          .get(`http://192.81.130.223:8012/api/user/get`, { params: data })
+          .get(`https://https://api.thearqive.com/api/user/get`, { params: data })
           .then((res2) => {
             // setting followingList and notificationsList
             console.log("recieved data: ", res2.data);
@@ -68,7 +68,7 @@ export const login = ({ username, password, expoPushToken }) => {
               //UPDATE: user push token if it is different from previous
               axios
                 .patch(
-                  `http://192.81.130.223:8012/api/user/updatePushToken`,
+                  `https://https://api.thearqive.com/api/user/updatePushToken`,
                   data
                 )
                 .then((res3) => {
@@ -88,7 +88,7 @@ export const login = ({ username, password, expoPushToken }) => {
 
             // CREATING: new entry if none exists (aka has account from website)
             axios
-              .post(`http://192.81.130.223:8012/api/user/create`, data)
+              .post(`https://https://api.thearqive.com/api/user/create`, data)
               .then((res) => {
                 // console.log(res);
               })
@@ -148,7 +148,7 @@ export const register = ({
           expoPushToken: expoPushToken,
         };
         axios
-          .post(`http://192.81.130.223:8012/api/user/create`, data)
+          .post(`https://https://api.thearqive.com/api/user/create`, data)
           .then((res) => {
             // console.log(res);
           })
@@ -226,13 +226,13 @@ export const followUser = ({ id, list }) => {
     console.log("reducer: ", data);
 
     axios
-      .patch(`http://192.81.130.223:8012/api/user/follow`, data)
+      .patch(`https://https://api.thearqive.com/api/user/follow`, data)
       .then((res) => {
         // console.log(res);
         dispatch({ type: "FOLLOW_USER", payload: list });
         // RETRIEVING: user from 2nd backend
         axios
-          .get(`http://192.81.130.223:8012/api/user/get`, { params: data })
+          .get(`https://https://api.thearqive.com/api/user/get`, { params: data })
           .then((res2) => {
             // setting followingList and notificationsList
             console.log("recieved data: ", res2.data);
@@ -255,7 +255,7 @@ export const followUser = ({ id, list }) => {
 
             // CREATING: new entry if none exists (aka has account from website)
             axios
-              .post(`http://192.81.130.223:8012/api/user/create`, data)
+              .post(`https://https://api.thearqive.com/api/user/create`, data)
               .then((res) => {
                 // console.log(res);
               })
@@ -279,7 +279,7 @@ export const unfollowUser = ({ list, id, unfollowing }) => {
     console.log("aa", list);
 
     axios
-      .patch(`http://192.81.130.223:8012/api/user/unfollow`, data)
+      .patch(`https://https://api.thearqive.com/api/user/unfollow`, data)
       .then((res) => {
         // console.log(res.data);
         dispatch({ type: "UNFOLLOW_USER", payload: list });

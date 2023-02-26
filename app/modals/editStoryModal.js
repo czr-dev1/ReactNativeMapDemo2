@@ -45,7 +45,7 @@ function EditStoryModal(props) {
   const onSubmit = (e) => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+       
         "X-Arqive-Api-Key": "4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1",
       },
     };

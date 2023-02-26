@@ -139,7 +139,7 @@ function LongPressStoryPostModal(props) {
       },
     };
 
-    axios.post("http://api.thearqive.com/api/pins/", pin, config)
+    axios.post("https://api.thearqive.com/api/pins/", pin, config)
     .then((res) => {
       console.log(res.data);
 

@@ -17,7 +17,7 @@ const SearchScreen = () => {
   const [masterDataSource, setMasterDataSource] = useState([]);
 
     useEffect(() => {
-        fetch('http://api.thearqive.com/api/pins', {
+        fetch('https://api.thearqive.com/api/pins/', {
             method: 'GET',
             headers: {
               'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1'

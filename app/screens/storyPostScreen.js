@@ -211,7 +211,7 @@ function StoryPostScreen(props) {
     };
 
     if (canPost) {
-      axios.post("http://api.thearqive.com/api/pins/", pin, config)
+      axios.post("https://api.thearqive.com/api/pins/", pin, config)
       .then((res) => {
         console.log(res.data);
 
