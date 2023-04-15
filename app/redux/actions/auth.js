@@ -74,11 +74,11 @@ export const reloadUser = (username) => {
 };
 
 export const logout = () => {
-  return (dispatch, getState) => {
+ /* return (dispatch, getState) => {
     axios
       .post(
         "https://api.thearqive.com/auth/logout",
-        null,
+      null,
         tokenConfig(getState)
       )
       .then((res) => {
@@ -88,6 +88,32 @@ export const logout = () => {
         dispatch(returnErrors(err.response.data, err.response.status));
       });
   };
+*/
+
+  return (dispatch, getState) => {
+    axios
+      .post(
+        "https://api.thearqive.com/auth/logout",
+        null,
+        tokenConfig(getState)
+      )
+      .then((res) => {
+        dispatch({ type: "LOGOUT_USER_SUCCESS" });
+        dispatch({ type: CLEAR_DATA });
+
+        // Reset the navigation stack and navigate to the login screen
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
+      })
+      .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+      });
+  };
+
+
+
 };
 
 export const setPrivacyMode = (setting) => {

@@ -1,5 +1,8 @@
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { returnErrors } from "./messageActions";
+import { CommonActions } from "@react-navigation/native";
+
 
 const config = {
   headers: {
@@ -106,7 +109,7 @@ export const login = ({ username, password, expoPushToken }) => {
 };
 
 // LOGOUT USER
-export const logout = () => {
+/*export const logout = (navigation) => {
   return (dispatch, getState) => {
     axios
       .post(
@@ -115,15 +118,69 @@ export const logout = () => {
         tokenConfig(getState)
       )
       .then(() => {
+        console.log("Logout API call success");
         delete config.headers["Authorization"];
         dispatch({ type: "LOGOUT_USER_SUCCESS" });
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Login' }],
+        });
       })
       .catch((err) => {
+        console.log("Logout API call failed", err);
         dispatch({ type: "LOGOUT_FAIL" });
         dispatch(returnErrors(err.response.data, err.response.status));
+        
       });
+      AsyncStorage.removeItem("token"); // Remove token from AsyncStorage
+      dispatch({ type: "LOGOUT_USER_SUCCESS" });
+
+      //Add the navigation reset logic here
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Login" }],
+        })
+      );
+  };
+};*/
+
+
+
+export const logout = (navigation) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await axios.post(
+        "https://api.thearqive.com/api/auth/logout",
+        null,
+        tokenConfig(getState)
+      );
+      delete config.headers["Authorization"];
+      //dispatch({ type: "LOGOUT_USER_SUCCESS" });
+      dispatch({ type: "LOGOUT_USER_SUCCESS" });
+    } catch (err) {
+      console.error("Logout API call failed:", err);
+      // Fallback to AsyncStorage
+      try {
+        AsyncStorage.removeItem("token");
+        dispatch({ type: "LOGOUT_USER_SUCCESS" });
+      } catch (error) {
+        console.error("AsyncStorage error:", error);
+      }
+    } finally {
+      // Navigate to the Initial screen and reset the navigation state to clear the history
+      navigation.navigate("Map");
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Map" }],
+        })
+      );
+    }
   };
 };
+
+
 
 // REGISTER NEW USER
 export const register = ({

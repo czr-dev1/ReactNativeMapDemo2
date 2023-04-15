@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const config = {
 	headers: {
-		'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
+		//'X-Arqive-Api-Key': '4BqxMFdJ.3caXcBkTUuLWpGrfbBDQYfIyBVKiEif1',
 	},
 };
 

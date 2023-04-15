@@ -35,7 +35,8 @@ function ModalOpener(props) {
       {props.name === "log out" ? (
         <TouchableOpacity
           onPress={() => {
-            dispatch(logout());
+            console.log("Logout button pressed");
+            dispatch(logout(navigation));
           }}
         >
           <View style={{flexDirection: "row", alignItems: "center", padding: 24}}>
